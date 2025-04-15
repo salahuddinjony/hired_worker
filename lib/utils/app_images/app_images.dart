@@ -7,7 +7,8 @@ class AppImages {
   static const String splashScreenImage = "$basePath/splashScreenImage.png";
 
   ///====================== Onborading =========================
-  static const String backgroundImage = "$basePath/backgroundImage.png";
+  static const String girlOne = "$basePath/girl_one.png";
+  static const String girlTwo = "$basePath/girl_two.png";
 
 
 

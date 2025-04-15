@@ -28,10 +28,10 @@ class CustomPinCode extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           fieldHeight: 65,
           fieldWidth: size.width * 0.15,
-          inactiveColor: AppColors.black_80,
+          inactiveColor: AppColors.white,
           activeColor: AppColors.white_50, // active color
           activeFillColor: AppColors.white_50,
-          inactiveFillColor: AppColors.black_80,
+          inactiveFillColor: AppColors.white,
           selectedFillColor: AppColors.primary, // selected color
           disabledColor: AppColors.white_50,
           selectedColor: AppColors.black_80,

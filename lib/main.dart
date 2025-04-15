@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(428, 926),
       child: GetMaterialApp(
         theme: ThemeData(
-            scaffoldBackgroundColor: AppColors.black,
+            scaffoldBackgroundColor: AppColors.backgroundClr,
             appBarTheme: const AppBarTheme(
               //surfaceTintColor: AppColors.brinkPink,
                 toolbarHeight: 65,
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 200),
-        initialRoute: AppRoutes.splashScreen,
+        initialRoute: AppRoutes.homeScreen,
         navigatorKey: Get.key,
         getPages: AppRoutes.routes,
       ),

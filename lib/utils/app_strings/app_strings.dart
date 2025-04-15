@@ -88,12 +88,13 @@ class   AppStrings {
 
   ///========================== Nav Bar =====================//
 
-  static const String world = "World";
-  static const String social = "Social";
+  static const String home = "Home";
+  static const String order = "Order";
   static const String messages = "Messages";
   static const String profile = "Profile";
   ///===================================================
-  static const String letsGo = "LET’S GO";
+  static const String serviceReuest = "Service Request";
+  static const String deliveredService = "Delivered Service";
   static const String createAccount = "Create a account";
   static const String alreadyHaveAccount = "Already have an account?";
   static const String orSignUpWith = "or sign up with";

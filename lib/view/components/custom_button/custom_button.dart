@@ -7,14 +7,14 @@ import '../custom_text/custom_text.dart';
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
-    this.height = 55,
+    this.height = 48,
     this.width = double.maxFinite,
     required this.onTap,
     this.title = '',
     this.marginVertical = 0,
     this.marginHorizontal = 0,
     this.fillColor = AppColors.primary,
-    this.textColor = AppColors.black,
+    this.textColor = AppColors.white,
     this.isBorder = false,
     this.fontSize,
     this.borderWidth,
@@ -39,7 +39,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5.h),
+        padding: EdgeInsets.symmetric(vertical: 0.h),
         margin: EdgeInsets.symmetric(
             vertical: marginVertical, horizontal: marginHorizontal),
         alignment: Alignment.center,
@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: CustomText(
           fontSize: fontSize ?? 18.sp,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: textColor,
           textAlign: TextAlign.center,
           text: title,

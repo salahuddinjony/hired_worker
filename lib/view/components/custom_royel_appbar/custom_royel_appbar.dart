@@ -34,17 +34,17 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () {
                 rightOnTap!();
               },
-              icon: rightIcon == null ? SizedBox(): CustomImage(imageSrc: rightIcon!, height: 32,width: 32,imageColor: AppColors.white,)),
+              icon: rightIcon == null ? SizedBox(): CustomImage(imageSrc: rightIcon!, height: 32,width: 32,)),
 
         ],
         backgroundColor: Colors.transparent,
         leading: leftIcon == true
-            ? BackButton()
+            ? BackButton(color: AppColors.black,)
             : null,
         title: CustomText(
           text: titleName ?? "",
-          fontSize: 24.w,
-          fontWeight: FontWeight.w700,
+          fontSize: 20.w,
+          fontWeight: FontWeight.w600,
           color: AppColors.primary,
         ));
   }

@@ -6,28 +6,36 @@ class AppIcons {
 
   ///=========================Nab bar Icon ======================
   static const String logo = "$basePath/logo.png";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  static const String home = "$basePath/Home.svg";
+  static const String order = "$basePath/Order.svg";
+  static const String message = "$basePath/Message.svg";
+  static const String profile = "$basePath/Profile.svg";
+  static const String iconOone = "$basePath/icon_one.svg";
+  static const String iconTwo = "$basePath/icon_two.svg";
+  static const String iconThree = "$basePath/icon_three.svg";
+  static const String iconFour = "$basePath/icon_four.svg";
+  static const String filled = "$basePath/filled.svg";
+  static const String editIcon = "$basePath/editIcon.svg";
+  static const String payment = "$basePath/payment.svg";
   static const String map = "$basePath/map.svg";
-  static const String home = "$basePath/home.svg";
-  static const String mail = "$basePath/mail.svg";
-  static const String person = "$basePath/person.svg";
-  static const String users = "$basePath/users.svg";
+  static const String notifaction = "$basePath/notifaction.svg";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   static const String apple = "$basePath/apple.svg";
