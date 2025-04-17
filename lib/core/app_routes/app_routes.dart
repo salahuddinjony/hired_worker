@@ -7,12 +7,18 @@ import '../../view/screens/authentication/login_screen/login_screen.dart';
 import '../../view/screens/authentication/reset_password_screen/reset_password_screen.dart';
 import '../../view/screens/authentication/verifay_code_screen/verifay_code_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
 import '../../view/screens/contractor_part/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
 import '../../view/screens/contractor_part/profile/edit_profile_screen/edit_profile_screen.dart';
+import '../../view/screens/contractor_part/profile/eran_screen/eran_screen.dart';
+import '../../view/screens/contractor_part/profile/help_support_screen/help_support_screen.dart';
+import '../../view/screens/contractor_part/profile/materials_screen/materials_screen.dart';
+import '../../view/screens/contractor_part/profile/notification_screen/notification_screen.dart';
 import '../../view/screens/contractor_part/profile/profile_screen/profile_screen.dart';
+import '../../view/screens/contractor_part/profile/schedule_screen/schedule_screen.dart';
 import '../../view/screens/contractor_part/splash_screen/splash_screen.dart';
 class AppRoutes {
   ///===========================Authentication==========================
@@ -30,6 +36,12 @@ class AppRoutes {
   static const String messageListScreen = "/MessageListScreen";
   static const String profileScreen = "/ProfileScreen";
   static const String editProfileScreen = "/EditProfileScreen";
+  static const String helpSupportScreen = "/HelpSupportScreen";
+  static const String materialsScreen = "/MaterialsScreen";
+  static const String notificationScreen = "/NotificationScreen";
+  static const String scheduleScreen = "/ScheduleScreen";
+  static const String eranScreen = "/EranScreen";
+  static const String onGoingScreen = "/OnGoingScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -47,6 +59,12 @@ class AppRoutes {
     GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
+    GetPage(name: helpSupportScreen, page: () => HelpSupportScreen()),
+    GetPage(name: materialsScreen, page: () => MaterialsScreen()),
+    GetPage(name: notificationScreen, page: () => NotificationScreen()),
+    GetPage(name: scheduleScreen, page: () => ScheduleScreen()),
+    GetPage(name: eranScreen, page: () => EranScreen()),
+    GetPage(name: onGoingScreen, page: () => OnGoingScreen()),
 
   ];
 }

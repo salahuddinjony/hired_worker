@@ -19,6 +19,15 @@ class AppIcons {
   static const String payment = "$basePath/payment.svg";
   static const String map = "$basePath/map.svg";
   static const String notifaction = "$basePath/notifaction.svg";
+  static const String mdiMaterial = "$basePath/mdi_material.svg";
+  static const String schedule = "$basePath/schedule.svg";
+  static const String totalService = "$basePath/totalService.svg";
+  static const String eran = "$basePath/eran.svg";
+  static const String mdiRecent = "$basePath/mdi_recent.svg";
+  static const String settingIcon = "$basePath/settingIcon.svg";
+  static const String call = "$basePath/call.svg";
+  static const String stripe = "$basePath/stripe.svg";
+  static const String sklils = "$basePath/sklils.png";
 
 
 
@@ -38,23 +47,6 @@ class AppIcons {
 
 
 
-  static const String apple = "$basePath/apple.svg";
-  static const String google = "$basePath/google.svg";
-  static const String setting = "$basePath/setting.svg";
-  static const String upload = "$basePath/upload.svg";
-  static const String building = "$basePath/building.svg";
-  static const String mot = "$basePath/mot.svg";
-  static const String restaurant = "$basePath/restaurant.svg";
-  static const String star = "$basePath/star.svg";
-  static const String usergroup = "$basePath/usergroup.svg";
-  static const String globe = "$basePath/globe.svg";
-  static const String locationMarker = "$basePath/locationMarker.svg";
-  static const String phone = "$basePath/phone.svg";
-  static const String dotted = "$basePath/dotted.svg";
-  static const String cross = "$basePath/cross.svg";
-  static const String moreVertical = "$basePath/moreVertical.svg";
-  static const String mapPoint = "$basePath/mapPoint.svg";
-  static const String mapView = "$basePath/mapView.svg";
 
 
 

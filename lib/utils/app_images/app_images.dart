@@ -9,6 +9,7 @@ class AppImages {
   ///====================== Onborading =========================
   static const String girlOne = "$basePath/girl_one.png";
   static const String girlTwo = "$basePath/girl_two.png";
+  static const String helpImage = "$basePath/helpImage.png";
 
 
 

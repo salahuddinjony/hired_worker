@@ -17,6 +17,7 @@ class AppColors {
   static const Color navbarClr = Color(0xff1D1F24);
   static const Color black_04 = Color(0xff4F4F59);
   static const Color black_06 = Color(0xff7c7a7c);
+  static const Color textCLr = Color(0xff5C5F62);
   static const Color black_07 = Color(0xff8891aa);
   static const Color black_05 = Color(0xff434242);
 

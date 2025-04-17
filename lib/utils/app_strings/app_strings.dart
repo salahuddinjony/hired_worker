@@ -92,6 +92,10 @@ class   AppStrings {
   static const String order = "Order";
   static const String messages = "Messages";
   static const String profile = "Profile";
+  static const String received = "Received";
+  static const String receivedText = "Received";
+  static const String requestedText = "Requested";
+  static const String rejectedText = "Rejected";
   ///===================================================
   static const String serviceReuest = "Service Request";
   static const String deliveredService = "Delivered Service";

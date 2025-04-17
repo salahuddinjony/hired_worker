@@ -2,7 +2,17 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../utils/app_strings/app_strings.dart';
+
 class ProfileController extends GetxController{
+
+  RxInt currentIndex = 0.obs;
+  RxInt activityTypeindex = 0.obs;
+  RxList<String> nameList = [
+    AppStrings.receivedText,
+    AppStrings.requestedText,
+    AppStrings.rejectedText,
+  ].obs;
 
   //========= Image Picker GetX Controller Code ===========//
 
