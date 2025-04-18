@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
@@ -7,6 +8,7 @@ import 'package:servana/view/components/custom_netwrok_image/custom_network_imag
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
+import '../../../../../core/app_routes/app_routes.dart';
 import 'widget/custom_ongoing_card.dart';
 
 class OnGoingScreen extends StatelessWidget {
@@ -28,7 +30,11 @@ class OnGoingScreen extends StatelessWidget {
             ),
             Column(
               children: List.generate(4, (value){
-                return CustomOngoingCard();
+                return CustomOngoingCard(
+                  rightOnTap: (){
+                    Get.toNamed(AppRoutes.onGoingFinishScreen);
+                  },
+                );
               })
             )
           ],

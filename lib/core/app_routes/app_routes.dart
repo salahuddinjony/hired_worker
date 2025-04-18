@@ -7,6 +7,7 @@ import '../../view/screens/authentication/login_screen/login_screen.dart';
 import '../../view/screens/authentication/reset_password_screen/reset_password_screen.dart';
 import '../../view/screens/authentication/verifay_code_screen/verifay_code_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
 import '../../view/screens/contractor_part/message/message_list_screen/message_list_screen.dart';
@@ -20,6 +21,9 @@ import '../../view/screens/contractor_part/profile/notification_screen/notificat
 import '../../view/screens/contractor_part/profile/profile_screen/profile_screen.dart';
 import '../../view/screens/contractor_part/profile/schedule_screen/schedule_screen.dart';
 import '../../view/screens/contractor_part/splash_screen/splash_screen.dart';
+import '../../view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
+import '../../view/screens/customer_part/home/customer_popular_services_screen/customer_popular_services_screen.dart';
+import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
 class AppRoutes {
   ///===========================Authentication==========================
   static const String splashScreen = "/SplashScreen";
@@ -42,6 +46,13 @@ class AppRoutes {
   static const String scheduleScreen = "/ScheduleScreen";
   static const String eranScreen = "/EranScreen";
   static const String onGoingScreen = "/OnGoingScreen";
+  static const String onGoingFinishScreen = "/OnGoingFinishScreen";
+
+
+  ///===========================Customer==========================
+  static const String customerHomeScreen = "/CustomerHomeScreen";
+  static const String customerPopularServicesScreen = "/CustomerPopularServicesScreen";
+  static const String customerServicesContractorScreen = "/CustomerServicesContractorScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -65,6 +76,12 @@ class AppRoutes {
     GetPage(name: scheduleScreen, page: () => ScheduleScreen()),
     GetPage(name: eranScreen, page: () => EranScreen()),
     GetPage(name: onGoingScreen, page: () => OnGoingScreen()),
+    GetPage(name: onGoingFinishScreen, page: () => OnGoingFinishScreen()),
+
+    ///===========================Customer==========================
+    GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
+    GetPage(name: customerPopularServicesScreen, page: () => CustomerPopularServicesScreen()),
+    GetPage(name: customerServicesContractorScreen, page: () => CustomerServicesContractorScreen()),
 
   ];
 }

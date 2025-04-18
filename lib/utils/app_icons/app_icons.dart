@@ -27,6 +27,9 @@ class AppIcons {
   static const String settingIcon = "$basePath/settingIcon.svg";
   static const String call = "$basePath/call.svg";
   static const String stripe = "$basePath/stripe.svg";
+  static const String group = "$basePath/Group.svg";
+  static const String search = "$basePath/search.svg";
+  static const String filter = "$basePath/filter.svg";
   static const String sklils = "$basePath/sklils.png";
 
 

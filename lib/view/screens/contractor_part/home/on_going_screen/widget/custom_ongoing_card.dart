@@ -6,12 +6,13 @@ import '../../../../../components/custom_button/custom_button.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 class CustomOngoingCard extends StatelessWidget {
-  const CustomOngoingCard({super.key});
+  final void Function()? rightOnTap;
+  const CustomOngoingCard({super.key, this.rightOnTap});
 
   @override
   Widget build(BuildContext context) {
     return  Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 10.0),
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 10.0),
       child: Column(
         children: [
           Row(
@@ -124,7 +125,7 @@ class CustomOngoingCard extends StatelessWidget {
               Flexible(
                 child: CustomButton(
                   height: 35,
-                  onTap: () {},
+                  onTap: rightOnTap ?? () =>(),
                   title: "Finish",
                   fillColor: AppColors.primary,
                 ),
