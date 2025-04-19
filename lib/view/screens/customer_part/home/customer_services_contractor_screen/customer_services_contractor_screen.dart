@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../customer_home_screen/widget/custom_service_contractor_card.dart';
@@ -28,7 +30,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      //Get.toNamed(AppRoutes.customerServicesContractorScreen);
+                      Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                     },
                     child: CustomText(
                       text: "View all",

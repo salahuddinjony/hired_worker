@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 import 'package:servana/view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
+import '../../screens/customer_part/customer_search_result_screen/customer_search_result_screen.dart';
+import '../../screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
+import '../../screens/customer_part/profile/customer_profile_screen/customer_profile_screen.dart';
 
 class CustomerNavbar extends StatefulWidget {
   final int currentIndex;
@@ -45,13 +48,13 @@ class _NavbarState extends State<CustomerNavbar> {
         Get.offAll(() => CustomerHomeScreen());
         break;
       case 1:
-      // Get.to(() => OrderScreen());
+        Get.to(() => CustomerSearchResultScreen());
         break;
       case 2:
-       //Get.to(() => MessageListScreen());
+       Get.to(() => CustomerMessaageListScreen());
         break;
       case 3:
-      // Get.to(() => ProfileScreen());
+       Get.to(() => CustomerProfileScreen());
         break;
     }
   }

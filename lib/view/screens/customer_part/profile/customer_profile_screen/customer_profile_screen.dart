@@ -10,12 +10,11 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import '../../../../components/custom_nav_bar/customer_navbar.dart';
+import '../../../contractor_part/profile/profile_screen/widget/custom_profile_menu_list.dart';
 
-import '../../home/home_screen/widget/custom_home_card.dart';
-import 'widget/custom_profile_menu_list.dart';
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class CustomerProfileScreen extends StatelessWidget {
+  const CustomerProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
         titleName: "Profile",
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
-          Get.toNamed(AppRoutes.editProfileScreen);
+          Get.toNamed(AppRoutes.editCustomerProfileScreen);
         },
       ),
       body: SingleChildScrollView(
@@ -62,82 +61,31 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomHomeCard(),
-                  CustomHomeCard(
-                    text: "90",
-                    title: "Total Service",
-                    imageSrc: AppIcons.iconTwo,
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomHomeCard(
-                    text: "15",
-                    title: "Recent Services",
-                    imageSrc: AppIcons.iconFour,
-                  ),
-                  CustomHomeCard(
-                    text: "\$50/hr",
-                    title: "Current billing price",
-                    imageSrc: AppIcons.iconThree,
-                  ),
-                ],
-              ),
-              SizedBox(height: 20.h),
               CustomProfileMenuList(),
               CustomProfileMenuList(image: AppIcons.map, name: "Address"),
               CustomProfileMenuList(
                 onTap: () {
-                  Get.toNamed(AppRoutes.notificationScreen);
+                  Get.toNamed(AppRoutes.customerNotificationScreen);
                 },
                 image: AppIcons.notifaction,
                 name: "Notification",
               ),
-              CustomProfileMenuList(image: AppIcons.sklils, name: "Skills"),
               CustomProfileMenuList(
-                onTap: () {
-                  Get.toNamed(AppRoutes.materialsScreen);
-                },
-                image: AppIcons.mdiMaterial,
-                name: "Materials",
-              ),
+                  image: AppIcons.settingIcon,
+                  name: "Setting"),
               CustomProfileMenuList(
                   onTap: () {
-                    Get.toNamed(AppRoutes.scheduleScreen);
+                    Get.toNamed(AppRoutes.customerReferFriendScreen);
                   },
-                  image: AppIcons.schedule,
-                  name: "Schedule"),
+                  image: AppIcons.peopoles,
+                  name: "Refer a Friend"),
               CustomProfileMenuList(
-                image: AppIcons.totalService,
-                name: "Total Service",
-              ),
-              CustomProfileMenuList(
-                onTap: (){
-                  Get.toNamed(AppRoutes.eranScreen);
-                },
-                  image: AppIcons.eran,
-                  name: "Eran"),
-              CustomProfileMenuList(
-                image: AppIcons.mdiRecent,
-                name: "Recent Service",
-              ),
-              CustomProfileMenuList(
-                image: AppIcons.settingIcon,
-                name: "Settings",
-              ),
-              CustomProfileMenuList(
-                onTap: () {
-                  Get.toNamed(AppRoutes.helpSupportScreen);
-                },
-                image: AppIcons.call,
-                name: "Support",
-              ),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.customerHelpSupportScreen);
+                  },
+                  image: AppIcons.call,
+                  name: "Support"),
+
               SizedBox(height: 10.h),
               TextButton(
                 onPressed: () {},
@@ -153,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Navbar(currentIndex: 3),
+      bottomNavigationBar: CustomerNavbar(currentIndex: 3),
     );
   }
 }

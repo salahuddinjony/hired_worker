@@ -83,35 +83,40 @@ class CustomerHomeScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
-                child: Container(
-                  height: 55.h,
-                  width: MediaQuery.sizeOf(context).width,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
+                child: GestureDetector(
+                  onTap: (){
+                    Get.toNamed(AppRoutes.customerSearchResultScreen);
+                  },
+                  child: Container(
+                    height: 55.h,
+                    width: MediaQuery.sizeOf(context).width,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CustomImage(imageSrc: AppIcons.search),
-                            CustomText(
-                              left: 10.w,
-                              text: "Search here.....",
-                              fontSize: 14.w,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.black_04,
-                            ),
-                          ],
-                        ),
-                        CustomImage(imageSrc: AppIcons.filter),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CustomImage(imageSrc: AppIcons.search),
+                              CustomText(
+                                left: 10.w,
+                                text: "Search here.....",
+                                fontSize: 14.w,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.black_04,
+                              ),
+                            ],
+                          ),
+                          CustomImage(imageSrc: AppIcons.filter),
+                        ],
+                      ),
                     ),
                   ),
                 ),
