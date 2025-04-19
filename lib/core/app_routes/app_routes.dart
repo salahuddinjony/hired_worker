@@ -21,9 +21,22 @@ import '../../view/screens/contractor_part/profile/notification_screen/notificat
 import '../../view/screens/contractor_part/profile/profile_screen/profile_screen.dart';
 import '../../view/screens/contractor_part/profile/schedule_screen/schedule_screen.dart';
 import '../../view/screens/contractor_part/splash_screen/splash_screen.dart';
+import '../../view/screens/customer_part/customer_search_result_screen/customer_search_result_screen.dart';
+import '../../view/screens/customer_part/home/customar_materials_screen/customar_materials_screen.dart';
+import '../../view/screens/customer_part/home/customar_qa_screen/customar_qa_screen.dart';
+import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_details_screen.dart';
+import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_view_screen.dart';
+import '../../view/screens/customer_part/home/customer_confirmations_screen/customer_confirmations_screen.dart';
+import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/customer_contractor_profile_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../view/screens/customer_part/home/customer_popular_services_screen/customer_popular_services_screen.dart';
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
+import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
+import '../../view/screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
+import '../../view/screens/customer_part/profile/customer_help_support_screen/customer_help_support_screen.dart';
+import '../../view/screens/customer_part/profile/customer_notification_screen/customer_notification_screen.dart';
+import '../../view/screens/customer_part/profile/customer_refer_friend_screen/customer_refer_friend_screen.dart';
+import '../../view/screens/customer_part/profile/edit_customer_profile_screen/edit_customer_profile_screen.dart';
 class AppRoutes {
   ///===========================Authentication==========================
   static const String splashScreen = "/SplashScreen";
@@ -53,6 +66,19 @@ class AppRoutes {
   static const String customerHomeScreen = "/CustomerHomeScreen";
   static const String customerPopularServicesScreen = "/CustomerPopularServicesScreen";
   static const String customerServicesContractorScreen = "/CustomerServicesContractorScreen";
+  static const String customerAllContractorViewScreen = "/CustomerAllContractorViewScreen";
+  static const String customerContractorProfileViewScreen = "/CustomerContractorProfileViewScreen";
+  static const String customerSuccessfullyPaidScreen = "/CustomerSuccessfullyPaidScreen";
+  static const String customerConfirmationsScreen = "/CustomerConfirmationsScreen";
+  static const String editCustomerProfileScreen = "/EditCustomerProfileScreen";
+  static const String customerNotificationScreen = "/CustomerNotificationScreen";
+  static const String customerHelpSupportScreen = "/CustomerHelpSupportScreen";
+  static const String customerReferFriendScreen = "/CustomerReferFriendScreen";
+  static const String customerMessaageListScreen = "/CustomerMessaageListScreen";
+  static const String customerSearchResultScreen = "/CustomerSearchResultScreen";
+  static const String customarServiceDetailsScreen = "/CustomarServiceDetailsScreen";
+  static const String customarQaScreen = "/CustomarQaScreen";
+  static const String customarMaterialsScreen = "/CustomarMaterialsScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -82,6 +108,19 @@ class AppRoutes {
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
     GetPage(name: customerPopularServicesScreen, page: () => CustomerPopularServicesScreen()),
     GetPage(name: customerServicesContractorScreen, page: () => CustomerServicesContractorScreen()),
+    GetPage(name: customerAllContractorViewScreen, page: () => CustomerAllContractorViewScreen()),
+    GetPage(name: customerContractorProfileViewScreen, page: () => CustomerContractorProfileViewScreen()),
+    GetPage(name: customerSuccessfullyPaidScreen, page: () => CustomerSuccessfullyPaidScreen()),
+    GetPage(name: customerConfirmationsScreen, page: () => CustomerConfirmationsScreen()),
+    GetPage(name: editCustomerProfileScreen, page: () => EditCustomerProfileScreen()),
+    GetPage(name: customerNotificationScreen, page: () => CustomerNotificationScreen()),
+    GetPage(name: customerHelpSupportScreen, page: () => CustomerHelpSupportScreen()),
+    GetPage(name: customerReferFriendScreen, page: () => CustomerReferFriendScreen()),
+    GetPage(name: customerMessaageListScreen, page: () => CustomerMessaageListScreen()),
+    GetPage(name: customerSearchResultScreen, page: () => CustomerSearchResultScreen()),
+    GetPage(name: customarServiceDetailsScreen, page: () => CustomarServiceDetailsScreen()),
+    GetPage(name: customarQaScreen, page: () => CustomarQaScreen()),
+    GetPage(name: customarMaterialsScreen, page: () => CustomarMaterialsScreen()),
 
   ];
 }

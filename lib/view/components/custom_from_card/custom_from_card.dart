@@ -55,6 +55,7 @@ class CustomFormCard extends StatelessWidget {
           fontWeight: FontWeight.w600,
           fontSize: fontSize ?? 18.w,
           bottom: 12.h,
+          textAlign: TextAlign.start,
           maxLines: 2,
         ),
         CustomTextField(
