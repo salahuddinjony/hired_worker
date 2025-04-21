@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-
+import '../../view/screens/contractor_part/complete_your_profile/controller/complete_profile_controller.dart';
 import '../../view/screens/contractor_part/home/order_screen/controller/order_controller.dart';
 import '../../view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../view/screens/customer_part/profile/controller/customer_profile_controller.dart';
@@ -10,6 +10,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => OrderController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);
     Get.lazyPut(() => CustomerProfileController(), fenix: true);
+    Get.lazyPut(() => CompleteProfileController(), fenix: true);
 
   }
 }

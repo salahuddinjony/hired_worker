@@ -44,7 +44,7 @@ class VerifayCodeScreen extends StatelessWidget {
             CustomPinCode(controller: TextEditingController()),
             SizedBox(height: 30.h,),
             CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.resetPasswordScreen);
+              Get.toNamed(AppRoutes.seletedMapScreen);
             }, title: "Verify email",),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,7 @@ import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.
 
 class ScheduleScreen extends StatelessWidget {
   final List<String> days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+   ScheduleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/components/custom_text_field/custom_text_field.dart';
 
 class CustomarServiceDetailsScreen extends StatefulWidget {
   const CustomarServiceDetailsScreen({super.key});

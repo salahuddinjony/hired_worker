@@ -6,6 +6,11 @@ import '../../view/screens/authentication/forgot_password_screen/forgot_password
 import '../../view/screens/authentication/login_screen/login_screen.dart';
 import '../../view/screens/authentication/reset_password_screen/reset_password_screen.dart';
 import '../../view/screens/authentication/verifay_code_screen/verifay_code_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/category_seleted_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/certificate_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/schedule_seleted_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/seleted_map_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/skills_add_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
@@ -48,6 +53,11 @@ class AppRoutes {
   static const String verifayCodeScreen = "/VerifayCodeScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String contractorSignUpScreen = "/ContractorSignUpScreen";
+  static const String seletedMapScreen = "/SeletedMapScreen";
+  static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
+  static const String categorySeletedScreen = "/CategorySeletedScreen";
+  static const String certificateScreen = "/CertificateScreen";
+  static const String skillsAddScreen = "/SkillsAddScreen";
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
   static const String messageListScreen = "/MessageListScreen";
@@ -91,6 +101,11 @@ class AppRoutes {
     GetPage(name: verifayCodeScreen, page: () => VerifayCodeScreen()),
     GetPage(name: resetPasswordScreen, page: () => ResetPasswordScreen()),
     GetPage(name: contractorSignUpScreen, page: () => ContractorSignUpScreen()),
+    GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
+    GetPage(name: scheduleSeletedScreen, page: () => ScheduleSeletedScreen()),
+    GetPage(name: categorySeletedScreen, page: () => CategorySeletedScreen()),
+    GetPage(name: certificateScreen, page: () => CertificateScreen()),
+    GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: messageListScreen, page: () => MessageListScreen()),

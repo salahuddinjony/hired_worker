@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import 'widget/custom_material_card.dart';
