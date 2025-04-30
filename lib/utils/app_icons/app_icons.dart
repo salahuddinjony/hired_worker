@@ -34,6 +34,9 @@ class AppIcons {
   static const String heartMajor = "$basePath/HeartMajor.svg";
   static const String calenderIcon = "$basePath/calenderIcon.svg";
   static const String peopoles = "$basePath/peopoles.svg";
+  static const String cleaner = "$basePath/cleaner.svg";
+  static const String girlVactor = "$basePath/girlVactor.svg";
+  static const String ac = "$basePath/ac.svg";
   static const String sklils = "$basePath/sklils.png";
 
 

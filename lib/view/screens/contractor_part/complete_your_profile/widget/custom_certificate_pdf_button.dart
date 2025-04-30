@@ -8,7 +8,7 @@ class CustomCertificatePdfButton extends StatelessWidget {
   final String? label;
   final String? title;
   final Function()? onTap;
-   CustomCertificatePdfButton({super.key, this.label, this.onTap, this.title});
+   const CustomCertificatePdfButton({super.key, this.label, this.onTap, this.title});
 
   @override
   Widget build(BuildContext context) {

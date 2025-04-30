@@ -23,7 +23,7 @@ class ScheduleScreen extends StatelessWidget {
 class AvailabilityTile extends StatefulWidget {
   final String day;
 
-  const AvailabilityTile({Key? key, required this.day}) : super(key: key);
+  const AvailabilityTile({super.key, required this.day});
 
   @override
   State<AvailabilityTile> createState() => _AvailabilityTileState();

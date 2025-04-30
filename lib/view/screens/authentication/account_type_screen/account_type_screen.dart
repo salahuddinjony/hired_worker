@@ -8,7 +8,6 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
 import '../../../../utils/app_colors/app_colors.dart';
-
 class AccountTypeScreen extends StatelessWidget {
   const AccountTypeScreen({super.key});
 
@@ -31,7 +30,9 @@ class AccountTypeScreen extends StatelessWidget {
               bottom: 20.h,
             ),
             CustomButton(
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRoutes.customerHomeScreen);
+              },
               fillColor: AppColors.backgroundClr,
               borderWidth: 1,
               isBorder: true,
@@ -47,7 +48,7 @@ class AccountTypeScreen extends StatelessWidget {
               color: AppColors.black,
             ),
             CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.contractorSignUpScreen);
+              Get.toNamed(AppRoutes.homeScreen);
             }, title: "Contractor",)
           ],
         ),

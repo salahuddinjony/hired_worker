@@ -15,11 +15,11 @@ class CustomPopularServicesCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Container(
-          height: 100.h,
-          width: 100.w,
+          height: 120.h,
+          width: 120.w,
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

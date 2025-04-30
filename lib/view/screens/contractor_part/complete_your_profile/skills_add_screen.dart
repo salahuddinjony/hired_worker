@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -71,7 +69,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: isSelected
-                              ? const Color(0xFF3C003D).withOpacity(0.1)
+                              ? const Color(0xFF3C003D).withValues(alpha: 0.1)
                               : Colors.transparent,
                         ),
                         child: Row(

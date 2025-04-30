@@ -14,6 +14,7 @@ class AppImages {
   static const String clickImage = "$basePath/clickImage.png";
   static const String manPower = "$basePath/manPower.png";
   static const String cardImage = "$basePath/cardImage.png";
+  static const String banner = "$basePath/banner.png";
   static const String referImage = "$basePath/referImage.svg";
   static const String pdfIcon = "$basePath/pdfIcon.svg";
 
