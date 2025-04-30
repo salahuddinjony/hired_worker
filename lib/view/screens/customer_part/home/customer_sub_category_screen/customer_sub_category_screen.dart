@@ -6,13 +6,13 @@ import 'package:servana/view/components/custom_text/custom_text.dart';
 
 import '../customer_home_screen/widget/custom_popular_services_card.dart';
 
-class CustomerPopularServicesScreen extends StatelessWidget {
-  const CustomerPopularServicesScreen({super.key});
+class CustomerSubCategoryScreen extends StatelessWidget {
+  const CustomerSubCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Popular Services"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Categories",),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 16.0, bottom: 30),

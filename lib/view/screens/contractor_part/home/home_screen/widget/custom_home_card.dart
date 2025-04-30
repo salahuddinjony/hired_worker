@@ -17,7 +17,7 @@ class CustomHomeCard extends StatelessWidget {
       onTap:  onTap,
       child: Container(
         padding: EdgeInsets.all(15),
-        width: MediaQuery.sizeOf(context).width / 2.2,
+        width: MediaQuery.sizeOf(context).width / 2.3,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.r),
           color: Colors.transparent,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
-import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
 import 'package:servana/view/components/custom_text_field/custom_text_field.dart';
 class CustomerSearchResultScreen extends StatelessWidget {
   const CustomerSearchResultScreen({super.key});
@@ -28,7 +27,6 @@ class CustomerSearchResultScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: CustomerNavbar(currentIndex: 1),
       ),
     );
   }

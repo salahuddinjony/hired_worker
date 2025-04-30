@@ -10,7 +10,6 @@ import 'package:servana/view/screens/contractor_part/home/home_screen/widget/cus
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/navbar.dart';
 import 'widget/custom_home_card.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -18,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 70.h),
+        padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
         child: Column(
           children: [
             Row(
@@ -26,8 +25,8 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.menu, color: AppColors.black),
-                    SizedBox(width: 10.w),
+                  /*  Icon(Icons.menu, color: AppColors.black),
+                    SizedBox(width: 10.w),*/
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -40,8 +39,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         CustomText(
                           text: "Mehedi Bin Ab. Salam (Electrician)",
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 15.w,
+                          fontWeight: FontWeight.w500,
                           color: AppColors.black,
                         ),
                       ],

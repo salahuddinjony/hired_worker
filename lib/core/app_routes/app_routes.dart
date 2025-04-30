@@ -31,13 +31,15 @@ import '../../view/screens/customer_part/home/customar_materials_screen/customar
 import '../../view/screens/customer_part/home/customar_qa_screen/customar_qa_screen.dart';
 import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_details_screen.dart';
 import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_view_screen.dart';
+import '../../view/screens/customer_part/home/customer_category_screen/customer_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_confirmations_screen/customer_confirmations_screen.dart';
 import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/customer_contractor_profile_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
-import '../../view/screens/customer_part/home/customer_popular_services_screen/customer_popular_services_screen.dart';
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
+import '../../view/screens/customer_part/home/customer_sub_category_screen/customer_sub_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
 import '../../view/screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
+import '../../view/screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
 import '../../view/screens/customer_part/profile/customer_help_support_screen/customer_help_support_screen.dart';
 import '../../view/screens/customer_part/profile/customer_notification_screen/customer_notification_screen.dart';
 import '../../view/screens/customer_part/profile/customer_refer_friend_screen/customer_refer_friend_screen.dart';
@@ -74,7 +76,7 @@ class AppRoutes {
 
   ///===========================Customer==========================
   static const String customerHomeScreen = "/CustomerHomeScreen";
-  static const String customerPopularServicesScreen = "/CustomerPopularServicesScreen";
+  static const String customerSubCategoryScreen = "/CustomerSubCategoryScreen";
   static const String customerServicesContractorScreen = "/CustomerServicesContractorScreen";
   static const String customerAllContractorViewScreen = "/CustomerAllContractorViewScreen";
   static const String customerContractorProfileViewScreen = "/CustomerContractorProfileViewScreen";
@@ -89,6 +91,8 @@ class AppRoutes {
   static const String customarServiceDetailsScreen = "/CustomarServiceDetailsScreen";
   static const String customarQaScreen = "/CustomarQaScreen";
   static const String customarMaterialsScreen = "/CustomarMaterialsScreen";
+  static const String customerCategoryScreen = "/CustomerCategoryScreen";
+  static const String customerRequestHistoryScreen = "/CustomerRequestHistoryScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -121,7 +125,7 @@ class AppRoutes {
 
     ///===========================Customer==========================
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
-    GetPage(name: customerPopularServicesScreen, page: () => CustomerPopularServicesScreen()),
+    GetPage(name: customerSubCategoryScreen, page: () => CustomerSubCategoryScreen()),
     GetPage(name: customerServicesContractorScreen, page: () => CustomerServicesContractorScreen()),
     GetPage(name: customerAllContractorViewScreen, page: () => CustomerAllContractorViewScreen()),
     GetPage(name: customerContractorProfileViewScreen, page: () => CustomerContractorProfileViewScreen()),
@@ -136,6 +140,8 @@ class AppRoutes {
     GetPage(name: customarServiceDetailsScreen, page: () => CustomarServiceDetailsScreen()),
     GetPage(name: customarQaScreen, page: () => CustomarQaScreen()),
     GetPage(name: customarMaterialsScreen, page: () => CustomarMaterialsScreen()),
+    GetPage(name: customerCategoryScreen, page: () => CustomerCategoryScreen()),
+    GetPage(name: customerRequestHistoryScreen, page: () => CustomerRequestHistoryScreen()),
 
   ];
 }

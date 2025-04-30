@@ -11,15 +11,7 @@ void main() async {
   DependencyInjection di = DependencyInjection();
   di.dependencies();
 
-  // Get.put(NetworkController());
-
   runApp(const MyApp());
-/*   runApp(DevicePreview(
-     enabled: !kReleaseMode,
-     builder: (context) =>
-         //====================
-    const MyApp(), // Wrap your app
-   ));*/
   const MyApp();
 }
 
@@ -44,7 +36,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 200),
-        initialRoute: AppRoutes.certificateScreen,
+        initialRoute: AppRoutes.splashScreen,
         navigatorKey: Get.key,
         getPages: AppRoutes.routes,
       ),

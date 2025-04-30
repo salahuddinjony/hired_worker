@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
+import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
-import 'widget/custom_get_card.dart';
 import 'widget/custom_popular_services_card.dart';
 import 'widget/custom_service_contractor_card.dart';
 
@@ -23,6 +23,7 @@ class CustomerHomeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 0, top: 60.0, bottom: 50),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -125,14 +126,14 @@ class CustomerHomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: "Popular Services",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
+                    text: "Category",
+                    fontSize: 18.w,
+                    fontWeight: FontWeight.w700,
                     color: AppColors.black_08,
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.customerPopularServicesScreen);
+                      Get.toNamed(AppRoutes.customerCategoryScreen);
                     },
                     child: CustomText(
                       text: "View all",
@@ -142,6 +143,86 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              GridView.builder(
+                padding: EdgeInsets.only(right: 10.h),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 8,
+                ),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 6,
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomPopularServicesCard(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.customarQaScreen);
+                    },
+                  ); // You can pass `serviceList[index]` if needed
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: "Sub Category",
+                    fontSize: 18.w,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.black_08,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.customerSubCategoryScreen);
+                    },
+                    child: CustomText(
+                      text: "View all",
+                      fontSize: 16.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blue,
+                    ),
+                  ),
+                ],
+              ),
+              CustomText(
+                text: "Electronic",
+                fontSize: 16.w,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black_08,
+                bottom: 10.h,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(5, (value) {
+                    return CustomPopularServicesCard();
+                  }),
+                ),
+              ),
+              CustomText(
+                top: 10.h,
+                text: "Cleaning",
+                fontSize: 16.w,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black_08,
+                bottom: 10.h,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(5, (value) {
+                    return CustomPopularServicesCard();
+                  }),
+                ),
+              ),
+              CustomText(
+                top: 10.h,
+                text: "Plumbing",
+                fontSize: 16.w,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black_08,
+                bottom: 10.h,
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -156,8 +237,8 @@ class CustomerHomeScreen extends StatelessWidget {
                 children: [
                   CustomText(
                     text: "Service Contractor",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 18.w,
+                    fontWeight: FontWeight.w700,
                     color: AppColors.black_08,
                   ),
                   TextButton(
@@ -173,18 +254,29 @@ class CustomerHomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomServiceContractorCard(),
-                    CustomServiceContractorCard(),
-                  ],
+              GridView.builder(
+                padding: EdgeInsets.only(right: 10.h),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: .80,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 8,
                 ),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 4,
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomServiceContractorCard(
+                  ); // You can pass `serviceList[index]` if needed
+                },
               ),
+
               SizedBox(height: 16.h),
-             SingleChildScrollView(
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: CustomImage(imageSrc: AppImages.banner),
+            ),
+            /* SingleChildScrollView(
                scrollDirection: Axis.horizontal,
                child: Row(
                  children: [
@@ -192,7 +284,7 @@ class CustomerHomeScreen extends StatelessWidget {
                    CustomGetCard(),
                  ],
                ),
-             )
+             )*/
             ],
           ),
         ),

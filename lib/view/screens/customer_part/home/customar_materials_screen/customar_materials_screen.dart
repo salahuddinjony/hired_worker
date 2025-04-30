@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-
+import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import 'widget/select_materials_row.dart';
 
@@ -129,7 +130,9 @@ class CustomarMaterialsScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 12.h,),
-                    CustomButton(onTap: (){}, title: "Booking Confirm",)
+                    CustomButton(onTap: (){
+                      Get.toNamed(AppRoutes.customerServicesContractorScreen);
+                    }, title: "Booking Confirm",)
                   ],
                 ),
               ),
