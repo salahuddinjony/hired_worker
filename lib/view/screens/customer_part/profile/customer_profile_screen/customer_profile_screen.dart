@@ -27,7 +27,7 @@ class CustomerProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
             children: [
               Row(
@@ -58,9 +58,11 @@ class CustomerProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 80.h),
               CustomProfileMenuList(),
-              CustomProfileMenuList(image: AppIcons.map, name: "Address"),
+              CustomProfileMenuList(image: AppIcons.history, name: "History",onTap: (){
+                Get.toNamed(AppRoutes.customerRequestHistoryScreen);
+              },),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.customerNotificationScreen);
@@ -69,20 +71,27 @@ class CustomerProfileScreen extends StatelessWidget {
                 name: "Notification",
               ),
               CustomProfileMenuList(
-                  image: AppIcons.settingIcon,
-                  name: "Setting"),
+                image: AppIcons.settingIcon,
+                name: "Privacy Policy",
+              ),
               CustomProfileMenuList(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.customerReferFriendScreen);
-                  },
-                  image: AppIcons.peopoles,
-                  name: "Refer a Friend"),
+                image: AppIcons.settingIcon,
+                name: "Terms & Conditions",
+              ),
               CustomProfileMenuList(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.customerHelpSupportScreen);
-                  },
-                  image: AppIcons.call,
-                  name: "Support"),
+                onTap: () {
+                  Get.toNamed(AppRoutes.customerReferFriendScreen);
+                },
+                image: AppIcons.peopoles,
+                name: "Refer a Friend",
+              ),
+              CustomProfileMenuList(
+                onTap: () {
+                  Get.toNamed(AppRoutes.customerHelpSupportScreen);
+                },
+                image: AppIcons.call,
+                name: "Support",
+              ),
 
               SizedBox(height: 10.h),
               TextButton(

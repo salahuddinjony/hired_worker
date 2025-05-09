@@ -157,7 +157,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 CustomButton(onTap: () {
-                  Get.toNamed(AppRoutes.customerSuccessfullyPaidScreen);
+                  Get.toNamed(AppRoutes.customarQaScreen);
                 }, title: "Book"),
                 Align(
                   alignment: Alignment.centerLeft,

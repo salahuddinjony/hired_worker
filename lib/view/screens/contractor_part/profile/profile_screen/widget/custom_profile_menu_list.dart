@@ -15,14 +15,14 @@ class CustomProfileMenuList extends StatelessWidget {
     return  GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 20.0),
         child: Card(
           color: Colors.transparent,
           elevation: 0,
           child: Row(
             children: [
               CustomImage(imageSrc: image?? AppIcons.payment,),
-              CustomText(text:name??  "Payments Methods", fontSize: 18.w,fontWeight: FontWeight.w500,color: AppColors.black,left: 8.w,)
+              CustomText(text:name??  "Payments Methods", fontSize: 18.w,fontWeight: FontWeight.w600,color: AppColors.black,left: 8.w,)
             ],
           ),
         ),
