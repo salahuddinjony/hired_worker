@@ -6,7 +6,9 @@ import '../../../../../components/custom_netwrok_image/custom_network_image.dart
 import '../../../../../components/custom_text/custom_text.dart';
 class CustomPopularServicesCard extends StatelessWidget {
   final Function()? onTap;
-  const CustomPopularServicesCard({super.key, this.onTap});
+  final String? image;
+  final String? name;
+  const CustomPopularServicesCard({super.key, this.onTap, this.image, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +25,16 @@ class CustomPopularServicesCard extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomNetworkImage(
-                imageUrl: AppConstants.electrician,
+                imageUrl: image?? AppConstants.electrician,
                 height: 50,
                 width: 50,
               ),
               CustomText(
                 top: 10,
-                text: "Plumbing",
+                text: name ??"Plumbing",
                 fontSize: 12.w,
                 fontWeight: FontWeight.w600,
                 color: AppColors.black_08,

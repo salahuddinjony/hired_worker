@@ -8,7 +8,11 @@ import '../../../../../components/custom_netwrok_image/custom_network_image.dart
 import '../../../../../components/custom_text/custom_text.dart';
 class CustomServiceContractorCard extends StatelessWidget {
   final Function()? onTap;
-  const CustomServiceContractorCard({super.key, this.onTap});
+  final String? image;
+  final String? name;
+  final String? title;
+  final String? rating;
+  const CustomServiceContractorCard({super.key, this.onTap, this.image, this.name, this.title, this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +31,20 @@ class CustomServiceContractorCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
-                imageUrl: AppConstants.profileImage,
+                imageUrl: image ?? AppConstants.profileImage,
                 height: 160.h,
                 width: MediaQuery.sizeOf(context).width,
                 borderRadius: BorderRadius.circular(8),
               ),
               CustomText(
                 top: 8,
-                text: "Maskot Kota",
+                text: name ?? "Maskot Kota",
                 fontSize: 16.w,
                 fontWeight: FontWeight.w600,
                 color: AppColors.black_08,
               ),
               CustomText(
-                text: "Electrician",
+                text: title ?? "Electrician",
                 fontSize: 12.w,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black_08,
@@ -52,24 +56,19 @@ class CustomServiceContractorCard extends StatelessWidget {
                     children: [
                       Icon(Icons.star, size: 10, color: AppColors.blue),
                       CustomText(
-                        text: "4.8",
+                        text: rating ?? "4.8",
                         fontSize: 12.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blue,
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: (){
-                      Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.blue,
-                        borderRadius: BorderRadius.circular(8),
-                      ),child: CustomText(text: "Details",fontSize: 10.w,fontWeight: FontWeight.w500,color: AppColors.white,),
-                    ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.blue,
+                      borderRadius: BorderRadius.circular(8),
+                    ),child: CustomText(text: "Details",fontSize: 10.w,fontWeight: FontWeight.w500,color: AppColors.white,),
                   )
                 ],
               ),

@@ -29,12 +29,14 @@ import '../../view/screens/contractor_part/splash_screen/splash_screen.dart';
 import '../../view/screens/customer_part/customer_search_result_screen/customer_search_result_screen.dart';
 import '../../view/screens/customer_part/home/customar_materials_screen/customar_materials_screen.dart';
 import '../../view/screens/customer_part/home/customar_qa_screen/customar_qa_screen.dart';
+import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_contractor_details_screen.dart';
 import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_details_screen.dart';
 import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_category_screen/customer_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_confirmations_screen/customer_confirmations_screen.dart';
 import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/customer_contractor_profile_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
+import '../../view/screens/customer_part/home/customer_par_sub_category_item/customer_par_sub_category_item.dart';
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
 import '../../view/screens/customer_part/home/customer_sub_category_screen/customer_sub_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
@@ -93,6 +95,8 @@ class AppRoutes {
   static const String customarMaterialsScreen = "/CustomarMaterialsScreen";
   static const String customerCategoryScreen = "/CustomerCategoryScreen";
   static const String customerRequestHistoryScreen = "/CustomerRequestHistoryScreen";
+  static const String customerParSubCategoryItem = "/CustomerParSubCategoryItem";
+  static const String customarServiceContractorDetailsScreen = "/CustomarServiceContractorDetailsScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -142,6 +146,8 @@ class AppRoutes {
     GetPage(name: customarMaterialsScreen, page: () => CustomarMaterialsScreen()),
     GetPage(name: customerCategoryScreen, page: () => CustomerCategoryScreen()),
     GetPage(name: customerRequestHistoryScreen, page: () => CustomerRequestHistoryScreen()),
+    GetPage(name: customerParSubCategoryItem, page: () => CustomerParSubCategoryItem()),
+    GetPage(name: customarServiceContractorDetailsScreen, page: () => CustomarServiceContractorDetailsScreen()),
 
   ];
 }

@@ -157,8 +157,10 @@ class CustomerHomeScreen extends StatelessWidget {
                 itemCount: 6,
                 itemBuilder: (BuildContext context, int index) {
                   return CustomPopularServicesCard(
+                    image: AppConstants.electrician,
+                    name: "Electronic",
                     onTap: (){
-                      Get.toNamed(AppRoutes.customarQaScreen);
+                      Get.toNamed(AppRoutes.customerParSubCategoryItem);
                     },
                   ); // You can pass `serviceList[index]` if needed
                 },
@@ -196,7 +198,13 @@ class CustomerHomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
+                    return CustomPopularServicesCard(
+                      image: AppConstants.electrician,
+                      name: "Electronic",
+                      onTap: (){
+                       // Get.toNamed(AppRoutes.customarQaScreen);
+                      },
+                    );
                   }),
                 ),
               ),
@@ -212,7 +220,13 @@ class CustomerHomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
+                    return CustomPopularServicesCard(
+                      image: AppConstants.electrician,
+                      name: "Cleaning",
+                      onTap: (){
+                        Get.toNamed(AppRoutes.customarQaScreen);
+                      },
+                    );
                   }),
                 ),
               ),
@@ -228,7 +242,13 @@ class CustomerHomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
+                    return CustomPopularServicesCard(
+                      image: AppConstants.electrician,
+                      name: "Cleaning",
+                      onTap: (){
+                       // Get.toNamed(AppRoutes.customarQaScreen);
+                      },
+                    );
                   }),
                 ),
               ),
@@ -267,6 +287,12 @@ class CustomerHomeScreen extends StatelessWidget {
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
                   return CustomServiceContractorCard(
+                     onTap: (){
+                       Get.toNamed(AppRoutes.customerContractorProfileViewScreen);
+                     },
+                    image: AppConstants.profileImage,
+                    name: "Mehedi",
+                    title: "Electrician",
                   ); // You can pass `serviceList[index]` if needed
                 },
               ),

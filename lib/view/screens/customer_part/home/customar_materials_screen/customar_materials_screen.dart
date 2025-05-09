@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import 'widget/select_materials_row.dart';
 
-class CustomarMaterialsScreen extends StatelessWidget {
+class CustomarMaterialsScreen extends StatefulWidget {
   const CustomarMaterialsScreen({super.key});
+
+  @override
+  State<CustomarMaterialsScreen> createState() => _CustomarMaterialsScreenState();
+}
+
+class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
+  bool showMaterials = true;
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +25,52 @@ class CustomarMaterialsScreen extends StatelessWidget {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.only(left: 10, right: 4),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Select Materials",
+                      text: "Need Materials Select",
                       fontSize: 18.w,
                       fontWeight: FontWeight.w600,
                       color: AppColors.black,
                     ),
-                    Switch(value: true, onChanged: (value) {}),
+                    Switch(
+                      value: showMaterials,
+                      onChanged: (value) {
+                        setState(() {
+                          showMaterials = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
-                SelectMaterialsRow(),
-                SelectMaterialsRow(),
+                if (showMaterials)
+                  Column(
+                    children: List.generate(
+                      5,
+                          (index) => SelectMaterialsRow(name: "Powerpoint"),
+                    ),
+                  ),
               ],
             ),
           ),
-          Positioned(
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20,),
+        child: CustomButton(onTap: (){
+          Get.toNamed(AppRoutes.customarServiceDetailsScreen);
+        },title: "Continue",),
+      ),
+    );
+  }
+}
+
+
+/*Positioned(
             bottom: 0,
             right: 0,
             left: 0,
@@ -137,9 +169,4 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+          ),*/
