@@ -1,24 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/components/custom_text/custom_text.dart';
-import '../../../../components/custom_button/custom_button.dart';
 
-class CustomarServiceContractorDetailsScreen extends StatelessWidget {
-  const CustomarServiceContractorDetailsScreen({super.key});
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_icons/app_icons.dart';
+import '../../../../components/custom_image/custom_image.dart';
+import '../../../../components/custom_text/custom_text.dart';
+class RequestHistoryServiceDetailsPage extends StatelessWidget {
+  const RequestHistoryServiceDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details"),
+      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Service Details",),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 26,
+                      backgroundColor: Color(0xffCDB3CD),
+                      child: CustomImage(imageSrc: AppIcons.cleaner),
+                    ),
+                    SizedBox(width: 12.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "House Cleaning",
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.black,
+                          bottom: 4.h,
+                        ),
+                        CustomText(
+                          text: "Reference Code: #D-571224",
+                          fontSize: 12.w,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff6F767E),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Color(0xffCDB3CD),
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: CustomText(
+                    text: "Pending",
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
             CustomText(
+              top: 20.h,
               text: "Service Contractor",
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
@@ -158,133 +209,32 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               color: AppColors.black,
             ),
             Divider(thickness: .3, color: AppColors.black_02),
-             SizedBox(height: 8,),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 CustomText(
-                   text: "09 : 00 Am - 12 : 00 Pm",
-                   fontSize: 16.w,
-                   fontWeight: FontWeight.w500,
-                   color: AppColors.black,
-                 ),
-                 CustomText(
-                   text: "(4 Hours)",
-                   fontSize: 16.w,
-                   fontWeight: FontWeight.w500,
-                   color: AppColors.black,
-                 ),
-               ],
-             )
-
+            SizedBox(height: 8,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "09 : 00 Am - 12 : 00 Pm",
+                  fontSize: 16.w,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
+                CustomText(
+                  text: "(4 Hours)",
+                  fontSize: 16.w,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
+              ],
+            ),
+            SizedBox(height: 30,),
+            CustomButton(onTap: (){
+              Get.toNamed(AppRoutes.customarServiceDetailsScreen);
+            },title: "Service Update",)
+            
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 40, right: 20, left: 20,),
-        child: CustomButton(onTap: (){
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            builder: (_) => CheckoutPopup(),
-          );
-        },title: "Continue",),
-      ),
-    );
-  }
-}
-
-
-class CheckoutPopup extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding:
-      EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 40), // padding
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Total Amount Info',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          Divider(height: 30, thickness: 1),
-          _buildRow(
-            label: 'Electrician',
-            subLabel: 'AC Repair',
-            amount: '200.00\$',
-            isBold: false,
-          ),
-          Divider(height: 30, thickness: 1),
-          _buildRow(
-            label: 'Total Materials (03)',
-            amount: '250.00\$',
-            isBold: true,
-          ),
-          Divider(height: 30, thickness: 1),
-          _buildRow(
-            label: 'Total Amount',
-            amount: '450.00\$',
-            isBold: true,
-            withColon: true,
-          ),
-          SizedBox(height: 30),
-          CustomButton(onTap: (){
-            Get.back();
-          }, title: "Checkout",),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRow({
-    required String label,
-    String? subLabel,
-    required String amount,
-    bool isBold = false,
-    bool withColon = false,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                withColon ? '$label :' : label,
-                style: TextStyle(
-                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-                  fontSize: isBold ? 16 : 14,
-                ),
-              ),
-              if (subLabel != null)
-                Padding(
-                  padding: EdgeInsets.only(top: 2),
-                  child: Text(
-                    subLabel,
-                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                  ),
-                ),
-            ],
-          ),
-        ),
-        Text(
-          amount,
-          style: TextStyle(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            fontSize: isBold ? 16 : 14,
-          ),
-        )
-      ],
     );
   }
 }

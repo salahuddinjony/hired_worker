@@ -202,7 +202,7 @@ class CustomerHomeScreen extends StatelessWidget {
                       image: AppConstants.electrician,
                       name: "Electronic",
                       onTap: (){
-                       // Get.toNamed(AppRoutes.customarQaScreen);
+                        Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
                   }),
@@ -224,7 +224,7 @@ class CustomerHomeScreen extends StatelessWidget {
                       image: AppConstants.electrician,
                       name: "Cleaning",
                       onTap: (){
-                        Get.toNamed(AppRoutes.customarQaScreen);
+                        Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
                   }),
@@ -246,7 +246,7 @@ class CustomerHomeScreen extends StatelessWidget {
                       image: AppConstants.electrician,
                       name: "Cleaning",
                       onTap: (){
-                       // Get.toNamed(AppRoutes.customarQaScreen);
+                        Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
                   }),

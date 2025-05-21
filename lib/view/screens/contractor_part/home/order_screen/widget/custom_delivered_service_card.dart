@@ -16,7 +16,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0, right: 16, left: 16),
       child: Container(
         width: MediaQuery.sizeOf(context).width,
-        height: 110.h,
+        height: 130.h, // Increased height slightly
         decoration: BoxDecoration(
           color: AppColors.cardClr,
           borderRadius: BorderRadius.circular(13),
@@ -31,26 +31,29 @@ class CustomDeliveredServiceCard extends StatelessWidget {
               ),
               child: CustomNetworkImage(
                 imageUrl: AppConstants.electrician,
-                height: 110.h,
+                height: 130.h,
                 width: 150.w,
               ),
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(right: 20, left: 10, bottom: 10, top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          text: "Switchboard Install",
-                          fontSize: 14.w,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
+                        Expanded(
+                          child: CustomText(
+                            text: "Switchboard Install",
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
+                        SizedBox(width: 4.w),
                         CustomNetworkImage(
                           imageUrl: AppConstants.profileImage,
                           height: 20,
@@ -59,6 +62,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 4.h),
                     Row(
                       children: [
                         CustomImage(imageSrc: AppIcons.filled),
@@ -78,6 +82,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 4.h),
                     Row(
                       children: [
                         Icon(Icons.calendar_month, size: 14, color: AppColors.black_04),
@@ -90,7 +95,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 4.h,),
+                    Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
