@@ -18,8 +18,9 @@ class CustomerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomRoyelAppbar(
-        leftIcon: true,
+        leftIcon: false,
         titleName: "Profile",
+        showRightIcon: true,
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
           Get.toNamed(AppRoutes.editCustomerProfileScreen);
@@ -58,7 +59,7 @@ class CustomerProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 80.h),
+              SizedBox(height: 50.h),
               CustomProfileMenuList(),
               CustomProfileMenuList(image: AppIcons.history, name: "History",onTap: (){
                 Get.toNamed(AppRoutes.customerRequestHistoryScreen);
@@ -69,14 +70,6 @@ class CustomerProfileScreen extends StatelessWidget {
                 },
                 image: AppIcons.notifaction,
                 name: "Notification",
-              ),
-              CustomProfileMenuList(
-                image: AppIcons.settingIcon,
-                name: "Privacy Policy",
-              ),
-              CustomProfileMenuList(
-                image: AppIcons.settingIcon,
-                name: "Terms & Conditions",
               ),
               CustomProfileMenuList(
                 onTap: () {
@@ -92,6 +85,29 @@ class CustomerProfileScreen extends StatelessWidget {
                 image: AppIcons.call,
                 name: "Support",
               ),
+              CustomProfileMenuList(
+                image: AppIcons.settingIcon,
+                name: "About Us",
+                onTap: (){
+                  Get.toNamed(AppRoutes.aboutUsScreen);
+                },
+              ),
+              CustomProfileMenuList(
+                image: AppIcons.settingIcon,
+                name: "Privacy Policy",
+                onTap: (){
+                  Get.toNamed(AppRoutes.privacyPolicyScreen);
+                },
+              ),
+              CustomProfileMenuList(
+                image: AppIcons.settingIcon,
+                name: "Terms & Conditions",
+                onTap: (){
+                  Get.toNamed(AppRoutes.termsConditionsScreen);
+                },
+              ),
+
+
 
               SizedBox(height: 10.h),
               TextButton(

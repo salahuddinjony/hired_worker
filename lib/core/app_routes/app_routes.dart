@@ -42,10 +42,14 @@ import '../../view/screens/customer_part/home/customer_sub_category_screen/custo
 import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
 import '../../view/screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
 import '../../view/screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
+import '../../view/screens/customer_part/order/request_history_service_details_page/request_history_service_details_page.dart';
+import '../../view/screens/customer_part/profile/about_us_screen/about_us_screen.dart';
 import '../../view/screens/customer_part/profile/customer_help_support_screen/customer_help_support_screen.dart';
 import '../../view/screens/customer_part/profile/customer_notification_screen/customer_notification_screen.dart';
 import '../../view/screens/customer_part/profile/customer_refer_friend_screen/customer_refer_friend_screen.dart';
 import '../../view/screens/customer_part/profile/edit_customer_profile_screen/edit_customer_profile_screen.dart';
+import '../../view/screens/customer_part/profile/privacy_policy_screen/privacy_policy_screen.dart';
+import '../../view/screens/customer_part/profile/terms_conditions_screen/terms_conditions_screen.dart';
 class AppRoutes {
   ///===========================Authentication==========================
   static const String splashScreen = "/SplashScreen";
@@ -97,6 +101,10 @@ class AppRoutes {
   static const String customerRequestHistoryScreen = "/CustomerRequestHistoryScreen";
   static const String customerParSubCategoryItem = "/CustomerParSubCategoryItem";
   static const String customarServiceContractorDetailsScreen = "/CustomarServiceContractorDetailsScreen";
+  static const String requestHistoryServiceDetailsPage = "/RequestHistoryServiceDetailsPage";
+  static const String aboutUsScreen = "/AboutUsScreen";
+  static const String privacyPolicyScreen = "/PrivacyPolicyScreen";
+  static const String termsConditionsScreen = "/TermsConditionsScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -148,6 +156,10 @@ class AppRoutes {
     GetPage(name: customerRequestHistoryScreen, page: () => CustomerRequestHistoryScreen()),
     GetPage(name: customerParSubCategoryItem, page: () => CustomerParSubCategoryItem()),
     GetPage(name: customarServiceContractorDetailsScreen, page: () => CustomarServiceContractorDetailsScreen()),
+    GetPage(name: requestHistoryServiceDetailsPage, page: () => RequestHistoryServiceDetailsPage()),
+    GetPage(name: aboutUsScreen, page: () => AboutUsScreen()),
+    GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
+    GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
 
   ];
 }

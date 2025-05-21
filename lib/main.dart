@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'core/app_routes/app_routes.dart';
@@ -7,12 +8,14 @@ import 'utils/app_colors/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //DeviceUtils.lockDevicePortrait();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: AppColors.backgroundClr, // Set visible background color
+    statusBarIconBrightness: Brightness.dark, // Android: dark icons
+    statusBarBrightness: Brightness.light, // iOS: light background
+  ));
   DependencyInjection di = DependencyInjection();
   di.dependencies();
-
   runApp(const MyApp());
-  const MyApp();
 }
 
 class MyApp extends StatelessWidget {
