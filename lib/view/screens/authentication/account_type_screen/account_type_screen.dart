@@ -8,6 +8,7 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
 import '../../../../utils/app_colors/app_colors.dart';
+
 class AccountTypeScreen extends StatelessWidget {
   const AccountTypeScreen({super.key});
 
@@ -20,7 +21,13 @@ class AccountTypeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(child: CustomImage(imageSrc: AppIcons.logo, width: 150.w,height: 150.h,)),
+            Center(
+              child: CustomImage(
+                imageSrc: AppIcons.logo,
+                width: 150.w,
+                height: 150.h,
+              ),
+            ),
             CustomText(
               top: 80.h,
               text: "Create a New Account",
@@ -31,7 +38,10 @@ class AccountTypeScreen extends StatelessWidget {
             ),
             CustomButton(
               onTap: () {
-                Get.toNamed(AppRoutes.contractorSignUpScreen);
+                Get.toNamed(
+                  AppRoutes.contractorSignUpScreen,
+                  arguments: {'isContactor': false},
+                );
               },
               fillColor: AppColors.backgroundClr,
               borderWidth: 1,
@@ -47,9 +57,15 @@ class AccountTypeScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: AppColors.black,
             ),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.contractorSignUpScreen);
-            }, title: "Contractor",)
+            CustomButton(
+              onTap: () {
+                Get.toNamed(
+                  AppRoutes.contractorSignUpScreen,
+                  arguments: {'isContactor': true},
+                );
+              },
+              title: "Contractor",
+            ),
           ],
         ),
       ),

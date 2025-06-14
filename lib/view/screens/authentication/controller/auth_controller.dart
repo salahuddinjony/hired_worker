@@ -1,25 +1,26 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
+import 'package:servana/service/api_check.dart';
+import 'package:servana/service/api_client.dart';
+import 'package:servana/service/api_url.dart';
+import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
-import '../../../../core/app_routes/app_routes.dart';
-import '../../../../service/api_check.dart';
-import '../../../../service/api_client.dart';
-import '../../../../service/api_url.dart';
-import '../../../../utils/ToastMsg/toast_message.dart';
-import '../../../../utils/app_strings/app_strings.dart';
+
+import 'package:servana/utils/app_strings/app_strings.dart';
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   Rx<TextEditingController> nameController =
-      TextEditingController(text: kDebugMode ? "Tayebur Rahman" : "").obs;
+      TextEditingController(text: kDebugMode ? "Md Nishad Miah" : "").obs;
   Rx<TextEditingController> phoneController =
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "tayebrayhan10@gmail.com" : "",
+        text: kDebugMode ? "wawec14833@ethsms.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
@@ -31,11 +32,11 @@ class AuthController extends GetxController {
   Rx<bool> isAgree = false.obs;
 
   ///=====================LOGIN METHOD=====================
-  RxBool loginLoading = false.obs;
+  Rx<RxStatus> loginLoading = Rx<RxStatus>(RxStatus.success());
   Future<void> loginUser() async {
-    loginLoading.value = true;
+    loginLoading.value = RxStatus.loading();
     refresh();
- 
+
     final body = {
       "email": emailController.value.text.trim(),
       "password": passController.value.text,
@@ -44,31 +45,17 @@ class AuthController extends GetxController {
     try {
       final response = await ApiClient.postData(ApiUrl.login, jsonEncode(body));
 
-      loginLoading.value = false;
+      loginLoading.value = RxStatus.success();
       refresh();
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final data = response.body['data'];
-        final user = data['user'];
-        final role = user['authId']['role'];
 
         await SharePrefsHelper.setString(
           AppConstants.bearerToken,
           data['accessToken'],
         );
-        await SharePrefsHelper.setString(AppConstants.userId, data['id']);
-        await SharePrefsHelper.setString(AppConstants.role, role);
-
-        // showCustomSnackBar(
-        //   response.body['message'] ?? "Login successful",
-        //   isError: false,
-        // );
-
-        // if (role == "USER") {
-        //   Get.offAllNamed(AppRoutes.candidateHomeScreen);
-        // } else {
-        //   Get.offAllNamed(AppRoutes.employerHomeScreen);
-        // }
+        await getMe();
       } else {
         _handleLoginError(response);
 
@@ -78,14 +65,14 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
-      loginLoading.value = false;
+      loginLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
 
   void _handleLoginError(Response response) {
-    loginLoading.value = false;
+    loginLoading.value = RxStatus.success();
     refresh();
 
     if (response.statusText == ApiClient.somethingWentWrong) {
@@ -95,65 +82,106 @@ class AuthController extends GetxController {
     }
   }
 
-  // ///=====================Register METHOD=====================
-  // RxBool signUpLoading = false.obs;
+  // ================= get me ====================
 
-  // RxBool isUser = true.obs;
+  Future<void> getMe() async {
+    loginLoading.value = RxStatus.loading();
+    refresh();
+    try {
+      final response = await ApiClient.getData(ApiUrl.getMe);
 
-  // void setUser() {
-  //   isUser.value = !isUser.value;
-  // }
+      loginLoading.value = RxStatus.success();
+      refresh();
 
-  // void selectUser() => isUser.value = true;
-  // void selectEmployer() => isUser.value = false;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.body['data'];
+        final role = data['role'];
 
-  // Future<void> signUp() async {
-  //   String role = isUser.value ? 'USER' : 'EMPLOYER';
+        await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
+        await SharePrefsHelper.setString(AppConstants.role, role);
 
-  //   signUpLoading.value = true;
-  //   var body = {
-  //     "name": nameController.value.text,
-  //     "email": emailController.value.text,
-  //     "phone_number": phoneController.value.text,
-  //     "password": passController.value.text,
-  //     "confirmPassword": confirmController.value.text,
-  //     "role": role,
-  //   };
+        showCustomSnackBar(
+          response.body['message'] ?? "Login successful",
+          isError: false,
+        );
 
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.register,
-  //       jsonEncode(body),
-  //     );
+        switch (role) {
+          case 'customer':
+            Get.offAllNamed(AppRoutes.customerHomeScreen);
+            break;
+          case 'contractor':
+            Get.offAllNamed(AppRoutes.homeScreen);
+            break;
+          default:
+        }
+      } else {
+        _handleLoginError(response);
 
-  //     signUpLoading.value = false;
-  //     refresh();
+        showCustomSnackBar(
+          response.body['message'] ?? "Login Failed",
+          isError: false,
+        );
+      }
+    } catch (e) {
+      loginLoading.value = RxStatus.success();
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
 
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Register successful",
-  //         isError: false,
-  //       );
-  //       otpController.value.dispose();
-  //       otpController.value = TextEditingController();
-  //       Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['registration']);
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Register Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     signUpLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
+  ///=====================Register METHOD=====================
+  RxBool signUpLoading = false.obs;
 
-  //   signUpLoading.value = false;
-  //   signUpLoading.refresh();
-  // }
+  Future<void> customerSignUp(bool isContactor) async {
+    signUpLoading.value = true;
+    var body = {
+      "fullName": nameController.value.text,
+      "email": emailController.value.text,
+      "password": passController.value.text,
+      "contactNo": phoneController.value.text,
+      "role": isContactor ? "contractor" : "customer",
+    };
+
+    try {
+      final response = await ApiClient.postData(
+        isContactor ? ApiUrl.contractorRegister : ApiUrl.customerRegister,
+        jsonEncode(body),
+      );
+
+      signUpLoading.value = false;
+      refresh();
+
+      if (response.statusCode == 200) {
+        showCustomSnackBar(
+          response.body['message'] ?? "Register successful",
+          isError: false,
+        );
+        final data = response.body['data'];
+
+        await SharePrefsHelper.setString(
+          AppConstants.bearerToken,
+          data['accessToken'],
+        );
+        otpController.value.dispose();
+        otpController.value = TextEditingController();
+        Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['registration']);
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? "Register Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      signUpLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+
+    signUpLoading.value = false;
+    signUpLoading.refresh();
+  }
 
   // /// ========== active Code METHOD ===========
   // RxBool activeCodeLoading = false.obs;
@@ -254,91 +282,142 @@ class AuthController extends GetxController {
   //   activeResendLoading.refresh();
   // }
 
-  // /// ========== forget Password METHOD ===========
-  // RxBool forgetPasswordLoading = false.obs;
+  /// ========== forget Password METHOD ===========
+  RxBool forgetPasswordLoading = false.obs;
 
-  // Future<void> forgetPassword() async {
-  //   forgetPasswordLoading.value = true;
-  //   var body = {"email": emailController.value.text};
+  Future<void> forgetPassword() async {
+    forgetPasswordLoading.value = true;
+    var body = {"email": emailController.value.text};
 
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.forgetPassword,
-  //       jsonEncode(body),
-  //     );
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.forgetPassword,
+        jsonEncode(body),
+      );
 
-  //     forgetPasswordLoading.value = false;
-  //     refresh();
+      forgetPasswordLoading.value = false;
+      refresh();
 
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? " OTP Sent successful",
-  //         isError: false,
-  //       );
-  //       otpController.value.dispose();
-  //       otpController.value = TextEditingController();
-  //       Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['null']);
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? " OTP Sent Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     forgetPasswordLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          response.body['message'] ?? " OTP Sent successful",
+          isError: false,
+        );
+        otpController.value.dispose();
+        otpController.value = TextEditingController();
+        Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['forgot']);
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? " OTP Sent Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      forgetPasswordLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
 
-  //   forgetPasswordLoading.value = false;
-  //   forgetPasswordLoading.refresh();
-  // }
+    forgetPasswordLoading.value = false;
+    forgetPasswordLoading.refresh();
+  }
 
-  // /// ========== veryfi OTP METHOD  ===========
-  // RxBool veryfiOTPLoading = false.obs;
+  /// ========== veryfi OTP METHOD  ===========
+  RxBool veryfiOTPLoading = false.obs;
 
-  // Future<void> veryfiOTP() async {
-  //   veryfiOTPLoading.value = true;
-  //   var body = {
-  //     "code": otpController.value.text,
-  //     "email": emailController.value.text,
-  //   };
+  Future<void> resetPasswordOTP() async {
+    veryfiOTPLoading.value = true;
+    var body = {
+      'Otp': {
+        "email": emailController.value.text,
+        "otp": int.tryParse(otpController.value.text),
+      },
+    };
 
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.veryfiOTP,
-  //       jsonEncode(body),
-  //     );
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.mailForgetOtp,
+        jsonEncode(body),
+      );
+      final data = response.body['data'];
 
-  //     veryfiOTPLoading.value = false;
-  //     refresh();
+      await SharePrefsHelper.setString(
+        AppConstants.bearerToken,
+        data['resetToken'],
+      );
+      veryfiOTPLoading.value = false;
+      refresh();
 
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "OTP Verification successful",
-  //         isError: false,
-  //       );
+      if (response.statusCode == 200) {
+        showCustomSnackBar(
+          response.body['message'] ?? "OTP Verification successful",
+          isError: false,
+        );
 
-  //       Get.offAllNamed(AppRoutes.resetPasswordScreen);
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "OTP Verification Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     veryfiOTPLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
+        Get.offAllNamed(AppRoutes.resetPasswordScreen);
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? "OTP Verification Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      veryfiOTPLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
 
-  //   veryfiOTPLoading.value = false;
-  //   veryfiOTPLoading.refresh();
-  // }
+    veryfiOTPLoading.value = false;
+    veryfiOTPLoading.refresh();
+  }
+
+  //=============== create account otp ============
+  Future<void> createAccountOTP() async {
+    veryfiOTPLoading.value = true;
+    var body = {
+      'Otp': {
+        "email": emailController.value.text,
+        "otp": int.tryParse(otpController.value.text),
+      },
+    };
+
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.veryfiOTP,
+        jsonEncode(body),
+      );
+
+      veryfiOTPLoading.value = false;
+      refresh();
+
+      if (response.statusCode == 200) {
+        showCustomSnackBar(
+          response.body['message'] ?? "OTP Verification successful",
+          isError: false,
+        );
+
+        Get.offAllNamed(AppRoutes.loginScreen);
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? "OTP Verification Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      veryfiOTPLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+
+    veryfiOTPLoading.value = false;
+    veryfiOTPLoading.refresh();
+  }
 
   // ////================ resend otp METHOD===========
 
@@ -380,47 +459,46 @@ class AuthController extends GetxController {
   //   resendOTPLoading.refresh();
   // }
 
-  // /// ========== Set New Password METHOD ===========
-  // RxBool setNewPasswordLoading = false.obs;
+  /// ========== Set New Password METHOD ===========
+  RxBool setNewPasswordLoading = false.obs;
 
-  // Future<void> setNewPassword() async {
-  //   setNewPasswordLoading.value = true;
-  //   var body = {
-  //     "newPassword": passController.value.text,
-  //     "confirmPassword": confirmController.value.text,
-  //   };
+  Future<void> setNewPassword() async {
+    setNewPasswordLoading.value = true;
+    var body = {
+      "email": emailController.value.text,
+      "newPassword": passController.value.text,
+    };
 
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.setNewPassword(email: emailController.value.text),
-  //       jsonEncode(body),
-  //     );
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.setNewPassword,
+        jsonEncode(body),
+      );
 
-  //     setNewPasswordLoading.value = false;
-  //     refresh();
+      setNewPasswordLoading.value = false;
+      refresh();
 
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Set Password successful",
-  //         isError: false,
-  //       );
-  //       Get.offAllNamed(AppRoutes.loginScreen);
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Set Password  Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     setNewPasswordLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          response.body['message'] ?? "Set Password successful",
+          isError: false,
+        );
+        Get.offAllNamed(AppRoutes.loginScreen);
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? "Set Password  Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      setNewPasswordLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
 
-  //   setNewPasswordLoading.value = false;
-  //   setNewPasswordLoading.refresh();
-  // 
+    setNewPasswordLoading.value = false;
+    setNewPasswordLoading.refresh();
   }
-
+}

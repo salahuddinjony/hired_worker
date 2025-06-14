@@ -1,4 +1,3 @@
-
 class ApiUrl {
   static const String baseUrl =
       "http://10.0.60.52:5002/api/v1"; //   //http://10.0.60.55:5002/v1 , https://912f-103-174-189-193.ngrok-free.app/v1 http://10.0.60.52:5002/api/v1
@@ -8,15 +7,17 @@ class ApiUrl {
   // server url : http://103.174.189.219:5002/api/v1
   // local url : http://10.0.60.55:5002/v1
   ///========================= Authentication =========================
-  static const String register = "/auth/register";
+  static const String customerRegister = "/users/create-customer";
+  static const String contractorRegister = "/users/create-contractor";
   static const String activeUser = "/auth/activate-user";
   static const String activeResend = "/auth/active-resend";
-  static const String veryfiOTP = "/auth/verify-otp";
+  static const String veryfiOTP = "/otps/verify";
+  static const String mailForgetOtp = "/otps/verify-forget-password";
   static const String veryfiOTPresend = "/auth/forgot-resend";
   static const String login = "/auth/login";
-  static const String forgetPassword = "/auth/forgot-password";
-  static String setNewPassword({required String email}) =>
-      "/auth/reset-password?email=$email";
+  static const String getMe = "/users/me";
+  static const String forgetPassword = "/auth/forget-password";
+  static String setNewPassword = "/auth/reset-password";
 
   /// ================== Global =============
 
@@ -64,7 +65,6 @@ class ApiUrl {
 
   ///============================= not need ===================================
 
-  static const String mailForgetOtp = "/auth/forget-password/send-otp";
   static const String getCustomerProfile = "/users/me";
   static const String resetPassword = "/user/auth/reset-password";
   static const String farmaciesNearby = "/farmacies/nearby";

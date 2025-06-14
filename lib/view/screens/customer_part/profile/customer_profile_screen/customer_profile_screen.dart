@@ -111,7 +111,9 @@ class CustomerProfileScreen extends StatelessWidget {
 
               SizedBox(height: 10.h),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.offAllNamed(AppRoutes.loginScreen);
+                },
                 child: CustomText(
                   text: "Log Out",
                   fontSize: 20.w,

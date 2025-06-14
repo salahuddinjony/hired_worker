@@ -7,15 +7,18 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 
 class ContractorSignUpScreen extends StatelessWidget {
   const ContractorSignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find<AuthController>();
+    bool isContactor = Get.arguments['isContactor'] ?? false;
     return Scaffold(
       appBar: CustomRoyelAppbar(
-        titleName: "Contractor Sign Up",
+        titleName: "${isContactor ? 'Contractor' : 'Customer'} Sign Up",
         leftIcon: true,
       ),
       body: SingleChildScrollView(
@@ -48,27 +51,27 @@ class ContractorSignUpScreen extends StatelessWidget {
               CustomFormCard(
                 title: "Enter Name",
                 hintText: "enter your name",
-                controller: TextEditingController(),
+                controller: authController.nameController.value,
               ),
               CustomFormCard(
                 title: "Enter Email Address",
                 hintText: "enter your email",
-                controller: TextEditingController(),
+                controller: authController.emailController.value,
               ),
               CustomFormCard(
                 title: "Enter Mobile Number",
                 hintText: "enter your number",
-                controller: TextEditingController(),
+                controller: authController.phoneController.value,
               ),
               CustomFormCard(
                 title: "Enter New Password",
                 hintText: "enter your password",
-                controller: TextEditingController(),
+                controller: authController.passController.value,
               ),
               CustomFormCard(
                 title: "Enter Confirm Password",
                 hintText: "enter your password",
-                controller: TextEditingController(),
+                controller: authController.confirmController.value,
               ),
               Row(
                 children: [
@@ -84,7 +87,7 @@ class ContractorSignUpScreen extends StatelessWidget {
               SizedBox(height: 30.h),
               CustomButton(
                 onTap: () {
-                  Get.toNamed(AppRoutes.verifayCodeScreen);
+                  authController.customerSignUp(isContactor);
                 },
                 title: "Submit",
               ),

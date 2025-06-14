@@ -106,21 +106,23 @@ class ProfileScreen extends StatelessWidget {
                 name: "Materials",
               ),
               CustomProfileMenuList(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.scheduleScreen);
-                  },
-                  image: AppIcons.schedule,
-                  name: "Schedule"),
+                onTap: () {
+                  Get.toNamed(AppRoutes.scheduleScreen);
+                },
+                image: AppIcons.schedule,
+                name: "Schedule",
+              ),
               CustomProfileMenuList(
                 image: AppIcons.totalService,
                 name: "Total Service",
               ),
               CustomProfileMenuList(
-                onTap: (){
+                onTap: () {
                   Get.toNamed(AppRoutes.eranScreen);
                 },
-                  image: AppIcons.eran,
-                  name: "Eran"),
+                image: AppIcons.eran,
+                name: "Eran",
+              ),
               CustomProfileMenuList(
                 image: AppIcons.mdiRecent,
                 name: "Recent Service",
@@ -138,7 +140,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.offAllNamed(AppRoutes.loginScreen);
+                },
                 child: CustomText(
                   text: "Log Out",
                   fontSize: 20.w,
