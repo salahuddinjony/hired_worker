@@ -31,7 +31,7 @@ class AccountTypeScreen extends StatelessWidget {
             ),
             CustomButton(
               onTap: () {
-                Get.toNamed(AppRoutes.customerHomeScreen);
+                Get.toNamed(AppRoutes.contractorSignUpScreen);
               },
               fillColor: AppColors.backgroundClr,
               borderWidth: 1,
@@ -48,7 +48,7 @@ class AccountTypeScreen extends StatelessWidget {
               color: AppColors.black,
             ),
             CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.homeScreen);
+              Get.toNamed(AppRoutes.contractorSignUpScreen);
             }, title: "Contractor",)
           ],
         ),

@@ -18,85 +18,100 @@ class ContractorSignUpScreen extends StatelessWidget {
         titleName: "Contractor Sign Up",
         leftIcon: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Center(
-              child: CustomText(
-                top: 20.h,
-                text: "Create New Account",
-                fontSize: 24.w,
-                fontWeight: FontWeight.w700,
-                color: AppColors.black,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(
+                child: CustomText(
+                  top: 20.h,
+                  text: "Create New Account",
+                  fontSize: 24.w,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.black,
+                ),
               ),
-            ),
-            Center(
-              child: CustomText(
-                top: 10.h,
-                text:
-                    "Set up your username and password.\nYou can always change it later.",
-                fontSize: 14.w,
-                fontWeight: FontWeight.w300,
-                color: AppColors.black,
-                bottom: 20.h,
-              ),
-            ),
-            CustomFormCard(
-              title: "Enter Name",
-              hintText: "enter your name",
-              controller: TextEditingController(),
-            ),
-            CustomFormCard(
-              title: "Enter Email Address",
-              hintText: "enter your email",
-              controller: TextEditingController(),
-            ),
-            CustomFormCard(
-              title: "Enter Mobile Number",
-              hintText: "enter your number",
-              controller: TextEditingController(),
-            ),
-            CustomFormCard(
-              title: "Enter New Password",
-              hintText: "enter your password",
-              controller: TextEditingController(),
-            ),
-            CustomFormCard(
-              title: "Enter Confirm Password",
-              hintText: "enter your password",
-              controller: TextEditingController(),
-            ),
-            SizedBox(height: 30.h),
-            CustomButton(
-              onTap: () {
-                Get.toNamed(AppRoutes.verifayCodeScreen);
-              },
-              title: "Submit",
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomText(
-                  text: "Already have an account? ",
+              Center(
+                child: CustomText(
+                  top: 10.h,
+                  text:
+                      "Set up your username and password.\nYou can always change it later.",
                   fontSize: 14.w,
                   fontWeight: FontWeight.w300,
                   color: AppColors.black,
+                  bottom: 20.h,
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: CustomText(
-                    text: "Login",
+              ),
+              CustomFormCard(
+                title: "Enter Name",
+                hintText: "enter your name",
+                controller: TextEditingController(),
+              ),
+              CustomFormCard(
+                title: "Enter Email Address",
+                hintText: "enter your email",
+                controller: TextEditingController(),
+              ),
+              CustomFormCard(
+                title: "Enter Mobile Number",
+                hintText: "enter your number",
+                controller: TextEditingController(),
+              ),
+              CustomFormCard(
+                title: "Enter New Password",
+                hintText: "enter your password",
+                controller: TextEditingController(),
+              ),
+              CustomFormCard(
+                title: "Enter Confirm Password",
+                hintText: "enter your password",
+                controller: TextEditingController(),
+              ),
+              Row(
+                children: [
+                  Checkbox(value: true, onChanged: (value) {}),
+                  CustomText(
+                    text: "I agree to the Terms and Privacy Policy.",
                     fontSize: 14.w,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.lightBlue,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              SizedBox(height: 30.h),
+              CustomButton(
+                onTap: () {
+                  Get.toNamed(AppRoutes.verifayCodeScreen);
+                },
+                title: "Submit",
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomText(
+                    text: "Already have an account? ",
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w300,
+                    color: AppColors.black,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.loginScreen);
+                    },
+                    child: CustomText(
+                      text: "Login",
+                      fontSize: 14.w,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.lightBlue,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

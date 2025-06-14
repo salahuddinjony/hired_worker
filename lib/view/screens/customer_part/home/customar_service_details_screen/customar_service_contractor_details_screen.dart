@@ -200,6 +200,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
 
 
 class CheckoutPopup extends StatelessWidget {
+  const CheckoutPopup({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
