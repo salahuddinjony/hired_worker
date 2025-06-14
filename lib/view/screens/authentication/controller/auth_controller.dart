@@ -35,7 +35,7 @@ class AuthController extends GetxController {
   Future<void> loginUser() async {
     loginLoading.value = true;
     refresh();
-
+ 
     final body = {
       "email": emailController.value.text.trim(),
       "password": passController.value.text,
