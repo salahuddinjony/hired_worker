@@ -23,10 +23,10 @@ class ApiUrl {
 
   static const String getProfile = "/auth/profile";
   static const String changePassword = "/auth/change-password";
-  static const String privacyPolicy = "/dashboard/get-privacy-policy";
-  static const String termsCondition = "/dashboard/get-rules";
-  static String deleteAccount({required String userId}) =>
-      "/auth/delete-account?authId=$userId";
+  static const String privacyPolicy = "/privacies";
+  static const String about = "/abouts";
+  static const String termsCondition = "/terms";
+  static String deleteAccount({required String userId}) => "/users/$userId";
 
   /// ==================   candidate part =============
 

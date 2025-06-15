@@ -20,13 +20,13 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "wawec14833@ethsms.com" : "",
+        text: kDebugMode ? "amaahmadmusa@gmail.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
-      TextEditingController(text: kDebugMode ? "12345678" : "").obs;
+      TextEditingController(text: kDebugMode ? "cus12345" : "").obs;
   Rx<TextEditingController> confirmController =
-      TextEditingController(text: kDebugMode ? "12345678" : "").obs;
+      TextEditingController(text: kDebugMode ? "cus12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
 
   Rx<bool> isAgree = false.obs;
