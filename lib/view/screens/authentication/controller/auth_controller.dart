@@ -20,7 +20,7 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "amaahmadmusa@gmail.com" : "",
+        text: kDebugMode ? "moonjur8@gmail.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
@@ -379,10 +379,8 @@ class AuthController extends GetxController {
   Future<void> createAccountOTP() async {
     veryfiOTPLoading.value = true;
     var body = {
-      'Otp': {
-        "email": emailController.value.text,
-        "otp": int.tryParse(otpController.value.text),
-      },
+      "email": emailController.value.text,
+      "otp": int.tryParse(otpController.value.text),
     };
 
     try {
@@ -419,45 +417,45 @@ class AuthController extends GetxController {
     veryfiOTPLoading.refresh();
   }
 
-  // ////================ resend otp METHOD===========
+  ////================ resend otp METHOD===========
 
-  // RxBool resendOTPLoading = false.obs;
+  RxBool resendOTPLoading = false.obs;
 
-  // Future<void> resendOTP() async {
-  //   resendOTPLoading.value = true;
-  //   var body = {"email": emailController.value.text};
+  Future<void> resendOTP() async {
+    resendOTPLoading.value = true;
+    var body = {"email": emailController.value.text};
 
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.veryfiOTPresend,
-  //       jsonEncode(body),
-  //     );
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.veryfiOTPresend,
+        jsonEncode(body),
+      );
 
-  //     resendOTPLoading.value = false;
-  //     refresh();
+      resendOTPLoading.value = false;
+      refresh();
 
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Resend OTP successful",
-  //         isError: false,
-  //       );
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Resend OTP  Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     resendOTPLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          response.body['message'] ?? "Resend OTP successful",
+          isError: false,
+        );
+      } else {
+        _handleLoginError(response);
+        showCustomSnackBar(
+          response.body['message'] ?? "Resend OTP  Failed",
+          isError: false,
+        );
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      resendOTPLoading.value = false;
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
 
-  //   resendOTPLoading.value = false;
-  //   resendOTPLoading.refresh();
-  // }
+    resendOTPLoading.value = false;
+    resendOTPLoading.refresh();
+  }
 
   /// ========== Set New Password METHOD ===========
   RxBool setNewPasswordLoading = false.obs;

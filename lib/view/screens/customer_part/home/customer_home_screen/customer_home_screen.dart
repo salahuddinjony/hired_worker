@@ -8,6 +8,7 @@ import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
 import 'widget/custom_popular_services_card.dart';
@@ -18,6 +19,7 @@ class CustomerHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.find<HomeController>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -86,6 +88,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16.0),
                 child: GestureDetector(
                   onTap: (){
+                    homeController.getCategory();
                     Get.toNamed(AppRoutes.customerSearchResultScreen);
                   },
                   child: Container(

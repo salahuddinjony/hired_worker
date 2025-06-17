@@ -79,7 +79,7 @@ class VerifayCodeScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Get.toNamed(AppRoutes.accountTypeScreen);
+                    authController.resendOTP();
                   },
                   child: CustomText(
                     text: "Resend",

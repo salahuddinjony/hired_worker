@@ -13,9 +13,10 @@ class ApiUrl {
   static const String activeResend = "/auth/active-resend";
   static const String veryfiOTP = "/otps/verify";
   static const String mailForgetOtp = "/otps/verify-forget-password";
-  static const String veryfiOTPresend = "/auth/forgot-resend";
+  static const String veryfiOTPresend = "/otps/generate-otp";
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
+  static const String categories = "/categories/";
   static const String forgetPassword = "/auth/forget-password";
   static String setNewPassword = "/auth/reset-password";
 
