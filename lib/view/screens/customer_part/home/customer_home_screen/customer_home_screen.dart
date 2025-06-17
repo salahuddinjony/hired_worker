@@ -23,7 +23,12 @@ class CustomerHomeScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 0, top: 60.0, bottom: 50),
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 0,
+            top: 60.0,
+            bottom: 50,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -87,8 +92,7 @@ class CustomerHomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
                 child: GestureDetector(
-                  onTap: (){
-                    homeController.getCategory();
+                  onTap: () {
                     Get.toNamed(AppRoutes.customerSearchResultScreen);
                   },
                   child: Container(
@@ -162,7 +166,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   return CustomPopularServicesCard(
                     image: AppConstants.electrician,
                     name: "Electronic",
-                    onTap: (){
+                    onTap: () {
                       Get.toNamed(AppRoutes.customerParSubCategoryItem);
                     },
                   ); // You can pass `serviceList[index]` if needed
@@ -204,7 +208,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     return CustomPopularServicesCard(
                       image: AppConstants.electrician,
                       name: "Electronic",
-                      onTap: (){
+                      onTap: () {
                         Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
@@ -226,7 +230,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     return CustomPopularServicesCard(
                       image: AppConstants.electrician,
                       name: "Cleaning",
-                      onTap: (){
+                      onTap: () {
                         Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
@@ -248,7 +252,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     return CustomPopularServicesCard(
                       image: AppConstants.electrician,
                       name: "Cleaning",
-                      onTap: (){
+                      onTap: () {
                         Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                       },
                     );
@@ -290,9 +294,11 @@ class CustomerHomeScreen extends StatelessWidget {
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
                   return CustomServiceContractorCard(
-                     onTap: (){
-                       Get.toNamed(AppRoutes.customerContractorProfileViewScreen);
-                     },
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.customerContractorProfileViewScreen,
+                      );
+                    },
                     image: AppConstants.profileImage,
                     name: "Mehedi",
                     title: "Electrician",
@@ -301,11 +307,11 @@ class CustomerHomeScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 16.h),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: CustomImage(imageSrc: AppImages.banner),
-            ),
-            /* SingleChildScrollView(
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: CustomImage(imageSrc: AppImages.banner),
+              ),
+              /* SingleChildScrollView(
                scrollDirection: Axis.horizontal,
                child: Row(
                  children: [
