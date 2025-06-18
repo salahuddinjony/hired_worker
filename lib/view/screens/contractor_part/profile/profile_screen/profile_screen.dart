@@ -127,10 +127,10 @@ class ProfileScreen extends StatelessWidget {
                 image: AppIcons.mdiRecent,
                 name: "Recent Service",
               ),
-              CustomProfileMenuList(
-                image: AppIcons.settingIcon,
-                name: "Settings",
-              ),
+              // CustomProfileMenuList(
+              //   image: AppIcons.settingIcon,
+              //   name: "Settings",
+              // ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.helpSupportScreen);

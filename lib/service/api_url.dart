@@ -17,6 +17,7 @@ class ApiUrl {
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
   static const String categories = "/categories/";
+  static const String materials = "/materials/";
   static const String forgetPassword = "/auth/forget-password";
   static String setNewPassword = "/auth/reset-password";
 

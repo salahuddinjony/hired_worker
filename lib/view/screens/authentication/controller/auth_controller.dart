@@ -106,10 +106,10 @@ class AuthController extends GetxController {
         );
 
         switch (role) {
-          case 'customer':
+          case 'contractor':
             Get.offAllNamed(AppRoutes.customerHomeScreen);
             break;
-          case 'contractor':
+          case 'customer':
             Get.offAllNamed(AppRoutes.homeScreen);
             break;
           default:
