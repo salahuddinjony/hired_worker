@@ -20,7 +20,7 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "moonjur8@gmail.com" : "",
+        text: kDebugMode ? "nolocid282@finfave.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
