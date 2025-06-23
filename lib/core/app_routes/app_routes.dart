@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -61,6 +62,7 @@ class AppRoutes {
   static const String verifayCodeScreen = "/VerifayCodeScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String contractorSignUpScreen = "/ContractorSignUpScreen";
+  static const String subscribeScreen = "/SubscribeScreen";
   static const String seletedMapScreen = "/SeletedMapScreen";
   static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
   static const String categorySeletedScreen = "/CategorySeletedScreen";
@@ -117,6 +119,7 @@ class AppRoutes {
     GetPage(name: verifayCodeScreen, page: () => VerifayCodeScreen()),
     GetPage(name: resetPasswordScreen, page: () => ResetPasswordScreen()),
     GetPage(name: contractorSignUpScreen, page: () => ContractorSignUpScreen()),
+    GetPage(name: subscribeScreen, page: () => SubscribeScreen()),
     GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSeletedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySeletedScreen()),

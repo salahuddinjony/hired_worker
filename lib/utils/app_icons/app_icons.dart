@@ -37,6 +37,7 @@ class AppIcons {
   static const String cleaner = "$basePath/cleaner.svg";
   static const String girlVactor = "$basePath/girlVactor.svg";
   static const String ac = "$basePath/ac.svg";
+  static const String shape = "$basePath/shape.svg";
   static const String sklils = "$basePath/sklils.png";
   static const String history = "$basePath/symbols_history-rounded.svg";
 

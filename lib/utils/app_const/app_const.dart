@@ -5,6 +5,8 @@ class AppConstants {
   static String role = "role";
   static String conversationId = "ConversationId";
   static String onBoard = "Onboard";
+  static String mapApiKey = "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4";
+
 
   /// <====================== All Response Message Static==============================>
 

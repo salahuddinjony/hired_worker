@@ -14,6 +14,8 @@
     <string>We need to access your photo library to select photos.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need to save photos to your library.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App needs location access to show maps.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

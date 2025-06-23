@@ -22,7 +22,7 @@ class AuthController extends GetxController {
       TextEditingController(
         text:
             kDebugMode
-                ? "tobed90086@finfave.com"
+                ? "milerob944@ethsms.com"
                 : "", // lefano5794@ethsms.com contactor //nolocid282@finfave.com user
       ).obs;
 
