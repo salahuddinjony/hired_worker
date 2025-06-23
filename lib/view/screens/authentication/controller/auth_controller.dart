@@ -20,7 +20,10 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "nolocid282@finfave.com" : "",
+        text:
+            kDebugMode
+                ? "tobed90086@finfave.com"
+                : "", // lefano5794@ethsms.com contactor //nolocid282@finfave.com user
       ).obs;
 
   Rx<TextEditingController> passController =
@@ -157,11 +160,15 @@ class AuthController extends GetxController {
           isError: false,
         );
         final data = response.body['data'];
+        final role = data['role'];
 
+        await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
+        await SharePrefsHelper.setString(AppConstants.role, role);
         await SharePrefsHelper.setString(
           AppConstants.bearerToken,
           data['accessToken'],
         );
+        
         otpController.value.dispose();
         otpController.value = TextEditingController();
         Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['registration']);
@@ -378,6 +385,7 @@ class AuthController extends GetxController {
   //=============== create account otp ============
   Future<void> createAccountOTP() async {
     veryfiOTPLoading.value = true;
+    final role = await SharePrefsHelper.getString(AppConstants.role);
     var body = {
       "email": emailController.value.text,
       "otp": int.tryParse(otpController.value.text),
@@ -397,8 +405,15 @@ class AuthController extends GetxController {
           response.body['message'] ?? "OTP Verification successful",
           isError: false,
         );
-
-        Get.offAllNamed(AppRoutes.loginScreen);
+        switch (role) {
+          case 'contractor':
+            Get.offAllNamed(AppRoutes.seletedMapScreen);
+            break;
+          case 'customer':
+            Get.offAllNamed(AppRoutes.loginScreen);
+            break;
+          default:
+        }
       } else {
         _handleLoginError(response);
         showCustomSnackBar(
