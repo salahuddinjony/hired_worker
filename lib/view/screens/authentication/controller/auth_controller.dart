@@ -160,9 +160,9 @@ class AuthController extends GetxController {
           isError: false,
         );
         final data = response.body['data'];
-        final role = data['role'];
+        final role = data['user']['role'];
 
-        await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
+        await SharePrefsHelper.setString(AppConstants.userId, data['user']['_id']);
         await SharePrefsHelper.setString(AppConstants.role, role);
         await SharePrefsHelper.setString(
           AppConstants.bearerToken,
