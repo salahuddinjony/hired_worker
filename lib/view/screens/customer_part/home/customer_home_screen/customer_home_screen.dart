@@ -9,6 +9,7 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
+import 'package:servana/view/screens/customer_part/home/customer_home_screen/widget/sub_category_item.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
 import 'widget/custom_popular_services_card.dart';
@@ -20,9 +21,13 @@ class CustomerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
+
     return Scaffold(
+      extendBody: true,
       body: Obx(() {
         final categorys = homeController.categoryModel.value.data ?? [];
+        //================ subCategory list ============
+        final data = homeController.subCategoryModel.value.data ?? [];
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -166,12 +171,19 @@ class CustomerHomeScreen extends StatelessWidget {
                   itemCount: categorys.length,
                   itemBuilder: (BuildContext context, int index) {
                     return CustomPopularServicesCard(
-                      image:categorys[index].img ?? AppConstants.electrician,
+                      image: categorys[index].img ?? AppConstants.electrician,
                       name: categorys[index].name,
                       onTap: () {
-                        Get.toNamed(AppRoutes.customerParSubCategoryItem);
+                        Get.toNamed(
+                          AppRoutes.customerParSubCategoryItem,
+                          arguments: {
+                            'name': categorys[index].name,
+                            'id': categorys[index].id,
+                          },
+                        );
+                        print(categorys[index].name);
                       },
-                    ); 
+                    );
                   },
                 ),
                 Row(
@@ -196,77 +208,19 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                CustomText(
-                  text: "Electronic",
-                  fontSize: 16.w,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black_08,
-                  bottom: 10.h,
+
+                Column(
+                  children: List.generate(1, (index) {
+                    if (data.isEmpty) {
+                      return Container();
+                    }
+                    return SubCategoryItem(
+                      subCategoryName: data[index].name ?? '',
+                      categoryName: data[index].categoryId?.name ?? '',
+                    );
+                  }),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(5, (value) {
-                      return CustomPopularServicesCard(
-                        image: AppConstants.electrician,
-                        name: "Electronic",
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.customerAllContractorViewScreen,
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ),
-                CustomText(
-                  top: 10.h,
-                  text: "Cleaning",
-                  fontSize: 16.w,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black_08,
-                  bottom: 10.h,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(5, (value) {
-                      return CustomPopularServicesCard(
-                        image: AppConstants.electrician,
-                        name: "Cleaning",
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.customerAllContractorViewScreen,
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ),
-                CustomText(
-                  top: 10.h,
-                  text: "Plumbing",
-                  fontSize: 16.w,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black_08,
-                  bottom: 10.h,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(5, (value) {
-                      return CustomPopularServicesCard(
-                        image: AppConstants.electrician,
-                        name: "Cleaning",
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.customerAllContractorViewScreen,
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

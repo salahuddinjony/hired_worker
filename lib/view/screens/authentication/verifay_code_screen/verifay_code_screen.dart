@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_pin_code/custom_pin_code.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
@@ -50,24 +51,28 @@ class VerifayCodeScreen extends StatelessWidget {
             ),
             CustomPinCode(controller: authController.otpController.value),
             SizedBox(height: 30.h),
-            CustomButton(
-              onTap: () {
-                if (authController.otpController.value.text.isNotEmpty) {
-                  switch (register) {
-                    case 'registration':
-                      authController.createAccountOTP();
-                      break;
-                    case 'forgot':
-                      authController.resetPasswordOTP();
-                      break;
-                    default:
-                  }
-                } else {
-                  showCustomSnackBar("Please Enter OTP", isError: false);
-                }
-              },
-              title: "Verify email",
-            ),
+            Obx(() {
+              return authController.veryfiOTPLoading.value.isLoading
+                  ? CustomLoader()
+                  : CustomButton(
+                    onTap: () {
+                      if (authController.otpController.value.text.isNotEmpty) {
+                        switch (register) {
+                          case 'registration':
+                            authController.createAccountOTP();
+                            break;
+                          case 'forgot':
+                            authController.resetPasswordOTP();
+                            break;
+                          default:
+                        }
+                      } else {
+                        showCustomSnackBar("Please Enter OTP", isError: false);
+                      }
+                    },
+                    title: "Verify email",
+                  );
+            }),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

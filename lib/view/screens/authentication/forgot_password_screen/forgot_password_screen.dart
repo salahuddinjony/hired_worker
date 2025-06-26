@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
@@ -39,13 +40,16 @@ class ForgotPasswordScreen extends StatelessWidget {
               controller: authController.emailController.value,
             ),
             SizedBox(height: 30.h),
-            CustomButton(
-              
-              onTap: () {
-                authController.forgetPassword();
-              },
-              title: "Send",
-            ),
+            Obx(() {
+              return authController.forgetPasswordLoading.value.isLoading
+                  ? CustomLoader()
+                  : CustomButton(
+                    onTap: () {
+                      authController.forgetPassword();
+                    },
+                    title: "Send",
+                  );
+            }),
           ],
         ),
       ),

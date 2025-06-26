@@ -1,155 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/components/custom_text/custom_text.dart';
-
-import '../customer_home_screen/widget/custom_popular_services_card.dart';
+import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
+import 'package:servana/view/screens/customer_part/home/customer_home_screen/widget/sub_category_item.dart';
 
 class CustomerSubCategoryScreen extends StatelessWidget {
   const CustomerSubCategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.find<HomeController>();
+
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Categories",),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, bottom: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: "Maintenance",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Cleaning",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Home improvement",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Security",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Car Maintenance",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Handyman Services",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Painting Services",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-              CustomText(
-                top: 10,
-                text: "Other services",
-                fontSize: 16.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black_08,
-                bottom: 10.h,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomPopularServicesCard();
-                  }),
-                ),
-              ),
-            ],
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Categories"),
+      body: Obx(() {
+        //================ subCategory list ============
+        final data = homeController.subCategoryModel.value.data ?? [];
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal:  20.w),
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              if (homeController.getSubCategoryStatus.value.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return SubCategoryItem(
+                subCategoryName: data[index].name ?? '',
+                categoryName: data[index].categoryId?.name ?? '',
+              );
+            },
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

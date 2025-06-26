@@ -39,7 +39,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSeletedScreen> {
     return Scaffold(
       appBar: const CustomRoyelAppbar(
         leftIcon: true,
-        titleName: "Selected Location",
+        titleName: "Selecte Times",
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),

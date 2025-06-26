@@ -26,7 +26,8 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(      extendBody: true,
+
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "History Status",),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -20,10 +20,7 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text:
-            kDebugMode
-                ? "milerob944@ethsms.com"
-                : "", // lefano5794@ethsms.com contactor //nolocid282@finfave.com user
+        text: kDebugMode ? "nemapab173@coasah.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
@@ -110,10 +107,10 @@ class AuthController extends GetxController {
 
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.customerHomeScreen);
+            Get.offAllNamed(AppRoutes.homeScreen);
             break;
           case 'customer':
-            Get.offAllNamed(AppRoutes.homeScreen);
+            Get.offAllNamed(AppRoutes.customerHomeScreen);
             break;
           default:
         }
@@ -133,10 +130,10 @@ class AuthController extends GetxController {
   }
 
   ///=====================Register METHOD=====================
-  RxBool signUpLoading = false.obs;
+  Rx<RxStatus> signUpLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> customerSignUp(bool isContactor) async {
-    signUpLoading.value = true;
+    signUpLoading.value = RxStatus.loading();
     var body = {
       "fullName": nameController.value.text,
       "email": emailController.value.text,
@@ -151,7 +148,7 @@ class AuthController extends GetxController {
         jsonEncode(body),
       );
 
-      signUpLoading.value = false;
+      signUpLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200) {
@@ -162,13 +159,16 @@ class AuthController extends GetxController {
         final data = response.body['data'];
         final role = data['user']['role'];
 
-        await SharePrefsHelper.setString(AppConstants.userId, data['user']['_id']);
+        await SharePrefsHelper.setString(
+          AppConstants.userId,
+          data['user']['_id'],
+        );
         await SharePrefsHelper.setString(AppConstants.role, role);
         await SharePrefsHelper.setString(
           AppConstants.bearerToken,
           data['accessToken'],
         );
-        
+
         otpController.value.dispose();
         otpController.value = TextEditingController();
         Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['registration']);
@@ -181,119 +181,20 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      signUpLoading.value = false;
+      signUpLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    signUpLoading.value = false;
+    signUpLoading.value = RxStatus.success();
     signUpLoading.refresh();
   }
 
-  // /// ========== active Code METHOD ===========
-  // RxBool activeCodeLoading = false.obs;
-
-  // Future<void> activeCode() async {
-  //   activeCodeLoading.value = true;
-  //   var body = {
-  //     "activation_code": otpController.value.text,
-  //     "userEmail": emailController.value.text,
-  //   };
-
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.activeUser,
-  //       jsonEncode(body),
-  //     );
-
-  //     activeCodeLoading.value = false;
-  //     refresh();
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       final data = response.body['data'];
-  //       final user = data['user'];
-  //       final role = user['role'];
-
-  //       await SharePrefsHelper.setString(
-  //         AppConstants.bearerToken,
-  //         data['accessToken'],
-  //       );
-  //       await SharePrefsHelper.setString(AppConstants.userId, data['id']);
-  //       await SharePrefsHelper.setString(AppConstants.role, role);
-
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Register successful",
-  //         isError: false,
-  //       );
-
-  //       if (role == "USER") {
-  //         Get.offAllNamed(AppRoutes.candidateHomeScreen);
-  //       } else {
-  //         Get.offAllNamed(AppRoutes.subscriptionScreen);
-  //       }
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Register Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     activeCodeLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
-
-  //   activeCodeLoading.value = false;
-  //   activeCodeLoading.refresh();
-  // }
-
-  // /// ========== activeResend METHOD ===========
-
-  // RxBool activeResendLoading = false.obs;
-
-  // Future<void> activeResend() async {
-  //   activeResendLoading.value = true;
-  //   var body = {"email": emailController.value.text};
-
-  //   try {
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.activeResend,
-  //       jsonEncode(body),
-  //     );
-
-  //     activeResendLoading.value = false;
-  //     refresh();
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Resend OTP successful",
-  //         isError: false,
-  //       );
-  //     } else {
-  //       _handleLoginError(response);
-  //       showCustomSnackBar(
-  //         response.body['message'] ?? "Resend OTP  Failed",
-  //         isError: false,
-  //       );
-  //       ApiChecker.checkApi(response);
-  //     }
-  //   } catch (e) {
-  //     activeResendLoading.value = false;
-  //     refresh();
-  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-  //   }
-
-  //   activeResendLoading.value = false;
-  //   activeResendLoading.refresh();
-  // }
-
   /// ========== forget Password METHOD ===========
-  RxBool forgetPasswordLoading = false.obs;
+  Rx<RxStatus> forgetPasswordLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> forgetPassword() async {
-    forgetPasswordLoading.value = true;
+    forgetPasswordLoading.value = RxStatus.loading();
     var body = {"email": emailController.value.text};
 
     try {
@@ -302,7 +203,7 @@ class AuthController extends GetxController {
         jsonEncode(body),
       );
 
-      forgetPasswordLoading.value = false;
+      forgetPasswordLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -322,20 +223,20 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      forgetPasswordLoading.value = false;
+      forgetPasswordLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    forgetPasswordLoading.value = false;
+    forgetPasswordLoading.value = RxStatus.success();
     forgetPasswordLoading.refresh();
   }
 
   /// ========== veryfi OTP METHOD  ===========
-  RxBool veryfiOTPLoading = false.obs;
+  Rx<RxStatus> veryfiOTPLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> resetPasswordOTP() async {
-    veryfiOTPLoading.value = true;
+    veryfiOTPLoading.value = RxStatus.loading();
     var body = {
       'Otp': {
         "email": emailController.value.text,
@@ -354,7 +255,7 @@ class AuthController extends GetxController {
         AppConstants.bearerToken,
         data['resetToken'],
       );
-      veryfiOTPLoading.value = false;
+      veryfiOTPLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200) {
@@ -373,18 +274,18 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      veryfiOTPLoading.value = false;
+      veryfiOTPLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    veryfiOTPLoading.value = false;
+    veryfiOTPLoading.value = RxStatus.success();
     veryfiOTPLoading.refresh();
   }
 
   //=============== create account otp ============
   Future<void> createAccountOTP() async {
-    veryfiOTPLoading.value = true;
+    veryfiOTPLoading.value = RxStatus.loading();
     final role = await SharePrefsHelper.getString(AppConstants.role);
     var body = {
       "email": emailController.value.text,
@@ -397,7 +298,7 @@ class AuthController extends GetxController {
         jsonEncode(body),
       );
 
-      veryfiOTPLoading.value = false;
+      veryfiOTPLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200) {
@@ -423,21 +324,20 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      veryfiOTPLoading.value = false;
+      veryfiOTPLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    veryfiOTPLoading.value = false;
+    veryfiOTPLoading.value = RxStatus.success();
     veryfiOTPLoading.refresh();
   }
 
   ////================ resend otp METHOD===========
 
-  RxBool resendOTPLoading = false.obs;
-
+  Rx<RxStatus> resendOTPLoading = Rx<RxStatus>(RxStatus.success());
   Future<void> resendOTP() async {
-    resendOTPLoading.value = true;
+    resendOTPLoading.value = RxStatus.loading();
     var body = {"email": emailController.value.text};
 
     try {
@@ -446,7 +346,7 @@ class AuthController extends GetxController {
         jsonEncode(body),
       );
 
-      resendOTPLoading.value = false;
+      resendOTPLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -463,20 +363,20 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      resendOTPLoading.value = false;
+      resendOTPLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    resendOTPLoading.value = false;
+    resendOTPLoading.value = RxStatus.success();
     resendOTPLoading.refresh();
   }
 
   /// ========== Set New Password METHOD ===========
-  RxBool setNewPasswordLoading = false.obs;
+  Rx<RxStatus> setNewPasswordLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> setNewPassword() async {
-    setNewPasswordLoading.value = true;
+    setNewPasswordLoading.value = RxStatus.loading();
     var body = {
       "email": emailController.value.text,
       "newPassword": passController.value.text,
@@ -488,7 +388,7 @@ class AuthController extends GetxController {
         jsonEncode(body),
       );
 
-      setNewPasswordLoading.value = false;
+      setNewPasswordLoading.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -506,12 +406,12 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
-      setNewPasswordLoading.value = false;
+      setNewPasswordLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
 
-    setNewPasswordLoading.value = false;
+    setNewPasswordLoading.value = RxStatus.success();
     setNewPasswordLoading.refresh();
   }
 }

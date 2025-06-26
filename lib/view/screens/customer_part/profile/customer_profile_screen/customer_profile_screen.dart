@@ -17,6 +17,8 @@ class CustomerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+
       appBar: CustomRoyelAppbar(
         leftIcon: false,
         titleName: "Profile",
@@ -61,9 +63,13 @@ class CustomerProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 50.h),
               CustomProfileMenuList(),
-              CustomProfileMenuList(image: AppIcons.history, name: "History",onTap: (){
-                Get.toNamed(AppRoutes.customerRequestHistoryScreen);
-              },),
+              CustomProfileMenuList(
+                image: AppIcons.history,
+                name: "History",
+                onTap: () {
+                  Get.toNamed(AppRoutes.customerRequestHistoryScreen);
+                },
+              ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.customerNotificationScreen);
@@ -88,26 +94,24 @@ class CustomerProfileScreen extends StatelessWidget {
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
                 name: "About Us",
-                onTap: (){
+                onTap: () {
                   Get.toNamed(AppRoutes.aboutUsScreen);
                 },
               ),
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
                 name: "Privacy Policy",
-                onTap: (){
+                onTap: () {
                   Get.toNamed(AppRoutes.privacyPolicyScreen);
                 },
               ),
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
                 name: "Terms & Conditions",
-                onTap: (){
+                onTap: () {
                   Get.toNamed(AppRoutes.termsConditionsScreen);
                 },
               ),
-
-
 
               SizedBox(height: 10.h),
               TextButton(

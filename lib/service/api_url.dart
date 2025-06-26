@@ -17,6 +17,8 @@ class ApiUrl {
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
   static const String categories = "/categories/";
+  static const String subCategories = "/sub-categories/";
+  static String singleSubCategory({required String categoryId}) => "/sub-categories?categoryId=$categoryId";
   static const String materials = "/materials/";
   static const String forgetPassword = "/auth/forget-password";
   static String setNewPassword = "/auth/reset-password";
@@ -29,6 +31,7 @@ class ApiUrl {
   static const String about = "/abouts";
   static const String termsCondition = "/terms";
   static String deleteAccount({required String userId}) => "/users/$userId";
+
 
   /// ==================   candidate part =============
 

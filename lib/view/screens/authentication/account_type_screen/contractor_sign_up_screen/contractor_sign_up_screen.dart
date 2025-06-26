@@ -5,6 +5,7 @@ import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
@@ -85,12 +86,16 @@ class ContractorSignUpScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30.h),
-              CustomButton(
-                onTap: () {
-                  authController.customerSignUp(isContactor);
-                },
-                title: "Submit",
-              ),
+              Obx(() {
+                return authController.signUpLoading.value.isLoading
+                    ? CustomLoader()
+                    : CustomButton(
+                      onTap: () {
+                        authController.customerSignUp(isContactor);
+                      },
+                      title: "Submit",
+                    );
+              }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

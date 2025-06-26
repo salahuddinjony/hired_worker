@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -16,7 +17,7 @@ class SeletedMapScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selected Location"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selecte Location"),
       body: Stack(
         children: [
           Obx(
@@ -125,10 +126,10 @@ class SeletedMapScreen extends StatelessWidget {
             child: CustomButton(
               onTap: () {
                 if (mapController.selectedLocation.value != null) {
-                  // Get.toNamed(
-                  //   AppRoutes.scheduleSeletedScreen,
-                  //   arguments: mapController.selectedLocation.value,
-                  // );
+                  Get.toNamed(
+                    AppRoutes.scheduleSeletedScreen,
+                    arguments: mapController.selectedLocation.value,
+                  );
                   debugPrint(
                     'Selected Location: ${mapController.selectedLocation.value}',
                   );

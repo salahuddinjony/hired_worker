@@ -8,7 +8,8 @@ class CustomerMessaageListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(      extendBody: true,
+
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages"),
       body: Column(
           children: List.generate(5, (value){

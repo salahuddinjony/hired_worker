@@ -62,7 +62,7 @@ class _NavbarState extends State<CustomerNavbar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      height: 75.h,
+      // height: 75.h,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       index: bottomNavIndex,

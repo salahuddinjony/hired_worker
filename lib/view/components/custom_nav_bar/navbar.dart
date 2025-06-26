@@ -48,13 +48,13 @@ class _NavbarState extends State<Navbar> {
         Get.offAll(() => HomeScreen());
         break;
       case 1:
-       Get.to(() => OrderScreen());
+        Get.to(() => OrderScreen());
         break;
       case 2:
-       Get.to(() => MessageListScreen());
+        Get.to(() => MessageListScreen());
         break;
       case 3:
-       Get.to(() => ProfileScreen());
+        Get.to(() => ProfileScreen());
         break;
     }
   }
@@ -62,7 +62,6 @@ class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      height: 75.h,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       index: bottomNavIndex,

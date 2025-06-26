@@ -8,15 +8,17 @@ import 'package:servana/utils/app_const/app_const.dart';
 
 class MapController extends GetxController {
   // Observable variables
-  var cameraPosition = const CameraPosition(
-    target: LatLng(37.7749, -122.4194), // Default: San Francisco
-    zoom: 12,
-  ).obs;
+  var cameraPosition =
+      const CameraPosition(
+        target: LatLng(37.7749, -122.4194), // Default: San Francisco
+        zoom: 12,
+      ).obs;
   var markers = <Marker>{}.obs;
   GoogleMapController? mapController;
   RxBool isClean = false.obs;
   var suggestions = <Map<String, dynamic>>[].obs;
-  var selectedLocation = Rxn<Map<String, dynamic>>(); // Stores lat, lng, address
+  var selectedLocation =
+      Rxn<Map<String, dynamic>>(); // Stores lat, lng, address
   final String apiKey = AppConstants.mapApiKey;
 
   @override
@@ -78,6 +80,22 @@ class MapController extends GetxController {
         infoWindow: const InfoWindow(title: 'Your Location'),
       ),
     );
+    // Fetch address via reverse geocoding
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$apiKey';
+    final response = await http.get(Uri.parse(url));
+    final data = json.decode(response.body);
+
+    String address = 'Unknown Address';
+    if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+      address = data['results'][0]['formatted_address'];
+    }
+    // Set current location as selected by default
+    selectedLocation.value = {
+      'latitude': position.latitude,
+      'longitude': position.longitude,
+      'address': address,
+    };
 
     mapController?.animateCamera(
       CameraUpdate.newCameraPosition(cameraPosition.value),
@@ -116,10 +134,7 @@ class MapController extends GetxController {
       );
 
       // Move camera to the tapped position
-      cameraPosition.value = CameraPosition(
-        target: position,
-        zoom: 15,
-      );
+      cameraPosition.value = CameraPosition(target: position, zoom: 15);
       mapController?.animateCamera(
         CameraUpdate.newCameraPosition(cameraPosition.value),
       );
@@ -143,12 +158,15 @@ class MapController extends GetxController {
       final data = json.decode(response.body);
 
       if (data['status'] == 'OK') {
-        suggestions.value = List<Map<String, dynamic>>.from(data['predictions'])
-            .map((prediction) => {
-                  'description': prediction['description'],
-                  'place_id': prediction['place_id'],
-                })
-            .toList();
+        suggestions.value =
+            List<Map<String, dynamic>>.from(data['predictions'])
+                .map(
+                  (prediction) => {
+                    'description': prediction['description'],
+                    'place_id': prediction['place_id'],
+                  },
+                )
+                .toList();
         isClean.value = true;
       } else {
         suggestions.clear();
