@@ -51,10 +51,10 @@ class _NavbarState extends State<CustomerNavbar> {
         Get.to(() => CustomerRequestHistoryScreen());
         break;
       case 2:
-       Get.to(() => CustomerMessaageListScreen());
+        Get.to(() => CustomerMessaageListScreen());
         break;
       case 3:
-       Get.to(() => CustomerProfileScreen());
+        Get.to(() => CustomerProfileScreen());
         break;
     }
   }
@@ -62,7 +62,6 @@ class _NavbarState extends State<CustomerNavbar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      // height: 75.h,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       index: bottomNavIndex,

@@ -9,6 +9,7 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
 import 'widget/custom_profile_menu_list.dart';
 
@@ -17,9 +18,15 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find<ProfileController>();
+    final contractorData = profileController.contractorModel.value;
+
     return Scaffold(
+      extendBody: true,
+
       appBar: CustomRoyelAppbar(
-        leftIcon: true,
+        leftIcon: false,
+        showRightIcon: true,
         titleName: "Profile",
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
@@ -44,13 +51,15 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Thomas",
+                        text: contractorData.data?.fullName ?? "Thomas",
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
                       ),
                       CustomText(
-                        text: "liamksayem@gmail.com",
+                        text:
+                            contractorData.data?.email ??
+                            "liamksayem@gmail.com",
                         fontSize: 14.w,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black_04,
@@ -150,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
                   color: AppColors.primary,
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

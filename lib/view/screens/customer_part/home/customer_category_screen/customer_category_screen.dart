@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 
@@ -35,6 +36,15 @@ class CustomerCategoryScreen extends StatelessWidget {
                 return CustomPopularServicesCard(
                   image: categorys[index].img,
                   name: categorys[index].name,
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.customerParSubCategoryItem,
+                      arguments: {
+                        'name': categorys[index].name,
+                        'id': categorys[index].id,
+                      },
+                    );
+                  },
                 );
               },
             ),

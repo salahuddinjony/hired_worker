@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
+import 'package:servana/view/components/custom_dropdown/custom_royel_dropdown.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../controller/profile_controller.dart';
+
 class EditProfileScreen extends StatelessWidget {
-   EditProfileScreen({super.key});
-  final profileController =Get.find<ProfileController>();
+  EditProfileScreen({super.key});
+  final profileController = Get.find<ProfileController>();
+  final CustomController customController = Get.find<CustomController>();
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController dobController = TextEditingController();
+
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Edit Profile",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Edit Profile"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //========= Font-end Design Flutter Image Picker Code ===========//
             Center(
               child: Stack(
                 children: [
                   Obx(() {
-        // Check if an image is selected, if not use the default profile image
+                    // Check if an image is selected, if not use the default profile image
                     if (profileController.selectedImage.value != null) {
                       return Container(
                         height: 120.h,
@@ -33,7 +41,9 @@ class EditProfileScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: FileImage(profileController.selectedImage.value!),
+                            image: FileImage(
+                              profileController.selectedImage.value!,
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -72,21 +82,50 @@ class EditProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20.h,),
-            CustomFormCard(title: "Name",
-                controller: TextEditingController()),
-            CustomFormCard(title: "Phone Number",
-                controller: TextEditingController()),
-            CustomFormCard(title: "Gender",
-                controller: TextEditingController()),
-            CustomFormCard(title: "Date of Birth",
-                controller: TextEditingController()),
-            CustomFormCard(title: "City",
-                controller: TextEditingController()),
-            SizedBox(height: 20.h,),
-            CustomButton(onTap: (){}, title: "Update",)
+            SizedBox(height: 20.h),
+            CustomFormCard(title: "Name", controller: TextEditingController()),
+            CustomFormCard(
+              title: "Phone Number",
+              controller: TextEditingController(),
+            ),
+            CustomText(
+              text: 'Gender',
+              bottom: 10.h,
+              fontSize: 18.w,
+              fontWeight: FontWeight.w600,
+              color: AppColors.black,
+            ),
+            CustomRoyelDropdown(
+              list: customController.cetagoryList,
+              selectedValue: customController.selectedGender,
+              title: 'Select Gender',
+              isBorder: true,
+              fillColor: Colors.transparent,
+              textColor: AppColors.black,
+            ),
+            SizedBox(height: 10.h),
 
+            CustomFormCard(
+              title: "Date of Birth",
+              controller: dobController,
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime(2000, 1, 1),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                );
 
+                if (pickedDate != null) {
+                  dobController.text = "${pickedDate.toLocal()}".split(' ')[0];
+                }
+              },
+            ),
+
+            CustomFormCard(title: "City", controller: TextEditingController()),
+            SizedBox(height: 20.h),
+            CustomButton(onTap: () {}, title: "Update"),
           ],
         ),
       ),

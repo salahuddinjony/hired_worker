@@ -9,11 +9,13 @@ class MessageListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages"),
       body: Column(
-        children: List.generate(5, (value){
+        children: List.generate(5, (value) {
           return CustomMessageListCard();
-        })
+        }),
       ),
       bottomNavigationBar: Navbar(currentIndex: 2),
     );

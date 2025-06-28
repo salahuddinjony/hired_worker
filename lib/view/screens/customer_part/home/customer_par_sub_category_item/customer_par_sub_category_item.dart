@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 
@@ -21,6 +20,10 @@ class CustomerParSubCategoryItem extends StatelessWidget {
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: name),
       body: Obx(() {
+        final data = homeController.singleSubCategoryModel.value.data ?? [];
+        if (homeController.getSingleSubCategoryStatus.value.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
         return Column(
           children: [
             GridView.builder(
@@ -33,18 +36,15 @@ class CustomerParSubCategoryItem extends StatelessWidget {
               ),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount:
-                  homeController.subCategoryModel.value.data?.length ?? 0,
+              itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
                 return CustomPopularServicesCard(
-                  image: AppConstants.electrician,
-                  name:
-                      homeController.subCategoryModel.value.data?[index].name ??
-                      '',
+                  image: data[index].img ?? '',
+                  name: data[index].name ?? '',
                   onTap: () {
                     Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                   },
-                ); 
+                );
               },
             ),
           ],

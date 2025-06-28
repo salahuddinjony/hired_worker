@@ -8,6 +8,7 @@ import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/customer_part/profile/controller/customer_profile_controller.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
 import '../../../contractor_part/profile/profile_screen/widget/custom_profile_menu_list.dart';
 
@@ -16,6 +17,8 @@ class CustomerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomerProfileController customerProfileController =
+        Get.find<CustomerProfileController>();
     return Scaffold(
       extendBody: true,
 
@@ -42,22 +45,24 @@ class CustomerProfileScreen extends StatelessWidget {
                     boxShape: BoxShape.circle,
                   ),
                   SizedBox(width: 10.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Thomas",
-                        fontSize: 16.w,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
-                      CustomText(
-                        text: "liamksayem@gmail.com",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black_04,
-                      ),
-                    ],
+                  Obx(
+                    () => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: customerProfileController.customerModel.value.data?.fullName ?? "",
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black,
+                        ),
+                        CustomText(
+                          text: customerProfileController.customerModel.value.data?.email ?? "",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_04,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

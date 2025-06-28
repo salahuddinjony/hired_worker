@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:servana/global/general_controller/general_controller.dart';
+import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
@@ -22,5 +23,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => MapController(), fenix: true);
+    Get.lazyPut(() => CustomController(), fenix: true);
   }
 }

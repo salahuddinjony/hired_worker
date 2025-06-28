@@ -10,6 +10,7 @@ import 'package:servana/view/components/custom_netwrok_image/custom_network_imag
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import 'package:servana/view/screens/customer_part/home/customer_home_screen/widget/sub_category_item.dart';
+import 'package:servana/view/screens/customer_part/profile/controller/customer_profile_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
 import 'widget/custom_popular_services_card.dart';
@@ -21,13 +22,14 @@ class CustomerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-
+    final CustomerProfileController customerProfileController =
+        Get.find<CustomerProfileController>();
     return Scaffold(
       extendBody: true,
       body: Obx(() {
         final categorys = homeController.categoryModel.value.data ?? [];
-        //================ subCategory list ============
-        final data = homeController.subCategoryModel.value.data ?? [];
+        final customerData = customerProfileController.customerModel.value;
+
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -58,7 +60,7 @@ class CustomerHomeScreen extends StatelessWidget {
                           color: AppColors.black,
                         ),
                         CustomText(
-                          text: "Mehedi Bin Ab. Salam",
+                          text: customerData.data?.fullName ?? "",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black,
@@ -181,7 +183,6 @@ class CustomerHomeScreen extends StatelessWidget {
                             'id': categorys[index].id,
                           },
                         );
-                        print(categorys[index].name);
                       },
                     );
                   },
@@ -209,17 +210,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                Column(
-                  children: List.generate(1, (index) {
-                    if (data.isEmpty) {
-                      return Container();
-                    }
-                    return SubCategoryItem(
-                      subCategoryName: data[index].name ?? '',
-                      categoryName: data[index].categoryId?.name ?? '',
-                    );
-                  }),
-                ),
+                SubCategoryPreviewSection(),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,7 +238,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   padding: EdgeInsets.only(right: 10.h),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: .80,
+                    childAspectRatio: .75,
                     crossAxisSpacing: 0,
                     mainAxisSpacing: 8,
                   ),
@@ -271,8 +262,10 @@ class CustomerHomeScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0),
-                  child: CustomImage(imageSrc: AppImages.banner),
+                  child: Center(child: CustomImage(imageSrc: AppImages.banner)),
                 ),
+                SizedBox(height: 50.h),
+
                 /* SingleChildScrollView(
                  scrollDirection: Axis.horizontal,
                  child: Row(

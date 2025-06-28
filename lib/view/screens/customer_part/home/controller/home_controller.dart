@@ -5,6 +5,7 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
+import 'package:servana/view/screens/customer_part/home/model/single_sub_category_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/sub_category_model.dart';
 
 class HomeController extends GetxController {
@@ -80,19 +81,21 @@ class HomeController extends GetxController {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
-
+  //======= get Sub Category =======//
+  Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<SingleSubCategorysModel> singleSubCategoryModel = SingleSubCategorysModel().obs;
   Future<void> getSingleSubCategory({required String categoryId}) async {
-    getSubCategoryStatus.value = RxStatus.loading();
+    getSingleSubCategoryStatus.value = RxStatus.loading();
     try {
       final response = await ApiClient.getData(ApiUrl.singleSubCategory(categoryId: categoryId));
 
-      subCategoryModel.value = SubCategorysModel.fromJson(response.body);
+      singleSubCategoryModel.value = SingleSubCategorysModel.fromJson(response.body);
 
-      getSubCategoryStatus.value = RxStatus.success();
+      getSingleSubCategoryStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${subCategoryModel.value}');
+        debugPrint('category data: ${singleSubCategoryModel.value}');
         showCustomSnackBar(
           response.body['message'] ?? "Login successful",
           isError: false,
@@ -104,7 +107,7 @@ class HomeController extends GetxController {
         );
       }
     } catch (e) {
-      getSubCategoryStatus.value = RxStatus.success();
+      getSingleSubCategoryStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }

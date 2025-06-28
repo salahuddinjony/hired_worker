@@ -11,6 +11,8 @@ import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
 
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/contractor_part/profile/model/contractor_model.dart';
+import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
@@ -20,13 +22,13 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
       TextEditingController(
-        text: kDebugMode ? "nemapab173@coasah.com" : "",
+        text: kDebugMode ? "amaahmadmusa@gmail.com" : "",
       ).obs;
 
   Rx<TextEditingController> passController =
-      TextEditingController(text: kDebugMode ? "cus12345" : "").obs;
+      TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> confirmController =
-      TextEditingController(text: kDebugMode ? "cus12345" : "").obs;
+      TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
 
   Rx<bool> isAgree = false.obs;
@@ -83,7 +85,8 @@ class AuthController extends GetxController {
   }
 
   // ================= get me ====================
-
+  Rx<ContractorModel> contractorModel = ContractorModel().obs;
+  Rx<CustomerModel> customerModel = CustomerModel().obs;
   Future<void> getMe() async {
     loginLoading.value = RxStatus.loading();
     refresh();
@@ -99,6 +102,12 @@ class AuthController extends GetxController {
 
         await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
         await SharePrefsHelper.setString(AppConstants.role, role);
+
+        if (role == 'contractor') {
+          contractorModel.value = ContractorModel.fromJson(data);
+        } else if (role == 'customer') {
+          customerModel.value = CustomerModel.fromJson(data);
+        }
 
         showCustomSnackBar(
           response.body['message'] ?? "Login successful",

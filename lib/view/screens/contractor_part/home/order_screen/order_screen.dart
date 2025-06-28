@@ -21,6 +21,8 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request"),
       body: Column(
         children: [
@@ -40,18 +42,22 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
           ),
           SizedBox(height: 20.h),
-          if(orderController.currentIndex.value==0)
-          Expanded(child: ListView(
-            children: List.generate(4, (value){
-              return CustomServiceRequestCard();
-            })
-          )),
-          if(orderController.currentIndex.value==1)
-            Expanded(child: ListView(
-                children: List.generate(2, (value){
+          if (orderController.currentIndex.value == 0)
+            Expanded(
+              child: ListView(
+                children: List.generate(4, (value) {
+                  return CustomServiceRequestCard();
+                }),
+              ),
+            ),
+          if (orderController.currentIndex.value == 1)
+            Expanded(
+              child: ListView(
+                children: List.generate(2, (value) {
                   return CustomDeliveredServiceCard();
-                })
-            )),
+                }),
+              ),
+            ),
         ],
       ),
       bottomNavigationBar: Navbar(currentIndex: 1),
