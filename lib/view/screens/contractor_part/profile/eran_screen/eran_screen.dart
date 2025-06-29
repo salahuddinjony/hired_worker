@@ -21,6 +21,7 @@ class _EranScreenState extends State<EranScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,6 +40,7 @@ class _EranScreenState extends State<EranScreen> {
                   leftIcon: true,
                   titleName: "My Balance",
                   color: AppColors.white,
+                  backgroundClr: Colors.transparent,
                 ),
                 CustomText(
                   text: "\$12,00",
@@ -89,37 +91,33 @@ class _EranScreenState extends State<EranScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-         if(profileController.currentIndex.value==0)
-           Expanded(
-             child: ListView(
-               padding: EdgeInsets.zero,
-               children: List.generate(3, (value){
-                 return CustomEarnContainer();
-               }),
-             ),
-           ),
-          if(profileController.currentIndex.value==1)
+          if (profileController.currentIndex.value == 0)
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: List.generate(2, (value){
-                  return CustomEarnContainer(
-                    statusText: "Pending",
-                  );
+                children: List.generate(3, (value) {
+                  return CustomEarnContainer();
                 }),
               ),
             ),
-          if(profileController.currentIndex.value==2)
+          if (profileController.currentIndex.value == 1)
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: List.generate(1, (value){
-                  return CustomEarnContainer(
-                    statusText: "Rejected",
-                  );
+                children: List.generate(2, (value) {
+                  return CustomEarnContainer(statusText: "Pending");
                 }),
               ),
-            )
+            ),
+          if (profileController.currentIndex.value == 2)
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: List.generate(1, (value) {
+                  return CustomEarnContainer(statusText: "Rejected");
+                }),
+              ),
+            ),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -54,12 +55,24 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  CustomNetworkImage(
-                    imageUrl: AppConstants.profileImage,
-                    height: 45,
-                    width: 45,
-                    boxShape: BoxShape.circle,
-                  ),
+                  Obx(() {
+                    final data = profileController.contractorModel.value.data;
+                    // Check if an image is selected, if not use the default profile image
+
+                    return (data?.img != null)
+                        ? CustomNetworkImage(
+                          imageUrl: ImageHandler.imagesHandle(data?.img),
+                          height: 55.h,
+                          width: 55.w,
+                          boxShape: BoxShape.circle,
+                        )
+                        : CustomNetworkImage(
+                          imageUrl: AppConstants.profileImage,
+                          height: 55.h,
+                          width: 55.w,
+                          boxShape: BoxShape.circle,
+                        );
+                  }),
                 ],
               ),
               SizedBox(height: 20.h),

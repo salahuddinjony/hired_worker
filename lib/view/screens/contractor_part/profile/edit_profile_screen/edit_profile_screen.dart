@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_dropdown/custom_royel_dropdown.dart';
@@ -14,13 +15,11 @@ import '../controller/profile_controller.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
-  final profileController = Get.find<ProfileController>();
+  final ProfileController profileController = Get.find<ProfileController>();
   final CustomController customController = Get.find<CustomController>();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController dobController = TextEditingController();
-
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Edit Profile"),
       body: Padding(
@@ -33,30 +32,38 @@ class EditProfileScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   Obx(() {
+                    final data = profileController.contractorModel.value.data;
                     // Check if an image is selected, if not use the default profile image
-                    if (profileController.selectedImage.value != null) {
-                      return Container(
-                        height: 120.h,
-                        width: 120.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: FileImage(
-                              profileController.selectedImage.value!,
+
+                    return profileController.selectedImage.value == null
+                        ? (data?.img != null)
+                            ? CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 80.h,
+                              width: 80.w,
+                              boxShape: BoxShape.circle,
+                            )
+                            : CustomNetworkImage(
+                              imageUrl: AppConstants.profileImage,
+                              height: 80.h,
+                              width: 80.w,
+                              boxShape: BoxShape.circle,
+                            )
+                        : Container(
+                          height: 80.h,
+                          width: 80.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(
+                                profileController.selectedImage.value!,
+                              ),
+                              fit: BoxFit.fill,
                             ),
-                            fit: BoxFit.cover,
                           ),
-                        ),
-                      );
-                    } else {
-                      return CustomNetworkImage(
-                        imageUrl: AppConstants.profileImage,
-                        height: 120.h,
-                        width: 120.w,
-                        boxShape: BoxShape.circle,
-                      );
-                    }
+                        );
                   }),
+
                   Positioned(
                     bottom: 5,
                     right: 0,
@@ -83,10 +90,16 @@ class EditProfileScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.h),
-            CustomFormCard(title: "Name", controller: TextEditingController()),
+            CustomFormCard(
+              title: "Name",
+              controller: profileController.nameController.value,
+              hintText: 'name',
+            ),
             CustomFormCard(
               title: "Phone Number",
-              controller: TextEditingController(),
+              hintText: 'phone number',
+
+              controller: profileController.phoneController.value,
             ),
             CustomText(
               text: 'Gender',
@@ -107,7 +120,8 @@ class EditProfileScreen extends StatelessWidget {
 
             CustomFormCard(
               title: "Date of Birth",
-              controller: dobController,
+              hintText: 'yyyy/mm/dd',
+              controller: profileController.dobController.value,
               readOnly: true,
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
@@ -118,12 +132,17 @@ class EditProfileScreen extends StatelessWidget {
                 );
 
                 if (pickedDate != null) {
-                  dobController.text = "${pickedDate.toLocal()}".split(' ')[0];
+                  profileController.dobController.value.text =
+                      "${pickedDate.toLocal()}".split(' ')[0];
                 }
               },
             ),
 
-            CustomFormCard(title: "City", controller: TextEditingController()),
+            CustomFormCard(
+              title: "City",
+              controller: profileController.cityController.value,
+              hintText: 'City',
+            ),
             SizedBox(height: 20.h),
             CustomButton(onTap: () {}, title: "Update"),
           ],

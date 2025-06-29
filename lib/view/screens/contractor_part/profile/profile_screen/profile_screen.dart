@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -19,7 +20,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.find<ProfileController>();
-    final contractorData = profileController.contractorModel.value;
 
     return Scaffold(
       extendBody: true,
@@ -40,32 +40,64 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CustomNetworkImage(
-                    imageUrl: AppConstants.profileImage,
-                    height: 55,
-                    width: 55,
-                    boxShape: BoxShape.circle,
-                  ),
+                  Obx(() {
+                    final data = profileController.contractorModel.value.data;
+                    // Check if an image is selected, if not use the default profile image
+
+                    return profileController.selectedImage.value == null
+                        ? (data?.img != null)
+                            ? CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                            : CustomNetworkImage(
+                              imageUrl: AppConstants.profileImage,
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                        : Container(
+                          height: 55.h,
+                          width: 55.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(
+                                profileController.selectedImage.value!,
+                              ),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                  }),
+
                   SizedBox(width: 10.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: contractorData.data?.fullName ?? "Thomas",
-                        fontSize: 16.w,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
-                      CustomText(
-                        text:
-                            contractorData.data?.email ??
-                            "liamksayem@gmail.com",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black_04,
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    final contractorData =
+                        profileController.contractorModel.value;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: contractorData.data?.fullName ?? "Thomas",
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black,
+                        ),
+                        CustomText(
+                          text:
+                              contractorData.data?.email ??
+                              "liamksayem@gmail.com",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_04,
+                        ),
+                      ],
+                    );
+                  }),
                 ],
               ),
               SizedBox(height: 20.h),

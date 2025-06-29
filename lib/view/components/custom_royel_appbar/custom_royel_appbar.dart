@@ -12,6 +12,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool leftIcon;
   final bool? showRightIcon;
   final Color? color;
+   final Color? backgroundClr;
 
   const CustomRoyelAppbar({
     super.key,
@@ -20,6 +21,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.rightOnTap,
     this.color,
     this.rightIcon,
+    this.backgroundClr,
     required this.leftIcon,
   });
 
@@ -30,7 +32,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       centerTitle: true,
       scrolledUnderElevation: 0,
-      backgroundColor: AppColors.backgroundClr,
+      backgroundColor:backgroundClr ?? AppColors.backgroundClr,
       automaticallyImplyLeading: false,  // ADD THIS LINE
       systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: AppColors.backgroundClr,

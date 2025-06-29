@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -38,25 +39,63 @@ class CustomerProfileScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CustomNetworkImage(
-                    imageUrl: AppConstants.profileImage,
-                    height: 55,
-                    width: 55,
-                    boxShape: BoxShape.circle,
-                  ),
+                  Obx(() {
+                    final data = customerProfileController.customerModel.value.data;
+                    // Check if an image is selected, if not use the default profile image
+
+                    return customerProfileController.selectedImage.value == null
+                        ? (data?.img != null)
+                            ? CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                            : CustomNetworkImage(
+                              imageUrl: AppConstants.profileImage,
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                        : Container(
+                          height: 55.h,
+                          width: 55.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(
+                                customerProfileController.selectedImage.value!,
+                              ),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                  }),
                   SizedBox(width: 10.w),
                   Obx(
                     () => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: customerProfileController.customerModel.value.data?.fullName ?? "",
+                          text:
+                              customerProfileController
+                                  .customerModel
+                                  .value
+                                  .data
+                                  ?.fullName ??
+                              "",
                           fontSize: 16.w,
                           fontWeight: FontWeight.w500,
                           color: AppColors.black,
                         ),
                         CustomText(
-                          text: customerProfileController.customerModel.value.data?.email ?? "",
+                          text:
+                              customerProfileController
+                                  .customerModel
+                                  .value
+                                  .data
+                                  ?.email ??
+                              "",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black_04,
