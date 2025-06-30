@@ -143,7 +143,7 @@ class ApiUrl {
   static String getWallet({required String userId}) =>
       "/wallet/retrive/user/$userId";
   static String updateProfile({required String userId}) =>
-      "/user/update/$userId";
+      "/users/$userId";
   // static String updateProfileImage ({required String userId}) => '/user/update/profile-picture/67b813b7421435769e24e547';
   static String updateProfileImage({required String userId}) =>
       "/user/update/profile-picture/$userId";

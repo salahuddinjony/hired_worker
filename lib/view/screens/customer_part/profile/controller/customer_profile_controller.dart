@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
 import '../../../../../utils/app_strings/app_strings.dart';
@@ -81,4 +84,50 @@ class CustomerProfileController extends GetxController {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
+
+
+   //========= update profile ===========//
+  Rx<RxStatus> updateProfileStatus = Rx<RxStatus>(RxStatus.success());
+  Future<void> updateProfile() async {
+    dynamic response;
+    updateProfileStatus.value = RxStatus.loading();
+    String userId = await SharePrefsHelper.getString(AppConstants.userId);
+    Map<String, String> body = {
+      'fullName': nameController.value.text,
+      'contactNo': phoneController.value.text,
+      'city': cityController.value.text,
+      'dob': dobController.value.text,
+      'gender': customController.selectedGender.value,
+    };
+
+    if (selectedImage.value != null) {
+      response = await ApiClient.patchMultipartData(
+        ApiUrl.updateProfile(userId: userId),
+        body,
+        multipartBody: [MultipartBody("file", selectedImage.value!)],
+      );
+    } else {
+      response = await ApiClient.patchData(
+        ApiUrl.updateProfile(userId: userId),
+        jsonEncode(body),
+      );
+    }
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      updateProfileStatus.value = RxStatus.success();
+      final decoded =
+          selectedImage.value != null
+              ? jsonDecode(response.body)
+              : response.body;
+      showCustomSnackBar(
+        decoded['message'] ?? "Profile Updated Successfully",
+        isError: false,
+      );
+      getMe();
+      Get.back();
+    } else {
+      updateProfileStatus.value = RxStatus.success();
+      showCustomSnackBar("Something went wrong", isError: false);
+    }
+  }
+
 }

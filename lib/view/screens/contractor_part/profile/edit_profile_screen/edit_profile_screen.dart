@@ -6,6 +6,7 @@ import 'package:servana/view/components/custom_Controller/custom_controller.dart
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_dropdown/custom_royel_dropdown.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
@@ -144,7 +145,16 @@ class EditProfileScreen extends StatelessWidget {
               hintText: 'City',
             ),
             SizedBox(height: 20.h),
-            CustomButton(onTap: () {}, title: "Update"),
+            Obx(
+                  () => profileController.updateProfileStatus.value.isLoading
+                  ? CustomLoader()
+                  : CustomButton(
+                    onTap: () {
+                      profileController.updateProfile();
+                    },
+                    title: "Update",
+                  ),
+            ),
           ],
         ),
       ),
