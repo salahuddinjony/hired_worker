@@ -22,7 +22,6 @@ class MaterialsScreen extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ListView.builder(
-              
               itemCount: materials.length,
               itemBuilder: (context, index) {
                 final material = materials[index];
@@ -39,7 +38,23 @@ class MaterialsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your navigation or action logic here
-          // Get.toNamed(AppRoutes.addNewItemScreen);
+          // showDialog(
+          //     context: context,
+          //     builder: (context) {
+          //       return AlertDialog(
+          //         title: Text("Add Material"),
+          //         content: Text("This feature is under development."),
+          //         actions: [
+          //           TextButton(
+          //             onPressed: () => Navigator.of(context).pop(),
+          //             child: Text("OK"),
+          //           ),
+          //         ],
+          //       );
+          //     },
+          //   );
+
+          
         },
         backgroundColor: AppColors.primary, // Or your custom color
         child: Icon(Icons.add, color: Colors.white, size: 28),
