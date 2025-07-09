@@ -30,7 +30,7 @@ class AccountTypeScreen extends StatelessWidget {
             ),
             CustomText(
               top: 80.h,
-              text: "Create a New Account",
+              text: "Create a New Account".tr,
               fontSize: 24.w,
               fontWeight: FontWeight.w700,
               color: AppColors.black,
@@ -47,12 +47,12 @@ class AccountTypeScreen extends StatelessWidget {
               borderWidth: 1,
               isBorder: true,
               textColor: AppColors.black,
-              title: "Customer",
+              title: "Customer".tr,
             ),
             CustomText(
               top: 12.h,
               bottom: 12.h,
-              text: "or",
+              text: "or".tr,
               fontSize: 20.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -64,7 +64,7 @@ class AccountTypeScreen extends StatelessWidget {
                   arguments: {'isContactor': true},
                 );
               },
-              title: "Contractor",
+              title: "Contractor".tr,
             ),
           ],
         ),

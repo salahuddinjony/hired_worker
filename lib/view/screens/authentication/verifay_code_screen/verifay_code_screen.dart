@@ -21,7 +21,7 @@ class VerifayCodeScreen extends StatelessWidget {
     var args = Get.arguments;
     String register = args[0];
     return Scaffold(
-      appBar: CustomRoyelAppbar(titleName: "Verify Your Email", leftIcon: true),
+      appBar: CustomRoyelAppbar(titleName: "Verify Your Email".tr, leftIcon: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -31,7 +31,7 @@ class VerifayCodeScreen extends StatelessWidget {
             Center(
               child: CustomText(
                 top: 30.h,
-                text: "We just sent 4-digit code to\n$email, enter it bellow ",
+                text: "${"We just sent 4-digit code to".tr} $email",
                 fontSize: 16.w,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black,
@@ -42,7 +42,7 @@ class VerifayCodeScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: CustomText(
                 top: 30.h,
-                text: "Enter Code",
+                text: "Enter Code".tr,
                 fontSize: 16.w,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black,
@@ -70,14 +70,14 @@ class VerifayCodeScreen extends StatelessWidget {
                         showCustomSnackBar("Please Enter OTP", isError: false);
                       }
                     },
-                    title: "Verify email",
+                    title: "Verify email".tr,
                   );
             }),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
-                  text: "Didn’t receive a code",
+                  text: "Didn’t receive a code".tr,
                   fontSize: 14.w,
                   fontWeight: FontWeight.w300,
                   color: AppColors.black,
@@ -87,7 +87,7 @@ class VerifayCodeScreen extends StatelessWidget {
                     authController.resendOTP();
                   },
                   child: CustomText(
-                    text: "Resend",
+                    text: "Resend".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.lightBlue,

@@ -20,6 +20,7 @@ class ApiUrl {
   static const String subCategories = "/sub-categories/";
   static String singleSubCategory({required String categoryId}) => "/sub-categories?categoryId=$categoryId";
   static const String materials = "/materials/";
+  static const String getAllContractors = "/contractors";
   static const String forgetPassword = "/auth/forget-password";
   static String setNewPassword = "/auth/reset-password";
 

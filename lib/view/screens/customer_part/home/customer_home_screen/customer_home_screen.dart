@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -259,7 +261,10 @@ class CustomerHomeScreen extends StatelessWidget {
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 4,
+                  itemCount: min(
+                    4,
+                    homeController.getAllContactorModel.value.data?.length ?? 0,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                     return CustomServiceContractorCard(
                       onTap: () {
@@ -268,8 +273,17 @@ class CustomerHomeScreen extends StatelessWidget {
                         );
                       },
                       image: AppConstants.profileImage,
-                      name: "Mehedi",
-                      title: "Electrician",
+                      name:
+                          homeController.getAllContactorModel.value.data?[index]
+                              .toString() ??
+                          "Mehedi",
+                      title:
+                          homeController
+                              .getAllContactorModel
+                              .value
+                              .data?[index]
+                              .skillsCategory ??
+                          " ",
                     ); // You can pass `serviceList[index]` if needed
                   },
                 ),

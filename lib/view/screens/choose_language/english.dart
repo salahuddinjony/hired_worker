@@ -1,0 +1,42 @@
+Map<String, String> english = {
+  //========= new ==================
+  "Welcome back": "Welcome back",
+  "Log in to your account using mobile number or email address":
+      "Log in to your account using mobile number or email address",
+  "Email": "Email",
+  "Enter your email": "Enter your email",
+  "Password": "Password",
+  "Enter your password": "Enter your password",
+  "Forgot Password ?": "Forgot Password ?",
+  "Remember me": "Remember me",
+  "Login": "Login",
+  "Don't have an account?": "Don't have an account?",
+  "Signup": "Signup",
+  "Reset password": "Reset password",
+  "We have sent an email to reset your password.":
+      "We have sent an email to reset your password.",
+  "New Password": "New Password",
+  "Confirm Password": "Confirm Password",
+  "Submit": "Submit",
+  "Verify Your Email": "Verify Your Email",
+  "Enter Code": "Enter Code",
+  "Verify email": "Verify email",
+  "Didn’t receive a code": "Didn’t receive a code?",
+  "We just sent 4-digit code to": "We just sent 4-digit code to",
+  "Resend Code": "Resend Code",
+  "Send": "Send",
+  "Forgot Password": "Forgot Password",
+  "Customer": "Customer",
+  "or": "or",
+  "Contractor": "Contractor",
+  "Create a New Account": "Create a New Account",
+  "Already have an account?": "Already have an account?",
+  "Enter New Password": "Enter New Password",
+  "Enter Confirm Password": "Enter Confirm Password",
+  "I agree to the Terms and Privacy Policy.":
+      "I agree to the Terms and Privacy Policy.",
+  "Enter your name": "Enter your name", 
+  "Enter your mobile number": "Enter your mobile number",
+  "Set up your username and password.\nYou can always change it later."
+      : "Set up your username and password.\nYou can always change it later.",
+};

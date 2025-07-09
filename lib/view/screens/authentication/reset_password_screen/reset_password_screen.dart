@@ -17,7 +17,7 @@ class ResetPasswordScreen extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(titleName: "Reset password", leftIcon: true),
+      appBar: CustomRoyelAppbar(titleName: "Reset password".tr, leftIcon: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -27,7 +27,7 @@ class ResetPasswordScreen extends StatelessWidget {
             Center(
               child: CustomText(
                 top: 30.h,
-                text: "We have sent an email to reset your password.",
+                text: "We have sent an email to reset your password.".tr,
                 fontSize: 16.w,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black,
@@ -35,12 +35,12 @@ class ResetPasswordScreen extends StatelessWidget {
               ),
             ),
             CustomFormCard(
-              title: "New Password",
+              title: "New Password".tr,
               hintText: "******",
               controller: authController.passController.value,
             ),
             CustomFormCard(
-              title: "Confirm Password",
+              title: "Confirm Password".tr,
               hintText: "******",
               controller: authController.confirmController.value,
             ),
@@ -52,7 +52,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     onTap: () {
                       authController.setNewPassword();
                     },
-                    title: "Submit",
+                    title: "Submit".tr,
                   );
             }),
           ],

@@ -4,6 +4,7 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/single_sub_category_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/sub_category_model.dart';
@@ -13,6 +14,7 @@ class HomeController extends GetxController {
   void onInit() {
     getCategory();
     getSubCategory();
+    getAllContactor();
     super.onInit();
   }
 
@@ -33,12 +35,12 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${categoryModel.value}');
         showCustomSnackBar(
-          response.body['message'] ?? "Login successful",
+          response.body['message'] ?? " ",
           isError: false,
         );
       } else {
         showCustomSnackBar(
-          response.body['message'] ?? "Login Failed",
+          response.body['message'] ?? " ",
           isError: false,
         );
       }
@@ -66,12 +68,12 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${subCategoryModel.value}');
         showCustomSnackBar(
-          response.body['message'] ?? "Login successful",
+          response.body['message'] ?? " ",
           isError: false,
         );
       } else {
         showCustomSnackBar(
-          response.body['message'] ?? "Login Failed",
+          response.body['message'] ?? " ",
           isError: false,
         );
       }
@@ -97,17 +99,49 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${singleSubCategoryModel.value}');
         showCustomSnackBar(
-          response.body['message'] ?? "Login successful",
+          response.body['message'] ?? " ",
           isError: false,
         );
       } else {
         showCustomSnackBar(
-          response.body['message'] ?? "Login Failed",
+          response.body['message'] ?? " ",
           isError: false,
         );
       }
     } catch (e) {
       getSingleSubCategoryStatus.value = RxStatus.success();
+      refresh();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
+
+  //======= get All services contractor =======//
+  Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<GetAllContactorModel> getAllContactorModel = GetAllContactorModel().obs;
+  Future<void> getAllContactor( ) async {
+    getAllServicesContractorStatus.value = RxStatus.loading();
+    try {
+      final response = await ApiClient.getData(ApiUrl.getAllContractors);
+
+      getAllContactorModel.value = GetAllContactorModel.fromJson(response.body);
+
+      getAllServicesContractorStatus.value = RxStatus.success();
+      refresh();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('category data: ${getAllContactorModel.value}');
+        showCustomSnackBar(
+          response.body['message'] ?? " ",
+          isError: false,
+        );
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? " ",
+          isError: false,
+        );
+      }
+    } catch (e) {
+      getAllServicesContractorStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }

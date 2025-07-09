@@ -32,7 +32,7 @@ class ContractorSignUpScreen extends StatelessWidget {
               Center(
                 child: CustomText(
                   top: 20.h,
-                  text: "Create New Account",
+                  text: "Create a New Account".tr,
                   fontSize: 24.w,
                   fontWeight: FontWeight.w700,
                   color: AppColors.black,
@@ -42,7 +42,7 @@ class ContractorSignUpScreen extends StatelessWidget {
                 child: CustomText(
                   top: 10.h,
                   text:
-                      "Set up your username and password.\nYou can always change it later.",
+                      "Set up your username and password.\nYou can always change it later.".tr,
                   fontSize: 14.w,
                   fontWeight: FontWeight.w300,
                   color: AppColors.black,
@@ -50,35 +50,35 @@ class ContractorSignUpScreen extends StatelessWidget {
                 ),
               ),
               CustomFormCard(
-                title: "Enter Name",
-                hintText: "enter your name",
+                title: "Enter your Name",
+                hintText: "enter your name".tr,
                 controller: authController.nameController.value,
               ),
               CustomFormCard(
-                title: "Enter Email Address",
-                hintText: "enter your email",
+                title: "Enter Email Address".tr,
+                hintText: "enter your email".tr,
                 controller: authController.emailController.value,
               ),
               CustomFormCard(
-                title: "Enter Mobile Number",
-                hintText: "enter your number",
+                title: "Enter Mobile Number".tr,
+                hintText: "enter your number".tr,
                 controller: authController.phoneController.value,
               ),
               CustomFormCard(
-                title: "Enter New Password",
-                hintText: "enter your password",
+                title: "Enter New Password".tr,
+                hintText: "enter your password".tr,
                 controller: authController.passController.value,
               ),
               CustomFormCard(
-                title: "Enter Confirm Password",
-                hintText: "enter your password",
+                title: "Enter Confirm Password".tr,
+                hintText: "enter your password".tr,
                 controller: authController.confirmController.value,
               ),
               Row(
                 children: [
                   Checkbox(value: true, onChanged: (value) {}),
                   CustomText(
-                    text: "I agree to the Terms and Privacy Policy.",
+                    text: "I agree to the Terms and Privacy Policy.".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -93,14 +93,14 @@ class ContractorSignUpScreen extends StatelessWidget {
                       onTap: () {
                         authController.customerSignUp(isContactor);
                       },
-                      title: "Submit",
+                      title: "Submit".tr,
                     );
               }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    text: "Already have an account? ",
+                    text: "Already have an account?".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w300,
                     color: AppColors.black,
@@ -110,7 +110,7 @@ class ContractorSignUpScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.loginScreen);
                     },
                     child: CustomText(
-                      text: "Login",
+                      text: "Login".tr,
                       fontSize: 14.w,
                       fontWeight: FontWeight.w400,
                       color: AppColors.lightBlue,

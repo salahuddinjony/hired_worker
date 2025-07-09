@@ -17,7 +17,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(titleName: "Forgot Password", leftIcon: true),
+      appBar: CustomRoyelAppbar(titleName: "Forgot Password".tr, leftIcon: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -27,7 +27,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             Center(
               child: CustomText(
                 top: 30.h,
-                text: "We will email you a link\nto reset your password.",
+                text: "We have sent an email\n to reset your password.".tr,
                 fontSize: 16.w,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black,
@@ -35,7 +35,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
             ),
             CustomFormCard(
-              title: "Email",
+              title: "Email".tr,
               hintText: "example@.com",
               controller: authController.emailController.value,
             ),
@@ -47,7 +47,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     onTap: () {
                       authController.forgetPassword();
                     },
-                    title: "Send",
+                    title: "Send".tr,
                   );
             }),
           ],

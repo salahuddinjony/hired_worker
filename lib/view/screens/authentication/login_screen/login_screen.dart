@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomText(
                 top: 50.h,
-                text: "Welcome Back",
+                text: "Welcome Back".tr,
                 fontSize: 24.w,
                 fontWeight: FontWeight.w700,
                 color: AppColors.black,
@@ -42,20 +42,20 @@ class LoginScreen extends StatelessWidget {
               CustomText(
                 top: 20.h,
                 text:
-                    "Log in to your account using mobile\nnumber or email address",
+                    "Log in to your account using mobile\nnumber or email address".tr,
                 fontSize: 14.w,
                 fontWeight: FontWeight.w300,
                 color: AppColors.black,
                 maxLines: 2,
               ),
               CustomFormCard(
-                title: "Email",
-                hintText: "Enter your email",
+                title: "Email".tr,
+                hintText: "Enter your email".tr,
                 controller: authController.emailController.value,
               ),
               CustomFormCard(
-                title: "Password",
-                hintText: "Enter your password",
+                title: "Password".tr,
+                hintText: "Enter your password".tr,
                 controller: authController.passController.value,
               ),
               Row(
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       Checkbox(value: true, onChanged: (value) {}),
                       CustomText(
-                        text: "Remember me",
+                        text: "Remember me".tr,
                         fontSize: 14.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.forgotPasswordScreen);
                     },
                     child: CustomText(
-                      text: "Forgot Password ?",
+                      text: "Forgot Password ?".tr,
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.lightBlue,
@@ -92,13 +92,13 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       authController.loginUser();
                     },
-                    title: "Login",
+                    title: "Login".tr,
                   ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    text: "Don’t have an account? ",
+                    text: "Don’t have an account? ".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -108,7 +108,7 @@ class LoginScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.accountTypeScreen);
                     },
                     child: CustomText(
-                      text: "Signup",
+                      text: "Signup".tr,
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.lightBlue,
