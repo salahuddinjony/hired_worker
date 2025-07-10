@@ -38,18 +38,18 @@ class _CategorySelectionScreenState extends State<CategorySeletedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Category",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Category".tr,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Set up your personal information.",
+             Text(
+              "Set up your personal information.".tr,
               style: TextStyle(color: Colors.black87),
             ),
-            const Text(
-              "You can always change it later.",
+             Text(
+              "You can always change it later.".tr,
               style: TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
@@ -104,7 +104,7 @@ class _CategorySelectionScreenState extends State<CategorySeletedScreen> {
                 // handle selectedDays if needed
                 debugPrint("Selected Categories: $selectedCategories");
               },
-              title: "Continue",
+              title: "Continue".tr,
             ),
             const SizedBox(height: 30),
           ],

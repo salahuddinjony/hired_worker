@@ -36,21 +36,21 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomRoyelAppbar(
+      appBar:  CustomRoyelAppbar(
         leftIcon: true,
-        titleName: "Selected Skills",
+        titleName: "Selected Skills".tr,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
             const SizedBox(height: 8),
-            const Text(
-              "Set up your personal information.",
+             Text(
+              "Set up your personal information.".tr,
               style: TextStyle(color: Colors.black87),
             ),
-            const Text(
-              "You can always change it later.",
+             Text(
+              "You can always change it later.".tr,
               style: TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
@@ -112,7 +112,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                 // handle selectedDays if needed
                 debugPrint("Selected Skills: $selectedSkils");
               },
-              title: "Continue",
+              title: "Continue".tr,
             ),
             const SizedBox(height: 30),
           ],

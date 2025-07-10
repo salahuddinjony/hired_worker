@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Center(
             child: CustomText(
-              text: "“Discover. Connect.\nGet Things Done”",
+              text: "“Discover. Connect.\nGet Things Done”".tr,
               fontSize: 32.w,
               fontWeight: FontWeight.w700,
               color: AppColors.primary,
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Center(
             child: CustomText(
-              text: "Welcome to Servana",
+              text: "Welcome to Servana".tr,
               fontSize: 24.w,
               fontWeight: FontWeight.w600,
               color: AppColors.black,

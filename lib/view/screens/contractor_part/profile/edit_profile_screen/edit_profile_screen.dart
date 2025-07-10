@@ -22,7 +22,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Edit Profile"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Edit Profile".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -92,18 +92,18 @@ class EditProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             CustomFormCard(
-              title: "Name",
+              title: "Name".tr,
               controller: profileController.nameController.value,
               hintText: 'name',
             ),
             CustomFormCard(
-              title: "Phone Number",
+              title: "Phone Number".tr,
               hintText: 'phone number',
 
               controller: profileController.phoneController.value,
             ),
             CustomText(
-              text: 'Gender',
+              text: 'Gender'.tr,
               bottom: 10.h,
               fontSize: 18.w,
               fontWeight: FontWeight.w600,
@@ -120,7 +120,7 @@ class EditProfileScreen extends StatelessWidget {
             SizedBox(height: 10.h),
 
             CustomFormCard(
-              title: "Date of Birth",
+              title: "Date of Birth".tr,
               hintText: 'yyyy/mm/dd',
               controller: profileController.dobController.value,
               readOnly: true,
@@ -140,7 +140,7 @@ class EditProfileScreen extends StatelessWidget {
             ),
 
             CustomFormCard(
-              title: "City",
+              title: "City".tr,
               controller: profileController.cityController.value,
               hintText: 'City',
             ),
@@ -152,7 +152,7 @@ class EditProfileScreen extends StatelessWidget {
                     onTap: () {
                       profileController.updateProfile();
                     },
-                    title: "Update",
+                    title: "Update".tr,
                   ),
             ),
           ],

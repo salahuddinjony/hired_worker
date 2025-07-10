@@ -78,7 +78,7 @@ class _CustomarServiceDetailsScreenState
                                 Icon(Icons.timer, color: AppColors.black),
                                 CustomText(
                                   left: 8.w,
-                                  text: "One Time",
+                                  text: "One Time".tr,
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black,
@@ -103,7 +103,7 @@ class _CustomarServiceDetailsScreenState
                                 ),
                                 CustomText(
                                   left: 8.w,
-                                  text: "Weekly",
+                                  text: "Weekly".tr,
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black,
@@ -128,7 +128,7 @@ class _CustomarServiceDetailsScreenState
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
-                        text: "Hours -",
+                        text: "Hours -".tr,
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
@@ -168,7 +168,7 @@ class _CustomarServiceDetailsScreenState
                   ),
                   SizedBox(height: 30.h),
                   CustomFormCard(
-                    title: "Time",
+                    title: "Time".tr,
                     hintText: "mm/dd/yyyy",
                     prefixIcon: Icon(
                       Icons.calendar_month,
@@ -181,8 +181,8 @@ class _CustomarServiceDetailsScreenState
                     controller: TextEditingController(),
                   ),
                   CustomFormCard(
-                    title: "Category",
-                    hintText: "Select Category",
+                    title: "Category".tr,
+                    hintText: "Select Category".tr,
                     suffixIcon: Icon(
                       Icons.keyboard_arrow_down,
                       color: AppColors.black_08,
@@ -190,8 +190,8 @@ class _CustomarServiceDetailsScreenState
                     controller: TextEditingController(),
                   ),
                   CustomFormCard(
-                    title: "Sub Category",
-                    hintText: "Select Category",
+                    title: "Sub Category".tr,
+                    hintText: "Select Category".tr,
                     suffixIcon: Icon(
                       Icons.keyboard_arrow_down,
                       color: AppColors.black_08,
@@ -215,7 +215,7 @@ class _CustomarServiceDetailsScreenState
                   ),
                   CustomButton(onTap: (){
                     Get.toNamed(AppRoutes.customarServiceContractorDetailsScreen);
-                  }, title: "Continue",)
+                  }, title: "Continue".tr,)
                 ],
               ),
             ),

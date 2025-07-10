@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'widget/custom_message_list_card.dart';
@@ -11,7 +12,7 @@ class MessageListScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages".tr),
       body: Column(
         children: List.generate(5, (value) {
           return CustomMessageListCard();

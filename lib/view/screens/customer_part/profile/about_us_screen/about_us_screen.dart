@@ -13,7 +13,7 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final GeneralController generalController = Get.find<GeneralController>();
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "About Us"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "About Us".tr),
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

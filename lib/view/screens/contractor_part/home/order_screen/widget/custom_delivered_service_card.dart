@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -101,7 +102,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                       children: [
                         CustomButton(
                           onTap: () {},
-                          title: "Completed",
+                          title: "Completed".tr,
                           height: 26.h,
                           width: 55.w,
                           fillColor: AppColors.cardClr,
@@ -120,7 +121,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                         CustomButton(
                           onTap: () {},
-                          title: "View",
+                          title: "View".tr,
                           height: 26.h,
                           width: 50.w,
                           fontSize: 10.w,

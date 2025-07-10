@@ -23,7 +23,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request".tr),
       body: Column(
         children: [
           //========================================= TAB BAR ================================

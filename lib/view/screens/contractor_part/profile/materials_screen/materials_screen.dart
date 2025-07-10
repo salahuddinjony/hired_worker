@@ -12,7 +12,7 @@ class MaterialsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.find<ProfileController>();
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials".tr),
       body: Obx(() {
         final materials = profileController.materialModel.value.data ?? [];
 

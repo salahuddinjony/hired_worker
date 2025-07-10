@@ -12,14 +12,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Service Contractor",
+              text: "Service Contractor".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -51,7 +51,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               bottom: 20,
             ),
             CustomText(
-              text: "Requirement Question",
+              text: "Requirement Question".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -72,7 +72,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               bottom: 20,
             ),
             CustomText(
-              text: "Materials",
+              text: "Materials".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -133,7 +133,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
             ),
             CustomText(
               top: 20,
-              text: "Booking Type",
+              text: "Booking Type".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -143,7 +143,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               children: [
                 Radio(value: true, groupValue: (true), onChanged: (value){}),
                 CustomText(
-                  text: "One Time",
+                  text: "One Time".tr,
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -152,7 +152,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
             ),
             CustomText(
               top: 20,
-              text: "Durations",
+              text: "Durations".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -192,7 +192,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
             ),
             builder: (_) => CheckoutPopup(),
           );
-        },title: "Continue",),
+        },title: "Continue".tr,),
       ),
     );
   }
@@ -215,7 +215,7 @@ class CheckoutPopup extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Total Amount Info',
+            'Total Amount Info'.tr,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           Divider(height: 30, thickness: 1),
@@ -233,7 +233,7 @@ class CheckoutPopup extends StatelessWidget {
           ),
           Divider(height: 30, thickness: 1),
           _buildRow(
-            label: 'Total Amount',
+            label: 'Total Amount'.tr,
             amount: '450.00\$',
             isBold: true,
             withColon: true,
@@ -241,7 +241,7 @@ class CheckoutPopup extends StatelessWidget {
           SizedBox(height: 30),
           CustomButton(onTap: (){
             Get.back();
-          }, title: "Checkout",),
+          }, title: "Checkout".tr,),
         ],
       ),
     );

@@ -11,7 +11,7 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Contractors",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Contractors".tr,),
       body: SingleChildScrollView(
         child: Column(
           children: [

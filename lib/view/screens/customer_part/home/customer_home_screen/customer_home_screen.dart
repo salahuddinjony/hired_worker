@@ -71,7 +71,7 @@ class CustomerHomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Welcome!",
+                          text: "Welcome!".tr,
                           fontSize: 20.w,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,
@@ -141,7 +141,7 @@ class CustomerHomeScreen extends StatelessWidget {
                                 CustomImage(imageSrc: AppIcons.search),
                                 CustomText(
                                   left: 10.w,
-                                  text: "Search here.....",
+                                  text: "Search here.....".tr,
                                   fontSize: 14.w,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.black_04,
@@ -159,7 +159,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Category",
+                      text: "Category".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black_08,
@@ -169,7 +169,7 @@ class CustomerHomeScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.customerCategoryScreen);
                       },
                       child: CustomText(
-                        text: "View all",
+                        text: "View all".tr,
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blue,
@@ -208,7 +208,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Sub Category",
+                      text: "Sub Category".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black_08,
@@ -218,7 +218,7 @@ class CustomerHomeScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.customerSubCategoryScreen);
                       },
                       child: CustomText(
-                        text: "View all",
+                        text: "View all".tr,
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blue,
@@ -233,7 +233,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Service Contractor",
+                      text: "Service Contractor".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black_08,
@@ -243,7 +243,7 @@ class CustomerHomeScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.customerServicesContractorScreen);
                       },
                       child: CustomText(
-                        text: "View all",
+                        text: "View all".tr,
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blue,

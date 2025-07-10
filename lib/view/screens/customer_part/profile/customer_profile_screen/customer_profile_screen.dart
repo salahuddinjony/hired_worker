@@ -25,7 +25,7 @@ class CustomerProfileScreen extends StatelessWidget {
 
       appBar: CustomRoyelAppbar(
         leftIcon: false,
-        titleName: "Profile",
+        titleName: "Profile".tr,
         showRightIcon: true,
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
@@ -109,7 +109,7 @@ class CustomerProfileScreen extends StatelessWidget {
               CustomProfileMenuList(),
               CustomProfileMenuList(
                 image: AppIcons.history,
-                name: "History",
+                name: "History".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.customerRequestHistoryScreen);
                 },
@@ -119,39 +119,39 @@ class CustomerProfileScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.customerNotificationScreen);
                 },
                 image: AppIcons.notifaction,
-                name: "Notification",
+                name: "Notification".tr,
               ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.customerReferFriendScreen);
                 },
                 image: AppIcons.peopoles,
-                name: "Refer a Friend",
+                name: "Refer a Friend".tr,
               ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.customerHelpSupportScreen);
                 },
                 image: AppIcons.call,
-                name: "Support",
+                name: "Support".tr,
               ),
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
-                name: "About Us",
+                name: "About Us".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.aboutUsScreen);
                 },
               ),
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
-                name: "Privacy Policy",
+                name: "Privacy Policy".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.privacyPolicyScreen);
                 },
               ),
               CustomProfileMenuList(
                 image: AppIcons.settingIcon,
-                name: "Terms & Conditions",
+                name: "Terms & Conditions".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.termsConditionsScreen);
                 },
@@ -163,7 +163,7 @@ class CustomerProfileScreen extends StatelessWidget {
                   Get.offAllNamed(AppRoutes.loginScreen);
                 },
                 child: CustomText(
-                  text: "Log Out",
+                  text: "Log Out".tr,
                   fontSize: 20.w,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,

@@ -37,7 +37,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "House Cleaning",
+                          text: "House Cleaning".tr,
                           fontSize: 16.w,
                           fontWeight: FontWeight.w700,
                           color: AppColors.black,
@@ -60,7 +60,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: CustomText(
-                    text: "Pending",
+                    text: "Pending".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w600,
                     color: AppColors.primary,
@@ -70,7 +70,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
             CustomText(
               top: 20.h,
-              text: "Service Contractor",
+              text: "Service Contractor".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -102,7 +102,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               bottom: 20,
             ),
             CustomText(
-              text: "Requirement Question",
+              text: "Requirement Question".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -123,7 +123,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               bottom: 20,
             ),
             CustomText(
-              text: "Materials",
+              text: "Materials".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -184,7 +184,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
             CustomText(
               top: 20,
-              text: "Booking Type",
+              text: "Booking Type".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -194,7 +194,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               children: [
                 Radio(value: true, groupValue: (true), onChanged: (value){}),
                 CustomText(
-                  text: "One Time",
+                  text: "One Time".tr,
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -203,7 +203,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
             CustomText(
               top: 20,
-              text: "Durations",
+              text: "Durations".tr,
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -230,7 +230,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             SizedBox(height: 30,),
             CustomButton(onTap: (){
               Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-            },title: "Service Update",)
+            },title: "Service Update".tr,)
             
           ],
         ),

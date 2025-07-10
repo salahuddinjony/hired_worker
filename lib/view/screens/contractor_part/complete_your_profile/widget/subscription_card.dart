@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
@@ -66,7 +67,7 @@ class SubscriptionCard extends StatelessWidget {
                 SizedBox(height: 30.h),
                 Padding(
                   padding: EdgeInsets.all(20.w),
-                  child: CustomButton(onTap: onSubscribe, title: "Subscribe"),
+                  child: CustomButton(onTap: onSubscribe, title: "Subscribe".tr),
                 ),
               ],
             ),

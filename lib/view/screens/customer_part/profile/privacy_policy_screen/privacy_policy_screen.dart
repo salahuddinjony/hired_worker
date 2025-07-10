@@ -14,7 +14,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
     final GeneralController generalController = Get.find<GeneralController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Privacy Policy"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Privacy Policy".tr),
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

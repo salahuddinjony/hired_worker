@@ -16,7 +16,7 @@ class TermsConditionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomRoyelAppbar(
         leftIcon: true,
-        titleName: "Terms & Conditions",
+        titleName: "Terms & Conditions".tr,
       ),
       body: Obx(
         () => Padding(

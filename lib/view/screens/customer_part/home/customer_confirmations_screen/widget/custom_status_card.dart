@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -54,7 +55,7 @@ class CustomStatusCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                text: "Status",
+                text: "Status".tr,
                 fontSize: 14.w,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black_08,
@@ -68,7 +69,7 @@ class CustomStatusCard extends StatelessWidget {
                     vertical: 4.0,
                   ),
                   child: CustomText(
-                    text: "Confirmed",
+                    text: "Confirmed".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w400,
                     color: AppColors.green,
@@ -93,7 +94,7 @@ class CustomStatusCard extends StatelessWidget {
                     bottom: 6,
                   ),
                   CustomText(
-                    text: "Schedule",
+                    text: "Schedule".tr,
                     fontSize: 12.w,
                     fontWeight: FontWeight.w400,
                     color: AppColors.black_08,
@@ -126,7 +127,7 @@ class CustomStatusCard extends StatelessWidget {
                         bottom: 6,
                       ),
                       CustomText(
-                        text: "Service provider",
+                        text: "Service provider".tr,
                         fontSize: 12.w,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black_08,
@@ -151,7 +152,7 @@ class CustomStatusCard extends StatelessWidget {
                       ),
                       CustomText(
                         left: 6.w,
-                        text: "Call",
+                        text: "Call".tr,
                         fontSize: 18.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.white,

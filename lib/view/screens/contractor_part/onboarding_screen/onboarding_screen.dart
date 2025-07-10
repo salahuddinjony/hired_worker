@@ -39,7 +39,7 @@ class OnboardingScreen extends StatelessWidget {
                 children: [
                   CustomText(
                     top: 20,
-                    text: "Find expert services at\nyour fingertips",
+                    text: "Find expert services at\nyour fingertips".tr,
                     fontSize: 32.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
@@ -47,7 +47,7 @@ class OnboardingScreen extends StatelessWidget {
                   CustomText(
                     top: 20,
                     text:
-                        "From home repairs to beauty care – get all services with ease",
+                        "From home repairs to beauty care – get all services with ease".tr,
                     fontSize: 18.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
@@ -58,7 +58,7 @@ class OnboardingScreen extends StatelessWidget {
                     onTap: () {
                       Get.toNamed(AppRoutes.onboardingScreenTwo);
                     },
-                    title: "Next",
+                    title: "Next".tr,
                     width: MediaQuery.sizeOf(context).width / 1.2,
                   ),
                 ],

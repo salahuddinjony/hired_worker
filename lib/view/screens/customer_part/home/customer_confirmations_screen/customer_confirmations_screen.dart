@@ -14,7 +14,7 @@ class CustomerConfirmationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Confirmations"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Confirmations".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(
@@ -24,7 +24,7 @@ class CustomerConfirmationsScreen extends StatelessWidget {
             Expanded(child: ListView(children: [
               CustomText(
                 bottom: 10.h,
-                text: "Service Request History",
+                text: "Service Request History".tr,
                 fontSize: 14.w,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
@@ -33,7 +33,7 @@ class CustomerConfirmationsScreen extends StatelessWidget {
             ],)),
             CustomButton(onTap: (){
               Get.toNamed(AppRoutes.customerHomeScreen);
-            }, title: "Back to Home",)
+            }, title: "Back to Home".tr,)
           ],
         ),
       ),

@@ -17,7 +17,7 @@ class CertificateScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Certificate", style: TextStyle(color: Colors.black)),
+        title: Text("Certificate".tr, style: TextStyle(color: Colors.black)),
         leading: BackButton(color: Colors.black),
         centerTitle: true,
       ),
@@ -30,7 +30,7 @@ class CertificateScreen extends StatelessWidget {
                 onTap: () {
                   completeProfileController.pickNidFile();
                 },
-                label: "NID",
+                label: "NID".tr,
                 title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
                         ? ""
                         : completeProfileController.nidFile.value!.path.split("/").last,
@@ -39,7 +39,7 @@ class CertificateScreen extends StatelessWidget {
                 onTap: () {
                   completeProfileController.skillsFile();
                 },
-                label: "Skills",
+                label: "Skills".tr,
                 title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
                     ? ""
                     : completeProfileController.nidFile.value!.path.split("/").last,
@@ -48,7 +48,7 @@ class CertificateScreen extends StatelessWidget {
                 onTap: () {
                   completeProfileController.otherSFile();
                 },
-                label: "Other",
+                label: "Other".tr,
                 title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
                     ? ""
                     : completeProfileController.nidFile.value!.path.split("/").last,
@@ -56,7 +56,7 @@ class CertificateScreen extends StatelessWidget {
               Spacer(),
               CustomButton(onTap: (){
                 Get.toNamed(AppRoutes.skillsAddScreen);
-              }, title: "Add Certificate",),
+              }, title: "Add Certificate".tr,),
               SizedBox(height: 30,),
             ],
           );

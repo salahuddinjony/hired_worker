@@ -17,7 +17,7 @@ class SeletedMapScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selecte Location"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selecte Location".tr),
       body: Stack(
         children: [
           Obx(
@@ -64,7 +64,7 @@ class SeletedMapScreen extends StatelessWidget {
                             },
                           )
                           : null,
-                  hintText: 'Enter your address',
+                  hintText: 'Enter your address'.tr,
                   hintStyle: TextStyle(color: AppColors.textCLr),
                   fillColor: AppColors.white,
                   onFieldSubmitted: (value) {
@@ -137,7 +137,7 @@ class SeletedMapScreen extends StatelessWidget {
                   Get.snackbar('Error', 'Please select a location first.');
                 }
               },
-              title: "Continue",
+              title: "Continue".tr,
             ),
           ),
         ],

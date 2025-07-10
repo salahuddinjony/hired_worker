@@ -12,7 +12,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Services Contractor",),
+      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Services Contractor".tr,),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 16, bottom: 30),
@@ -33,7 +33,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.customerAllContractorViewScreen);
                     },
                     child: CustomText(
-                      text: "View all",
+                      text: "View all".tr,
                       fontSize: 16.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blue,
@@ -64,7 +64,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                       //Get.toNamed(AppRoutes.customerServicesContractorScreen);
                     },
                     child: CustomText(
-                      text: "View all",
+                      text: "View all".tr,
                       fontSize: 16.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blue,
@@ -95,7 +95,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                       //Get.toNamed(AppRoutes.customerServicesContractorScreen);
                     },
                     child: CustomText(
-                      text: "View all",
+                      text: "View all".tr,
                       fontSize: 16.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blue,
@@ -126,7 +126,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                       //Get.toNamed(AppRoutes.customerServicesContractorScreen);
                     },
                     child: CustomText(
-                      text: "View all",
+                      text: "View all".tr,
                       fontSize: 16.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blue,
@@ -157,7 +157,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                       //Get.toNamed(AppRoutes.customerServicesContractorScreen);
                     },
                     child: CustomText(
-                      text: "View all",
+                      text: "View all".tr,
                       fontSize: 16.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blue,

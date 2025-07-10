@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -101,7 +102,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                       children: [
                         CustomButton(
                           onTap: () {},
-                          title: "Accept",
+                          title: "Accept".tr,
                           height: 26.h,
                           width: 70.w,
                           fontSize: 10.w,
@@ -109,7 +110,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                         ),
                         CustomButton(
                           onTap: () {},
-                          title: "Cancel",
+                          title: "Cancel".tr,
                           height: 26.h,
                           width: 50.w,
                           fontSize: 10.w,
@@ -121,7 +122,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                         ),
                         CustomButton(
                           onTap: () {},
-                          title: "View",
+                          title: "View".tr,
                           height: 26.h,
                           width: 50.w,
                           fontSize: 10.w,

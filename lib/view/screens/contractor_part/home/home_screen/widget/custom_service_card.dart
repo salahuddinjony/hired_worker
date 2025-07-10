@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -41,7 +42,7 @@ class CustomServiceCard extends StatelessWidget {
                   children: [
                     CustomText(text: "Switchboard Install", fontSize: 14.w,fontWeight: FontWeight.w700,color: AppColors.primary,),
                     SizedBox(width: 10.w,),
-                    CustomText(text: "Completed", fontSize: 14.w,fontWeight: FontWeight.w700,color: AppColors.green,),
+                    CustomText(text: "Completed".tr, fontSize: 14.w,fontWeight: FontWeight.w700,color: AppColors.green,),
                   ],
                 ),
                 CustomText(text: "40 min ago", fontSize: 10.w,fontWeight: FontWeight.w400,color: AppColors.black_07,bottom: 3.h,),
@@ -58,7 +59,7 @@ class CustomServiceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(text: "View Post (120)", fontSize: 10.w,fontWeight: FontWeight.w400,color: AppColors.black_04,right: 10.w,),
-                    CustomText(text: "Service Request", fontSize: 10.w,fontWeight: FontWeight.w400,color: AppColors.black,right: 10.w,),
+                    CustomText(text: "Service Request".tr, fontSize: 10.w,fontWeight: FontWeight.w400,color: AppColors.black,right: 10.w,),
                     Align(
                         alignment: Alignment.centerRight,
                         child: Icon(Icons.more_horiz,size: 16,))

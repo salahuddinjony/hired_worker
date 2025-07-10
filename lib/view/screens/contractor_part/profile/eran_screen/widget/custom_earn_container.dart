@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
 import '../../../../../components/custom_image/custom_image.dart';
@@ -77,7 +78,7 @@ class CustomEarnContainer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: CustomText(
-                    text:statusText?? "Completed",
+                    text:statusText?? "Completed".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.white,

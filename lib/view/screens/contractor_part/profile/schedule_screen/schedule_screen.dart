@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 
 class ScheduleScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class ScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Schedule"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Schedule".tr),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         itemCount: days.length,
@@ -126,8 +127,8 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Available",
+                    Text(
+                      "Available".tr,
                       style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
                     const SizedBox(width: 10),

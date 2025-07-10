@@ -89,7 +89,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               color: AppColors.black,
                             ),
                             CustomText(
-                              text: "Rating",
+                              text: "Rating".tr,
                               fontSize: 10.w,
                               fontWeight: FontWeight.w500,
                               color: AppColors.black,
@@ -106,7 +106,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               color: AppColors.black,
                             ),
                             CustomText(
-                              text: "Completed ",
+                              text: "Completed ".tr,
                               fontSize: 10.w,
                               fontWeight: FontWeight.w500,
                               color: AppColors.black,
@@ -123,7 +123,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               color: AppColors.black,
                             ),
                             CustomText(
-                              text: "Experience",
+                              text: "Experience".tr,
                               fontSize: 10.w,
                               fontWeight: FontWeight.w500,
                               color: AppColors.black,
@@ -138,7 +138,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
-                    text: "Skills",
+                    text: "Skills".tr,
                     fontSize: 16.w,
                     fontWeight: FontWeight.w600,
                     color: AppColors.black,
@@ -158,12 +158,12 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                 SizedBox(height: 20.h),
                 CustomButton(onTap: () {
                   Get.toNamed(AppRoutes.customarQaScreen);
-                }, title: "Book"),
+                }, title: "Book".tr),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     top: 20,
-                    text: "Available",
+                    text: "Available".tr,
                     fontSize: 16.w,
                     fontWeight: FontWeight.w600,
                     color: AppColors.black,
@@ -187,7 +187,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     top: 20,
-                    text: "Bio",
+                    text: "Bio".tr,
                     fontSize: 16.w,
                     fontWeight: FontWeight.w600,
                     color: AppColors.black,
@@ -210,7 +210,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
-                    text: "Review",
+                    text: "Review".tr,
                     fontSize: 16.w,
                     fontWeight: FontWeight.w600,
                     color: AppColors.black,

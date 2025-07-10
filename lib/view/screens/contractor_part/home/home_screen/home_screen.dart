@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: "Welcome!",
+                            text: "Welcome!".tr,
                             fontSize: 20.w,
                             fontWeight: FontWeight.w600,
                             color: AppColors.black_02,
@@ -83,10 +83,10 @@ class HomeScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomHomeCard(),
+                        CustomHomeCard( title: "Total Earning this month".tr,),
                         CustomHomeCard(
                           text: "90",
-                          title: "Total Service",
+                          title: "Total Service".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                       ],
@@ -97,12 +97,12 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CustomHomeCard(
                           text: "9",
-                          title: "Upcoming Services",
+                          title: "Upcoming Services".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                         CustomHomeCard(
                           text: "3",
-                          title: "Total Service",
+                          title: "Total Service".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                       ],
@@ -113,12 +113,12 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CustomHomeCard(
                           text: "15",
-                          title: "Recent Services",
+                          title: "Recent Services".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                         CustomHomeCard(
                           text: "\$50/hr",
-                          title: "Current billing price",
+                          title: "Current billing price".tr,
                           imageSrc: AppIcons.iconThree,
                         ),
                       ],
@@ -129,13 +129,13 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CustomHomeCard(
                           text: "9",
-                          title: "Experience",
+                          title: "Experience".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                         CustomHomeCard(
                           onTap: () => Get.toNamed(AppRoutes.onGoingScreen),
                           text: "03",
-                          title: "On Going",
+                          title: "On Going".tr,
                           imageSrc: AppIcons.iconTwo,
                         ),
                       ],
@@ -145,13 +145,13 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          text: "Recent Service",
+                          text: "Recent Service".tr,
                           fontSize: 14.w,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,
                         ),
                         CustomText(
-                          text: "See all",
+                          text: "See all".tr,
                           fontSize: 14.w,
                           fontWeight: FontWeight.w600,
                           color: AppColors.primary,

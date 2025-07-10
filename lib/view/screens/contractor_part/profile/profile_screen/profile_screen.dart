@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: CustomRoyelAppbar(
         leftIcon: false,
         showRightIcon: true,
-        titleName: "Profile",
+        titleName: "Profile".tr,
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
           Get.toNamed(AppRoutes.editProfileScreen);
@@ -107,7 +107,7 @@ class ProfileScreen extends StatelessWidget {
                   CustomHomeCard(),
                   CustomHomeCard(
                     text: "90",
-                    title: "Total Service",
+                    title: "Total Service".tr,
                     imageSrc: AppIcons.iconTwo,
                   ),
                 ],
@@ -118,55 +118,55 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   CustomHomeCard(
                     text: "15",
-                    title: "Recent Services",
+                    title: "Recent Services".tr,
                     imageSrc: AppIcons.iconFour,
                   ),
                   CustomHomeCard(
                     text: "\$50/hr",
-                    title: "Current billing price",
+                    title: "Current billing price".tr,
                     imageSrc: AppIcons.iconThree,
                   ),
                 ],
               ),
               SizedBox(height: 20.h),
               CustomProfileMenuList(),
-              CustomProfileMenuList(image: AppIcons.map, name: "Address"),
+              CustomProfileMenuList(image: AppIcons.map, name: "Address".tr),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.notificationScreen);
                 },
                 image: AppIcons.notifaction,
-                name: "Notification",
+                name: "Notification".tr,
               ),
-              CustomProfileMenuList(image: AppIcons.sklils, name: "Skills"),
+              CustomProfileMenuList(image: AppIcons.sklils, name: "Skills".tr),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.materialsScreen);
                 },
                 image: AppIcons.mdiMaterial,
-                name: "Materials",
+                name: "Materials".tr,
               ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.scheduleScreen);
                 },
                 image: AppIcons.schedule,
-                name: "Schedule",
+                name: "Schedule".tr,
               ),
               CustomProfileMenuList(
                 image: AppIcons.totalService,
-                name: "Total Service",
+                name: "Total Service".tr,
               ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.eranScreen);
                 },
                 image: AppIcons.eran,
-                name: "Eran",
+                name: "Eran".tr,
               ),
               CustomProfileMenuList(
                 image: AppIcons.mdiRecent,
-                name: "Recent Service",
+                name: "Recent Service".tr,
               ),
               // CustomProfileMenuList(
               //   image: AppIcons.settingIcon,
@@ -177,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.helpSupportScreen);
                 },
                 image: AppIcons.call,
-                name: "Support",
+                name: "Support".tr,
               ),
               SizedBox(height: 10.h),
               TextButton(
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                   Get.offAllNamed(AppRoutes.loginScreen);
                 },
                 child: CustomText(
-                  text: "Log Out",
+                  text: "Log Out".tr,
                   fontSize: 20.w,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
