@@ -19,7 +19,7 @@ class ContractorSignUpScreen extends StatelessWidget {
     bool isContactor = Get.arguments['isContactor'] ?? false;
     return Scaffold(
       appBar: CustomRoyelAppbar(
-        titleName: "${isContactor ? 'Contractor' : 'Customer'} Sign Up",
+        titleName: "${isContactor ? 'Contractor'.tr : 'Customer'.tr} ${'Signup'.tr}",
         leftIcon: true,
       ),
       body: SingleChildScrollView(
@@ -50,28 +50,28 @@ class ContractorSignUpScreen extends StatelessWidget {
                 ),
               ),
               CustomFormCard(
-                title: "Enter your Name",
-                hintText: "enter your name".tr,
+                title: "Enter your name".tr,
+                hintText: "Enter your name".tr,
                 controller: authController.nameController.value,
               ),
               CustomFormCard(
-                title: "Enter Email Address".tr,
-                hintText: "enter your email".tr,
+                title: "Enter your address".tr,
+                hintText: "Enter your email".tr,
                 controller: authController.emailController.value,
               ),
               CustomFormCard(
-                title: "Enter Mobile Number".tr,
-                hintText: "enter your number".tr,
+                title: "Enter your mobile number".tr,
+                hintText: "Enter your number".tr,
                 controller: authController.phoneController.value,
               ),
               CustomFormCard(
                 title: "Enter New Password".tr,
-                hintText: "enter your password".tr,
+                hintText: "Enter your password".tr,
                 controller: authController.passController.value,
               ),
               CustomFormCard(
                 title: "Enter Confirm Password".tr,
-                hintText: "enter your password".tr,
+                hintText: "Enter your password".tr,
                 controller: authController.confirmController.value,
               ),
               Row(

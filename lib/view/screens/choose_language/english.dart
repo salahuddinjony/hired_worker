@@ -1,7 +1,7 @@
 Map<String, String> english = {
   //========= new ==================
-  "Welcome back": "Welcome back",
-  "Log in to your account using mobile number or email address":
+  "Welcome Back": "Welcome back",
+  "Log in to your account using mobile\nnumber or email address":
       "Log in to your account using mobile number or email address",
   "Email": "Email",
   "Enter your email": "Enter your email",
@@ -21,7 +21,7 @@ Map<String, String> english = {
   "Verify Your Email": "Verify Your Email",
   "Enter Code": "Enter Code",
   "Verify email": "Verify email",
-  "Didn’t receive a code": "Didn’t receive a code?",
+  "Don’t have an account?": "Don’t have an account?",
   "We just sent 4-digit code to": "We just sent 4-digit code to",
   "Resend Code": "Resend Code",
   "Send": "Send",

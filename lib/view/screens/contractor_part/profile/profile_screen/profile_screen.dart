@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/global/general_controller/general_controller.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
@@ -20,6 +21,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.find<ProfileController>();
+    final GeneralController generalController = Get.find<GeneralController>();
 
     return Scaffold(
       extendBody: true,
@@ -172,6 +174,19 @@ class ProfileScreen extends StatelessWidget {
               //   image: AppIcons.settingIcon,
               //   name: "Settings",
               // ),
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('English'),
+                    Switch(
+                      value: generalController.isChinese.value,
+                      onChanged: generalController.toggleLanguage,
+                    ),
+                    Text('中文'),
+                  ],
+                ),
+              ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.helpSupportScreen);

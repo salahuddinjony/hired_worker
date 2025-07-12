@@ -41,6 +41,7 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomText(
                 top: 20.h,
+                bottom: 20.h,
                 text:
                     "Log in to your account using mobile\nnumber or email address".tr,
                 fontSize: 14.w,
@@ -98,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    text: "Don’t have an account? ".tr,
+                    text: "Don’t have an account?".tr,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
