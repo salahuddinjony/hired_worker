@@ -18,7 +18,6 @@ class GeneralController extends GetxController {
     getPrivacy();
     getTerms();
     getAbout();
-    _loadLanguagePreference();
     super.onInit();
   }
 
@@ -152,23 +151,5 @@ Deleting your account removes personal information our database. Your email beco
       );
       ApiChecker.checkApi(response);
     }
-  }
-
-  //========= language ===============
-  var isChinese = false.obs;
-
- 
-  void toggleLanguage(bool value) async {
-    isChinese.value = value;
-     await SharePrefsHelper.setBool('isChinese', value);
-    final newLocale = value ? Locale('zh', 'CN') : Locale('en', 'US');
-    Get.updateLocale(newLocale);
-  }
-
-  void _loadLanguagePreference() async {
-     isChinese.value = await SharePrefsHelper.getBool('isChinese') ?? false;
-    final savedLocale =
-        isChinese.value ? Locale('zh', 'CN') : Locale('en', 'US');
-    Get.updateLocale(savedLocale);
   }
 }

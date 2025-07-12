@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/global/general_controller/general_controller.dart';
 import 'package:servana/view/screens/choose_language/language_translator.dart';
 import 'core/app_routes/app_routes.dart';
 import 'core/dependency/dependency_injection.dart';
@@ -10,7 +9,6 @@ import 'utils/app_colors/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final generalController = Get.put(GeneralController());
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(

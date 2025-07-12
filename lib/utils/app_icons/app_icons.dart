@@ -17,6 +17,7 @@ class AppIcons {
   static const String filled = "$basePath/filled.svg";
   static const String editIcon = "$basePath/editIcon.svg";
   static const String payment = "$basePath/payment.svg";
+  static const String language = "$basePath/language.svg";
   static const String map = "$basePath/map.svg";
   static const String notifaction = "$basePath/notifaction.svg";
   static const String mdiMaterial = "$basePath/mdi_material.svg";

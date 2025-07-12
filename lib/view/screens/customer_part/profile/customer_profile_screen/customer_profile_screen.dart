@@ -9,6 +9,7 @@ import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/customer_part/profile/controller/customer_profile_controller.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
 import '../../../contractor_part/profile/profile_screen/widget/custom_profile_menu_list.dart';
@@ -20,6 +21,8 @@ class CustomerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomerProfileController customerProfileController =
         Get.find<CustomerProfileController>();
+    final LanguageController languageController =
+        Get.find<LanguageController>();
     return Scaffold(
       extendBody: true,
 
@@ -40,7 +43,8 @@ class CustomerProfileScreen extends StatelessWidget {
               Row(
                 children: [
                   Obx(() {
-                    final data = customerProfileController.customerModel.value.data;
+                    final data =
+                        customerProfileController.customerModel.value.data;
                     // Check if an image is selected, if not use the default profile image
 
                     return customerProfileController.selectedImage.value == null
@@ -156,7 +160,16 @@ class CustomerProfileScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.termsConditionsScreen);
                 },
               ),
-
+              CustomProfileMenuList(
+                image: AppIcons.language,
+                name:
+                    languageController.isChinese.value
+                        ? "启用英文"
+                        : "Enable Chinese",
+                showSwitch: true,
+                switchValue: languageController.isChinese.value,
+                onSwitchChanged: languageController.toggleLanguage,
+              ),
               SizedBox(height: 10.h),
               TextButton(
                 onPressed: () {

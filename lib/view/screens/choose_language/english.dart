@@ -20,6 +20,7 @@ Map<String, String> english = {
   "Submit": "Submit",
   "Verify Your Email": "Verify Your Email",
   "Enter Code": "Enter Code",
+  "Enable Chinese": "Enable Chinese",
   "Verify email": "Verify email",
   "Don’t have an account?": "Don’t have an account?",
   "We just sent 4-digit code to": "We just sent 4-digit code to",

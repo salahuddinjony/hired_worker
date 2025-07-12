@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:servana/global/general_controller/general_controller.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
+import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../view/screens/contractor_part/complete_your_profile/controller/complete_profile_controller.dart';
@@ -14,6 +15,7 @@ class DependencyInjection extends Bindings {
   @override
   void dependencies() {
     ///==========================Default Custom Controller ==================
+    Get.put(LanguageController());
     Get.lazyPut(() => GeneralController(), fenix: true);
     Get.lazyPut(() => OrderController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);

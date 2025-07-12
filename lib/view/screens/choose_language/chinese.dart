@@ -26,6 +26,7 @@ final Map<String, String> chinese = {
   "Forgot Password": "忘记密码",
   "Customer": "客户",
   "or": "或",
+  "Enable Chinese": "启用英文",
   "Contractor": "承包商",
   "Create a New Account": "创建新账户",
   "Already have an account?": "已经有账户？",

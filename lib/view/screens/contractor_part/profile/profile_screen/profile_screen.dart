@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
-import 'package:servana/global/general_controller/general_controller.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
@@ -11,6 +10,7 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
 import 'widget/custom_profile_menu_list.dart';
@@ -21,7 +21,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.find<ProfileController>();
-    final GeneralController generalController = Get.find<GeneralController>();
+    final LanguageController languageController =
+        Get.find<LanguageController>();
 
     return Scaffold(
       extendBody: true,
@@ -170,29 +171,23 @@ class ProfileScreen extends StatelessWidget {
                 image: AppIcons.mdiRecent,
                 name: "Recent Service".tr,
               ),
-              // CustomProfileMenuList(
-              //   image: AppIcons.settingIcon,
-              //   name: "Settings",
-              // ),
-              Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('English'),
-                    Switch(
-                      value: generalController.isChinese.value,
-                      onChanged: generalController.toggleLanguage,
-                    ),
-                    Text('中文'),
-                  ],
-                ),
-              ),
+
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.helpSupportScreen);
                 },
                 image: AppIcons.call,
                 name: "Support".tr,
+              ),
+              CustomProfileMenuList(
+                image: AppIcons.language,
+                name:
+                    languageController.isChinese.value
+                        ? "启用英文"
+                        : "Enable Chinese",
+                showSwitch: true,
+                switchValue: languageController.isChinese.value,
+                onSwitchChanged: languageController.toggleLanguage,
               ),
               SizedBox(height: 10.h),
               TextButton(
