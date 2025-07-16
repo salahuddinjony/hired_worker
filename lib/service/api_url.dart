@@ -1,3 +1,5 @@
+import 'package:servana/view/screens/contractor_part/message/model/message_room_model.dart';
+
 class ApiUrl {
   static const String baseUrl =
       "http://10.0.60.52:5002/api/v1"; //   //http://10.0.60.55:5002/v1 , https://912f-103-174-189-193.ngrok-free.app/v1 http://10.0.60.52:5002/api/v1
@@ -19,6 +21,7 @@ class ApiUrl {
   static const String categories = "/categories/";
   static const String subCategories = "/sub-categories/";
   static String singleSubCategory({required String categoryId}) => "/sub-categories?categoryId=$categoryId";
+  static String allMessageRoom({required String userId}) => "/chat-rooms/my-chat-list/$userId";
   static const String materials = "/materials/";
   static const String getAllContractors = "/contractors";
   static const String forgetPassword = "/auth/forget-password";

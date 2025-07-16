@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
+import 'package:servana/view/screens/contractor_part/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -71,6 +72,7 @@ class AppRoutes {
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
   static const String messageListScreen = "/MessageListScreen";
+  static const String chatScreen = "/ChatScreen";
   static const String profileScreen = "/ProfileScreen";
   static const String editProfileScreen = "/EditProfileScreen";
   static const String helpSupportScreen = "/HelpSupportScreen";
@@ -128,6 +130,7 @@ class AppRoutes {
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: messageListScreen, page: () => MessageListScreen()),
+    GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
     GetPage(name: helpSupportScreen, page: () => HelpSupportScreen()),
