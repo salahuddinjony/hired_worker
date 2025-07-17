@@ -22,7 +22,10 @@ class MessageListScreen extends StatelessWidget {
           children: List.generate(data.length, (value) {
             return GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.chatScreen, );
+                Get.toNamed(
+                  AppRoutes.chatScreen,
+                  arguments: [data[value].id, data[value].otherUserId],
+                );
               },
               child: CustomMessageListCard(
                 image: data[value].otherUserImage,

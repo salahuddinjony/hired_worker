@@ -44,6 +44,7 @@ class Datum {
     DateTime? updatedAt;
     String? otherUserName;
     String? otherUserImage;
+    String? otherUserId;
     String? lastMessage;
     DateTime? lastMessageTime;
 
@@ -55,6 +56,7 @@ class Datum {
         this.updatedAt,
         this.otherUserName,
         this.otherUserImage,
+        this.otherUserId,
         this.lastMessage,
         this.lastMessageTime,
     });
@@ -67,6 +69,7 @@ class Datum {
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         otherUserName: json["otherUserName"],
         otherUserImage: json["otherUserImage"],
+        otherUserId: json["otherUserId"],
         lastMessage: json["lastMessage"],
         lastMessageTime: json["lastMessageTime"] == null ? null : DateTime.parse(json["lastMessageTime"]),
     );
@@ -79,6 +82,7 @@ class Datum {
         "updatedAt": updatedAt?.toIso8601String(),
         "otherUserName": otherUserName,
         "otherUserImage": otherUserImage,
+        "otherUserId": otherUserId,
         "lastMessage": lastMessage,
         "lastMessageTime": lastMessageTime?.toIso8601String(),
     };

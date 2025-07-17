@@ -80,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                   Obx(() {
                     final contractorData =
                         profileController.contractorModel.value;
-
+print('===============================dsfsfsd===${contractorData.data?.fullName}');
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -93,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                         CustomText(
                           text:
                               contractorData.data?.email ??
-                              "liamksayem@gmail.com",
+                              "d@gmail.com",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black_04,

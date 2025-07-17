@@ -1,11 +1,10 @@
-import 'package:servana/view/screens/contractor_part/message/model/message_room_model.dart';
-
 class ApiUrl {
-  static const String baseUrl =
-      "http://10.0.60.52:5002/api/v1"; //   //http://10.0.60.55:5002/v1 , https://912f-103-174-189-193.ngrok-free.app/v1 http://10.0.60.52:5002/api/v1
+  static const String baseUrl = "http://10.0.60.52:5002/api/v1";
   static const String imageUrl = "http://10.0.60.52:5002/api/v1";
-  static String socketUrl({required String id}) =>
-      "https://912f-103-174-189-193.ngrok-free.app?userId=$id";
+  static String socketUrl = "http://10.0.60.52:5002";
+
+  // static String socketUrl({required String id}) =>
+  //     "https://912f-103-174-189-193.ngrok-free.app?userId=$id";
   // server url : http://103.174.189.219:5002/api/v1
   // local url : http://10.0.60.55:5002/v1
   ///========================= Authentication =========================
@@ -20,8 +19,12 @@ class ApiUrl {
   static const String getMe = "/users/me";
   static const String categories = "/categories/";
   static const String subCategories = "/sub-categories/";
-  static String singleSubCategory({required String categoryId}) => "/sub-categories?categoryId=$categoryId";
-  static String allMessageRoom({required String userId}) => "/chat-rooms/my-chat-list/$userId";
+  static String singleSubCategory({required String categoryId}) =>
+      "/sub-categories?categoryId=$categoryId";
+  static String allMessageRoom({required String userId}) =>
+      "/chat-rooms/my-chat-list/$userId";
+  static String allMessage({required String roomId}) =>
+      "/chats/$roomId/messages";
   static const String materials = "/materials/";
   static const String getAllContractors = "/contractors";
   static const String forgetPassword = "/auth/forget-password";
@@ -35,7 +38,6 @@ class ApiUrl {
   static const String about = "/abouts";
   static const String termsCondition = "/terms";
   static String deleteAccount({required String userId}) => "/users/$userId";
-
 
   /// ==================   candidate part =============
 
@@ -146,8 +148,7 @@ class ApiUrl {
   static String deleteUser({required String userId}) => "/user/delete/$userId";
   static String getWallet({required String userId}) =>
       "/wallet/retrive/user/$userId";
-  static String updateProfile({required String userId}) =>
-      "/users/$userId";
+  static String updateProfile({required String userId}) => "/users/$userId";
   // static String updateProfileImage ({required String userId}) => '/user/update/profile-picture/67b813b7421435769e24e547';
   static String updateProfileImage({required String userId}) =>
       "/user/update/profile-picture/$userId";
