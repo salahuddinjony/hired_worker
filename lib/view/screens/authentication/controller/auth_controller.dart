@@ -6,6 +6,7 @@ import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
+import 'package:servana/service/socket_service.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
@@ -101,7 +102,8 @@ class AuthController extends GetxController {
         final role = data['role'];
 
         await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
-        await SharePrefsHelper.setString(AppConstants.role, role);
+        await SharePrefsHelper.setString(AppConstants.role, role); 
+          SocketApi.init();
 
         if (role == 'contractor') {
           contractorModel.value = ContractorModel.fromJson(data);

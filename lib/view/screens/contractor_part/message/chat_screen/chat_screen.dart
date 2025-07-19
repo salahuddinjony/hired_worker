@@ -10,7 +10,6 @@ import 'package:servana/view/screens/contractor_part/message/message_list_screen
 import 'package:servana/view/screens/contractor_part/message/message_list_screen/widget/chat_input.dart';
 import 'package:servana/view/screens/contractor_part/message/message_list_screen/widget/message_appbar.dart';
 
-// Chat Screen
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -20,15 +19,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final MessageController messageController = Get.find<MessageController>();
-  late String roomId;
-  late String receiverId;
+   String roomId =Get.arguments[0];
+   String receiverId = Get.arguments[1];
   String? currentUserId;
 
   @override
   void initState() {
     super.initState();
-    roomId = Get.arguments[0];
-    receiverId = Get.arguments[1];
+   
     _initialize();
   }
 
@@ -40,7 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: const MessageAppBar(),
       backgroundColor: const Color(0xFFF3EAF4),
       body: Obx(() {
@@ -66,15 +63,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     SizedBox(height: 16.h),
-
                     Expanded(
                       child: ListView.builder(
                         controller: messageController.scrollController,
-                        itemCount:
-                            messageController.convarsationModel.value.data?.length ?? 0,
+                        itemCount: messageController.conversationModel.value.data?.length ?? 0,
                         padding: EdgeInsets.only(bottom: 12.h),
                         itemBuilder: (context, index) {
-                          final msg = messageController.convarsationModel.value.data?[index];
+                          final msg = messageController.conversationModel.value.data?[index];
                           final isSent = msg?.sender == currentUserId;
                           return ChatBubble(
                             text: msg?.message ?? '',
@@ -83,11 +78,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                       ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.only(top: 8.h),
                       child: ChatInputField(
-                        controller: messageController.messageController.value,
+                        controller: messageController.messageController,
                         onSend: () {
                           messageController.sendMessage(
                             receiverId: receiverId,

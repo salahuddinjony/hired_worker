@@ -272,18 +272,25 @@ class CustomerHomeScreen extends StatelessWidget {
                           AppRoutes.customerContractorProfileViewScreen,
                         );
                       },
-                      image: AppConstants.profileImage,
+                      image:
+                          ImageHandler.imagesHandle(
+                            homeController
+                                .getAllContactorModel
+                                .value
+                                .data?[index]
+                                .userId
+                                ?.img,
+                          ) ??
+                          AppConstants.profileImage,
                       name:
-                          homeController.getAllContactorModel.value.data?[index]
-                              .toString() ??
-                          "Mehedi",
-                      title:
                           homeController
                               .getAllContactorModel
                               .value
                               .data?[index]
-                              .skillsCategory ??
-                          " ",
+                              .userId
+                              ?.fullName ??
+                          "Nishad",
+                      title: homeController.getAllContactorModel.value.data?[index].skillsCategory ?? "423",
                     ); // You can pass `serviceList[index]` if needed
                   },
                 ),

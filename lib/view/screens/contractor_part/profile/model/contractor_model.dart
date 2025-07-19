@@ -101,9 +101,11 @@ class Data {
 }
 
 class Contractor {
-    String? dob;
-    String? language;
     String? id;
+    DateTime? dob;
+    String? gender;
+    String? city;
+    String? language;
     String? location;
     int? rateHourly;
     String? skillsCategory;
@@ -112,20 +114,20 @@ class Contractor {
     String? customerId;
     String? paymentMethodId;
     List<String>? certificates;
+    MyScheduleId? myScheduleId;
     bool? isDeleted;
     List<String>? skills;
-    List<Material>? materials;
+    List<dynamic>? materials;
     DateTime? createdAt;
     DateTime? updatedAt;
     int? v;
-    String? myScheduleId;
-    String? gender;
-    String? city;
 
     Contractor({
-        this.dob,
-        this.language,
         this.id,
+        this.dob,
+        this.gender,
+        this.city,
+        this.language,
         this.location,
         this.rateHourly,
         this.skillsCategory,
@@ -134,21 +136,21 @@ class Contractor {
         this.customerId,
         this.paymentMethodId,
         this.certificates,
+        this.myScheduleId,
         this.isDeleted,
         this.skills,
         this.materials,
         this.createdAt,
         this.updatedAt,
         this.v,
-        this.myScheduleId,
-        this.gender,
-        this.city,
     });
 
     factory Contractor.fromJson(Map<String, dynamic> json) => Contractor(
-        dob: json["dob"],
-        language: json["language"],
         id: json["_id"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        gender: json["gender"],
+        city: json["city"],
+        language: json["language"],
         location: json["location"],
         rateHourly: json["rateHourly"],
         skillsCategory: json["skillsCategory"],
@@ -157,21 +159,21 @@ class Contractor {
         customerId: json["customerId"],
         paymentMethodId: json["paymentMethodId"],
         certificates: json["certificates"] == null ? [] : List<String>.from(json["certificates"]!.map((x) => x)),
+        myScheduleId: json["myScheduleId"] == null ? null : MyScheduleId.fromJson(json["myScheduleId"]),
         isDeleted: json["isDeleted"],
         skills: json["skills"] == null ? [] : List<String>.from(json["skills"]!.map((x) => x)),
-        materials: json["materials"] == null ? [] : List<Material>.from(json["materials"]!.map((x) => Material.fromJson(x))),
+        materials: json["materials"] == null ? [] : List<dynamic>.from(json["materials"]!.map((x) => x)),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
-        myScheduleId: json["myScheduleId"],
-        gender: json["gender"],
-        city: json["city"],
     );
 
     Map<String, dynamic> toJson() => {
-        "dob": dob,
-        "language": language,
         "_id": id,
+        "dob": "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+        "gender": gender,
+        "city": city,
+        "language": language,
         "location": location,
         "rateHourly": rateHourly,
         "skillsCategory": skillsCategory,
@@ -180,42 +182,72 @@ class Contractor {
         "customerId": customerId,
         "paymentMethodId": paymentMethodId,
         "certificates": certificates == null ? [] : List<dynamic>.from(certificates!.map((x) => x)),
+        "myScheduleId": myScheduleId?.toJson(),
         "isDeleted": isDeleted,
         "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
-        "materials": materials == null ? [] : List<dynamic>.from(materials!.map((x) => x.toJson())),
+        "materials": materials == null ? [] : List<dynamic>.from(materials!.map((x) => x)),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
-        "myScheduleId": myScheduleId,
-        "gender": gender,
-        "city": city,
     };
 }
 
-class Material {
-    String? name;
-    String? unit;
-    int? price;
+class MyScheduleId {
+    String? id;
+    String? contractorId;
+    List<Schedule>? schedules;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    int? v;
+
+    MyScheduleId({
+        this.id,
+        this.contractorId,
+        this.schedules,
+        this.createdAt,
+        this.updatedAt,
+        this.v,
+    });
+
+    factory MyScheduleId.fromJson(Map<String, dynamic> json) => MyScheduleId(
+        id: json["_id"],
+        contractorId: json["contractorId"],
+        schedules: json["schedules"] == null ? [] : List<Schedule>.from(json["schedules"]!.map((x) => Schedule.fromJson(x))),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "contractorId": contractorId,
+        "schedules": schedules == null ? [] : List<dynamic>.from(schedules!.map((x) => x.toJson())),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+    };
+}
+
+class Schedule {
+    String? days;
+    List<String>? timeSlots;
     String? id;
 
-    Material({
-        this.name,
-        this.unit,
-        this.price,
+    Schedule({
+        this.days,
+        this.timeSlots,
         this.id,
     });
 
-    factory Material.fromJson(Map<String, dynamic> json) => Material(
-        name: json["name"],
-        unit: json["unit"],
-        price: json["price"],
+    factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
+        days: json["days"],
+        timeSlots: json["timeSlots"] == null ? [] : List<String>.from(json["timeSlots"]!.map((x) => x)),
         id: json["_id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "name": name,
-        "unit": unit,
-        "price": price,
+        "days": days,
+        "timeSlots": timeSlots == null ? [] : List<dynamic>.from(timeSlots!.map((x) => x)),
         "_id": id,
     };
 }

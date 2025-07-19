@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
@@ -11,159 +7,126 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/service/socket_service.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/screens/contractor_part/message/model/conversation_model.dart';
-import 'package:servana/view/screens/contractor_part/message/model/message_room_model.dart';
+import 'package:servana/view/screens/contractor_part/message/model/message_room_model.dart'
+    hide Datum;
 
 class MessageController extends GetxController {
+  final Rx<RxStatus> getAllRoomListStatus = Rx<RxStatus>(RxStatus.success());
+  final Rx<AllMessageRoomModel> allMessageRoomModel = AllMessageRoomModel().obs;
+
+  final Rx<RxStatus> getAllMessageListStatus = Rx<RxStatus>(RxStatus.success());
+  final Rx<ConvarsationModel> conversationModel = ConvarsationModel().obs;
+
+  final TextEditingController messageController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+
+ //  RxString userId = ''.obs;
+
   @override
-  onInit() {
-    SocketApi.init();
-    getAllRoomList();
+  void onInit() async {
     super.onInit();
+  //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
+    
+    getAllRoomList();
+    receiveMessage();
   }
 
-  Rx<RxStatus> getAllRoomListStatus = Rx<RxStatus>(RxStatus.success());
-  Rx<AllMessageRoomModel> allMessageRoomModel = AllMessageRoomModel().obs;
-  Future<void> getAllRoomList() async {
+  Future<void> getAllRoomList() async { 
+
+   final userId = await SharePrefsHelper.getString(AppConstants.userId);
     try {
       getAllRoomListStatus.value = RxStatus.loading();
-      final userId = await SharePrefsHelper.getString(AppConstants.userId);
       var response = await ApiClient.getData(
         ApiUrl.allMessageRoom(userId: userId),
       );
+
       if (response.statusCode == 200) {
         allMessageRoomModel.value = AllMessageRoomModel.fromJson(response.body);
         getAllRoomListStatus.value = RxStatus.success();
-        refresh();
       } else {
         getAllRoomListStatus.value = RxStatus.error();
         ApiChecker.checkApi(response);
-        refresh();
       }
     } catch (e) {
       getAllRoomListStatus.value = RxStatus.error();
-      debugPrint('Error: $e');
-      refresh();
+      debugPrint('Error in getAllRoomList: $e');
     }
   }
 
-  //============ all message ==============
-
-  // final RxList<Map<String, dynamic>> messages =
-  //     <Map<String, dynamic>>[
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Enim posuere aenean enim malesuada diam donec augue facilisi.',
-  //         'isSent': false,
-  //       },
-  //       {'text': 'Hello', 'isSent': false},
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Enim posuere aenean enim malesuada diam donec augue facilisi.',
-  //         'isSent': false,
-  //       },
-  //       {'text': 'Hello', 'isSent': false},
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //       {
-  //         'text':
-  //             'Lorem ipsum dolor sit amet consectetur. Fringilla vitae dolor.',
-  //         'isSent': true,
-  //       },
-  //     ].obs;
-  Rx<TextEditingController> messageController = TextEditingController().obs;
-  final ScrollController scrollController = ScrollController();
-  // void handleSend() {
-  //   // final text = controller.text.trim();
-  //   // if (text.isEmpty) return;
-
-  //   // // messages.add({'text': text, 'isSent': true});
-  //   // controller.clear();
-  //   // SocketApi.sendEvent('sendMessage', text);
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     scrollController.animateTo(
-  //       scrollController.position.maxScrollExtent + 100,
-  //       duration: const Duration(milliseconds: 300),
-  //       curve: Curves.easeOut,
-  //     );
-  //   });
-  // }
-
-  //=============== send message ================
-
-   sendMessage({required String receiverId, required String chatRoomId}) async {
-    final userId = await SharePrefsHelper.getString(AppConstants.userId);
-    var body = {
-      "chatRoomId": chatRoomId,
-      "sender": userId,
-      "receiver": receiverId,
-      "message": messageController.value.text,
-    };
-
-    
-      SocketApi.sendEvent('sendMessage', body);
-    
-
-    // getConversation(otherId: receiverId);
-    debugPrint(
-        'messageController.value.text=====================>>  ${messageController.value.text}');
-    messageController.value.clear();
-    // getConversation(otherId: receiverId);
-    // imageUrls.clear();
-  }
-
-  //============ all message ==============
-  Rx<RxStatus> getAllMessageListStatus = Rx<RxStatus>(RxStatus.success());
-  Rx<ConvarsationModel> convarsationModel = ConvarsationModel().obs;
   Future<void> getAllMessageList(String roomId) async {
     try {
       getAllMessageListStatus.value = RxStatus.loading();
       var response = await ApiClient.getData(ApiUrl.allMessage(roomId: roomId));
       if (response.statusCode == 200) {
-        convarsationModel.value = ConvarsationModel.fromJson(response.body);
+        conversationModel.value = ConvarsationModel.fromJson(response.body);
         getAllMessageListStatus.value = RxStatus.success();
-        refresh();
       } else {
         getAllMessageListStatus.value = RxStatus.error();
         ApiChecker.checkApi(response);
-        refresh();
       }
     } catch (e) {
       getAllMessageListStatus.value = RxStatus.error();
-      debugPrint('Error: $e');
-      refresh();
+      debugPrint('Error in getAllMessageList: $e');
     }
+  }
+
+  Future<void> sendMessage({
+    required String receiverId,
+    required String chatRoomId,
+  }) async {    
+   final userId = await SharePrefsHelper.getString(AppConstants.userId); 
+
+    debugPrint("userId============================= >> $userId");
+    final messageText = messageController.text.trim();
+    if (messageText.isEmpty) return;
+
+    var body = {
+      "chatRoomId": chatRoomId,
+      "sender": userId,
+      "receiver": receiverId,
+      "message": messageText,
+    }; 
+
+
+    debugPrint("before send============================= >> ${body.toString()}");
+
+    SocketApi.sendEvent('sendMessage', body);
+    messageController.clear();
+    scrollToBottom();
+  }
+
+  void receiveMessage() {
+    SocketApi.listen('newMessage', (data) {
+      try {
+        debugPrint('📥 1111111112313213 New message: $data');
+        final newMessage = Datum.fromJson(data);
+        conversationModel.update((val) {
+          val?.data ??= [];
+          val?.data?.add(newMessage);
+        });
+        scrollToBottom();
+      } catch (e) {
+        debugPrint('❌ Error parsing message: $e');
+      }
+    });
+  }
+
+  void scrollToBottom() {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    messageController.dispose();
+    scrollController.dispose();
+    super.onClose();
   }
 }
