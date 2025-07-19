@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/socket_service.dart';
 import 'package:servana/view/screens/choose_language/language_translator.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'core/app_routes/app_routes.dart';
 import 'core/dependency/dependency_injection.dart';
 import 'utils/app_colors/app_colors.dart';
@@ -19,7 +21,7 @@ void main() async {
     ),
   );
   DependencyInjection di = DependencyInjection();
-  di.dependencies();   
+  di.dependencies();
   SocketApi.init();
   runApp(const MyApp());
 }

@@ -5,7 +5,7 @@ import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/screens/contractor_part/message/controller/message_controller.dart';
+import 'package:servana/view/screens/message/controller/message_controller.dart';
 import 'widget/custom_message_list_card.dart';
 
 class MessageListScreen extends StatelessWidget {
@@ -30,7 +30,7 @@ class MessageListScreen extends StatelessWidget {
 
                 Get.toNamed(
                   AppRoutes.chatScreen,
-                  arguments: [data[value].id, data[value].otherUserId],
+                  arguments: [data[value].id, data[value].otherUserId, data[value].otherUserName, data[value].otherUserImage],
                 );
               },
               child: CustomMessageListCard(

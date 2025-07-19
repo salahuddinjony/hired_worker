@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/message/audio_call_screen/audio_call_screen.dart';
+
 class MessageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MessageAppBar({super.key, this.imageUrl, this.name});
+  const MessageAppBar({
+    super.key,
+    required this.imageUrl,
+    required this.name,
+    required this.id,
+    required this.roomId,
+  });
 
   final String? imageUrl;
   final String? name;
+  final String? id;
+  final String? roomId;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +57,15 @@ class MessageAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(
+                  () => AudioCallScreen(
+                    userName: name ?? 'Thomas',
+                    callId: '12345678901',
+                    userId: id ?? '',
+                  ),
+                );
+              },
               icon: const Icon(Icons.call, color: Colors.black),
             ),
           ],

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/screens/message/message_list_screen/message_list_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
-import '../../screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
 import '../../screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
 import '../../screens/customer_part/profile/customer_profile_screen/customer_profile_screen.dart';
 
@@ -51,7 +51,7 @@ class _NavbarState extends State<CustomerNavbar> {
         Get.to(() => CustomerRequestHistoryScreen());
         break;
       case 2:
-        Get.to(() => CustomerMessaageListScreen());
+        Get.to(() => MessageListScreen());
         break;
       case 3:
         Get.to(() => CustomerProfileScreen());

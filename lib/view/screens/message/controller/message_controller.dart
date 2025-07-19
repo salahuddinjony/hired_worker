@@ -6,8 +6,8 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/service/socket_service.dart';
 import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/view/screens/contractor_part/message/model/conversation_model.dart';
-import 'package:servana/view/screens/contractor_part/message/model/message_room_model.dart'
+import 'package:servana/view/screens/message/model/conversation_model.dart';
+import 'package:servana/view/screens/message/model/message_room_model.dart'
     hide Datum;
 
 class MessageController extends GetxController {

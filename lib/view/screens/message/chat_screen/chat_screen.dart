@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/screens/contractor_part/message/controller/message_controller.dart';
-import 'package:servana/view/screens/contractor_part/message/message_list_screen/widget/chat_bubble.dart';
-import 'package:servana/view/screens/contractor_part/message/message_list_screen/widget/chat_input.dart';
-import 'package:servana/view/screens/contractor_part/message/message_list_screen/widget/message_appbar.dart';
+import 'package:servana/view/screens/message/controller/message_controller.dart';
+import 'package:servana/view/screens/message/message_list_screen/widget/chat_bubble.dart';
+import 'package:servana/view/screens/message/message_list_screen/widget/chat_input.dart';
+import 'package:servana/view/screens/message/message_list_screen/widget/message_appbar.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -19,14 +18,17 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final MessageController messageController = Get.find<MessageController>();
-   String roomId =Get.arguments[0];
-   String receiverId = Get.arguments[1];
+  String roomId = Get.arguments[0];
+  String receiverId = Get.arguments[1];
+  String receiverName = Get.arguments[2] ?? 'Dev Nishad';
+  String receiverImage = Get.arguments[3] ?? AppConstants.profileImage;
+
   String? currentUserId;
 
   @override
   void initState() {
     super.initState();
-   
+
     _initialize();
   }
 
@@ -38,7 +40,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MessageAppBar(),
+      appBar: MessageAppBar(
+        name: receiverName,
+        imageUrl: receiverImage,
+        id: currentUserId,
+        roomId: roomId,
+      ),
       backgroundColor: const Color(0xFFF3EAF4),
       body: Obx(() {
         return SafeArea(
@@ -54,22 +61,32 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: EdgeInsets.all(16.r),
                 child: Column(
                   children: [
-                    Center(
-                      child: CustomText(
-                        text: "Today",
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
+                    // Center(
+                    //   child: CustomText(
+                    //     text: "Today",
+                    //     fontSize: 14,
+                    //     color: Colors.grey,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
+                    // SizedBox(height: 16.h),
                     Expanded(
                       child: ListView.builder(
                         controller: messageController.scrollController,
-                        itemCount: messageController.conversationModel.value.data?.length ?? 0,
+                        itemCount:
+                            messageController
+                                .conversationModel
+                                .value
+                                .data
+                                ?.length ??
+                            0,
                         padding: EdgeInsets.only(bottom: 12.h),
                         itemBuilder: (context, index) {
-                          final msg = messageController.conversationModel.value.data?[index];
+                          final msg =
+                              messageController
+                                  .conversationModel
+                                  .value
+                                  .data?[index];
                           final isSent = msg?.sender == currentUserId;
                           return ChatBubble(
                             text: msg?.message ?? '',

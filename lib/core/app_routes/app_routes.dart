@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
-import 'package:servana/view/screens/contractor_part/message/chat_screen/chat_screen.dart';
+import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -17,7 +17,7 @@ import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../view/screens/contractor_part/message/message_list_screen/message_list_screen.dart';
+import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
 import '../../view/screens/contractor_part/profile/edit_profile_screen/edit_profile_screen.dart';
@@ -42,7 +42,6 @@ import '../../view/screens/customer_part/home/customer_par_sub_category_item/cus
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
 import '../../view/screens/customer_part/home/customer_sub_category_screen/customer_sub_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
-import '../../view/screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
 import '../../view/screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
 import '../../view/screens/customer_part/order/request_history_service_details_page/request_history_service_details_page.dart';
 import '../../view/screens/customer_part/profile/about_us_screen/about_us_screen.dart';
@@ -153,7 +152,6 @@ class AppRoutes {
     GetPage(name: customerNotificationScreen, page: () => CustomerNotificationScreen()),
     GetPage(name: customerHelpSupportScreen, page: () => CustomerHelpSupportScreen()),
     GetPage(name: customerReferFriendScreen, page: () => CustomerReferFriendScreen()),
-    GetPage(name: customerMessaageListScreen, page: () => CustomerMessaageListScreen()),
     GetPage(name: customerSearchResultScreen, page: () => CustomerSearchResultScreen()),
     GetPage(name: customarServiceDetailsScreen, page: () => CustomarServiceDetailsScreen()),
     GetPage(name: customarQaScreen, page: () => CustomarQaScreen()),

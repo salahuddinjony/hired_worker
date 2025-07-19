@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/helper/time_converter/time_converter.dart';
-import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_const/app_const.dart';
-import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
-import '../../../../../components/custom_text/custom_text.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../../../../components/custom_netwrok_image/custom_network_image.dart';
+import '../../../../components/custom_text/custom_text.dart';
 
 class CustomMessageListCard extends StatelessWidget {
   const CustomMessageListCard({
