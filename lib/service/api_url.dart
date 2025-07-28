@@ -1,7 +1,7 @@
 class ApiUrl {
-  static const String baseUrl = "http://10.0.60.52:5002/api/v1";
-  static const String imageUrl = "http://10.0.60.52:5002/api/v1";
-  static String socketUrl = "http://10.0.60.52:5002";
+  static const String baseUrl = "http://192.168.0.115:5002/api/v1";
+  static const String imageUrl = "http://192.168.0.115:5002/api/v1";
+  static String socketUrl = "http://192.168.0.115:5002";
 
   // static String socketUrl({required String id}) =>
   //     "https://912f-103-174-189-193.ngrok-free.app?userId=$id";
@@ -38,6 +38,7 @@ class ApiUrl {
   static const String about = "/abouts";
   static const String termsCondition = "/terms";
   static String deleteAccount({required String userId}) => "/users/$userId";
+  static String getContractorDetails({required String userId}) => "/reviews/get-average-review/$userId";
 
   /// ==================   candidate part =============
 

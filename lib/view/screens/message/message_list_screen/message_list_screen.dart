@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_const/app_const.dart';
+import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/message/controller/message_controller.dart';
@@ -13,6 +14,11 @@ class MessageListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool role =
+        SharePrefsHelper.getString(AppConstants.role) == 'contractor'
+            ? true
+            : false;
+
     final MessageController messageController = Get.find<MessageController>();
     return Scaffold(
       extendBody: true,
@@ -23,14 +29,23 @@ class MessageListScreen extends StatelessWidget {
         return Column(
           children: List.generate(data.length, (value) {
             return GestureDetector(
-              onTap: ()async { 
-                debugPrint("===========================>> Other UserId:${data[value].otherUserId}");  
-                 final userId = await SharePrefsHelper.getString(AppConstants.userId);    
+              onTap: () async {
+                debugPrint(
+                  "===========================>> Other UserId:${data[value].otherUserId}",
+                );
+                final userId = await SharePrefsHelper.getString(
+                  AppConstants.userId,
+                );
                 debugPrint("===========================>> User Id:$userId");
 
                 Get.toNamed(
                   AppRoutes.chatScreen,
-                  arguments: [data[value].id, data[value].otherUserId, data[value].otherUserName, data[value].otherUserImage],
+                  arguments: [
+                    data[value].id,
+                    data[value].otherUserId,
+                    data[value].otherUserName,
+                    data[value].otherUserImage,
+                  ],
                 );
               },
               child: CustomMessageListCard(
@@ -46,7 +61,10 @@ class MessageListScreen extends StatelessWidget {
           }),
         );
       }),
-      bottomNavigationBar: Navbar(currentIndex: 2),
+      bottomNavigationBar:
+          role
+              ? const Navbar(currentIndex: 2)
+              : const CustomerNavbar(currentIndex: 2),
     );
   }
 }

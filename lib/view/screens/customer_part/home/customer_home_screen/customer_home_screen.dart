@@ -266,31 +266,22 @@ class CustomerHomeScreen extends StatelessWidget {
                     homeController.getAllContactorModel.value.data?.length ?? 0,
                   ),
                   itemBuilder: (BuildContext context, int index) {
+                    final data =
+                        homeController.getAllContactorModel.value.data![index];
                     return CustomServiceContractorCard(
                       onTap: () {
                         Get.toNamed(
-                          AppRoutes.customerContractorProfileViewScreen,
+                          AppRoutes.customerContractorProfileViewScreen, arguments: {
+                            'id': data.userId?.id
+                          }
                         );
                       },
                       image:
-                          ImageHandler.imagesHandle(
-                            homeController
-                                .getAllContactorModel
-                                .value
-                                .data?[index]
-                                .userId
-                                ?.img,
-                          ) ??
+                          ImageHandler.imagesHandle(data.userId?.img) ??
                           AppConstants.profileImage,
-                      name:
-                          homeController
-                              .getAllContactorModel
-                              .value
-                              .data?[index]
-                              .userId
-                              ?.fullName ??
-                          "Nishad",
-                      title: homeController.getAllContactorModel.value.data?[index].skillsCategory ?? "423",
+                      name: data.userId?.fullName ?? "Nishad",
+                      title: data.skillsCategory ?? "423",
+                      rating: data.ratings.toString(),
                     ); // You can pass `serviceList[index]` if needed
                   },
                 ),
@@ -301,16 +292,6 @@ class CustomerHomeScreen extends StatelessWidget {
                   child: Center(child: CustomImage(imageSrc: AppImages.banner)),
                 ),
                 SizedBox(height: 50.h),
-
-                /* SingleChildScrollView(
-                 scrollDirection: Axis.horizontal,
-                 child: Row(
-                   children: [
-                     CustomGetCard(bkColor: Color(0xffEAF6EF),),
-                     CustomGetCard(),
-                   ],
-                 ),
-               )*/
               ],
             ),
           ),

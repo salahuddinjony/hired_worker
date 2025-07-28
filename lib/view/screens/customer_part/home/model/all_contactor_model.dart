@@ -41,23 +41,23 @@ class GetAllContactorModel {
 class Datum {
   String? id;
   String? dob;
-  Gender? gender;
+  String? gender;
   String? experience;
   String? bio;
-  City? city;
+  String? city;
   String? language;
   String? location;
   int? rateHourly;
   String? skillsCategory;
-  int? ratings;
+  double? ratings;
   String? subscriptionStatus;
   String? customerId;
   String? paymentMethodId;
-  List<String>? certificates;
-  String? myScheduleId;
+  List<dynamic>? certificates;
+  dynamic myScheduleId;
   bool? isDeleted;
-  List<String>? skills;
-  List<Material>? materials;
+  List<dynamic>? skills;
+  List<dynamic>? materials;
   DateTime? createdAt;
   DateTime? updatedAt;
   UserId? userId;
@@ -90,34 +90,32 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["_id"],
     dob: json["dob"],
-    gender: genderValues.map[json["gender"]]!,
+    gender: json["gender"],
     experience: json["experience"],
     bio: json["bio"],
-    city: cityValues.map[json["city"]]!,
+    city: json["city"],
     language: json["language"],
     location: json["location"],
     rateHourly: json["rateHourly"],
     skillsCategory: json["skillsCategory"],
-    ratings: json["ratings"],
+    ratings: json["ratings"]?.toDouble(),
     subscriptionStatus: json["subscriptionStatus"],
     customerId: json["customerId"],
     paymentMethodId: json["paymentMethodId"],
     certificates:
         json["certificates"] == null
             ? []
-            : List<String>.from(json["certificates"]!.map((x) => x)),
+            : List<dynamic>.from(json["certificates"]!.map((x) => x)),
     myScheduleId: json["myScheduleId"],
     isDeleted: json["isDeleted"],
     skills:
         json["skills"] == null
             ? []
-            : List<String>.from(json["skills"]!.map((x) => x)),
+            : List<dynamic>.from(json["skills"]!.map((x) => x)),
     materials:
         json["materials"] == null
             ? []
-            : List<Material>.from(
-              json["materials"]!.map((x) => Material.fromJson(x)),
-            ),
+            : List<dynamic>.from(json["materials"]!.map((x) => x)),
     createdAt:
         json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
@@ -128,10 +126,10 @@ class Datum {
   Map<String, dynamic> toJson() => {
     "_id": id,
     "dob": dob,
-    "gender": genderValues.reverse[gender],
+    "gender": gender,
     "experience": experience,
     "bio": bio,
-    "city": cityValues.reverse[city],
+    "city": city,
     "language": language,
     "location": location,
     "rateHourly": rateHourly,
@@ -148,43 +146,10 @@ class Datum {
     "isDeleted": isDeleted,
     "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
     "materials":
-        materials == null
-            ? []
-            : List<dynamic>.from(materials!.map((x) => x.toJson())),
+        materials == null ? [] : List<dynamic>.from(materials!.map((x) => x)),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "userId": userId?.toJson(),
-  };
-}
-
-enum City { EMPTY, NAI }
-
-final cityValues = EnumValues({"": City.EMPTY, "nai": City.NAI});
-
-enum Gender { EMPTY, FEMALE }
-
-final genderValues = EnumValues({"": Gender.EMPTY, "Female": Gender.FEMALE});
-
-class Material {
-  String? name;
-  String? unit;
-  int? price;
-  String? id;
-
-  Material({this.name, this.unit, this.price, this.id});
-
-  factory Material.fromJson(Map<String, dynamic> json) => Material(
-    name: json["name"],
-    unit: json["unit"],
-    price: json["price"],
-    id: json["_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "name": name,
-    "unit": unit,
-    "price": price,
-    "_id": id,
   };
 }
 
@@ -282,16 +247,4 @@ class Meta {
     "total": total,
     "totalPage": totalPage,
   };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
