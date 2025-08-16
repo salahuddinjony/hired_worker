@@ -1,24 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/app_const/app_const.dart';
+
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../service/api_client.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
 
 class MapController extends GetxController {
   // Observable variables
   var cameraPosition =
-      const CameraPosition(
-        target: LatLng(37.7749, -122.4194), // Default: San Francisco
-        zoom: 12,
-      ).obs;
+      const CameraPosition(target: LatLng(37.7749, -122.4194), zoom: 12).obs;
   var markers = <Marker>{}.obs;
   GoogleMapController? mapController;
   RxBool isClean = false.obs;
   var suggestions = <Map<String, dynamic>>[].obs;
-  var selectedLocation =
-      Rxn<Map<String, dynamic>>(); // Stores lat, lng, address
+  var selectedLocation = Rxn<Map<String, dynamic>>();
   final String apiKey = AppConstants.mapApiKey;
 
   @override
@@ -287,5 +289,48 @@ class MapController extends GetxController {
     suggestions.clear();
     isClean.value = false;
     getUserLocation();
+  }
+
+  Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
+
+  Future<void> updateContractorData() async {
+    status.value = RxStatus.loading();
+
+    final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+
+    String uri = '${ApiUrl.updateUser}/$userId';
+
+    Map<String, String> body = {
+      'data': '{"location": "${selectedLocation.value?['address']}"}',
+    };
+
+    try {
+      var response = await ApiClient.patchMultipartData(
+        uri,
+        body,
+        multipartBody: [],
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('Selected Location: ${selectedLocation.value}');
+
+        status.value = RxStatus.success();
+
+        Get.toNamed(AppRoutes.scheduleSeletedScreen);
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "response.statusText",
+          isError: true,
+        );
+
+        status.value = RxStatus.error();
+      }
+    } catch (e) {
+      debugPrint('Error updating contractor data: $e');
+
+      showCustomSnackBar("Error updating contractor data: $e", isError: true);
+
+      status.value = RxStatus.error();
+    }
   }
 }

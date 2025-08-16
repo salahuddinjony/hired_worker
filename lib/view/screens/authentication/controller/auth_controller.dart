@@ -22,22 +22,38 @@ class AuthController extends GetxController {
   Rx<TextEditingController> phoneController =
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController =
-      TextEditingController(
-        text: kDebugMode ? "amaahmadmusa@gmail.com" : "",
-      ).obs;
+      TextEditingController().obs;
 
   Rx<TextEditingController> passController =
-      TextEditingController(text: kDebugMode ? "12345" : "").obs;
+      TextEditingController().obs;
   Rx<TextEditingController> confirmController =
       TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
 
   Rx<bool> isAgree = false.obs;
 
+  Rx<bool> rememberMe = true.obs;
+
+  @override
+  void onInit() async {
+    super.onInit();
+
+    bool? rememberMe = await SharePrefsHelper.getBool(AppStrings.rememberMe);
+
+    if (rememberMe != null && rememberMe) {
+      String email = await SharePrefsHelper.getString(AppStrings.email);
+      String password = await SharePrefsHelper.getString(AppStrings.password);
+
+      emailController.value.text = email;
+      passController.value.text = password;
+    }
+  }
+
   ///=====================LOGIN METHOD=====================
-  Rx<RxStatus> loginLoading = Rx<RxStatus>(RxStatus.success());
+  Rx<RxStatus> loginStatus = Rx<RxStatus>(RxStatus.success());
+
   Future<void> loginUser() async {
-    loginLoading.value = RxStatus.loading();
+    loginStatus.value = RxStatus.loading();
     refresh();
 
     final body = {
@@ -48,7 +64,7 @@ class AuthController extends GetxController {
     try {
       final response = await ApiClient.postData(ApiUrl.login, jsonEncode(body));
 
-      loginLoading.value = RxStatus.success();
+      loginStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200) {
@@ -58,6 +74,23 @@ class AuthController extends GetxController {
           AppConstants.bearerToken,
           data['accessToken'],
         );
+
+        if (rememberMe.value) {
+          await SharePrefsHelper.setString(
+            AppStrings.email,
+            emailController.value.text.trim(),
+          );
+          await SharePrefsHelper.setString(
+            AppStrings.password,
+            passController.value.text,
+          );
+        }
+
+        await SharePrefsHelper.setBool(
+          AppStrings.rememberMe,
+          rememberMe.value,
+        );
+
         await getMe();
       } else {
         _handleLoginError(response);
@@ -68,14 +101,14 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
-      loginLoading.value = RxStatus.success();
+      loginStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
 
   void _handleLoginError(Response response) {
-    loginLoading.value = RxStatus.success();
+    loginStatus.value = RxStatus.success();
     refresh();
 
     if (response.statusText == ApiClient.somethingWentWrong) {
@@ -88,13 +121,14 @@ class AuthController extends GetxController {
   // ================= get me ====================
   Rx<ContractorModel> contractorModel = ContractorModel().obs;
   Rx<CustomerModel> customerModel = CustomerModel().obs;
+
   Future<void> getMe() async {
-    loginLoading.value = RxStatus.loading();
+    loginStatus.value = RxStatus.loading();
     refresh();
     try {
       final response = await ApiClient.getData(ApiUrl.getMe);
 
-      loginLoading.value = RxStatus.success();
+      loginStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -134,7 +168,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
-      loginLoading.value = RxStatus.success();
+      loginStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
@@ -347,6 +381,7 @@ class AuthController extends GetxController {
   ////================ resend otp METHOD===========
 
   Rx<RxStatus> resendOTPLoading = Rx<RxStatus>(RxStatus.success());
+
   Future<void> resendOTP() async {
     resendOTPLoading.value = RxStatus.loading();
     var body = {"email": emailController.value.text};

@@ -17,6 +17,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Scaffold(
       body: Obx(() {
         return Padding(
@@ -43,28 +45,57 @@ class LoginScreen extends StatelessWidget {
                 top: 20.h,
                 bottom: 20.h,
                 text:
-                    "Log in to your account using mobile\nnumber or email address".tr,
+                    "Log in to your account using mobile\nnumber or email address"
+                        .tr,
                 fontSize: 14.w,
                 fontWeight: FontWeight.w300,
                 color: AppColors.black,
                 maxLines: 2,
               ),
-              CustomFormCard(
-                title: "Email".tr,
-                hintText: "Enter your email".tr,
-                controller: authController.emailController.value,
-              ),
-              CustomFormCard(
-                title: "Password".tr,
-                hintText: "Enter your password".tr,
-                controller: authController.passController.value,
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    CustomFormCard(
+                      title: "Email".tr,
+                      hintText: "Enter your email".tr,
+                      controller: authController.emailController.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter an email";
+                        } else if (!RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        ).hasMatch(value)) {
+                          return "Enter a valid email";
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomFormCard(
+                      title: "Password".tr,
+                      hintText: "Enter your password".tr,
+                      controller: authController.passController.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Checkbox(value: true, onChanged: (value) {}),
+                      Checkbox(
+                        value: authController.rememberMe.value,
+                        onChanged: (value) {
+                          authController.rememberMe.value = value ?? true;
+                        },
+                      ),
                       CustomText(
                         text: "Remember me".tr,
                         fontSize: 14.w,
@@ -87,11 +118,13 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.h),
-              authController.loginLoading.value.isLoading
+              authController.loginStatus.value.isLoading
                   ? CustomLoader()
                   : CustomButton(
                     onTap: () {
-                      authController.loginUser();
+                      if (formKey.currentState!.validate()) {
+                        authController.loginUser();
+                      }
                     },
                     title: "Login".tr,
                   ),

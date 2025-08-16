@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
@@ -55,8 +57,10 @@ class OnboardingScreenTwo extends StatelessWidget {
                     bottom: 20,
                   ),
                   CustomButton(
-                    onTap: () {
+                    onTap: () async {
                       Get.toNamed(AppRoutes.loginScreen);
+
+                      await SharePrefsHelper.setBool(AppConstants.isFirstTime, false);
                     },
                     title: "Next".tr,
                     width: MediaQuery.sizeOf(context).width / 1.2,

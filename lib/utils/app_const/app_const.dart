@@ -1,8 +1,11 @@
 class AppConstants {
   static String bearerToken = "BearerToken";
+  static String email = "email";
+  static String password = "password";
   static String refreshToken = "RefreshToken";
   static String userId = "UserId";
   static String role = "role";
+  static String isFirstTime = "isFirstTime";
   static String conversationId = "ConversationId";
   static String onBoard = "Onboard";
   static String mapApiKey = "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4";

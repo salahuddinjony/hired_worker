@@ -8,6 +8,8 @@ import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.
 import 'package:servana/view/components/custom_text_field/custom_text_field.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 
+import '../../../components/custom_loader/custom_loader.dart';
+
 class SeletedMapScreen extends StatelessWidget {
   const SeletedMapScreen({super.key});
 
@@ -17,7 +19,10 @@ class SeletedMapScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selecte Location".tr),
+      appBar: CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: "Selecte Location".tr,
+      ),
       body: Stack(
         children: [
           Obx(
@@ -28,8 +33,8 @@ class SeletedMapScreen extends StatelessWidget {
               myLocationEnabled: false,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
-               onTap: (LatLng position) {
-                mapController.onMapTap(position);  
+              onTap: (LatLng position) {
+                mapController.onMapTap(position);
                 searchController.text =
                     mapController.selectedLocation.value?['address'] ?? '';
                 mapController.setIsClean(true);
@@ -119,27 +124,29 @@ class SeletedMapScreen extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            bottom: 30,
-            right: 30,
-            left: 30,
-            child: CustomButton(
-              onTap: () {
-                if (mapController.selectedLocation.value != null) {
-                  Get.toNamed(
-                    AppRoutes.scheduleSeletedScreen,
-                    arguments: mapController.selectedLocation.value,
-                  );
-                  debugPrint(
-                    'Selected Location: ${mapController.selectedLocation.value}',
-                  );
-                } else {
-                  Get.snackbar('Error', 'Please select a location first.');
-                }
-              },
-              title: "Continue".tr,
-            ),
-          ),
+          Obx(() {
+            return Positioned(
+              bottom: 30,
+              right: 30,
+              left: 30,
+              child:
+                  mapController.status.value.isLoading
+                      ? CustomLoader()
+                      : CustomButton(
+                        onTap: () {
+                          if (mapController.selectedLocation.value != null) {
+                            mapController.updateContractorData();
+                          } else {
+                            Get.snackbar(
+                              'Error',
+                              'Please select a location first.',
+                            );
+                          }
+                        },
+                        title: "Continue".tr,
+                      ),
+            );
+          }),
         ],
       ),
     );
