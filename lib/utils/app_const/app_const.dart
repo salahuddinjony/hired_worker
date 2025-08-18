@@ -6,6 +6,7 @@ class AppConstants {
   static String userId = "UserId";
   static String role = "role";
   static String isFirstTime = "isFirstTime";
+  static String isLoggedIn = "isLoggedIn";
   static String conversationId = "ConversationId";
   static String onBoard = "Onboard";
   static String mapApiKey = "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4";

@@ -8,8 +8,10 @@ import '../../view/screens/authentication/forgot_password_screen/forgot_password
 import '../../view/screens/authentication/login_screen/login_screen.dart';
 import '../../view/screens/authentication/reset_password_screen/reset_password_screen.dart';
 import '../../view/screens/authentication/verifay_code_screen/verifay_code_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/add_material_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/category_seleted_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/certificate_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/charge_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/schedule_seleted_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/seleted_map_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/skills_add_screen.dart';
@@ -76,11 +78,13 @@ class AppRoutes {
   static const String editProfileScreen = "/EditProfileScreen";
   static const String helpSupportScreen = "/HelpSupportScreen";
   static const String materialsScreen = "/MaterialsScreen";
+  static const String addMaterialsScreen = "/AddMaterialsScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String scheduleScreen = "/ScheduleScreen";
   static const String eranScreen = "/EranScreen";
   static const String onGoingScreen = "/OnGoingScreen";
   static const String onGoingFinishScreen = "/OnGoingFinishScreen";
+  static const String chargeScreen = "/ChargeScreen";
 
 
   ///===========================Customer==========================
@@ -122,8 +126,8 @@ class AppRoutes {
     GetPage(name: contractorSignUpScreen, page: () => ContractorSignUpScreen()),
     GetPage(name: subscribeScreen, page: () => SubscribeScreen()),
     GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
-    GetPage(name: scheduleSeletedScreen, page: () => ScheduleSeletedScreen()),
-    GetPage(name: categorySeletedScreen, page: () => CategorySeletedScreen()),
+    GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
+    GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
@@ -134,11 +138,13 @@ class AppRoutes {
     GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
     GetPage(name: helpSupportScreen, page: () => HelpSupportScreen()),
     GetPage(name: materialsScreen, page: () => MaterialsScreen()),
+    GetPage(name: addMaterialsScreen, page: () => AddMaterialsScreen()),
     GetPage(name: notificationScreen, page: () => NotificationScreen()),
     GetPage(name: scheduleScreen, page: () => ScheduleScreen()),
     GetPage(name: eranScreen, page: () => EranScreen()),
     GetPage(name: onGoingScreen, page: () => OnGoingScreen()),
     GetPage(name: onGoingFinishScreen, page: () => OnGoingFinishScreen()),
+    GetPage(name: chargeScreen, page: () => ChargeScreen()),
 
     ///===========================Customer==========================
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),

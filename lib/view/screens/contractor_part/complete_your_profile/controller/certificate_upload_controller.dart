@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-class CompleteProfileController extends GetxController {
+
+import '../../../../../core/app_routes/app_routes.dart';
+class CertificateUploadController extends GetxController {
   ///================ CV and Certificate Upload ==================
   var nidFile = Rx<File?>(null);
   Future<void> pickNidFile() async {
@@ -39,5 +41,13 @@ class CompleteProfileController extends GetxController {
     if (pickedFile != null && pickedFile.files.single.path != null) {
       otherFile.value = File(pickedFile.files.single.path!);
     }
+  }
+
+  Future<void> updateContractorData() async {
+    print(nidFile);
+    print(skillFile);
+    print(otherFile);
+
+    Get.toNamed(AppRoutes.skillsAddScreen);
   }
 }

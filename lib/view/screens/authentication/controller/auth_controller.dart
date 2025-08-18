@@ -34,6 +34,10 @@ class AuthController extends GetxController {
 
   Rx<bool> rememberMe = true.obs;
 
+  Rx<bool> agreeWithTaP = true.obs;
+
+
+
   @override
   void onInit() async {
     super.onInit();
@@ -178,6 +182,16 @@ class AuthController extends GetxController {
   Rx<RxStatus> signUpLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> customerSignUp(bool isContactor) async {
+    if (!agreeWithTaP.value) {
+      showCustomSnackBar('You must first agree with our Terms and Privacy Policy');
+      return;
+    }
+
+
+    if (!agreeWithTaP.value) {
+      showCustomSnackBar('You must first agree with our Terms and Privacy Policy');
+    }
+
     signUpLoading.value = RxStatus.loading();
     var body = {
       "fullName": nameController.value.text,

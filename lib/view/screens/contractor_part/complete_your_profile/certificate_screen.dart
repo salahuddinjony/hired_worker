@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
-import 'controller/complete_profile_controller.dart';
+import 'controller/certificate_upload_controller.dart';
 import 'widget/custom_certificate_pdf_button.dart';
 
 class CertificateScreen extends StatelessWidget {
   CertificateScreen({super.key});
 
-  final completeProfileController = Get.find<CompleteProfileController>();
+  final controller = Get.find<CertificateUploadController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,34 +28,36 @@ class CertificateScreen extends StatelessWidget {
             children: [
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.pickNidFile();
+                  controller.pickNidFile();
                 },
                 label: "NID".tr,
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
-                        ? ""
-                        : completeProfileController.nidFile.value!.path.split("/").last,
+                title: controller.nidFile.value == null || controller.nidFile.value!.path.isEmpty
+                    ? ""
+                    : controller.nidFile.value!.path.split("/").last,
               ),
+
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.skillsFile();
+                  controller.skillsFile();
                 },
                 label: "Skills".tr,
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
+                title: controller.skillFile.value == null || controller.skillFile.value!.path.isEmpty
                     ? ""
-                    : completeProfileController.nidFile.value!.path.split("/").last,
+                    : controller.skillFile.value!.path.split("/").last,
               ),
+
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.otherSFile();
+                  controller.otherSFile();
                 },
                 label: "Other".tr,
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
+                title: controller.otherFile.value == null || controller.otherFile.value!.path.isEmpty
                     ? ""
-                    : completeProfileController.nidFile.value!.path.split("/").last,
+                    : controller.otherFile.value!.path.split("/").last,
               ),
               Spacer(),
               CustomButton(onTap: (){
-                Get.toNamed(AppRoutes.skillsAddScreen);
+                controller.updateContractorData();
               }, title: "Add Certificate".tr,),
               SizedBox(height: 30,),
             ],

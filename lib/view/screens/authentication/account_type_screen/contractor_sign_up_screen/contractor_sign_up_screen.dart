@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/utils/extensions/widget_extension.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
@@ -19,7 +20,8 @@ class ContractorSignUpScreen extends StatelessWidget {
     bool isContactor = Get.arguments['isContactor'] ?? false;
     return Scaffold(
       appBar: CustomRoyelAppbar(
-        titleName: "${isContactor ? 'Contractor'.tr : 'Customer'.tr} ${'Signup'.tr}",
+        titleName:
+            "${isContactor ? 'Contractor'.tr : 'Customer'.tr} ${'Signup'.tr}",
         leftIcon: true,
       ),
       body: SingleChildScrollView(
@@ -42,7 +44,8 @@ class ContractorSignUpScreen extends StatelessWidget {
                 child: CustomText(
                   top: 10.h,
                   text:
-                      "Set up your username and password.\nYou can always change it later.".tr,
+                      "Set up your username and password.\nYou can always change it later."
+                          .tr,
                   fontSize: 14.w,
                   fontWeight: FontWeight.w300,
                   color: AppColors.black,
@@ -74,17 +77,46 @@ class ContractorSignUpScreen extends StatelessWidget {
                 hintText: "Enter your password".tr,
                 controller: authController.confirmController.value,
               ),
-              Row(
-                children: [
-                  Checkbox(value: true, onChanged: (value) {}),
-                  CustomText(
-                    text: "I agree to the Terms and Privacy Policy.".tr,
-                    fontSize: 14.w,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
-                  ),
-                ],
-              ),
+              Obx(() {
+                return Row(
+                  children: [
+                    Checkbox(
+                      value: authController.agreeWithTaP.value,
+                      onChanged: (value) {
+                        authController.agreeWithTaP.value = value ?? true;
+                      },
+                    ),
+                    CustomText(
+                      text: "I agree to the ".tr,
+                      fontSize: 14.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                    ),
+                    CustomText(
+                      text: "Terms".tr,
+                      fontSize: 14.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blue,
+                    ).onTap(() {
+                      Get.toNamed(AppRoutes.termsConditionsScreen);
+                    }),
+                    CustomText(
+                      text: " and ".tr,
+                      fontSize: 14.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                    ),
+                    CustomText(
+                      text: "Privacy Policy.".tr,
+                      fontSize: 14.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blue,
+                    ).onTap(() {
+                      Get.toNamed(AppRoutes.privacyPolicyScreen);
+                    }),
+                  ],
+                );
+              }),
               SizedBox(height: 30.h),
               Obx(() {
                 return authController.signUpLoading.value.isLoading

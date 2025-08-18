@@ -1,12 +1,8 @@
 class ApiUrl {
   static const String baseUrl = "http://13.237.45.213/api/v1";
-  static const String imageUrl = "http://192.168.0.115:5002/api/v1";
-  static String socketUrl = "http://192.168.0.115:5002";
+  static const String imageUrl = "http://13.237.45.213/api/v1";
+  static String socketUrl = "http://13.237.45.213";
 
-  // static String socketUrl({required String id}) =>
-  //     "https://912f-103-174-189-193.ngrok-free.app?userId=$id";
-  // server url : http://103.174.189.219:5002/api/v1
-  // local url : http://10.0.60.55:5002/v1
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
   static const String contractorRegister = "/users/create-contractor";
@@ -38,8 +34,8 @@ class ApiUrl {
   static const String getProfile = "/auth/profile";
   static const String changePassword = "/auth/change-password";
   static const String privacyPolicy = "/privacies";
-  static const String about = "/abouts";
   static const String termsCondition = "/terms";
+  static const String about = "/abouts";
 
   static String deleteAccount({required String userId}) => "/users/$userId";
 
