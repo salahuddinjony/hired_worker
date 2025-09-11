@@ -13,7 +13,7 @@ import 'dart:convert'; // add this
 class AddMaterialController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
 
-  Future<void> updateContractorData(List<Map<String, String>> materials) async {
+  Future<void> updateContractorData(List<Map<String, String>> materials, [bool flag = true]) async {
     if (materials.isEmpty) {
       showCustomSnackBar("Please create at least one to continue.");
       return;
@@ -31,15 +31,27 @@ class AddMaterialController extends GetxController {
     print("====> API Body: $body");
 
     try {
-      var response = await ApiClient.patchMultipartData(
-        uri,
-        body,
-        multipartBody: [],
-      );
+      var response;
+
+      if (flag) {
+        response = await ApiClient.patchMultipartData(
+          uri,
+          body,
+          multipartBody: [],
+        );
+      } else {
+        response = await ApiClient.patchData(
+          uri,
+          jsonEncode(body),
+        );
+      }
 
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
-        Get.toNamed(AppRoutes.chargeScreen);
+
+        if (!flag) showCustomSnackBar('Material added successfully', isError: false);
+        if (flag) Get.toNamed(AppRoutes.chargeScreen);
+
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

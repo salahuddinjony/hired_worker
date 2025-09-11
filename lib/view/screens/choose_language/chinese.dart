@@ -64,6 +64,7 @@ final Map<String, String> chinese = {
   "Find expert services at\nyour fingertips": "指尖轻松找到专家服务",
   "Messages": "消息",
   "Request": "请求",
+  "Request Services": "请求服务",
   "Accept": "接受",
   "Cancel": "取消",
   "View": "查看",

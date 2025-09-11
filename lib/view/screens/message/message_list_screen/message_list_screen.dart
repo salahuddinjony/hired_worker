@@ -14,11 +14,6 @@ class MessageListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool role =
-        SharePrefsHelper.getString(AppConstants.role) == 'contractor'
-            ? true
-            : false;
-
     final MessageController messageController = Get.find<MessageController>();
     return Scaffold(
       extendBody: true,
@@ -62,7 +57,7 @@ class MessageListScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar:
-          role
+          messageController.role
               ? const Navbar(currentIndex: 2)
               : const CustomerNavbar(currentIndex: 2),
     );

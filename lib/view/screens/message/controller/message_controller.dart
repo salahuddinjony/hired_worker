@@ -22,13 +22,22 @@ class MessageController extends GetxController {
 
  //  RxString userId = ''.obs;
 
+   bool role = true;
+
   @override
   void onInit() async {
-    super.onInit();
   //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
-    
+    await getRole();
+
     getAllRoomList();
     receiveMessage();
+
+    super.onInit();
+  }
+
+  Future<void> getRole() async {
+    String role = await SharePrefsHelper.getString(AppConstants.role);
+    this.role =  role.toLowerCase().compareTo('contractor') == 0;
   }
 
   Future<void> getAllRoomList() async { 

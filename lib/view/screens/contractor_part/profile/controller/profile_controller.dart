@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,11 +12,13 @@ import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/contractor_model.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/material_model.dart';
+import 'package:servana/view/screens/contractor_part/profile/model/notification_model.dart';
 
 import '../../../../../utils/app_strings/app_strings.dart';
 
 class ProfileController extends GetxController {
   final CustomController customController = Get.find<CustomController>();
+
   //========= update profile controller ===========//
   Rx<TextEditingController> nameController = TextEditingController().obs;
   Rx<TextEditingController> phoneController = TextEditingController().obs;
@@ -63,7 +66,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     getMe();
-    getMateria();
+    getMaterial();
     super.onInit();
   }
 
@@ -77,6 +80,8 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         contractorModel.value = ContractorModel.fromJson(response.body);
 
+        debugPrint('xxx - inside get me ${contractorModel.value.data!.contractor!.materials!.length}');
+
         initUserProfileInfoTextField(contractorModel.value.data!);
       } else {
         showCustomSnackBar(
@@ -85,22 +90,22 @@ class ProfileController extends GetxController {
         );
       }
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('xxx ${e.toString()}');
     }
   }
 
-  Rx<RxStatus> getMateriaStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<RxStatus> getMaterialStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<MaterialModel> materialModel = MaterialModel().obs;
 
-  //======= get materia =======//
-  Future<void> getMateria() async {
-    getMateriaStatus.value = RxStatus.loading();
+  //======= get material =======//
+  Future<void> getMaterial() async {
+    getMaterialStatus.value = RxStatus.loading();
     try {
       final response = await ApiClient.getData(ApiUrl.materials);
 
       materialModel.value = MaterialModel.fromJson(response.body);
 
-      getMateriaStatus.value = RxStatus.success();
+      getMaterialStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -111,7 +116,7 @@ class ProfileController extends GetxController {
         );
       }
     } catch (e) {
-      getMateriaStatus.value = RxStatus.success();
+      getMaterialStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
@@ -119,6 +124,7 @@ class ProfileController extends GetxController {
 
   //========= update profile ===========//
   Rx<RxStatus> updateProfileStatus = Rx<RxStatus>(RxStatus.success());
+
   Future<void> updateProfile() async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
@@ -158,6 +164,30 @@ class ProfileController extends GetxController {
     } else {
       updateProfileStatus.value = RxStatus.success();
       showCustomSnackBar("Something went wrong", isError: false);
+    }
+  }
+
+  Rx<RxStatus> notificationStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<NotificationModel> notificationModel = NotificationModel().obs;
+
+  Future<void> getNotification() async {
+    notificationStatus.value = RxStatus.loading();
+
+    try {
+      final response = await ApiClient.getData(
+        '${ApiUrl.notification}?userId=${contractorModel.value.data!.id}',
+      );
+
+      notificationModel.value = NotificationModel.fromJson(response.body);
+
+      if (notificationModel.value.data == null || notificationModel.value.data!.isEmpty) {
+        notificationStatus.value = RxStatus.empty();
+      } else {
+        notificationStatus.value = RxStatus.success();
+      }
+
+    } catch (e) {
+      notificationStatus.value = RxStatus.error(e.toString());
     }
   }
 }

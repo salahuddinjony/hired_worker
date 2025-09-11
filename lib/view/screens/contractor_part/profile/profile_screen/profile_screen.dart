@@ -11,7 +11,9 @@ import 'package:servana/view/components/custom_netwrok_image/custom_network_imag
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/map/google_map_screen.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
 import 'widget/custom_profile_menu_list.dart';
 
@@ -21,6 +23,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.find<ProfileController>();
+    final ContractorHomeController homeController =
+        Get.find<ContractorHomeController>();
     final LanguageController languageController =
         Get.find<LanguageController>();
 
@@ -80,20 +84,17 @@ class ProfileScreen extends StatelessWidget {
                   Obx(() {
                     final contractorData =
                         profileController.contractorModel.value;
-print('===============================dsfsfsd===${contractorData.data?.fullName}');
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: contractorData.data?.fullName ?? "Thomas",
+                          text: contractorData.data?.fullName ?? " - ",
                           fontSize: 16.w,
                           fontWeight: FontWeight.w500,
                           color: AppColors.black,
                         ),
                         CustomText(
-                          text:
-                              contractorData.data?.email ??
-                              "d@gmail.com",
+                          text: contractorData.data?.email ?? " - ",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black_04,
@@ -109,7 +110,10 @@ print('===============================dsfsfsd===${contractorData.data?.fullName}
                 children: [
                   CustomHomeCard(),
                   CustomHomeCard(
-                    text: "90",
+                    text:
+                        homeController.bookingModel.value.meta?.total
+                            .toString() ??
+                        " - ",
                     title: "Total Service".tr,
                     imageSrc: AppIcons.iconTwo,
                   ),
@@ -120,20 +124,32 @@ print('===============================dsfsfsd===${contractorData.data?.fullName}
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomHomeCard(
-                    text: "15",
+                    text:
+                        homeController.bookingModel.value.data?.length
+                            .toString() ??
+                        " - ",
                     title: "Recent Services".tr,
                     imageSrc: AppIcons.iconFour,
                   ),
                   CustomHomeCard(
-                    text: "\$50/hr",
+                    text:
+                        "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
                     title: "Current billing price".tr,
                     imageSrc: AppIcons.iconThree,
                   ),
                 ],
               ),
               SizedBox(height: 20.h),
-              CustomProfileMenuList(),
-              CustomProfileMenuList(image: AppIcons.map, name: "Address".tr),
+              // CustomProfileMenuList(),
+              GestureDetector(
+                onTap: () {
+                  Get.to(GoogleMapScreen(location: profileController.contractorModel.value.data?.contractor?.city ?? ""));
+                },
+                child: CustomProfileMenuList(
+                  image: AppIcons.map,
+                  name: "Address".tr,
+                ),
+              ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.notificationScreen);
@@ -141,7 +157,6 @@ print('===============================dsfsfsd===${contractorData.data?.fullName}
                 image: AppIcons.notifaction,
                 name: "Notification".tr,
               ),
-              CustomProfileMenuList(image: AppIcons.sklils, name: "Skills".tr),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.materialsScreen);
@@ -155,10 +170,6 @@ print('===============================dsfsfsd===${contractorData.data?.fullName}
                 },
                 image: AppIcons.schedule,
                 name: "Schedule".tr,
-              ),
-              CustomProfileMenuList(
-                image: AppIcons.totalService,
-                name: "Total Service".tr,
               ),
               CustomProfileMenuList(
                 onTap: () {

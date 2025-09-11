@@ -9,7 +9,7 @@ class AppConstants {
   static String isLoggedIn = "isLoggedIn";
   static String conversationId = "ConversationId";
   static String onBoard = "Onboard";
-  static String mapApiKey = "AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4";
+  static String mapApiKey = "AIzaSyDuK0UE4AL3t2CUHDSqyQ8HqX6cqysHFeI";
 
 
   /// <====================== All Response Message Static==============================>

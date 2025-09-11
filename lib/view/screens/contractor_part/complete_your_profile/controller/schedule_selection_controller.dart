@@ -14,12 +14,11 @@ class ScheduleSelectionController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
 
   Future<void> updateContractorData(Set<String> days) async {
-    
     if (days.isEmpty) {
       showCustomSnackBar("Please select at least one day to continue.");
       return;
     }
-    
+
     Map<String, String> dayMap = {
       'Sun': 'Sunday',
       'Mon': 'Monday',
@@ -30,54 +29,39 @@ class ScheduleSelectionController extends GetxController {
       'Sat': 'Saturday',
     };
 
-    List<Map<String, String>> schedules =
-        days.map((day) {
-          return {
-            "day": dayMap[day] ?? day,
-            "startTime": "10:00",
-            "endTime": "18:00",
-          };
-        }).toList();
+    List<Map<String, dynamic>> schedules = days.map((day) {
+      return {
+        "days": dayMap[day] ?? day,
+        "timeSlots": ["09:00-11:00"],
+      };
+    }).toList();
 
-    Map<String, String> body = {
-      "data": jsonEncode({"schedules": schedules}),
+    Map<String, dynamic> body = {
+      "schedules": schedules,
     };
 
-    // Map<String, String> body = {
-    //   'data': '{"schedules": [{"day": "Friday", "startTime": "10:00", "endTime": "18:00"}]}',
-    // };
-
     status.value = RxStatus.loading();
-
-    final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-
-    String uri = '${ApiUrl.updateUser}/$userId';
-
     try {
-      var response = await ApiClient.patchMultipartData(
-        uri,
-        body,
-        multipartBody: [],
+      var response = await ApiClient.postData(
+        ApiUrl.updateSchedule,
+        jsonEncode(body),
       );
 
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
-
         Get.toNamed(AppRoutes.categorySeletedScreen);
       } else {
         showCustomSnackBar(
-          response.body['message'] ?? "response.statusText",
+          response.body['message'] ?? "Something went wrong",
           isError: true,
         );
-
         status.value = RxStatus.error();
       }
     } catch (e) {
       debugPrint('Error updating contractor data: $e');
-
       showCustomSnackBar("Error updating contractor data: $e", isError: true);
-
       status.value = RxStatus.error();
     }
   }
+
 }

@@ -69,6 +69,7 @@ Map<String, String> english = {
       "Find expert services at\nyour fingertips",
   "Messages": "Messages",
   "Request": "Request",
+  "Request Services": "Request Services",
   "Accept": "Accept",
   "Cancel": "Cancel",
   "View": "View",

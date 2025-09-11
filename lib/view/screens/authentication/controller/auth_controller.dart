@@ -141,7 +141,7 @@ class AuthController extends GetxController {
 
         await SharePrefsHelper.setString(AppConstants.userId, data['_id']);
         await SharePrefsHelper.setString(AppConstants.role, role);
-        SocketApi.init();
+        // SocketApi.init();
 
         if (role == 'contractor') {
           contractorModel.value = ContractorModel.fromJson(data);

@@ -1,5 +1,6 @@
 class ApiUrl {
-  static const String baseUrl = "http://13.237.45.213/api/v1";
+  // static const String baseUrl = "http://13.237.45.213/api/v1";
+  static const String baseUrl = "http://10.10.20.74:5002/api/v1";
   static const String imageUrl = "http://13.237.45.213/api/v1";
   static String socketUrl = "http://13.237.45.213";
 
@@ -30,12 +31,12 @@ class ApiUrl {
   static String setNewPassword = "/auth/reset-password";
 
   /// ================== Global =============
-
   static const String getProfile = "/auth/profile";
   static const String changePassword = "/auth/change-password";
   static const String privacyPolicy = "/privacies";
   static const String termsCondition = "/terms";
   static const String about = "/abouts";
+  static const String upload = "/upload";
 
   static String deleteAccount({required String userId}) => "/users/$userId";
 
@@ -43,7 +44,6 @@ class ApiUrl {
       "/reviews/get-average-review/$userId";
 
   /// ==================   candidate part =============
-
   static const String updateCandidateProfile = "/auth/user/edit-profile";
   static const String getSavedJobs = "/jobs/get_user_favorites_jobs";
   static const String getCategories = "/jobs/get_category_&count_jobs";
@@ -85,6 +85,7 @@ class ApiUrl {
 
   static const String getCustomerProfile = "/users/me";
   static const String updateUser = "/users"; // + id
+  static const String updateSchedule = "/availabilities/create-my-schedule";
   static const String resetPassword = "/user/auth/reset-password";
   static const String farmaciesNearby = "/farmacies/nearby";
   static const String getServices = "/services/";
@@ -100,6 +101,9 @@ class ApiUrl {
   static const String getCategoryList = "/speciality/retrive/search";
   static const String getSubscriptionList = "/subscription/retrive/search";
   static const String getPopularTherapist = "/user/retrive/therapists/popular";
+
+  static const String bookings = "/bookings";
+  static const String notification = "/notifications";
 
   static String getTherapistBySpeciality({
     required String specialityId,

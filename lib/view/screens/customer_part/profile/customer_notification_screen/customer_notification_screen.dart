@@ -13,7 +13,7 @@ class CustomerNotificationScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
             children: List.generate(5, (value){
-              return CustomNotificationList();
+              return CustomNotificationList(title: '', message: '',);
             })
         ),
       ),

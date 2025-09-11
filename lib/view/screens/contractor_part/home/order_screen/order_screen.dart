@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
+import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
+import '../controller/contractor_home_controller.dart';
 import 'controller/order_controller.dart';
 import 'widget/custom_delivered_service_card.dart';
 import 'widget/custom_service_request_card.dart';
@@ -17,49 +20,89 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final orderController = Get.find<OrderController>();
+  ContractorHomeController controller = Get.find<ContractorHomeController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
 
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request".tr),
-      body: Column(
-        children: [
-          //========================================= TAB BAR ================================
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-            child: CustomTabBar(
-              tabs: orderController.nameList,
-              selectedIndex: orderController.currentIndex.value,
-              onTabSelected: (value) {
-                orderController.currentIndex.value = value;
-                setState(() {});
-                orderController.update();
-              },
-              selectedColor: AppColors.primary,
-              unselectedColor: AppColors.black_04,
-            ),
-          ),
-          SizedBox(height: 20.h),
-          if (orderController.currentIndex.value == 0)
-            Expanded(
-              child: ListView(
-                children: List.generate(4, (value) {
-                  return CustomServiceRequestCard();
-                }),
+      body: Obx(() {
+        if (controller.status.value.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
+        } else if (controller.status.value.isError) {
+          return Center(child: Text(controller.status.value.errorMessage!));
+        } else {
+          return Column(
+            children: [
+              //========================================= TAB BAR ================================
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                child: CustomTabBar(
+                  tabs: controller.nameList,
+                  selectedIndex: controller.currentIndex.value,
+                  onTabSelected: (value) {
+                    controller.currentIndex.value = value;
+                    setState(() {});
+                    controller.update();
+                  },
+                  selectedColor: AppColors.primary,
+                  unselectedColor: AppColors.black_04,
+                ),
               ),
-            ),
-          if (orderController.currentIndex.value == 1)
-            Expanded(
-              child: ListView(
-                children: List.generate(2, (value) {
-                  return CustomDeliveredServiceCard();
-                }),
-              ),
-            ),
-        ],
-      ),
+              SizedBox(height: 20.h),
+              if (controller.currentIndex.value == 0)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.pendingBookingList.value.data!.length,
+                    itemBuilder: (context, index) {
+                      BookingModelData data =
+                          controller.pendingBookingList.value.data![index];
+                      return CustomServiceRequestCard(
+                        title: data.subCategoryId?.name ?? " - ",
+                        rating:
+                            data.contractorId?.contractor?.ratings
+                                ?.toString() ??
+                            ' - ',
+                        dateTime: data.updatedAt!,
+                        id: data.id!,
+                        image: data.contractorId?.img,
+                      );
+                    },
+                  ),
+                ),
+
+              if (controller.currentIndex.value == 1)
+                Expanded(
+                  child: Expanded(
+                    child: ListView.builder(
+                      itemCount:
+                          controller.completeBookingList.value.data!.length,
+                      itemBuilder: (context, index) {
+                        BookingModelData data =
+                            controller.completeBookingList.value.data![index];
+
+                        return CustomDeliveredServiceCard(
+                          title: data.subCategoryId?.name ?? " - ",
+                          rating:
+                              data.contractorId?.contractor?.ratings
+                                  ?.toString() ??
+                              ' - ',
+                          dateTime: data.updatedAt!,
+                          price: data.price.toString(),
+                          image: data.contractorId?.img,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+            ],
+          );
+        }
+      }),
       bottomNavigationBar: Navbar(currentIndex: 1),
     );
   }

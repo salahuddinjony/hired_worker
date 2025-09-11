@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import 'controller/certificate_upload_controller.dart';
 import 'widget/custom_certificate_pdf_button.dart';
 
@@ -28,38 +29,51 @@ class CertificateScreen extends StatelessWidget {
             children: [
               CustomCertificatePdfButton(
                 onTap: () {
-                  controller.pickNidFile();
+                  controller.pickCertificate();
                 },
-                label: "NID".tr,
-                title: controller.nidFile.value == null || controller.nidFile.value!.path.isEmpty
-                    ? ""
-                    : controller.nidFile.value!.path.split("/").last,
+                label: "Certificate".tr,
+                title:
+                    controller.certificate.value == null ||
+                            controller.certificate.value!.path.isEmpty
+                        ? ""
+                        : controller.certificate.value!.path.split("/").last,
               ),
 
               CustomCertificatePdfButton(
                 onTap: () {
-                  controller.skillsFile();
+                  controller.pickSkillFile();
                 },
                 label: "Skills".tr,
-                title: controller.skillFile.value == null || controller.skillFile.value!.path.isEmpty
-                    ? ""
-                    : controller.skillFile.value!.path.split("/").last,
+                title:
+                    controller.skillFile.value == null ||
+                            controller.skillFile.value!.path.isEmpty
+                        ? ""
+                        : controller.skillFile.value!.path.split("/").last,
               ),
 
               CustomCertificatePdfButton(
                 onTap: () {
-                  controller.otherSFile();
+                  controller.pickOtherFile();
                 },
                 label: "Other".tr,
-                title: controller.otherFile.value == null || controller.otherFile.value!.path.isEmpty
-                    ? ""
-                    : controller.otherFile.value!.path.split("/").last,
+                title:
+                    controller.otherFile.value == null ||
+                            controller.otherFile.value!.path.isEmpty
+                        ? ""
+                        : controller.otherFile.value!.path.split("/").last,
               ),
               Spacer(),
-              CustomButton(onTap: (){
-                controller.updateContractorData();
-              }, title: "Add Certificate".tr,),
-              SizedBox(height: 30,),
+              Obx(() {
+                return controller.status.value.isLoading
+                    ? CustomLoader()
+                    : CustomButton(
+                      onTap: () {
+                        controller.uploadAllFiles();
+                      },
+                      title: "Add Certificate".tr,
+                    );
+              }),
+              SizedBox(height: 30),
             ],
           );
         }),

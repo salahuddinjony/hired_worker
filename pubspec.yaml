@@ -60,6 +60,7 @@ dependencies:
   shape_of_view_null_safe: ^3.0.0
   zego_uikit_prebuilt_call: ^4.16.28
   zego_uikit_signaling_plugin: ^2.8.15
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:

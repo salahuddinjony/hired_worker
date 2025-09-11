@@ -14,7 +14,7 @@ class ChargeController extends GetxController {
   Future<void> updateContractorData(String rateHourly) async {
 
     if (rateHourly.isEmpty) {
-      showCustomSnackBar("Please select at least one day to continue.");
+      showCustomSnackBar("Please enter amount to continue.");
       return;
     }
 
@@ -35,7 +35,7 @@ class ChargeController extends GetxController {
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
 
-        // Get.toNamed(AppRoutes.certificateScreen);
+        Get.toNamed(AppRoutes.subscribeScreen);
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

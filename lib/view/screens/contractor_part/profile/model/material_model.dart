@@ -12,38 +12,38 @@ class MaterialModel {
     bool? success;
     String? message;
     Meta? meta;
-    List<Datum>? data;
+    List<Material>? materialList;
 
     MaterialModel({
         this.success,
         this.message,
         this.meta,
-        this.data,
+        this.materialList,
     });
 
     factory MaterialModel.fromJson(Map<String, dynamic> json) => MaterialModel(
         success: json["success"],
         message: json["message"],
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        materialList: json["data"] == null ? [] : List<Material>.from(json["data"]!.map((x) => Material.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
         "meta": meta?.toJson(),
-        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": materialList == null ? [] : List<dynamic>.from(materialList!.map((x) => x.toJson())),
     };
 }
 
-class Datum {
+class Material {
     String? id;
     String? name;
     int? unit;
     int? price;
     bool? isDeleted;
 
-    Datum({
+    Material({
         this.id,
         this.name,
         this.unit,
@@ -51,7 +51,7 @@ class Datum {
         this.isDeleted,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory Material.fromJson(Map<String, dynamic> json) => Material(
         id: json["_id"],
         name: json["name"],
         unit: json["unit"],

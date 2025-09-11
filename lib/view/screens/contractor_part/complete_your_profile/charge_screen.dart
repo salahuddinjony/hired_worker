@@ -62,10 +62,15 @@ class ChargeScreen extends StatelessWidget {
             Obx(() {
               return controller.status.value.isLoading
                   ? CustomLoader()
-                  : CustomButton(onTap: () {
-                    controller.updateContractorData(textEditingController.text);
-              }, title: "Continue".tr);
-            },),
+                  : CustomButton(
+                    onTap: () {
+                      controller.updateContractorData(
+                        textEditingController.text,
+                      );
+                    },
+                    title: "Continue".tr,
+                  );
+            }),
           ],
         ),
       ),
