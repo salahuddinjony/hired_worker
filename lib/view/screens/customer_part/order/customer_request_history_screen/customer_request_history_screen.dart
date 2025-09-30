@@ -26,8 +26,9 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "History Status",),
+    return Scaffold(      extendBody: true,
+
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "History Status".tr,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -93,7 +94,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: [
                      CustomText(
-                       text: "Status",
+                       text: "Status".tr,
                        fontSize: 14.w,
                        fontWeight: FontWeight.w500,
                        color: Color(0xff6F767E),
@@ -105,7 +106,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                          borderRadius: BorderRadius.circular(7),
                        ),
                        child: CustomText(
-                         text: "Pending",
+                         text: "Pending".tr,
                          fontSize: 14.w,
                          fontWeight: FontWeight.w600,
                          color: AppColors.primary,
@@ -129,7 +130,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                            bottom: 4.h,
                          ),
                          CustomText(
-                           text: "Schedule",
+                           text: "Schedule".tr,
                            fontSize: 12.w,
                            fontWeight: FontWeight.w500,
                            color: Color(0xff6F767E),
@@ -162,7 +163,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                                bottom: 4.h,
                              ),
                              CustomText(
-                               text: "Service provider",
+                               text: "Service provider".tr,
                                fontSize: 12.w,
                                fontWeight: FontWeight.w500,
                                color: Color(0xff6F767E),
@@ -180,7 +181,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                              borderRadius: BorderRadius.circular(7),
                            ),
                            child: CustomText(
-                             text: "Update",
+                             text: "Update".tr,
                              fontSize: 14.w,
                              fontWeight: FontWeight.w600,
                              color: AppColors.primary,
@@ -195,7 +196,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                              borderRadius: BorderRadius.circular(7),
                            ),
                            child: CustomText(
-                             text: "Cancel",
+                             text: "Cancel".tr,
                              fontSize: 14.w,
                              fontWeight: FontWeight.w600,
                              color: AppColors.primary,
@@ -254,7 +255,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Status",
+                        text: "Status".tr,
                         fontSize: 14.w,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff6F767E),
@@ -266,7 +267,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                           borderRadius: BorderRadius.circular(7),
                         ),
                         child: CustomText(
-                          text: "Confirmed",
+                          text: "Confirmed".tr,
                           fontSize: 14.w,
                           fontWeight: FontWeight.w600,
                           color: AppColors.green,
@@ -290,7 +291,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                             bottom: 4.h,
                           ),
                           CustomText(
-                            text: "Schedule",
+                            text: "Schedule".tr,
                             fontSize: 12.w,
                             fontWeight: FontWeight.w500,
                             color: Color(0xff6F767E),
@@ -318,7 +319,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
                                 bottom: 4.h,
                               ),
                               CustomText(
-                                text: "Service provider",
+                                text: "Service provider".tr,
                                 fontSize: 12.w,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff6F767E),

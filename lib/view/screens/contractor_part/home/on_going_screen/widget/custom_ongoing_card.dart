@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../components/custom_button/custom_button.dart';
@@ -114,7 +115,7 @@ class CustomOngoingCard extends StatelessWidget {
                 child: CustomButton(
                   height: 35,
                   onTap: () {},
-                  title: "Cancel",
+                  title: "Cancel".tr,
                   isBorder: true,
                   fillColor: Colors.transparent,
                   borderWidth: 1,
@@ -126,7 +127,7 @@ class CustomOngoingCard extends StatelessWidget {
                 child: CustomButton(
                   height: 35,
                   onTap: rightOnTap ?? () =>(),
-                  title: "Finish",
+                  title: "Finish".tr,
                   fillColor: AppColors.primary,
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
@@ -14,7 +15,7 @@ class CustomerReferFriendScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Refer a Friend"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Refer a Friend".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
         child: Column(
@@ -44,7 +45,7 @@ class CustomerReferFriendScreen extends StatelessWidget {
             ),
             CustomButton(
               width: MediaQuery.sizeOf(context).width/2,
-              onTap: (){}, title: "Refer a Friend",)
+              onTap: (){}, title: "Refer a Friend".tr,)
           ],
         ),
       ),

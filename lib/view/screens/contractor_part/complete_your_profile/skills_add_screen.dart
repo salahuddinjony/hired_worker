@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/app_routes/app_routes.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/skill_selection_controller.dart';
 import '../../../components/custom_button/custom_button.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 
 class SkillsAddScreen extends StatefulWidget {
@@ -35,22 +36,25 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final SkillSelectionController controller =
+        Get.find<SkillSelectionController>();
+
     return Scaffold(
-      appBar: const CustomRoyelAppbar(
+      appBar: CustomRoyelAppbar(
         leftIcon: true,
-        titleName: "Selected Skills",
+        titleName: "Selected Skills".tr,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
             const SizedBox(height: 8),
-            const Text(
-              "Set up your personal information.",
+            Text(
+              "Set up your personal information.".tr,
               style: TextStyle(color: Colors.black87),
             ),
-            const Text(
-              "You can always change it later.",
+            Text(
+              "You can always change it later.".tr,
               style: TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
@@ -68,17 +72,21 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: isSelected
-                              ? const Color(0xFF3C003D).withValues(alpha: 0.1)
-                              : Colors.transparent,
+                          color:
+                              isSelected
+                                  ? const Color(
+                                    0xFF3C003D,
+                                  ).withValues(alpha: 0.1)
+                                  : Colors.transparent,
                         ),
                         child: Row(
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: isSelected
-                                    ? const Color(0xFF3C003D)
-                                    : const Color(0xFFE0E0E0),
+                                color:
+                                    isSelected
+                                        ? const Color(0xFF3C003D)
+                                        : const Color(0xFFE0E0E0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               padding: const EdgeInsets.all(6),
@@ -106,14 +114,16 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                 },
               ),
             ),
-            CustomButton(
-              onTap: () {
-                Get.toNamed(AppRoutes.categorySeletedScreen);
-                // handle selectedDays if needed
-                debugPrint("Selected Skills: $selectedSkils");
-              },
-              title: "Continue",
-            ),
+            Obx(() {
+              return controller.status.value.isLoading
+                  ? CustomLoader()
+                  : CustomButton(
+                    onTap: () {
+                      controller.updateContractorData(selectedSkils);
+                    },
+                    title: "Continue".tr,
+                  );
+            }),
             const SizedBox(height: 30),
           ],
         ),

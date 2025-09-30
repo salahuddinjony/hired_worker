@@ -8,6 +8,7 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
 import '../../../../utils/app_colors/app_colors.dart';
+
 class AccountTypeScreen extends StatelessWidget {
   const AccountTypeScreen({super.key});
 
@@ -20,10 +21,16 @@ class AccountTypeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(child: CustomImage(imageSrc: AppIcons.logo, width: 150.w,height: 150.h,)),
+            Center(
+              child: CustomImage(
+                imageSrc: AppIcons.logo,
+                width: 150.w,
+                height: 150.h,
+              ),
+            ),
             CustomText(
               top: 80.h,
-              text: "Create a New Account",
+              text: "Create a New Account".tr,
               fontSize: 24.w,
               fontWeight: FontWeight.w700,
               color: AppColors.black,
@@ -31,25 +38,34 @@ class AccountTypeScreen extends StatelessWidget {
             ),
             CustomButton(
               onTap: () {
-                Get.toNamed(AppRoutes.customerHomeScreen);
+                Get.toNamed(
+                  AppRoutes.contractorSignUpScreen,
+                  arguments: {'isContactor': false},
+                );
               },
               fillColor: AppColors.backgroundClr,
               borderWidth: 1,
               isBorder: true,
               textColor: AppColors.black,
-              title: "Customer",
+              title: "Customer".tr,
             ),
             CustomText(
               top: 12.h,
               bottom: 12.h,
-              text: "or",
+              text: "or".tr,
               fontSize: 20.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
             ),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.homeScreen);
-            }, title: "Contractor",)
+            CustomButton(
+              onTap: () {
+                Get.toNamed(
+                  AppRoutes.contractorSignUpScreen,
+                  arguments: {'isContactor': true},
+                );
+              },
+              title: "Contractor".tr,
+            ),
           ],
         ),
       ),

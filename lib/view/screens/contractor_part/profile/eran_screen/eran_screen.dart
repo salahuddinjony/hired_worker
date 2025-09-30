@@ -21,6 +21,7 @@ class _EranScreenState extends State<EranScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,8 +38,9 @@ class _EranScreenState extends State<EranScreen> {
               children: [
                 CustomRoyelAppbar(
                   leftIcon: true,
-                  titleName: "My Balance",
+                  titleName: "My Balance".tr,
                   color: AppColors.white,
+                  backgroundClr: Colors.transparent,
                 ),
                 CustomText(
                   text: "\$12,00",
@@ -47,7 +49,7 @@ class _EranScreenState extends State<EranScreen> {
                   bottom: 10.h,
                 ),
                 CustomText(
-                  text: "Available Balance",
+                  text: "Available Balance".tr,
                   fontSize: 14.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.white.withValues(alpha: .5),
@@ -57,7 +59,7 @@ class _EranScreenState extends State<EranScreen> {
                   width: 120.w,
                   height: 36.h,
                   onTap: () {},
-                  title: "Withdraw",
+                  title: "Withdraw".tr,
                   textColor: AppColors.primary,
                   fillColor: AppColors.white,
                 ),
@@ -68,7 +70,7 @@ class _EranScreenState extends State<EranScreen> {
           CustomText(
             top: 10.h,
             left: 16.w,
-            text: "Activity",
+            text: "Activity".tr,
             fontSize: 20.w,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
@@ -89,37 +91,33 @@ class _EranScreenState extends State<EranScreen> {
             ),
           ),
           SizedBox(height: 10.h),
-         if(profileController.currentIndex.value==0)
-           Expanded(
-             child: ListView(
-               padding: EdgeInsets.zero,
-               children: List.generate(3, (value){
-                 return CustomEarnContainer();
-               }),
-             ),
-           ),
-          if(profileController.currentIndex.value==1)
+          if (profileController.currentIndex.value == 0)
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: List.generate(2, (value){
-                  return CustomEarnContainer(
-                    statusText: "Pending",
-                  );
+                children: List.generate(3, (value) {
+                  return CustomEarnContainer();
                 }),
               ),
             ),
-          if(profileController.currentIndex.value==2)
+          if (profileController.currentIndex.value == 1)
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: List.generate(1, (value){
-                  return CustomEarnContainer(
-                    statusText: "Rejected",
-                  );
+                children: List.generate(2, (value) {
+                  return CustomEarnContainer(statusText: "Pending".tr);
                 }),
               ),
-            )
+            ),
+          if (profileController.currentIndex.value == 2)
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: List.generate(1, (value) {
+                  return CustomEarnContainer(statusText: "Rejected".tr);
+                }),
+              ),
+            ),
         ],
       ),
     );

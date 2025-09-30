@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
@@ -39,7 +41,7 @@ class OnboardingScreenTwo extends StatelessWidget {
                 children: [
                   CustomText(
                     top: 20,
-                    text: "Find expert services at\nyour fingertips",
+                    text: "Find expert services at\nyour fingertips".tr,
                     fontSize: 32.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
@@ -47,7 +49,7 @@ class OnboardingScreenTwo extends StatelessWidget {
                   CustomText(
                     top: 20,
                     text:
-                        "From home repairs to beauty care – get all services with ease",
+                        "From home repairs to beauty care – get all services with ease".tr,
                     fontSize: 18.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
@@ -55,10 +57,12 @@ class OnboardingScreenTwo extends StatelessWidget {
                     bottom: 20,
                   ),
                   CustomButton(
-                    onTap: () {
+                    onTap: () async {
                       Get.toNamed(AppRoutes.loginScreen);
+
+                      await SharePrefsHelper.setBool(AppConstants.isFirstTime, false);
                     },
-                    title: "Next",
+                    title: "Next".tr,
                     width: MediaQuery.sizeOf(context).width / 1.2,
                   ),
                 ],

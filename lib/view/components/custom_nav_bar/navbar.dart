@@ -9,7 +9,7 @@ import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
 import '../../screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../screens/contractor_part/message/message_list_screen/message_list_screen.dart';
+import '../../screens/message/message_list_screen/message_list_screen.dart';
 import '../../screens/contractor_part/profile/profile_screen/profile_screen.dart';
 
 class Navbar extends StatefulWidget {
@@ -48,13 +48,13 @@ class _NavbarState extends State<Navbar> {
         Get.offAll(() => HomeScreen());
         break;
       case 1:
-       Get.to(() => OrderScreen());
+        Get.to(() => OrderScreen());
         break;
       case 2:
-       Get.to(() => MessageListScreen());
+        Get.to(() => MessageListScreen());
         break;
       case 3:
-       Get.to(() => ProfileScreen());
+        Get.to(() => ProfileScreen());
         break;
     }
   }
@@ -62,7 +62,6 @@ class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      height: 75.h,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       index: bottomNavIndex,
@@ -97,7 +96,7 @@ class CustomNavIcon extends StatelessWidget {
       width: isSelected ? 32.h : 26.h,
       child: SvgPicture.asset(
         assetName,
-        color: isSelected ? Colors.white : Colors.white70,
+        colorFilter: isSelected ? ColorFilter.mode(Colors.white, BlendMode.srcIn) : ColorFilter.mode(Colors.white70, BlendMode.srcIn),
       ),
     );
   }

@@ -1,118 +1,239 @@
+// Importing necessary packages and files
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/utils/app_icons/app_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive design
+import 'package:get/get.dart'; // For state management and navigation
+import 'package:servana/helper/image_handelar/image_handelar.dart';
+import 'package:servana/utils/app_colors/app_colors.dart'; // App color constants
+import 'package:servana/utils/app_const/app_const.dart'; // App constants
+import 'package:servana/utils/app_icons/app_icons.dart'; // App icons
+import 'package:servana/utils/extensions/widget_extension.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/widget/custom_service_card.dart';
-import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../components/custom_nav_bar/navbar.dart';
-import 'widget/custom_home_card.dart';
+import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
+import '../../../../../core/app_routes/app_routes.dart'; // App navigation routes
+import '../../../../components/custom_nav_bar/navbar.dart'; // Custom bottom navigation bar
+import 'widget/custom_home_card.dart'; // Custom card widget for home screen
+
+// HomeScreen is a StatelessWidget that displays the contractor's dashboard
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Get the ProfileController instance using GetX
+    final ProfileController profileController = Get.find<ProfileController>();
+    profileController.getMe();
+
+    ContractorHomeController controller = Get.find<ContractorHomeController>();
+
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      extendBody: true, // Ensures the body extends behind the navigation bar
+      body: Obx(() {
+        // Using Obx to reactively update the UI when contractorData changes
+        if (controller.status.value.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
+        } else if (controller.status.value.isError) {
+          return Center(child: Text(controller.status.value.errorMessage!));
+        } else {
+          return Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
+            child: Column(
               children: [
+                // Header row with welcome message and profile picture
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  /*  Icon(Icons.menu, color: AppColors.black),
-                    SizedBox(width: 10.w),*/
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        CustomText(
-                          text: "Welcome!",
-                          fontSize: 20.w,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black_02,
-                          bottom: 2,
-                        ),
-                        CustomText(
-                          text: "Mehedi Bin Ab. Salam (Electrician)",
-                          fontSize: 15.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Welcome text
+                            CustomText(
+                              text: "Welcome!".tr,
+                              // .tr for translation
+                              fontSize: 18.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black_02,
+                              bottom: 2,
+                            ),
+                            // Contractor's name
+                            CustomText(
+                              text:
+                                  profileController
+                                      .contractorModel
+                                      .value
+                                      .data
+                                      ?.fullName ??
+                                  " - ",
+                              // Fallback to " - " if null
+                              fontSize: 15.w,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black,
+                            ),
+
+                            // role
+                            CustomText(
+                              text:
+                                  profileController
+                                      .contractorModel
+                                      .value
+                                      .data
+                                      ?.role ??
+                                  " - ",
+                              // Fallback to " - " if null
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black.withValues(alpha: 0.9),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                    // Profile picture - reacts to changes with Obx
+                    Obx(() {
+                      final data = profileController.contractorModel.value.data;
+
+                      return (data?.img != null)
+                          ? CustomNetworkImage(
+                            imageUrl: ImageHandler.imagesHandle(data?.img),
+                            height: 55.h,
+                            width: 55.w,
+                            boxShape: BoxShape.circle,
+                          )
+                          : CustomNetworkImage(
+                            imageUrl: AppConstants.profileImage,
+                            height: 55.h,
+                            width: 55.w,
+                            boxShape: BoxShape.circle,
+                          );
+                    }),
                   ],
                 ),
-                CustomNetworkImage(
-                  imageUrl: AppConstants.profileImage,
-                  height: 45,
-                  width: 45,
-                  boxShape: BoxShape.circle,
+                SizedBox(height: 20.h), // Spacer
+                // Main content area with scrollable list
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      // First row of stats cards
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomHomeCard(
+                            text: '11',
+                            title: "Total Earning this month".tr,
+                          ),
+                          CustomHomeCard(
+                            text:
+                                controller.bookingModel.value.meta?.total
+                                    .toString() ??
+                                " - ",
+                            title: "Total Service".tr,
+                            imageSrc: AppIcons.iconTwo,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+
+                      // second row of stats cards
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomHomeCard(
+                            text: controller.requestedServices.value.toString(),
+                            title: "Request Services".tr,
+                            imageSrc: AppIcons.iconTwo,
+                          ),
+                          CustomHomeCard(
+                            text:
+                                controller.bookingModel.value.data?.length
+                                    .toString() ??
+                                " - ",
+                            title: "Recent Services".tr,
+                            imageSrc: AppIcons.iconTwo,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+
+                      // third row of stats cards
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomHomeCard(
+                            onTap: () => Get.toNamed(AppRoutes.onGoingScreen),
+                            // Navigate to ongoing screen
+                            text: controller.onGoingServices.value.toString(),
+                            title: "On Going".tr,
+                            imageSrc: AppIcons.iconTwo,
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 15.h),
+
+                      // Recent Services section header
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: "Recent Service".tr,
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                          // "See all" link
+                          CustomText(
+                            text: "See all".tr,
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ).onTap(() {
+                            Get.toNamed(AppRoutes.recentAllServiceScreen);
+                          },),
+                        ],
+                      ),
+
+                      // List of recent service cards
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:
+                            controller.bookingModel.value.data?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          BookingModelData data =
+                              controller.bookingModel.value.data![index];
+
+                          return CustomServiceCard(
+                            title: data.subCategoryId?.name ?? ' - ',
+                            updateDate: data.updatedAt!,
+                            hourlyRate: data.rateHourly.toString(),
+                            rating:
+                                data.contractorId?.contractor?.ratings
+                                    ?.toString() ??
+                                ' - ',
+                            status: data.status ?? ' - ',
+                            image: data.contractorId?.img,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10.h), // Bottom spacer
+                    ],
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: 20.h),
-           Expanded(child: ListView(
-             padding: EdgeInsets.zero,
-             children: [
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   CustomHomeCard(),
-                   CustomHomeCard(text: "90",title: "Total Service",imageSrc: AppIcons.iconTwo,),
-                 ],
-               ),
-               SizedBox(height: 10.h),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   CustomHomeCard(text: "9",title: "Upcoming Services",imageSrc: AppIcons.iconTwo,),
-                   CustomHomeCard(text: "3",title: "Total Service",imageSrc: AppIcons.iconTwo,),
-                 ],
-               ),
-               SizedBox(height: 10.h),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   CustomHomeCard(text: "15",title: "Recent Services",imageSrc: AppIcons.iconTwo,),
-                   CustomHomeCard(text: "\$50/hr",title: "Current billing price",imageSrc: AppIcons.iconThree,),
-                 ],
-               ),
-               SizedBox(height: 10.h),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   CustomHomeCard(text: "9",title: "Experience",imageSrc: AppIcons.iconTwo,),
-                   CustomHomeCard(
-                     onTap: ()=> Get.toNamed(AppRoutes.onGoingScreen),
-                     text: "03",
-                     title: "On Going",
-                     imageSrc: AppIcons.iconTwo,),
-                 ],
-               ),
-               SizedBox(height: 10.h,),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   CustomText(text: "Recent Service", fontSize: 14.w,fontWeight: FontWeight.w600,color: AppColors.black,),
-                   CustomText(text: "See all", fontSize: 14.w,fontWeight: FontWeight.w600,color: AppColors.primary,),
-                 ],
-               ),
-               SizedBox(height: 10.h,),
-               Column(
-                 children: List.generate(4, (value){
-                   return CustomServiceCard();
-                 }),
-               )
-             ],
-           ))
-          ],
-        ),
-      ),
+          );
+        }
+      }),
+      // Bottom navigation bar with current index set to 0 (Home)
       bottomNavigationBar: Navbar(currentIndex: 0),
     );
   }

@@ -1,14 +1,12 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/screens/message/message_list_screen/message_list_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
-import '../../screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
 import '../../screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
 import '../../screens/customer_part/profile/customer_profile_screen/customer_profile_screen.dart';
 
@@ -51,10 +49,10 @@ class _NavbarState extends State<CustomerNavbar> {
         Get.to(() => CustomerRequestHistoryScreen());
         break;
       case 2:
-       Get.to(() => CustomerMessaageListScreen());
+        Get.to(() => MessageListScreen());
         break;
       case 3:
-       Get.to(() => CustomerProfileScreen());
+        Get.to(() => CustomerProfileScreen());
         break;
     }
   }
@@ -62,7 +60,6 @@ class _NavbarState extends State<CustomerNavbar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      height: 75.h,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       index: bottomNavIndex,
@@ -97,7 +94,7 @@ class CustomNavIcon extends StatelessWidget {
       width: isSelected ? 32.h : 26.h,
       child: SvgPicture.asset(
         assetName,
-        color: isSelected ? Colors.white : Colors.white70,
+        colorFilter: isSelected ? ColorFilter.mode(Colors.white, BlendMode.srcIn) : ColorFilter.mode(Colors.white70, BlendMode.srcIn),
       ),
     );
   }

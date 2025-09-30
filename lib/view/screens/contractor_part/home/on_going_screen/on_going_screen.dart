@@ -14,7 +14,7 @@ class OnGoingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
       body: SingleChildScrollView(
         child: Column(
           children: [

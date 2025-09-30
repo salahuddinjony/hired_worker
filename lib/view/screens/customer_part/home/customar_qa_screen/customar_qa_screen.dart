@@ -11,7 +11,7 @@ class CustomarQaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Q&A",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Q&A".tr,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -35,7 +35,7 @@ class CustomarQaScreen extends StatelessWidget {
             SizedBox(height: 30.h,),
             CustomButton(onTap: (){
               Get.toNamed(AppRoutes.customarMaterialsScreen);
-            }, title: "Submit",)
+            }, title: "Submit".tr,)
           ],
         ),
       ),

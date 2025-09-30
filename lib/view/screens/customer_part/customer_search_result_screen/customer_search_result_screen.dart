@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
@@ -16,7 +17,7 @@ class CustomerSearchResultScreen extends StatelessWidget {
             children: [
               CustomTextField(
                 fillColor: AppColors.white,
-                hintText: "Search......",
+                hintText: "Search......".tr,
                 hintStyle: TextStyle(color: AppColors.black_08),
                 prefixIcon: Padding(
                   padding: const EdgeInsets.all(8.0),

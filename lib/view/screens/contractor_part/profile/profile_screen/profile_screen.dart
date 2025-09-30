@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -9,6 +10,10 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/map/google_map_screen.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
 import 'widget/custom_profile_menu_list.dart';
 
@@ -17,10 +22,19 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find<ProfileController>();
+    final ContractorHomeController homeController =
+        Get.find<ContractorHomeController>();
+    final LanguageController languageController =
+        Get.find<LanguageController>();
+
     return Scaffold(
+      extendBody: true,
+
       appBar: CustomRoyelAppbar(
-        leftIcon: true,
-        titleName: "Profile",
+        leftIcon: false,
+        showRightIcon: true,
+        titleName: "Profile".tr,
         rightIcon: AppIcons.editIcon,
         rightOnTap: () {
           Get.toNamed(AppRoutes.editProfileScreen);
@@ -33,30 +47,61 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CustomNetworkImage(
-                    imageUrl: AppConstants.profileImage,
-                    height: 55,
-                    width: 55,
-                    boxShape: BoxShape.circle,
-                  ),
+                  Obx(() {
+                    final data = profileController.contractorModel.value.data;
+                    // Check if an image is selected, if not use the default profile image
+
+                    return profileController.selectedImage.value == null
+                        ? (data?.img != null)
+                            ? CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                            : CustomNetworkImage(
+                              imageUrl: AppConstants.profileImage,
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                        : Container(
+                          height: 55.h,
+                          width: 55.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(
+                                profileController.selectedImage.value!,
+                              ),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                  }),
+
                   SizedBox(width: 10.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Thomas",
-                        fontSize: 16.w,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
-                      CustomText(
-                        text: "liamksayem@gmail.com",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black_04,
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    final contractorData =
+                        profileController.contractorModel.value;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: contractorData.data?.fullName ?? " - ",
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black,
+                        ),
+                        CustomText(
+                          text: contractorData.data?.email ?? " - ",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_04,
+                        ),
+                      ],
+                    );
+                  }),
                 ],
               ),
               SizedBox(height: 20.h),
@@ -65,8 +110,11 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   CustomHomeCard(),
                   CustomHomeCard(
-                    text: "90",
-                    title: "Total Service",
+                    text:
+                        homeController.bookingModel.value.meta?.total
+                            .toString() ??
+                        " - ",
+                    title: "Total Service".tr,
                     imageSrc: AppIcons.iconTwo,
                   ),
                 ],
@@ -76,77 +124,95 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomHomeCard(
-                    text: "15",
-                    title: "Recent Services",
+                    text:
+                        homeController.bookingModel.value.data?.length
+                            .toString() ??
+                        " - ",
+                    title: "Recent Services".tr,
                     imageSrc: AppIcons.iconFour,
                   ),
                   CustomHomeCard(
-                    text: "\$50/hr",
-                    title: "Current billing price",
+                    text:
+                        "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
+                    title: "Current billing price".tr,
                     imageSrc: AppIcons.iconThree,
                   ),
                 ],
               ),
               SizedBox(height: 20.h),
-              CustomProfileMenuList(),
-              CustomProfileMenuList(image: AppIcons.map, name: "Address"),
+              // CustomProfileMenuList(),
+              GestureDetector(
+                onTap: () {
+                  Get.to(GoogleMapScreen(location: profileController.contractorModel.value.data?.contractor?.city ?? ""));
+                },
+                child: CustomProfileMenuList(
+                  image: AppIcons.map,
+                  name: "Address".tr,
+                ),
+              ),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.notificationScreen);
                 },
                 image: AppIcons.notifaction,
-                name: "Notification",
+                name: "Notification".tr,
               ),
-              CustomProfileMenuList(image: AppIcons.sklils, name: "Skills"),
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.materialsScreen);
                 },
                 image: AppIcons.mdiMaterial,
-                name: "Materials",
+                name: "Materials".tr,
               ),
               CustomProfileMenuList(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.scheduleScreen);
-                  },
-                  image: AppIcons.schedule,
-                  name: "Schedule"),
-              CustomProfileMenuList(
-                image: AppIcons.totalService,
-                name: "Total Service",
+                onTap: () {
+                  Get.toNamed(AppRoutes.scheduleScreen);
+                },
+                image: AppIcons.schedule,
+                name: "Schedule".tr,
               ),
               CustomProfileMenuList(
-                onTap: (){
+                onTap: () {
                   Get.toNamed(AppRoutes.eranScreen);
                 },
-                  image: AppIcons.eran,
-                  name: "Eran"),
+                image: AppIcons.eran,
+                name: "Eran".tr,
+              ),
               CustomProfileMenuList(
                 image: AppIcons.mdiRecent,
-                name: "Recent Service",
+                name: "Recent Service".tr,
               ),
-              CustomProfileMenuList(
-                image: AppIcons.settingIcon,
-                name: "Settings",
-              ),
+
               CustomProfileMenuList(
                 onTap: () {
                   Get.toNamed(AppRoutes.helpSupportScreen);
                 },
                 image: AppIcons.call,
-                name: "Support",
+                name: "Support".tr,
+              ),
+              CustomProfileMenuList(
+                image: AppIcons.language,
+                name:
+                    languageController.isChinese.value
+                        ? "启用英文"
+                        : "Enable Chinese",
+                showSwitch: true,
+                switchValue: languageController.isChinese.value,
+                onSwitchChanged: languageController.toggleLanguage,
               ),
               SizedBox(height: 10.h),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.offAllNamed(AppRoutes.loginScreen);
+                },
                 child: CustomText(
-                  text: "Log Out",
+                  text: "Log Out".tr,
                   fontSize: 20.w,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

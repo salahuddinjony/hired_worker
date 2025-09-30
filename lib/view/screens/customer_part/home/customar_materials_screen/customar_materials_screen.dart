@@ -21,7 +21,7 @@ class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials".tr),
       body: Stack(
         children: [
           Padding(
@@ -32,7 +32,7 @@ class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Need Materials Select",
+                      text: "Need Materials Select".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w600,
                       color: AppColors.black,
@@ -63,7 +63,7 @@ class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
         padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20,),
         child: CustomButton(onTap: (){
           Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-        },title: "Continue",),
+        },title: "Continue".tr,),
       ),
     );
   }

@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
+
+import 'dart:convert'; // add this
+
+class AddMaterialController extends GetxController {
+  Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
+
+  Future<void> updateContractorData(List<Map<String, String>> materials, [bool flag = true]) async {
+    if (materials.isEmpty) {
+      showCustomSnackBar("Please create at least one to continue.");
+      return;
+    }
+
+    status.value = RxStatus.loading();
+
+    final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+    String uri = '${ApiUrl.updateUser}/$userId';
+
+    Map<String, String> body = {
+      "data": jsonEncode({"materials": materials}),
+    };
+
+    debugPrint("====> API Body: $body"); 
+
+    try {
+      Response response;
+
+      if (flag) {
+        response = await ApiClient.patchMultipartData(
+          uri,
+          body,
+          multipartBody: [],
+        );
+      } else {
+        response = await ApiClient.patchData(
+          uri,
+          jsonEncode(body),
+        );
+      }
+
+      if (response.statusCode == 200) {
+        status.value = RxStatus.success();
+
+        if (!flag) showCustomSnackBar('Material added successfully', isError: false);
+        if (flag) Get.toNamed(AppRoutes.chargeScreen);
+
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "response.statusText",
+          isError: true,
+        );
+        status.value = RxStatus.error();
+      }
+    } catch (e) {
+      debugPrint('Error updating contractor data: $e');
+      showCustomSnackBar("Error updating contractor data: $e", isError: true);
+      status.value = RxStatus.error();
+    }
+  }
+}

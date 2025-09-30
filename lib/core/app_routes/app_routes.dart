@@ -1,21 +1,28 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
+import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
+import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
 import '../../view/screens/authentication/login_screen/login_screen.dart';
 import '../../view/screens/authentication/reset_password_screen/reset_password_screen.dart';
 import '../../view/screens/authentication/verifay_code_screen/verifay_code_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/add_material_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/category_seleted_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/certificate_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/charge_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/schedule_seleted_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/seleted_map_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/skills_add_screen.dart';
+import '../../view/screens/contractor_part/complete_your_profile/subscribe_screen/payment_method_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../view/screens/contractor_part/message/message_list_screen/message_list_screen.dart';
+import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
 import '../../view/screens/contractor_part/profile/edit_profile_screen/edit_profile_screen.dart';
@@ -40,7 +47,6 @@ import '../../view/screens/customer_part/home/customer_par_sub_category_item/cus
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';
 import '../../view/screens/customer_part/home/customer_sub_category_screen/customer_sub_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_successfully_paid_screen/customer_successfully_paid_screen.dart';
-import '../../view/screens/customer_part/message/customer_messaage_list_screen/customer_messaage_list_screen.dart';
 import '../../view/screens/customer_part/order/customer_request_history_screen/customer_request_history_screen.dart';
 import '../../view/screens/customer_part/order/request_history_service_details_page/request_history_service_details_page.dart';
 import '../../view/screens/customer_part/profile/about_us_screen/about_us_screen.dart';
@@ -61,6 +67,9 @@ class AppRoutes {
   static const String verifayCodeScreen = "/VerifayCodeScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String contractorSignUpScreen = "/ContractorSignUpScreen";
+  static const String subscribeScreen = "/SubscribeScreen";
+  static const String paymentMethodScreen = "/PaymentMethodScreen";
+  static const String thanksScreen = "/ThanksScreen";
   static const String seletedMapScreen = "/SeletedMapScreen";
   static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
   static const String categorySeletedScreen = "/CategorySeletedScreen";
@@ -69,15 +78,18 @@ class AppRoutes {
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
   static const String messageListScreen = "/MessageListScreen";
+  static const String chatScreen = "/ChatScreen";
   static const String profileScreen = "/ProfileScreen";
   static const String editProfileScreen = "/EditProfileScreen";
   static const String helpSupportScreen = "/HelpSupportScreen";
   static const String materialsScreen = "/MaterialsScreen";
+  static const String addMaterialsScreen = "/AddMaterialsScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String scheduleScreen = "/ScheduleScreen";
   static const String eranScreen = "/EranScreen";
   static const String onGoingScreen = "/OnGoingScreen";
   static const String onGoingFinishScreen = "/OnGoingFinishScreen";
+  static const String chargeScreen = "/ChargeScreen";
 
 
   ///===========================Customer==========================
@@ -105,6 +117,7 @@ class AppRoutes {
   static const String aboutUsScreen = "/AboutUsScreen";
   static const String privacyPolicyScreen = "/PrivacyPolicyScreen";
   static const String termsConditionsScreen = "/TermsConditionsScreen";
+  static const String recentAllServiceScreen = "/RecentAllServiceScreen";
 
   static List<GetPage> routes = [
     ///===========================Authentication==========================
@@ -117,23 +130,29 @@ class AppRoutes {
     GetPage(name: verifayCodeScreen, page: () => VerifayCodeScreen()),
     GetPage(name: resetPasswordScreen, page: () => ResetPasswordScreen()),
     GetPage(name: contractorSignUpScreen, page: () => ContractorSignUpScreen()),
+    GetPage(name: subscribeScreen, page: () => SubscribeScreen()),
+    GetPage(name: paymentMethodScreen, page: () => PaymentMethodScreen()),
+    GetPage(name: thanksScreen, page: () => ThanksScreen()),
     GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
-    GetPage(name: scheduleSeletedScreen, page: () => ScheduleSeletedScreen()),
-    GetPage(name: categorySeletedScreen, page: () => CategorySeletedScreen()),
+    GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
+    GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: messageListScreen, page: () => MessageListScreen()),
+    GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
     GetPage(name: helpSupportScreen, page: () => HelpSupportScreen()),
     GetPage(name: materialsScreen, page: () => MaterialsScreen()),
+    GetPage(name: addMaterialsScreen, page: () => AddMaterialsScreen()),
     GetPage(name: notificationScreen, page: () => NotificationScreen()),
     GetPage(name: scheduleScreen, page: () => ScheduleScreen()),
     GetPage(name: eranScreen, page: () => EranScreen()),
     GetPage(name: onGoingScreen, page: () => OnGoingScreen()),
     GetPage(name: onGoingFinishScreen, page: () => OnGoingFinishScreen()),
+    GetPage(name: chargeScreen, page: () => ChargeScreen()),
 
     ///===========================Customer==========================
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
@@ -147,7 +166,6 @@ class AppRoutes {
     GetPage(name: customerNotificationScreen, page: () => CustomerNotificationScreen()),
     GetPage(name: customerHelpSupportScreen, page: () => CustomerHelpSupportScreen()),
     GetPage(name: customerReferFriendScreen, page: () => CustomerReferFriendScreen()),
-    GetPage(name: customerMessaageListScreen, page: () => CustomerMessaageListScreen()),
     GetPage(name: customerSearchResultScreen, page: () => CustomerSearchResultScreen()),
     GetPage(name: customarServiceDetailsScreen, page: () => CustomarServiceDetailsScreen()),
     GetPage(name: customarQaScreen, page: () => CustomarQaScreen()),
@@ -160,6 +178,7 @@ class AppRoutes {
     GetPage(name: aboutUsScreen, page: () => AboutUsScreen()),
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
     GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
+    GetPage(name: recentAllServiceScreen, page: () => RecentAllServiceScreen()),
 
   ];
 }

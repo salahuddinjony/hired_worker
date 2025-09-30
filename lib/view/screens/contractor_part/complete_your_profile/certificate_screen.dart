@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
-import 'controller/complete_profile_controller.dart';
+import '../../../components/custom_loader/custom_loader.dart';
+import 'controller/certificate_upload_controller.dart';
 import 'widget/custom_certificate_pdf_button.dart';
 
 class CertificateScreen extends StatelessWidget {
   CertificateScreen({super.key});
 
-  final completeProfileController = Get.find<CompleteProfileController>();
+  final controller = Get.find<CertificateUploadController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class CertificateScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Certificate", style: TextStyle(color: Colors.black)),
+        title: Text("Certificate".tr, style: TextStyle(color: Colors.black)),
         leading: BackButton(color: Colors.black),
         centerTitle: true,
       ),
@@ -28,36 +28,51 @@ class CertificateScreen extends StatelessWidget {
             children: [
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.pickNidFile();
+                  controller.pickCertificate();
                 },
-                label: "NID",
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
+                label: "Certificate".tr,
+                title:
+                    controller.certificate.value == null ||
+                            controller.certificate.value!.path.isEmpty
                         ? ""
-                        : completeProfileController.nidFile.value!.path.split("/").last,
+                        : controller.certificate.value!.path.split("/").last,
               ),
+
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.skillsFile();
+                  controller.pickSkillFile();
                 },
-                label: "Skills",
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
-                    ? ""
-                    : completeProfileController.nidFile.value!.path.split("/").last,
+                label: "Skills".tr,
+                title:
+                    controller.skillFile.value == null ||
+                            controller.skillFile.value!.path.isEmpty
+                        ? ""
+                        : controller.skillFile.value!.path.split("/").last,
               ),
+
               CustomCertificatePdfButton(
                 onTap: () {
-                  completeProfileController.otherSFile();
+                  controller.pickOtherFile();
                 },
-                label: "Other",
-                title: completeProfileController.nidFile.value == null || completeProfileController.nidFile.value!.path.isEmpty
-                    ? ""
-                    : completeProfileController.nidFile.value!.path.split("/").last,
+                label: "Other".tr,
+                title:
+                    controller.otherFile.value == null ||
+                            controller.otherFile.value!.path.isEmpty
+                        ? ""
+                        : controller.otherFile.value!.path.split("/").last,
               ),
               Spacer(),
-              CustomButton(onTap: (){
-                Get.toNamed(AppRoutes.skillsAddScreen);
-              }, title: "Add Certificate",),
-              SizedBox(height: 30,),
+              Obx(() {
+                return controller.status.value.isLoading
+                    ? CustomLoader()
+                    : CustomButton(
+                      onTap: () {
+                        controller.uploadAllFiles();
+                      },
+                      title: "Add Certificate".tr,
+                    );
+              }),
+              SizedBox(height: 30),
             ],
           );
         }),

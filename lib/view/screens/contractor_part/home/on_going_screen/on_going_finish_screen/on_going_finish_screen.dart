@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -15,13 +16,13 @@ class OnGoingFinishScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
       body: Column(
         children: [
           Center(child: CustomImage(imageSrc: AppIcons.group)),
           CustomText(
             top: 8,
-            text: "Finished",
+            text: "Finished".tr,
             fontSize: 20.w,
             fontWeight: FontWeight.w400,
             color: AppColors.textCLr,
@@ -67,7 +68,7 @@ class OnGoingFinishScreen extends StatelessWidget {
             width: 120.w,
             height: 35.h,
             isBorder: true,
-            onTap: (){}, title: "Confirm",)
+            onTap: (){}, title: "Confirm".tr,)
 
         ],
       ),

@@ -6,7 +6,7 @@ void showCustomSnackBar(String? message, {bool isError = true}) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.white,
         textColor: isError ? Colors.red : Colors.green,
