@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                   CustomHomeCard(),
                   CustomHomeCard(
                     text:
-                        homeController.bookingModel.value.meta?.total
+                        homeController.bookingModel.value.data?.meta?.total
                             .toString() ??
                         " - ",
                     title: "Total Service".tr,
@@ -126,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   CustomHomeCard(
                     text:
-                        homeController.bookingModel.value.data?.length
+                        homeController.bookingModel.value.data?.result?.length
                             .toString() ??
                         " - ",
                     title: "Recent Services".tr,

@@ -42,10 +42,10 @@ class RecentAllServiceController extends GetxController {
 
       BookingModel bookingModel = BookingModel.fromJson(response.body);
 
-      if (bookingModel.data == null || bookingModel.data!.isEmpty) {
+      if (bookingModel.data == null || bookingModel.data!.result!.isEmpty) {
         status.value = RxStatus.empty();
       } else {
-        recentServiceList.addAll(bookingModel.data!);
+        recentServiceList.addAll(bookingModel.data!.result!);
         status.value = RxStatus.success();
       }
     } catch (e) {
@@ -67,11 +67,11 @@ class RecentAllServiceController extends GetxController {
 
       BookingModel bookingModel = BookingModel.fromJson(response.body);
 
-      if (bookingModel.data == null || bookingModel.data!.isEmpty) {
+      if (bookingModel.data == null || bookingModel.data!.result!.isEmpty) {
         showCustomSnackBar('No more data to load');
         isLock = true;
       } else {
-        recentServiceList.addAll(bookingModel.data!);
+        recentServiceList.addAll(bookingModel.data!.result!);
       }
     } catch (e) {
       currentPage--;

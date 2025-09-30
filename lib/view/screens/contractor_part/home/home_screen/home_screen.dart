@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.meta?.total
+                                controller.bookingModel.value.data!.meta?.total
                                     .toString() ??
                                 " - ",
                             title: "Total Service".tr,
@@ -151,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.data?.length
+                                controller.bookingModel.value.data?.result?.length
                                     .toString() ??
                                 " - ",
                             title: "Recent Services".tr,
@@ -205,10 +205,10 @@ class HomeScreen extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount:
-                            controller.bookingModel.value.data?.length ?? 0,
+                            controller.bookingModel.value.data?.result?.length ?? 0,
                         itemBuilder: (context, index) {
                           BookingModelData data =
-                              controller.bookingModel.value.data![index];
+                              controller.bookingModel.value.data!.result![index];
 
                           return CustomServiceCard(
                             title: data.subCategoryId?.name ?? ' - ',

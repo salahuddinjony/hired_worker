@@ -47,7 +47,7 @@ class ContractorHomeController extends GetxController {
         pendingServiceResponse.body,
       );
 
-      requestedServices.value = pendingBookingList.value.data!.length;
+      requestedServices.value = pendingBookingList.value.data!.result!.length;
 
       // get completed services
       final completedServiceResponse = await ApiClient.getData(
@@ -120,7 +120,7 @@ class ContractorHomeController extends GetxController {
   }
 
   void removeBookingData(String id) {
-    pendingBookingList.value.data!.removeWhere((element) {
+    pendingBookingList.value.data!.result!.removeWhere((element) {
       return element.id == id;
     });
 
