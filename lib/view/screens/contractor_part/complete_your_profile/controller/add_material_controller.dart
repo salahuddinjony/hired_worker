@@ -28,10 +28,10 @@ class AddMaterialController extends GetxController {
       "data": jsonEncode({"materials": materials}),
     };
 
-    print("====> API Body: $body");
+    debugPrint("====> API Body: $body"); 
 
     try {
-      var response;
+      Response response;
 
       if (flag) {
         response = await ApiClient.patchMultipartData(

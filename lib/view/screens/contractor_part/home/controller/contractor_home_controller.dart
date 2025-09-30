@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import 'controller/certificate_upload_controller.dart';

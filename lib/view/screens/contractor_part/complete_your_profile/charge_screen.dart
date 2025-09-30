@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/charge_controller.dart';
-
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';

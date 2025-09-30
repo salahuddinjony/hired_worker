@@ -38,7 +38,7 @@ class RecentAllServiceScreen extends StatelessWidget {
                   return CustomServiceCard(
                     title: data.subCategoryId?.name ?? " - ",
                     updateDate: data.updatedAt!,
-                    hourlyRate: data.rateHourly.toString() ?? " - ",
+                    hourlyRate: data.rateHourly.toString(),
                     rating: data.contractorId?.contractor?.ratings.toString() ?? " - ",
                     status: data.status ?? " - ",
                     image: data.contractorId?.img,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/skill_selection_controller.dart';
-import '../../../../core/app_routes/app_routes.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';

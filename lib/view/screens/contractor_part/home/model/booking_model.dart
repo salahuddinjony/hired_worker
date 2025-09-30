@@ -140,6 +140,7 @@ class BookingModelData {
     "totalAmount": totalAmount,
     "systemFeeAmount": systemFeeAmount,
     "contractorAmount": contractorAmount,
+    // ignore: collection_methods_unrelated_type
     "status": statusValues.reverse[status],
     "paymentStatus": paymentStatusValues.reverse[paymentStatus],
     "contractorResponse": contractorResponse?.toJson(),
@@ -155,8 +156,11 @@ class BookingModelData {
 }
 
 enum BookingType {
+  // ignore: constant_identifier_names
   BOOKING_TYPE_ONE_TIME,
+  // ignore: constant_identifier_names
   ONE_TIME,
+  // ignore: constant_identifier_names
   WEEKLY
 }
 
@@ -279,8 +283,11 @@ class ContractorPayout {
 }
 
 enum Status {
+  // ignore: constant_identifier_names
   COMPLETED,
+  // ignore: constant_identifier_names
   ONGOING,
+  // ignore: constant_identifier_names
   PENDING
 }
 

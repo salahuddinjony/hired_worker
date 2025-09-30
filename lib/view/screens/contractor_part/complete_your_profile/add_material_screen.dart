@@ -13,10 +13,10 @@ class AddMaterialsScreen extends StatefulWidget {
   const AddMaterialsScreen({super.key});
 
   @override
-  _AddMaterialsScreenState createState() => _AddMaterialsScreenState();
+  AddMaterialsScreenState createState() => AddMaterialsScreenState();
 }
 
-class _AddMaterialsScreenState extends State<AddMaterialsScreen> {
+class AddMaterialsScreenState extends State<AddMaterialsScreen> {
   // materials list: name, unit, price
   List<Map<String, String>> materials = [];
 
@@ -37,13 +37,13 @@ class _AddMaterialsScreenState extends State<AddMaterialsScreen> {
   void _showMaterialDialog({int? editIndex}) {
     final isEdit = editIndex != null;
     final TextEditingController nameController = TextEditingController(
-      text: isEdit ? materials[editIndex!]["name"] : "",
+      text: isEdit ? materials[editIndex]["name"] : "",
     );
     final TextEditingController unitController = TextEditingController(
-      text: isEdit ? (materials[editIndex!]["unit"] ?? "") : "",
+      text: isEdit ? (materials[editIndex]["unit"] ?? "") : "",
     );
     final TextEditingController priceController = TextEditingController(
-      text: isEdit ? (materials[editIndex!]["price"] ?? "") : "",
+      text: isEdit ? (materials[editIndex]["price"] ?? "") : "",
     );
 
     showDialog(
@@ -173,7 +173,7 @@ class _AddMaterialsScreenState extends State<AddMaterialsScreen> {
 
                       if (isEdit) {
                         _updateMaterial(
-                          editIndex!,
+                          editIndex,
                           name,
                           unit,
                           price,
@@ -305,7 +305,7 @@ class _AddMaterialsScreenState extends State<AddMaterialsScreen> {
                                     horizontal: 6.w, vertical: 2.h),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.r),
-                                  color: AppColors.primary.withOpacity(0.3),
+                                  color: AppColors.primary.withValues(alpha: .3),
                                 ),
                                 child: Text(
                                   "\$$price",

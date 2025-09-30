@@ -11,10 +11,10 @@ class GoogleMapScreen extends StatefulWidget {
   });
 
   @override
-  _GoogleMapScreenState createState() => _GoogleMapScreenState();
+  GoogleMapScreenState createState() => GoogleMapScreenState();
 }
 
-class _GoogleMapScreenState extends State<GoogleMapScreen> {
+class GoogleMapScreenState extends State<GoogleMapScreen> {
   GoogleMapController? mapController;
   late CameraPosition initialPosition;
   final Set<Marker> markers = {};

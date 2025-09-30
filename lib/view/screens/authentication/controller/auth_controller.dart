@@ -6,7 +6,6 @@ import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
-import 'package:servana/service/socket_service.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
@@ -17,6 +16,10 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
+//   Customer 
+// losegag554@hiepth.com
+// 12345678
+  
   Rx<TextEditingController> nameController =
       TextEditingController(text: kDebugMode ? "Md Nishad Miah" : "").obs;
   Rx<TextEditingController> phoneController =
