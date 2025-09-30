@@ -18,7 +18,11 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   //   Customer
-  // losegag554@hiepth.com
+  // nosefi7293@mv6a.com
+  // 12345678
+
+  //contractor
+  // kipeno9207@mv6a.com
   // 12345678
 
   Rx<TextEditingController> nameController =
