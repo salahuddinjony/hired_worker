@@ -37,7 +37,7 @@ class MessageController extends GetxController {
 
   Future<void> getRole() async {
     String role = await SharePrefsHelper.getString(AppConstants.role);
-    this.role =  role.toLowerCase().compareTo('contractor') == 0;
+    this.role = role == "customer" ? true : false;
   }
 
   Future<void> getAllRoomList() async { 
