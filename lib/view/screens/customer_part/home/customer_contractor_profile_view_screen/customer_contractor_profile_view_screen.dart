@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
@@ -36,8 +35,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           children: [
             CustomNetworkImage(
               imageUrl:
-                  ImageHandler.imagesHandle(data?.user?.img) ??
-                  AppConstants.electrician,
+                  ImageHandler.imagesHandle(data?.user?.img),
               height: MediaQuery.sizeOf(context).height / 3,
               width: MediaQuery.sizeOf(context).width,
               borderRadius: BorderRadius.only(

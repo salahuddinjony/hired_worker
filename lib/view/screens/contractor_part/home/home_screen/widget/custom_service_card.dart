@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:servana/helper/time_converter/time_converter.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
 import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';

@@ -67,7 +67,9 @@ class MapController extends GetxController {
     }
 
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
     );
 
     cameraPosition.value = CameraPosition(

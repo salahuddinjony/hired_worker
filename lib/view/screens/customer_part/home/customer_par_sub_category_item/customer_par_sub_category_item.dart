@@ -24,6 +24,17 @@ class CustomerParSubCategoryItem extends StatelessWidget {
         if (homeController.getSingleSubCategoryStatus.value.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+        if (homeController.getSingleSubCategoryStatus.value.isError) {
+          return Center(
+            child: Text(homeController.getSingleSubCategoryStatus.value
+                .toString()),
+          );
+        }
+        if (data.isEmpty) {
+          return const Center(
+            child: Text("No Sub Categories Found"),
+          );
+        }
         return Column(
           children: [
             GridView.builder(

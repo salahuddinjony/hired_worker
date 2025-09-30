@@ -17,7 +17,6 @@ import '../../../../../core/app_routes/app_routes.dart'; // App navigation route
 import '../../../../components/custom_nav_bar/navbar.dart'; // Custom bottom navigation bar
 import 'widget/custom_home_card.dart'; // Custom card widget for home screen
 
-// HomeScreen is a StatelessWidget that displays the contractor's dashboard
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

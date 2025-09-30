@@ -4,11 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
-import '../../../../../utils/app_const/app_const.dart';
 
 class ScheduleSelectionController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());

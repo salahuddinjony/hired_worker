@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/extensions/widget_extension.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/add_material_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
-
-import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 
 class MaterialsScreen extends StatefulWidget {
   const MaterialsScreen({super.key});
 
   @override
-  _MaterialsScreenState createState() => _MaterialsScreenState();
+  MaterialsScreenState createState() => MaterialsScreenState();
 }
 
-class _MaterialsScreenState extends State<MaterialsScreen> {
+class MaterialsScreenState extends State<MaterialsScreen> {
   // materials list: name, unit, price
   List<Map<String, String>> materials = [];
 
@@ -38,13 +34,13 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
   void _showMaterialDialog({int? editIndex}) {
     final isEdit = editIndex != null;
     final TextEditingController nameController = TextEditingController(
-      text: isEdit ? materials[editIndex!]["name"] : "",
+      text: isEdit ? materials[editIndex]["name"] : "",
     );
     final TextEditingController unitController = TextEditingController(
-      text: isEdit ? (materials[editIndex!]["unit"] ?? "") : "",
+      text: isEdit ? (materials[editIndex]["unit"] ?? "") : "",
     );
     final TextEditingController priceController = TextEditingController(
-      text: isEdit ? (materials[editIndex!]["price"] ?? "") : "",
+      text: isEdit ? (materials[editIndex]["price"] ?? "") : "",
     );
 
     showDialog(
@@ -177,7 +173,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
                           }
 
                           if (isEdit) {
-                            _updateMaterial(editIndex!, name, unit, price);
+                            _updateMaterial(editIndex, name, unit, price);
                           } else {
                             _addMaterial(name, unit, price);
                             Get.find<AddMaterialController>()
@@ -203,7 +199,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AddMaterialController controller = Get.find<AddMaterialController>();
+    // final AddMaterialController controller = Get.find<AddMaterialController>();
     final ProfileController profileController = Get.find<ProfileController>();
 
     final materialList = profileController.contractorModel.value.data?.contractor?.materials ?? [];
@@ -269,7 +265,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4.r),
-                                    color: AppColors.primary.withOpacity(0.3),
+                                    color: AppColors.primary.withValues(alpha: .3),
                                   ),
                                   child: Text(
                                     "\$$price",

@@ -277,8 +277,7 @@ class CustomerHomeScreen extends StatelessWidget {
                         );
                       },
                       image:
-                          ImageHandler.imagesHandle(data.userId?.img) ??
-                          AppConstants.profileImage,
+                          ImageHandler.imagesHandle(data.userId?.img),
                       name: data.userId?.fullName ?? "Nishad",
                       title: data.skillsCategory ?? "423",
                       rating: data.ratings.toString(),

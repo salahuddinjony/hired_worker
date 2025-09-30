@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:flutter/cupertino.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharePrefsHelper {
@@ -10,8 +11,6 @@ class SharePrefsHelper {
     return preferences.getString(key) ?? defaultValue;
   }
 
-
-
   static Future<List<String>> getLisOfString(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -19,6 +18,7 @@ class SharePrefsHelper {
 
     return getListData!;
   }
+
 
   static Future<bool?> getBool(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -82,6 +82,16 @@ class SharePrefsHelper {
   static Future remove(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.remove(key);
+  }
+    static Future<void> logOut([String? key]) async {    
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (key != null) {
+      await prefs.remove(key);
+    } else {
+      await prefs.remove(AppConstants.email);  //Delete the saved user email
+      await prefs.remove(AppConstants.bearerToken);  //Delete the saved token
+      await prefs.remove(AppConstants.role);  //Delete the saved token
+    }
   }
 
 

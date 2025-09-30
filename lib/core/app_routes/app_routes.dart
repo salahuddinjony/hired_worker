@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
-import 'package:servana/view/screens/contractor_part/profile/map/google_map_screen.dart';
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';

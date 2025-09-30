@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
-import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
 import '../controller/contractor_home_controller.dart';
-import 'controller/order_controller.dart';
 import 'widget/custom_delivered_service_card.dart';
 import 'widget/custom_service_request_card.dart';
 
