@@ -36,7 +36,7 @@ class EditProfileScreen extends StatelessWidget {
                     Obx(() {
                       final data = profileController.contractorModel.value.data;
                       // Check if an image is selected, if not use the default profile image
-          
+
                       return profileController.selectedImage.value == null
                           ? (data?.img != null)
                               ? CustomNetworkImage(
@@ -65,7 +65,7 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                           );
                     }),
-          
+
                     Positioned(
                       bottom: 5,
                       right: 0,
@@ -100,7 +100,7 @@ class EditProfileScreen extends StatelessWidget {
               CustomFormCard(
                 title: "Phone Number".tr,
                 hintText: 'phone number',
-          
+
                 controller: profileController.phoneController.value,
               ),
               CustomText(
@@ -119,7 +119,7 @@ class EditProfileScreen extends StatelessWidget {
                 textColor: AppColors.black,
               ),
               SizedBox(height: 10.h),
-          
+
               CustomFormCard(
                 title: "Date of Birth".tr,
                 hintText: 'yyyy/mm/dd',
@@ -132,14 +132,14 @@ class EditProfileScreen extends StatelessWidget {
                     firstDate: DateTime(1900),
                     lastDate: DateTime.now(),
                   );
-          
+
                   if (pickedDate != null) {
                     profileController.dobController.value.text =
                         "${pickedDate.toLocal()}".split(' ')[0];
                   }
                 },
               ),
-          
+
               CustomFormCard(
                 title: "City".tr,
                 controller: profileController.cityController.value,
@@ -147,14 +147,15 @@ class EditProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Obx(
-                    () => profileController.updateProfileStatus.value.isLoading
-                    ? CustomLoader()
-                    : CustomButton(
-                      onTap: () {
-                        profileController.updateProfile();
-                      },
-                      title: "Update".tr,
-                    ),
+                () =>
+                    profileController.updateProfileStatus.value.isLoading
+                        ? CustomLoader()
+                        : CustomButton(
+                          onTap: () {
+                            profileController.updateProfile();
+                          },
+                          title: "Update".tr,
+                        ),
               ),
             ],
           ),

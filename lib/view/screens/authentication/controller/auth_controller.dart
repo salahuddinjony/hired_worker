@@ -356,9 +356,9 @@ class AuthController extends GetxController {
   Future<void> resetPasswordOTP() async {
     veryfiOTPLoading.value = RxStatus.loading();
     var body = {
-        "email": emailController.value.text,
-        "otp": int.tryParse(otpController.value.text),
-      };
+      "email": emailController.value.text,
+      "otp": int.tryParse(otpController.value.text),
+    };
 
     try {
       final response = await ApiClient.postData(
