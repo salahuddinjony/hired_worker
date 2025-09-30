@@ -22,10 +22,18 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 3), () async {
-        bool? isFirstTime = await SharePrefsHelper.getBool(AppConstants.isFirstTime);
+        String token = await SharePrefsHelper.getString(AppConstants.bearerToken);
+        String userRole = await SharePrefsHelper.getString(AppConstants.role);
 
-        if (isFirstTime != null && !isFirstTime) {
-          Get.offAllNamed(AppRoutes.loginScreen);
+        if (token.isNotEmpty) {
+          if(userRole == "customer"){
+            Get.offAllNamed(AppRoutes.customerHomeScreen);
+          } else if(userRole == "contractor"){
+            Get.offAllNamed(AppRoutes.homeScreen);
+          } else{
+            Get.offAllNamed(AppRoutes.onboardingScreen);
+          }
+          
         } else {
           Get.offAllNamed(AppRoutes.onboardingScreen);
         }

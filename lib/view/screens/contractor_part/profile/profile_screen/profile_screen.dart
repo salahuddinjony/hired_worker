@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
@@ -143,7 +144,18 @@ class ProfileScreen extends StatelessWidget {
               // CustomProfileMenuList(),
               GestureDetector(
                 onTap: () {
-                  Get.to(GoogleMapScreen(location: profileController.contractorModel.value.data?.contractor?.city ?? ""));
+                  Get.to(
+                    GoogleMapScreen(
+                      location:
+                          profileController
+                              .contractorModel
+                              .value
+                              .data
+                              ?.contractor
+                              ?.city ??
+                          "",
+                    ),
+                  );
                 },
                 child: CustomProfileMenuList(
                   image: AppIcons.map,
@@ -202,7 +214,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  await SharePrefsHelper.logOut();
+                  debugPrint("Logged out successfully");
                   Get.offAllNamed(AppRoutes.loginScreen);
                 },
                 child: CustomText(

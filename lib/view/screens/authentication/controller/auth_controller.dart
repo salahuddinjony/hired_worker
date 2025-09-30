@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_check.dart';
@@ -16,19 +17,17 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
-//   Customer 
-// losegag554@hiepth.com
-// 12345678
-  
+  //   Customer
+  // losegag554@hiepth.com
+  // 12345678
+
   Rx<TextEditingController> nameController =
       TextEditingController(text: kDebugMode ? "Md Nishad Miah" : "").obs;
   Rx<TextEditingController> phoneController =
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
-  Rx<TextEditingController> emailController =
-      TextEditingController().obs;
+  Rx<TextEditingController> emailController = TextEditingController().obs;
 
-  Rx<TextEditingController> passController =
-      TextEditingController().obs;
+  Rx<TextEditingController> passController = TextEditingController().obs;
   Rx<TextEditingController> confirmController =
       TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
@@ -38,8 +37,6 @@ class AuthController extends GetxController {
   Rx<bool> rememberMe = true.obs;
 
   Rx<bool> agreeWithTaP = true.obs;
-
-
 
   @override
   void onInit() async {
@@ -81,6 +78,42 @@ class AuthController extends GetxController {
           AppConstants.bearerToken,
           data['accessToken'],
         );
+        final token = data['accessToken'];
+        debugPrint(
+          'Api Token: $token',
+        ); // Print the token to the console for debugging
+
+        // Decode JWT token to extract role
+        try {
+          Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+          String? roleFromToken = decodedToken['role'];
+          String? userEmailFromToken = decodedToken['userEmail'];
+
+          if (roleFromToken != null) {
+            await SharePrefsHelper.setString(AppConstants.role, roleFromToken);
+            debugPrint('Role from JWT: $roleFromToken');
+            debugPrint(
+              'Role saved in shared preference: ${await SharePrefsHelper.getString(AppConstants.role)}',
+            );
+          }
+          if (userEmailFromToken != null) {
+            await SharePrefsHelper.setString(
+              AppStrings.email,
+              userEmailFromToken,
+            );
+            debugPrint('User Email from JWT: $userEmailFromToken');
+          }
+        } catch (e) {
+          debugPrint('Error decoding JWT token: $e');
+        }
+
+        //saved token in shared preference
+        debugPrint(
+          'saved in shared preference: $token ${await SharePrefsHelper.getString(AppConstants.bearerToken)}',
+        );
+        debugPrint(
+          'User Role: ${await SharePrefsHelper.getString(AppConstants.role)}',
+        );
 
         if (rememberMe.value) {
           await SharePrefsHelper.setString(
@@ -93,10 +126,7 @@ class AuthController extends GetxController {
           );
         }
 
-        await SharePrefsHelper.setBool(
-          AppStrings.rememberMe,
-          rememberMe.value,
-        );
+        await SharePrefsHelper.setBool(AppStrings.rememberMe, rememberMe.value);
 
         await getMe();
       } else {
@@ -185,14 +215,20 @@ class AuthController extends GetxController {
   Rx<RxStatus> signUpLoading = Rx<RxStatus>(RxStatus.success());
 
   Future<void> customerSignUp(bool isContactor) async {
+    debugPrint('Starting customerSignUp - isContractor: $isContactor');
+    debugPrint('Agreement status: ${agreeWithTaP.value}');
+
     if (!agreeWithTaP.value) {
-      showCustomSnackBar('You must first agree with our Terms and Privacy Policy');
+      showCustomSnackBar(
+        'You must first agree with our Terms and Privacy Policy',
+      );
       return;
     }
 
-
     if (!agreeWithTaP.value) {
-      showCustomSnackBar('You must first agree with our Terms and Privacy Policy');
+      showCustomSnackBar(
+        'You must first agree with our Terms and Privacy Policy',
+      );
     }
 
     signUpLoading.value = RxStatus.loading();
@@ -204,6 +240,8 @@ class AuthController extends GetxController {
       "role": isContactor ? "contractor" : "customer",
     };
 
+    debugPrint('Registration payload: $body');
+
     try {
       final response = await ApiClient.postData(
         isContactor ? ApiUrl.contractorRegister : ApiUrl.customerRegister,
@@ -214,12 +252,17 @@ class AuthController extends GetxController {
       refresh();
 
       if (response.statusCode == 200) {
+        debugPrint(
+          'Registration successful - Status Code: ${response.statusCode}',
+        );
+        debugPrint('Response body: ${response.body}');
         showCustomSnackBar(
           response.body['message'] ?? "Register successful",
           isError: false,
         );
         final data = response.body['data'];
         final role = data['user']['role'];
+        debugPrint('User role after registration: $role');
 
         await SharePrefsHelper.setString(
           AppConstants.userId,
@@ -231,10 +274,18 @@ class AuthController extends GetxController {
           data['accessToken'],
         );
 
-        otpController.value.dispose();
-        otpController.value = TextEditingController();
+        // Clear OTP controller text instead of disposing
+        otpController.value.clear();
+        debugPrint(
+          'Navigating to OTP verification screen with arguments: [registration]',
+        );
         Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['registration']);
+        debugPrint(
+          'Navigation call completed - should be going to OTP screen now',
+        );
       } else {
+        debugPrint('Registration failed - Status Code: ${response.statusCode}');
+        debugPrint('Error response body: ${response.body}');
         _handleLoginError(response);
         showCustomSnackBar(
           response.body['message'] ?? "Register Failed",
@@ -243,6 +294,7 @@ class AuthController extends GetxController {
         ApiChecker.checkApi(response);
       }
     } catch (e) {
+      debugPrint("Error occurred during sign up: $e");
       signUpLoading.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
@@ -273,8 +325,8 @@ class AuthController extends GetxController {
           response.body['message'] ?? " OTP Sent successful",
           isError: false,
         );
-        otpController.value.dispose();
-        otpController.value = TextEditingController();
+        // Clear OTP controller text instead of disposing
+        otpController.value.clear();
         Get.toNamed(AppRoutes.verifayCodeScreen, arguments: ['forgot']);
       } else {
         _handleLoginError(response);
@@ -300,11 +352,9 @@ class AuthController extends GetxController {
   Future<void> resetPasswordOTP() async {
     veryfiOTPLoading.value = RxStatus.loading();
     var body = {
-      'Otp': {
         "email": emailController.value.text,
         "otp": int.tryParse(otpController.value.text),
-      },
-    };
+      };
 
     try {
       final response = await ApiClient.postData(
@@ -444,6 +494,11 @@ class AuthController extends GetxController {
       "email": emailController.value.text,
       "newPassword": passController.value.text,
     };
+    if (passController.value.text != confirmController.value.text) {
+      showCustomSnackBar("Password and Confirm Password do not match");
+      setNewPasswordLoading.value = RxStatus.success();
+      return;
+    }
 
     try {
       final response = await ApiClient.postData(
