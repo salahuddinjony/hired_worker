@@ -57,10 +57,10 @@ class _OrderScreenState extends State<OrderScreen> {
               if (controller.currentIndex.value == 0)
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controller.pendingBookingList.value.data!.length,
+                    itemCount: controller.pendingBookingList.value.data!.result!.length,
                     itemBuilder: (context, index) {
                       BookingModelData data =
-                          controller.pendingBookingList.value.data![index];
+                          controller.pendingBookingList.value.data!.result![index];
                       return CustomServiceRequestCard(
                         title: data.subCategoryId?.name ?? " - ",
                         rating:
@@ -80,10 +80,10 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: Expanded(
                     child: ListView.builder(
                       itemCount:
-                          controller.completeBookingList.value.data!.length,
+                          controller.completeBookingList.value.data!.result!.length,
                       itemBuilder: (context, index) {
                         BookingModelData data =
-                            controller.completeBookingList.value.data![index];
+                            controller.completeBookingList.value.data!.result![index];
 
                         return CustomDeliveredServiceCard(
                           title: data.subCategoryId?.name ?? " - ",
