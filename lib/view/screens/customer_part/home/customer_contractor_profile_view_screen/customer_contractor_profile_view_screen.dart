@@ -23,7 +23,8 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-    homeController.getContractorDetails(userId: Get.arguments['id']);
+    String userId = Get.arguments['id'];
+    homeController.getContractorDetails(userId: userId);
     final data = homeController.contactorDetailsModel.value.data;
     return Scaffold(
       body: Obx(() {
@@ -55,7 +56,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: "Thomas",
+                            text: data?.user?.fullName ?? "No Name",
                             fontSize: 24.w,
                             fontWeight: FontWeight.w600,
                             color: AppColors.black,
