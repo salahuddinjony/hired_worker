@@ -35,7 +35,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${categoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -62,7 +62,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${subCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -73,7 +73,7 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get Sub Category =======//
+  //======= get single Sub Category =======//
   Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SingleSubCategorysModel> singleSubCategoryModel =
       SingleSubCategorysModel().obs;
@@ -93,7 +93,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${singleSubCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -104,15 +104,22 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get All services contractor =======//
+  //======= get All services contractor or[ SubCategory wise Contractors] =======//
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
     RxStatus.loading(),
   );
   Rx<GetAllContactorModel> getAllContactorModel = GetAllContactorModel().obs;
-  Future<void> getAllContactor() async {
+
+  Future<void> getAllContactor({String? subCategoryId}) async {
+
+    
     getAllServicesContractorStatus.value = RxStatus.loading();
+
     try {
-      final response = await ApiClient.getData(ApiUrl.getAllContractors);
+      final response = await ApiClient.getData(
+        ApiUrl.getAllContractors,
+        query: {if (subCategoryId != null) 'subCategory': subCategoryId},
+      );
 
       getAllContactorModel.value = GetAllContactorModel.fromJson(response.body);
 
@@ -121,7 +128,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${getAllContactorModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -133,16 +140,18 @@ class HomeController extends GetxController {
   }
 
   //============= contactor details ==============
-   Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(
-    RxStatus.loading(),
-  );
-  Rx<ContactorDetailsModel>  contactorDetailsModel = ContactorDetailsModel().obs;
-  Future<void> getContractorDetails( {required String userId}) async {
+  Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<ContactorDetailsModel> contactorDetailsModel = ContactorDetailsModel().obs;
+  Future<void> getContractorDetails({required String userId}) async {
     getContractorDetailsStatus.value = RxStatus.loading();
     try {
-      final response = await ApiClient.getData(ApiUrl.getContractorDetails(userId: userId));
+      final response = await ApiClient.getData(
+        ApiUrl.getContractorDetails(userId: userId),
+      );
 
-      contactorDetailsModel.value = ContactorDetailsModel.fromJson(response.body);
+      contactorDetailsModel.value = ContactorDetailsModel.fromJson(
+        response.body,
+      );
 
       getContractorDetailsStatus.value = RxStatus.success();
       refresh();
@@ -159,5 +168,4 @@ class HomeController extends GetxController {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
-
 }

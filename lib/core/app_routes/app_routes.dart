@@ -119,6 +119,9 @@ class AppRoutes {
   static const String termsConditionsScreen = "/TermsConditionsScreen";
   static const String recentAllServiceScreen = "/RecentAllServiceScreen";
 
+
+
+// Page routes
   static List<GetPage> routes = [
     ///===========================Authentication==========================
     GetPage(name: splashScreen, page: () => SplashScreen()),

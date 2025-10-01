@@ -48,7 +48,12 @@ class Datum {
   String? language;
   String? location;
   int? rateHourly;
+  int? balance;
+  String? category;
+  String? subCategory;
   String? skillsCategory;
+  String? subscriptionId;
+  bool? hasActiveSubscription;
   double? ratings;
   String? subscriptionStatus;
   String? customerId;
@@ -72,7 +77,12 @@ class Datum {
     this.language,
     this.location,
     this.rateHourly,
+  this.balance,
+  this.category,
+  this.subCategory,
     this.skillsCategory,
+  this.subscriptionId,
+  this.hasActiveSubscription,
     this.ratings,
     this.subscriptionStatus,
     this.customerId,
@@ -97,7 +107,12 @@ class Datum {
     language: json["language"],
     location: json["location"],
     rateHourly: json["rateHourly"],
+  balance: json["balance"],
+  category: json["category"],
+  subCategory: json["subCategory"],
     skillsCategory: json["skillsCategory"],
+  subscriptionId: json["subscriptionId"],
+  hasActiveSubscription: json["hasActiveSubscription"],
     ratings: json["ratings"]?.toDouble(),
     subscriptionStatus: json["subscriptionStatus"],
     customerId: json["customerId"],
@@ -133,7 +148,12 @@ class Datum {
     "language": language,
     "location": location,
     "rateHourly": rateHourly,
-    "skillsCategory": skillsCategory,
+  "skillsCategory": skillsCategory,
+  "balance": balance,
+  "category": category,
+  "subCategory": subCategory,
+  "subscriptionId": subscriptionId,
+  "hasActiveSubscription": hasActiveSubscription,
     "ratings": ratings,
     "subscriptionStatus": subscriptionStatus,
     "customerId": customerId,
