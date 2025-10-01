@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
 import '../../../../utils/app_colors/app_colors.dart';
-import '../../../../utils/app_strings/app_strings.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 

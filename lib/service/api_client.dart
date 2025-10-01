@@ -50,11 +50,19 @@ class ApiClient extends GetxService {
       'Accept': 'application/json',
       'Authorization': bearerToken,
     };
+     // Build final URI with query params (merging any already present in uri)
+     if(!uri.startsWith("http" ) && !uri.startsWith("https")){
+       uri = ApiUrl.baseUrl+uri;
+     }
+    Uri baseUri = Uri.parse(uri);
+    if (query != null) {
+      baseUri = baseUri.replace(queryParameters: query);
+    }
     try {
       debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
 
       http.Response response = await client
-          .get(Uri.parse(ApiUrl.baseUrl + uri), headers: headers ?? mainHeaders)
+          .get(baseUri, headers: headers ?? mainHeaders)
           .timeout(const Duration(seconds: timeoutInSeconds));
 
       try {

@@ -134,7 +134,7 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
                     const SizedBox(width: 10),
                     Switch(
                       value: isAvailable,
-                      activeColor: Colors.purple,
+                      activeThumbColor: Colors.purple,
                       onChanged: (value) {
                         setState(() {
                           isAvailable = value;
