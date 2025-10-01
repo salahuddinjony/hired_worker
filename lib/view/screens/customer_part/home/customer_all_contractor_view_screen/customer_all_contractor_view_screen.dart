@@ -75,7 +75,12 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
                   title: contractors[index].userId?.role ?? '',
                   rating: contractors[index].ratings.toString(),
                   onTap: (){
-                    Get.toNamed(AppRoutes.customerContractorProfileViewScreen);
+                    Get.toNamed(AppRoutes.customerContractorProfileViewScreen, 
+                    arguments: {
+                      'id': contractors[index].userId?.id.toString(),
+                    }
+                   
+                    );
                   },
                 );
               },
