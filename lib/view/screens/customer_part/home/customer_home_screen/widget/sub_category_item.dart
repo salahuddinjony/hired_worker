@@ -36,7 +36,7 @@ class SubCategoryPreviewSection extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h), // tighter padding
-        children: groupedData.entries.map((entry) {
+        children: groupedData.entries.take(2).map((entry) {
           return Padding(
             padding: EdgeInsets.only(bottom: 10.h), // reduce space between sections
             child: Column(
@@ -61,7 +61,12 @@ class SubCategoryPreviewSection extends StatelessWidget {
                           image: item.img ?? '',
                           name: item.name ?? '',
                           onTap: () {
-                            Get.toNamed(AppRoutes.customerAllContractorViewScreen);
+                            Get.toNamed(AppRoutes.customerAllContractorViewScreen,
+                              arguments: {
+                                'id': item.id ?? '',
+                                'name': item.name ?? 'Subcategory'
+                              }
+                            );
                           },
                         ),
                       );

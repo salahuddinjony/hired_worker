@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 
@@ -12,18 +13,20 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
   final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = Get.arguments;
-    String name = args['name'];
-    String id = args['id'];
+    final Map<String, dynamic>? args = Get.arguments;
+    String name = args?['name'] ?? 'All';
+    String id = args?['id'] ?? '';
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
       body: SingleChildScrollView(
         child: Obx(
           () {
             final contractors = homeController.getAllContactorModel.value.data != null
-                ? homeController.getAllContactorModel.value.data!
-                    .where((contractor) => contractor.subCategory == id)
-                    .toList()
+                ? (id.isNotEmpty 
+                    ? homeController.getAllContactorModel.value.data!
+                        .where((contractor) => contractor.subCategory == id)
+                        .toList()
+                    : homeController.getAllContactorModel.value.data!)
                 : [];
 
             if (homeController.getAllServicesContractorStatus.value.isLoading) {
@@ -50,8 +53,8 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
             if (contractors.isEmpty) {
                 return Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 100.h),
-                  child: Text("No Contractors Found of $name"),
+                  margin: EdgeInsets.only(top: 100.h), 
+                  child: NotFound(message: "No Contractors Found of $name", icon: Icons.manage_accounts),
                 ),
                 );
             }
@@ -78,6 +81,7 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
                     Get.toNamed(AppRoutes.customerContractorProfileViewScreen, 
                     arguments: {
                       'id': contractors[index].userId?.id.toString(),
+                      'name': contractors[index].userId?.fullName.toString()
                     }
                    
                     );

@@ -12,6 +12,7 @@ class CustomNetworkImage extends StatelessWidget {
   final Color? backgroundColor;
   final Widget? child;
   final ColorFilter? colorFilter;
+  final BoxFit fit;
   const CustomNetworkImage(
       {super.key,
       this.child,
@@ -22,7 +23,9 @@ class CustomNetworkImage extends StatelessWidget {
       required this.width,
       this.border,
       this.borderRadius,
-      this.boxShape = BoxShape.rectangle});
+      this.boxShape = BoxShape.rectangle,
+      this.fit = BoxFit.cover,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class CustomNetworkImage extends StatelessWidget {
           color: backgroundColor,
           image: DecorationImage(
             image: imageProvider,
-            fit: BoxFit.cover,
+            fit: fit,
             colorFilter: colorFilter,
           ),
         ),

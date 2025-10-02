@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -65,12 +64,13 @@ class ApiClient extends GetxService {
           .get(baseUri, headers: headers ?? mainHeaders)
           .timeout(const Duration(seconds: timeoutInSeconds));
 
+      debugPrint('====> API Response: [${response.statusCode}] $uri');
       try {
         final prettyJson = const JsonEncoder.withIndent('  ')
             .convert(jsonDecode(response.body));
-        developer.log("====> API Response [${response.statusCode}]:\n$prettyJson");
+        debugPrint(prettyJson);
       } catch (e) {
-        developer.log("====> API Response [${response.statusCode}]: ${response.body}");
+        debugPrint('Response body: ${response.body}');
       }
 
       return handleResponse(response, uri);
@@ -414,10 +414,6 @@ class ApiClient extends GetxService {
       response0 = const Response(statusCode: 0, statusText: somethingWentWrong);
     }
 
-    debugPrint('====> API Response: [${response0.statusCode}] $uri');
-    if (response0.body != null) {
-      printPrettyJson(response0.body);
-    }
     return response0;
   }
 }

@@ -12,31 +12,33 @@ class CustomarQaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Q&A".tr,),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            CustomFormCard(
-                title: "1. How many dimmers do you need installed ?",
-                hintText: "answer here.....",
-                controller: TextEditingController()),
-            CustomFormCard(
-                title: "2. How many dimmers do you need installed ?",
-                hintText: "answer here.....",
-                controller: TextEditingController()),
-            CustomFormCard(
-                title: "3. How many dimmers do you need installed ?",
-                hintText: "answer here.....",
-                controller: TextEditingController()),
-            CustomFormCard(
-                title: "4. How many dimmers do you need installed ?",
-                hintText: "answer here.....",
-                controller: TextEditingController()),
-            SizedBox(height: 30.h,),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.customarMaterialsScreen);
-            }, title: "Submit".tr,)
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              CustomFormCard(
+                  title: "1. How many dimmers do you need installed ?",
+                  hintText: "answer here.....",
+                  controller: TextEditingController()),
+              CustomFormCard(
+                  title: "2. How many dimmers do you need installed ?",
+                  hintText: "answer here.....",
+                  controller: TextEditingController()),
+              CustomFormCard(
+                  title: "3. How many dimmers do you need installed ?",
+                  hintText: "answer here.....",
+                  controller: TextEditingController()),
+              CustomFormCard(
+                  title: "4. How many dimmers do you need installed ?",
+                  hintText: "answer here.....",
+                  controller: TextEditingController()),
+              SizedBox(height: 30.h,),
+              CustomButton(onTap: (){
+                Get.toNamed(AppRoutes.customarMaterialsScreen);
+              }, title: "Submit".tr,)
+            ],
+          ),
         ),
       ),
     );

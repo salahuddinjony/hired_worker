@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/utils/app_images/app_images.dart';
+import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
@@ -23,20 +25,46 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-    String userId = Get.arguments['id'];
-    homeController.getContractorDetails(userId: userId);
-    final data = homeController.contactorDetailsModel.value.data;
+    Map<String, dynamic> args = Get.arguments ?? {};
+    String userId = args['id']?.toString() ?? '';
+    
+    if (userId.isNotEmpty) {
+      homeController.getContractorDetails(userId: userId);
+    }
+    
     return Scaffold(
       body: Obx(() {
+        // Handle case where userId is empty
+        if (userId.isEmpty) {
+          return const Center(
+            child: CustomText(
+              text: "Invalid contractor ID",
+              fontSize: 16,
+              color: AppColors.black,
+            ),
+          );
+        }
+        
         if (homeController.getContractorDetailsStatus.value.isLoading) {
           return const Center(child: CustomLoader());
         }
+        
+        final data = homeController.contactorDetailsModel.value.data;
+        
+        // Handle null data case
+        if (data == null) {
+          return const Center(
+            child: NotFound(message: "No contractor Profile available", icon: Icons.person),
+          );
+        }
+        
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomNetworkImage(
-              imageUrl:
-                  ImageHandler.imagesHandle(data?.user?.img),
+              imageUrl:data.user?.img != null && data.user!.img!.isNotEmpty
+                  ? ImageHandler.imagesHandle(data.user!.img!)
+                  : AppConstants.girlsPhoto,
               height: MediaQuery.sizeOf(context).height / 3,
               width: MediaQuery.sizeOf(context).width,
               borderRadius: BorderRadius.only(
@@ -56,15 +84,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: data?.user?.fullName ?? "No Name",
+                            text: data.user?.fullName ?? "No Name",
                             fontSize: 24.w,
                             fontWeight: FontWeight.w600,
                             color: AppColors.black,
                           ),
                           CustomText(
-                            text:
-                                data?.user?.contractor?.skillsCategory ??
-                                "Electrician (AC Repair)",
+                            text: data.user?.role ?? "No Role",
                             fontSize: 18.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -96,10 +122,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             children: [
                               CustomImage(imageSrc: AppImages.likeImage),
                               CustomText(
-                                text:
-                                    data?.user?.contractor?.ratings
-                                        .toString() ??
-                                    "4.8",
+                                text: data.user?.contractor?.ratings != null
+                                    ? data.user!.contractor!.ratings!.toString()
+                                    : "No ratings",
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black,
@@ -116,9 +141,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             children: [
                               CustomImage(imageSrc: AppImages.clickImage),
                               CustomText(
-                                text:
-                                    data?.totalCompletedOrder.toString() ??
-                                    "56 Orders",
+                                text: data.totalCompletedOrder.toString(),
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black,
@@ -135,9 +158,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             children: [
                               CustomImage(imageSrc: AppImages.manPower),
                               CustomText(
-                                text:
-                                    data?.user?.contractor?.experience ??
-                                    "4 Years",
+                                text: (data.user?.contractor?.experience?.isNotEmpty == true)
+                                    ? data.user!.contractor!.experience!
+                                    : "N/A",
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black,
@@ -168,11 +191,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children:
-                          data?.user?.contractor?.skills
-                              ?.map((e) => CustomSkillsContainer(text: e.name))
-                              .toList() ??
-                          [],
+                      children: (data.user?.contractor?.skills?.isNotEmpty == true)
+                          ? data.user!.contractor!.skills!
+                              .map((e) => CustomSkillsContainer(text: e.name))
+                              .toList()
+                          : [
+                              CustomSkillsContainer(text: "No skills listed"),
+                            ],
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -193,19 +218,48 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                       bottom: 8.h,
                     ),
                   ),
-                  Row(
-                    children: [
-                      CustomSkillsContainer(text: "7:00AM"),
-                      CustomText(
-                        text: "To",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black_08,
-                        right: 6,
-                      ),
-                      CustomSkillsContainer(text: "10:00PM"),
-                    ],
-                  ),
+                  // Display actual schedule data or fallback message
+                  if (data.user?.contractor?.myScheduleId?.schedules?.isNotEmpty == true)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: data.user!.contractor!.myScheduleId!.schedules!.map((schedule) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 8.h),
+                          child: Row(
+                            children: [
+                              CustomSkillsContainer(text: schedule.days ?? ""),
+                              SizedBox(width: 8.w),
+                              CustomText(
+                                text: ":",
+                                fontSize: 14.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black_08,
+                              ),
+                              SizedBox(width: 8.w),
+                              ...schedule.timeSlots?.map((timeSlot) => 
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.w),
+                                  child: CustomSkillsContainer(text: timeSlot),
+                                )
+                              ).toList() ?? [],
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    )
+                  else
+                    Row(
+                      children: [
+                        CustomSkillsContainer(text: "No schedule"),
+                        CustomText(
+                          text: "available",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black_08,
+                          left: 6,
+                        ),
+                      ],
+                    ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
@@ -220,9 +274,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
-                      text:
-                          "I'm Logan , a dedicated Electrician professional with a passion for delivering top notch service to ensure your home's Electricity runs smoothly. With years of hands-on experience.",
-                      fontSize: 12.w,
+                      text: (data.user?.contractor?.bio?.isNotEmpty == true)
+                          ? data.user!.contractor!.bio!
+                          : "No bio available",
+                      fontSize: 14.w,
                       fontWeight: FontWeight.w400,
                       maxLines: 10,
                       textAlign: TextAlign.start,
@@ -241,8 +296,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    children: List.generate(4, (value) {
-                      return CustomReviewList();
+                    children: List.generate(data.reviews?.length==0 ? 1 : data.reviews!.length, (value) {
+                      return CustomReviewList( reviewData: data.reviews != null && data.reviews!.isNotEmpty
+                          ? data.reviews![value]
+                          : null);
                     }),
                   ),
                 ],

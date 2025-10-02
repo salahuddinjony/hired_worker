@@ -7,8 +7,8 @@ class ImageHandler {
       return AppConstants.profileImage;
     }
 
-    if (url.startsWith('http')) {
-      return url; // If the URL starts with 'http', return as is
+    if (url.startsWith('http') || url.startsWith('https')) {
+      return url; 
     } else {
       return ApiUrl.imageUrl + url;
     }
