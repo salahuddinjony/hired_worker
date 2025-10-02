@@ -267,11 +267,11 @@ class CustomerHomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: min(
                     4,
-                    homeController.getAllContactorModel.value.data?.length ?? 0,
+                    homeController.getAllContactorList.value.length,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     final data =
-                        homeController.getAllContactorModel.value.data![index];
+                        homeController.getAllContactorList.value[index];
                     return CustomServiceContractorCard(
                       onTap: () {
                         Get.toNamed(

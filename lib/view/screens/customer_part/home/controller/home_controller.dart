@@ -4,6 +4,7 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart' as contractor_model;
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/contactor_details_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
@@ -108,7 +109,7 @@ class HomeController extends GetxController {
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
     RxStatus.loading(),
   );
-  Rx<GetAllContactorModel> getAllContactorModel = GetAllContactorModel().obs;
+   RxList<allContractor> getAllContactorList = <allContractor>[].obs;
 
   Future<void> getAllContactor({String? subCategoryId}) async {
 
@@ -121,13 +122,13 @@ class HomeController extends GetxController {
         query: {if (subCategoryId != null) 'subCategory': subCategoryId},
       );
 
-      getAllContactorModel.value = GetAllContactorModel.fromJson(response.body);
-
       getAllServicesContractorStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${getAllContactorModel.value}');
+        final data = response.body;
+        getAllContactorList.value = ContractorResponse.fromJson(data).data;
+        debugPrint('contractor data loaded: ${getAllContactorList.length} contractors');
         // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
@@ -138,6 +139,17 @@ class HomeController extends GetxController {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
+
+  // // Helper method to get the list of contractors
+  // List<contractor_model.Datum> get contractors => getAllContactorModel.value.data ?? [];
+
+  // // Helper method to get contractors by category (if filtering is needed in the future)
+  // List<contractor_model.Datum> getContractorsByCategory(String categoryId) {
+  //   if (categoryId.isEmpty) return contractors;
+  //   // For now, return all contractors since the API doesn't seem to filter by category
+  //   // You can implement filtering logic here when the API supports it
+  //   return contractors;
+  // }
 
   //============= contactor details ==============
   Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(RxStatus.loading());
@@ -154,7 +166,7 @@ class HomeController extends GetxController {
       );
 
       getContractorDetailsStatus.value = RxStatus.success();
-      refresh();
+
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('contractor details loaded successfully');
@@ -165,7 +177,7 @@ class HomeController extends GetxController {
     } catch (e) {
       print("====> Error in getContractorDetails: $e");
       getContractorDetailsStatus.value = RxStatus.success();
-      refresh();
+
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
