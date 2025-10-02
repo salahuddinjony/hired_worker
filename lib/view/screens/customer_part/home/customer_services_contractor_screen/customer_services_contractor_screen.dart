@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -11,177 +13,108 @@ class CustomerServicesContractorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.find<HomeController>();
+    
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Services Contractor".tr,),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 30),
-          child: Column(
-            children: [
-              ///Electrician Providers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Electrician Providers",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black_08,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Get.toNamed(AppRoutes.customerAllContractorViewScreen,
-                        arguments: {
-                          'id': '',
-                          'name': 'All'
-                        }
-                      );
-                    },
-                    child: CustomText(
-                      text: "View all".tr,
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                ],
+      body: Obx(() {
+        final categories = homeController.categoryModel.value.data ?? [];
+        final contractors = homeController.getAllContactorList.value;
+        
+        if (homeController.getCategoryStatus.value.isLoading || 
+            homeController.getAllServicesContractorStatus.value.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 30),
+            child: Column(
+              children: [
+                // Show contractors for each category
+                ...categories.map((category) {
+                  // Filter contractors by category (if needed, you might need to add category filtering)
+                  final categoryContractors = contractors.where((contractor) {
+                    // Since the API response doesn't seem to have category filtering,
+                    // we'll show all contractors for now. You can implement filtering later.
+                    return true;
+                  }).toList();
+                  
+                  return _buildCategorySection(
+                    context,
+                    "${category.name} Providers",
+                    categoryContractors,
+                    category.id ?? '',
+                    category.name ?? '',
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildCategorySection(
+    BuildContext context, 
+    String title, 
+    List<dynamic> contractors, 
+    String categoryId, 
+    String categoryName
+  ) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+              text: title,
+              fontSize: 16.w,
+              fontWeight: FontWeight.w600,
+              color: AppColors.black_08,
+            ),
+            TextButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.customerAllContractorViewScreen,
+                  arguments: {
+                    'id': categoryId,
+                    'name': categoryName
+                  }
+                );
+              },
+              child: CustomText(
+                text: "View all".tr,
+                fontSize: 16.w,
+                fontWeight: FontWeight.w500,
+                color: AppColors.blue,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomServiceContractorCard();
-                  }),
-                ),
-              ),
-              ///Plumber Providers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Plumber Providers",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black_08,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      //Get.toNamed(AppRoutes.customerServicesContractorScreen);
-                    },
-                    child: CustomText(
-                      text: "View all".tr,
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomServiceContractorCard();
-                  }),
-                ),
-              ),
-              ///Carpenter Providers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Carpenter Providers",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black_08,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      //Get.toNamed(AppRoutes.customerServicesContractorScreen);
-                    },
-                    child: CustomText(
-                      text: "View all".tr,
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomServiceContractorCard();
-                  }),
-                ),
-              ),
-              ///Painter Providers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Painter Providers",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black_08,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      //Get.toNamed(AppRoutes.customerServicesContractorScreen);
-                    },
-                    child: CustomText(
-                      text: "View all".tr,
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomServiceContractorCard();
-                  }),
-                ),
-              ),
-              ///Cleaner Providers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Cleaner Providers",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.black_08,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      //Get.toNamed(AppRoutes.customerServicesContractorScreen);
-                    },
-                    child: CustomText(
-                      text: "View all".tr,
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (value) {
-                    return CustomServiceContractorCard();
-                  }),
-                ),
-              ),
-            ],
+            ),
+          ],
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: contractors.take(5).map((contractor) {
+              return CustomServiceContractorCard(
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.customerContractorProfileViewScreen, 
+                    arguments: {
+                      'id': contractor.userId?.id
+                    }
+                  );
+                },
+                image: ImageHandler.imagesHandle(contractor.userId?.img),
+                name: contractor.userId?.fullName ?? "Unknown",
+                title: contractor.skillsCategory ?? "Service Provider",
+                rating: contractor.ratings?.toString() ?? "0",
+              );
+            }).toList(),
           ),
         ),
-      ),
+        SizedBox(height: 16.h),
+      ],
     );
   }
 }

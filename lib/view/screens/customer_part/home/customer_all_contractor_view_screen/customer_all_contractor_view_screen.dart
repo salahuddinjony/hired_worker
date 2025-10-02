@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
@@ -15,19 +16,12 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args = Get.arguments;
     String name = args?['name'] ?? 'All';
-    String id = args?['id'] ?? '';
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
       body: SingleChildScrollView(
         child: Obx(
           () {
-            final contractors = homeController.getAllContactorModel.value.data != null
-                ? (id.isNotEmpty 
-                    ? homeController.getAllContactorModel.value.data!
-                        .where((contractor) => contractor.subCategory == id)
-                        .toList()
-                    : homeController.getAllContactorModel.value.data!)
-                : [];
+            final contractors = homeController.getAllContactorList;
 
             if (homeController.getAllServicesContractorStatus.value.isLoading) {
               return Container(
@@ -73,10 +67,10 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                // var data = popularDoctorController.popularList[index];
                 return CustomServiceContractorCard(
-                  image: contractors[index].userId?.img ?? '',
+                  image: ImageHandler.imagesHandle(contractors[index].userId?.img),
                   name: contractors[index].userId?.fullName ?? '',
-                  title: contractors[index].userId?.role ?? '',
-                  rating: contractors[index].ratings.toString(),
+                  title: contractors[index].skillsCategory ?? 'Service Provider',
+                  rating: contractors[index].ratings?.toString() ?? '0',
                   onTap: (){
                     Get.toNamed(AppRoutes.customerContractorProfileViewScreen, 
                     arguments: {
