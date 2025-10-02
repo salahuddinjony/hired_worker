@@ -2,6 +2,7 @@
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/subscribe_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
@@ -73,6 +74,7 @@ class AppRoutes {
   static const String seletedMapScreen = "/SeletedMapScreen";
   static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
   static const String categorySeletedScreen = "/CategorySeletedScreen";
+  static const String subCategorySelectedScreen = "/SubCategorySelectedScreen";
   static const String certificateScreen = "/CertificateScreen";
   static const String skillsAddScreen = "/SkillsAddScreen";
   static const String homeScreen = "/HomeScreen";
@@ -136,6 +138,7 @@ class AppRoutes {
     GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
+    GetPage(name: subCategorySelectedScreen, page: () => SubCategorySelectedScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),

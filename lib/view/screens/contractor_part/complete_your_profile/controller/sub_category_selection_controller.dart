@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/category_model.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/model/sub_category_model.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
@@ -9,31 +10,34 @@ import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 
-class CategorySelectionController extends GetxController {
-  // for category
+class SubCategorySelectionController extends GetxController {
+  // for subcategory
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
-  Rx<CategoryModel> categoryModel = CategoryModel().obs;
+  Rx<SubCategoryModel> subCategoryModel = SubCategoryModel().obs;
+  String id = '';
 
   // for update button
   Rx<RxStatus> updateStatus = Rx<RxStatus>(RxStatus.success());
+
 
   @override
   void onInit() {
     super.onInit();
 
-    getCategories();
+    id = Get.arguments['id'];
+    getSubCategories();
   }
 
-  Future<void> getCategories() async {
+  Future<void> getSubCategories() async {
     status.value = RxStatus.loading();
 
     try {
-      final response = await ApiClient.getData(ApiUrl.categories);
+      final response = await ApiClient.getData(ApiUrl.singleSubCategories + id);
 
-      categoryModel.value = CategoryModel.fromJson(response.body);
+      subCategoryModel.value = SubCategoryModel.fromJson(response.body);
 
-      if (categoryModel.value.data == null ||
-          categoryModel.value.data!.isEmpty) {
+      if (subCategoryModel.value.data == null ||
+          subCategoryModel.value.data!.isEmpty) {
         status.value = RxStatus.empty();
       } else {
         status.value = RxStatus.success();
@@ -43,8 +47,8 @@ class CategorySelectionController extends GetxController {
     }
   }
 
-  Future<void> updateContractorData(String? categoryId) async {
-    if (categoryId == null) {
+  Future<void> updateContractorData(String? subCategoryId) async {
+    if (subCategoryId == null) {
       showCustomSnackBar("Please select at least one day to continue.");
       return;
     }
@@ -54,7 +58,7 @@ class CategorySelectionController extends GetxController {
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
     String uri = '${ApiUrl.updateUser}/$userId';
 
-    Map<String, String> body = {'data': '{"category": "$categoryId"}'};
+    Map<String, String> body = {'data': '{"subCategory": "$subCategoryId"}'};
 
     try {
       var response = await ApiClient.patchMultipartData(
@@ -66,10 +70,7 @@ class CategorySelectionController extends GetxController {
       if (response.statusCode == 200) {
         updateStatus.value = RxStatus.success();
 
-        Get.toNamed(
-          AppRoutes.subCategorySelectedScreen,
-          arguments: {'id': categoryId},
-        );
+        Get.toNamed(AppRoutes.certificateScreen);
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

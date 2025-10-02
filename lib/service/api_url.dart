@@ -15,7 +15,9 @@ class ApiUrl {
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
   static const String categories = "/categories/";
+  static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
+  static const String subscriptionPlanList = "/dashboards/subscription-plans";
 
   static String singleSubCategory({required String categoryId}) =>
       "/sub-categories?categoryId=$categoryId";
