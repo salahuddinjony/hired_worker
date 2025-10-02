@@ -193,7 +193,11 @@ class AuthController extends GetxController {
 
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.homeScreen);
+            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) == null) {
+              Get.offAllNamed(AppRoutes.seletedMapScreen);
+            } else {
+              Get.offAllNamed(AppRoutes.homeScreen);
+            };
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.customerHomeScreen);

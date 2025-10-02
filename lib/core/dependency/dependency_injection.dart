@@ -6,6 +6,8 @@ import 'package:servana/view/screens/choose_language/controller/language_control
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/add_material_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/charge_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/sub_category_selection_controller.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/subscription_plan_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/message/controller/message_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
@@ -39,8 +41,10 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => MessageController(), fenix: true);
     Get.lazyPut(() => ScheduleSelectionController(), fenix: true);
     Get.lazyPut(() => CategorySelectionController(), fenix: true);
+    Get.lazyPut(() => SubCategorySelectionController(), fenix: true);
     Get.lazyPut(() => SkillSelectionController(), fenix: true);
     Get.lazyPut(() => AddMaterialController(), fenix: true);
     Get.lazyPut(() => ChargeController(), fenix: true);
+    Get.lazyPut(() => SubscriptionPlanController(), fenix: true);
   }
 }

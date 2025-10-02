@@ -50,6 +50,7 @@ final Map<String, String> chinese = {
   "Other": "其他",
   "Add Certificate": "添加证书",
   "Category": "类别",
+  "Sub Category": "子类别",
   "Subscribe": "订阅",
   "Welcome to Servana": "欢迎使用 Servana",
   "“Discover. Connect.\nGet Things Done”": "“发现。连接。\n完成任务”",
@@ -148,4 +149,10 @@ final Map<String, String> chinese = {
   "Need Materials Select": "需要选择材料",
   "Phone Number": "电话号码",
   "Q&A": "问与答",
+  "Add your skills and expertise.": "添加您的技能和专长。",
+  "Press Enter or click the + button to add a skill": "按回车或点击 + 按钮添加技能",
+  "Your Skills": "您的技能",
+  "No skills added yet": "尚未添加技能",
+  "Add your skills above to get started": "请在上方添加技能以开始",
+  "Add at least one skill to continue": "请至少添加一个技能以继续",
 };

@@ -1,43 +1,42 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:servana/service/api_url.dart';
-import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
+
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_loader/custom_loader.dart';
+import 'controller/sub_category_selection_controller.dart';
 
-class CategorySelectedScreen extends StatefulWidget {
-  const CategorySelectedScreen({super.key});
+class SubCategorySelectedScreen extends StatefulWidget {
+  const SubCategorySelectedScreen({super.key});
 
   @override
-  State<CategorySelectedScreen> createState() =>
+  State<SubCategorySelectedScreen> createState() =>
       _CategorySelectionScreenState();
 }
 
-class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
-  String? selectedCategoryId;
+class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
+  String? selectedSubCategoryId;
 
   void toggleSelection(String id) {
     setState(() {
-      if (selectedCategoryId == id) {
-        selectedCategoryId = null;
+      if (selectedSubCategoryId == id) {
+        selectedSubCategoryId = null;
       } else {
-        selectedCategoryId = id;
+        selectedSubCategoryId = id;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    CategorySelectionController controller =
-        Get.find<CategorySelectionController>();
+    SubCategorySelectionController controller =
+        Get.find<SubCategorySelectionController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Category".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Category".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -72,10 +71,13 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     padding: const EdgeInsets.only(top: 50.0),
                     child: Column(
                       children: [
-                        Text(controller.status.value.errorMessage!),
+                        Text(
+                          controller.status.value.errorMessage ??
+                              "Something went wrong. Please try again.",
+                        ),
                         ElevatedButton(
                           onPressed: () {
-                            controller.getCategories();
+                            controller.getSubCategories();
                           },
                           child: const Text('Retry'),
                         ),
@@ -90,8 +92,8 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                     children:
-                        controller.categoryModel.value.data!.map((item) {
-                          final isSelected = selectedCategoryId == item.id;
+                        controller.subCategoryModel.value.data!.map((item) {
+                          final isSelected = selectedSubCategoryId == item.id;
                           return GestureDetector(
                             onTap: () => toggleSelection(item.id.toString()),
                             child: Container(
@@ -158,8 +160,10 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     ? CustomLoader()
                     : CustomButton(
                       onTap: () {
-                        if (selectedCategoryId != null) {
-                          controller.updateContractorData(selectedCategoryId);
+                        if (selectedSubCategoryId != null) {
+                          controller.updateContractorData(
+                            selectedSubCategoryId,
+                          );
                         } else {
                           Get.snackbar("Error", "Please select a category");
                         }
