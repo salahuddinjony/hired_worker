@@ -148,7 +148,7 @@ class HomeController extends GetxController {
       final response = await ApiClient.getData(
         ApiUrl.getContractorDetails(userId: userId),
       );
-
+      
       contactorDetailsModel.value = ContactorDetailsModel.fromJson(
         response.body,
       );
@@ -157,12 +157,13 @@ class HomeController extends GetxController {
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${contactorDetailsModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        debugPrint('contractor details loaded successfully');
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
     } catch (e) {
+      print("====> Error in getContractorDetails: $e");
       getContractorDetailsStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);

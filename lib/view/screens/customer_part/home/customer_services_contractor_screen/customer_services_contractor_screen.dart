@@ -30,7 +30,12 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.customerAllContractorViewScreen);
+                      Get.toNamed(AppRoutes.customerAllContractorViewScreen,
+                        arguments: {
+                          'id': '',
+                          'name': 'All'
+                        }
+                      );
                     },
                     child: CustomText(
                       text: "View all".tr,

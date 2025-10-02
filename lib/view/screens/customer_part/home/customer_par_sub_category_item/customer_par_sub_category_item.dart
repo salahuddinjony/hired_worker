@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 
@@ -16,6 +17,9 @@ class CustomerParSubCategoryItem extends StatelessWidget {
 
     String name = Get.arguments['name'];
     String id = Get.arguments['id'];
+    debugPrint("Sub Category ID: $id");
+    debugPrint("Sub Category Name: $name");
+    
     homeController.getSingleSubCategory(categoryId: id);
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: name),
@@ -31,9 +35,7 @@ class CustomerParSubCategoryItem extends StatelessWidget {
           );
         }
         if (data.isEmpty) {
-          return const Center(
-            child: Text("No Sub Categories Found"),
-          );
+          return NotFound(message: "No Sub Categories Found", icon: Icons.category);
         }
         return Column(
           children: [

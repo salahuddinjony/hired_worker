@@ -144,9 +144,9 @@ class Contractor {
     String? customerId;
     String? paymentMethodId;
     List<dynamic>? certificates;
-    dynamic myScheduleId;
+    MySchedule? myScheduleId;
     bool? isDeleted;
-    List<dynamic>? skills;
+    List<Skill>? skills;
     List<dynamic>? materials;
     DateTime? createdAt;
     DateTime? updatedAt;
@@ -181,7 +181,7 @@ class Contractor {
 
     factory Contractor.fromJson(Map<String, dynamic> json) => Contractor(
         id: json["_id"],
-        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        dob: json["dob"] == null || json["dob"] == "" ? null : DateTime.parse(json["dob"]),
         gender: json["gender"],
         experience: json["experience"],
         bio: json["bio"],
@@ -195,9 +195,9 @@ class Contractor {
         customerId: json["customerId"],
         paymentMethodId: json["paymentMethodId"],
         certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
-        myScheduleId: json["myScheduleId"],
+        myScheduleId: json["myScheduleId"] == null ? null : MySchedule.fromJson(json["myScheduleId"]),
         isDeleted: json["isDeleted"],
-        skills: json["skills"] == null ? [] : List<dynamic>.from(json["skills"]!.map((x) => x)),
+        skills: json["skills"] == null ? [] : List<Skill>.from(json["skills"]!.map((x) => Skill.fromJson(x))),
         materials: json["materials"] == null ? [] : List<dynamic>.from(json["materials"]!.map((x) => x)),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -221,13 +221,93 @@ class Contractor {
         "customerId": customerId,
         "paymentMethodId": paymentMethodId,
         "certificates": certificates == null ? [] : List<dynamic>.from(certificates!.map((x) => x)),
-        "myScheduleId": myScheduleId,
+        "myScheduleId": myScheduleId?.toJson(),
         "isDeleted": isDeleted,
-        "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
+        "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x.toJson())),
         "materials": materials == null ? [] : List<dynamic>.from(materials!.map((x) => x)),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
         "userId": userId,
+    };
+}
+
+class MySchedule {
+    String? id;
+    String? contractorId;
+    List<Schedule>? schedules;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    int? v;
+
+    MySchedule({
+        this.id,
+        this.contractorId,
+        this.schedules,
+        this.createdAt,
+        this.updatedAt,
+        this.v,
+    });
+
+    factory MySchedule.fromJson(Map<String, dynamic> json) => MySchedule(
+        id: json["_id"],
+        contractorId: json["contractorId"],
+        schedules: json["schedules"] == null ? [] : List<Schedule>.from(json["schedules"]!.map((x) => Schedule.fromJson(x))),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "contractorId": contractorId,
+        "schedules": schedules == null ? [] : List<dynamic>.from(schedules!.map((x) => x.toJson())),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+    };
+}
+
+class Schedule {
+    String? days;
+    List<String>? timeSlots;
+    String? id;
+
+    Schedule({
+        this.days,
+        this.timeSlots,
+        this.id,
+    });
+
+    factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
+        days: json["days"],
+        timeSlots: json["timeSlots"] == null ? [] : List<String>.from(json["timeSlots"]!.map((x) => x)),
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "days": days,
+        "timeSlots": timeSlots == null ? [] : List<dynamic>.from(timeSlots!.map((x) => x)),
+        "_id": id,
+    };
+}
+
+class Skill {
+    String? name;
+    String? id;
+
+    Skill({
+        this.name,
+        this.id,
+    });
+
+    factory Skill.fromJson(Map<String, dynamic> json) => Skill(
+        name: json["name"],
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "_id": id,
     };
 }
