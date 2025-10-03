@@ -55,10 +55,8 @@ class CustomerParSubCategoryItem extends StatelessWidget {
                   image: data[index].img ?? '',
                   name: data[index].name ?? '',
                   onTap: () {
-                      homeController.getAllContactor(
-                       
-                      );
-                    Get.toNamed(AppRoutes.customerAllContractorViewScreen,
+                      homeController.getAllContactor();
+                    Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
                         arguments: {
                           'id': data[index].id.toString(),
                           'name': data[index].name.toString()

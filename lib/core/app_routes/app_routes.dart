@@ -4,6 +4,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
+import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
@@ -39,7 +40,7 @@ import '../../view/screens/customer_part/home/customar_materials_screen/customar
 import '../../view/screens/customer_part/home/customar_qa_screen/customar_qa_screen.dart';
 import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_contractor_details_screen.dart';
 import '../../view/screens/customer_part/home/customar_service_details_screen/customar_service_details_screen.dart';
-import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_view_screen.dart';
+import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_based_sub_category_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_category_screen/customer_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_confirmations_screen/customer_confirmations_screen.dart';
 import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/customer_contractor_profile_view_screen.dart';
@@ -98,7 +99,8 @@ class AppRoutes {
   static const String customerHomeScreen = "/CustomerHomeScreen";
   static const String customerSubCategoryScreen = "/CustomerSubCategoryScreen";
   static const String customerServicesContractorScreen = "/CustomerServicesContractorScreen";
-  static const String customerAllContractorViewScreen = "/CustomerAllContractorViewScreen";
+  static const String customerAllContractorBasedSubCategoryViewScreen = "/CustomerAllContractorBasedSubCategoryViewScreen";
+  static const String customerContractorBasedCategoryListScreen = "/CustomerContractorBasedCategoryListScreen";
   static const String customerContractorProfileViewScreen = "/CustomerContractorProfileViewScreen";
   static const String customerSuccessfullyPaidScreen = "/CustomerSuccessfullyPaidScreen";
   static const String customerConfirmationsScreen = "/CustomerConfirmationsScreen";
@@ -164,7 +166,8 @@ class AppRoutes {
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
     GetPage(name: customerSubCategoryScreen, page: () => CustomerSubCategoryScreen()),
     GetPage(name: customerServicesContractorScreen, page: () => CustomerServicesContractorScreen()),
-    GetPage(name: customerAllContractorViewScreen, page: () => CustomerAllContractorViewScreen()),
+    GetPage(name: customerAllContractorBasedSubCategoryViewScreen, page: () => CustomerAllContractorBasedSubCategoryViewScreen()),
+    GetPage(name: customerContractorBasedCategoryListScreen, page: () => CustomerContractorBasedCategoryListScreen()),
     GetPage(name: customerContractorProfileViewScreen, page: () => CustomerContractorProfileViewScreen()),
     GetPage(name: customerSuccessfullyPaidScreen, page: () => CustomerSuccessfullyPaidScreen()),
     GetPage(name: customerConfirmationsScreen, page: () => CustomerConfirmationsScreen()),

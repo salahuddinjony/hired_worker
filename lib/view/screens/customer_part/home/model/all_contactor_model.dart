@@ -58,6 +58,8 @@ class allContractor {
   final String location;
   final int rateHourly;
   final int balance;
+  final String subCategory; 
+  final String category;
   final String skillsCategory;
   final int ratings;
   final String subscriptionStatus;
@@ -85,6 +87,8 @@ class allContractor {
     required this.location,
     required this.rateHourly,
     required this.balance,
+    required this.subCategory,
+    required this.category,
     required this.skillsCategory,
     required this.ratings,
     required this.subscriptionStatus,
@@ -114,6 +118,8 @@ class allContractor {
       location: json['location'] ?? '',
       rateHourly: json['rateHourly'] ?? 0,
       balance: json['balance'] ?? 0,
+      subCategory: json['subCategory'] ?? '',
+      category: json['category'] ?? '',
       skillsCategory: json['skillsCategory'] ?? '',
       ratings: json['ratings'] ?? 0,
       subscriptionStatus: json['subscriptionStatus'] ?? '',

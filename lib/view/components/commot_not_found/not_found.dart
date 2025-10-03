@@ -15,6 +15,7 @@ class NotFound extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             message,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.grey),
           ),
         ],

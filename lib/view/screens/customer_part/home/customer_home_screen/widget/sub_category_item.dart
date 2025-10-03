@@ -61,7 +61,7 @@ class SubCategoryPreviewSection extends StatelessWidget {
                           image: item.img ?? '',
                           name: item.name ?? '',
                           onTap: () {
-                            Get.toNamed(AppRoutes.customerAllContractorViewScreen,
+                            Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
                               arguments: {
                                 'id': item.id ?? '',
                                 'name': item.name ?? 'Subcategory'
