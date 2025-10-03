@@ -76,12 +76,15 @@ class ApiClient extends GetxService {
       debugPrint('📍 URL: ${baseUri.toString()}');
       debugPrint('📊 Status Code: ${response.statusCode}');
       debugPrint('📋 Response Headers:');
-      printPrettyJson(response.headers);
+      debugPrint('  content-type: ${response.headers['content-type']}');
+      debugPrint('  date: ${response.headers['date']}');
+      debugPrint('  server: ${response.headers['server']}');
+      debugPrint('  content-length: ${response.headers['content-length']}');
       debugPrint('📄 Response Body:');
       try {
-        // final prettyJson = const JsonEncoder.withIndent('  ')
-        //     .convert(jsonDecode(response.body));
-        debugPrint(response.body);
+          final prettyJson = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(response.body));
+        debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
       }

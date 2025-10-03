@@ -6,64 +6,142 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'widget/select_materials_row.dart';
 
-class CustomarMaterialsScreen extends StatefulWidget {
+/// CustomarMaterialsScreen - A stateless widget for selecting materials with quantities
+/// 
+/// This screen expects the following arguments when navigating:
+/// - controller: ContractorBookingController instance
+/// - materials: List<Map<String, String>> with the following structure:
+///   [
+///     {
+///       'name': 'Material Name',
+///       'unit': 'pcs' // or 'kg', 'liters', etc.
+///     }
+///   ]
+/// - contractorId: String
+/// - subcategoryId: String
+/// 
+/// Example usage:
+/// Get.toNamed(AppRoutes.customarMaterialsScreen, arguments: {
+///   'controller': contractorBookingController,
+///   'materials': [
+///     {'name': 'Power Point', 'unit': 'pcs'},
+///     {'name': 'Smoke Alarm', 'unit': 'pcs'},
+///     {'name': 'Circuit Breaker', 'unit': 'pcs'},
+///   ],
+///   'contractorId': 'contractor123',
+///   'subcategoryId': 'subcat456',
+/// });
+class CustomarMaterialsScreen extends StatelessWidget {
   const CustomarMaterialsScreen({super.key});
 
   @override
-  State<CustomarMaterialsScreen> createState() => _CustomarMaterialsScreenState();
-}
-
-class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
-  bool showMaterials = true;
-
-  @override
   Widget build(BuildContext context) {
+    final ContractorBookingController controller = Get.arguments['controller'];
+    final List<dynamic> materials = Get.arguments['materials'] ?? [];
+    final String contractorId = Get.arguments['contractorId'] ?? '';
+    final String subcategoryId = Get.arguments['subcategoryId'] ?? '';
+    
+    // Initialize materials in controller
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (materials.isNotEmpty) {
+        controller.initializeMaterials(materials);
+      } else {
+        // Fallback: initialize with some default materials if none provided
+        controller.initializeMaterials([
+          {'name': 'Power Point', 'unit': 'pcs'},
+          {'name': 'Smoke Alarm', 'unit': 'pcs'},
+          {'name': 'Circuit Breaker', 'unit': 'pcs'},
+        ]);
+      }
+    });
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials".tr),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 4),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: GetBuilder<ContractorBookingController>(
+        builder: (controller) {
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 4),
+                child: Column(
                   children: [
-                    CustomText(
-                      text: "Need Materials Select".tr,
-                      fontSize: 18.w,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          text: "Need Materials Select".tr,
+                          fontSize: 18.w,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                        Obx(() => Switch(
+                          value: controller.showMaterials.value,
+                          onChanged: (value) {
+                            controller.toggleShowMaterials();
+                          },
+                        )),
+                      ],
                     ),
-                    Switch(
-                      value: showMaterials,
-                      onChanged: (value) {
-                        setState(() {
-                          showMaterials = value;
-                        });
-                      },
-                    ),
+                    Obx(() {
+                      if (controller.showMaterials.value) {
+                        if (controller.materialsAndQuantity.isEmpty) {
+                          return Expanded(
+                            child: Center(
+                              child: CustomText(
+                                text: "No materials available".tr,
+                                fontSize: 16.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black_08,
+                              ),
+                            ),
+                          );
+                        }
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: controller.materialsAndQuantity.length,
+                            itemBuilder: (context, index) {
+                              final material = controller.materialsAndQuantity[index];
+                              return SelectMaterialsRow(
+                                name: material['name'],
+                                unit: material['unit'],
+                                quantity: material['quantity'] ?? '0',
+                                isSelected: controller.isMaterialSelected(index),
+                                onIncrement: () => controller.incrementMaterial(index),
+                                onDecrement: () => controller.decrementMaterial(index),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
                   ],
                 ),
-                if (showMaterials)
-                  Column(
-                    children: List.generate(
-                      5,
-                          (index) => SelectMaterialsRow(name: "Powerpoint"),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20,),
-        child: CustomButton(onTap: (){
-          Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-        },title: "Continue".tr,),
+        padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+        child: CustomButton(
+          onTap: () {
+            debugPrint('Selected Materials: ${controller.materialsAndQuantity.where((m) => controller.isMaterialSelected(controller.materialsAndQuantity.indexOf(m))).toList()}');
+            Get.toNamed(
+              AppRoutes.customarServiceDetailsScreen,
+              arguments: {
+                'controller': controller,
+                'contractorId': contractorId,
+                'subcategoryId': subcategoryId,
+              },
+            );
+          },
+          title: "Continue".tr,
+        ),
       ),
     );
   }

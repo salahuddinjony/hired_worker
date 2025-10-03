@@ -117,6 +117,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                   categoryWiseContractors.take(4).map((contractor) {
                     return CustomServiceContractorCard(
                       onTap: () {
+                        
                         Get.toNamed(
                           AppRoutes.customerContractorProfileViewScreen,
                           arguments: {'id': contractor.userId?.id},
