@@ -27,44 +27,100 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
     final HomeController homeController = Get.find<HomeController>();
     Map<String, dynamic> args = Get.arguments ?? {};
     String userId = args['id']?.toString() ?? '';
-    
+
     if (userId.isNotEmpty) {
       homeController.getContractorDetails(userId: userId);
     }
-    
+
     return Scaffold(
       body: Obx(() {
         // Handle case where userId is empty
         if (userId.isEmpty) {
-          return const Center(
-            child: CustomText(
-              text: "Invalid contractor ID",
-              fontSize: 16,
-              color: AppColors.black,
-            ),
+          return Column(
+            children: [
+              Container(
+                height: MediaQuery.sizeOf(context).height / 3,
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20.r),
+                    bottomRight: Radius.circular(20.r),
+                  ),
+                ),
+                child: CustomRoyelAppbar(leftIcon: true),
+              ),
+              Expanded(
+                child: Center(
+                  child: CustomText(
+                    text: "Invalid contractor ID",
+                    fontSize: 16,
+                    color: AppColors.black,
+                  ),
+                ),
+              ),
+            ],
           );
         }
-        
+
         if (homeController.getContractorDetailsStatus.value.isLoading) {
-          return const Center(child: CustomLoader());
+          return Column(
+            children: [
+              Container(
+                height: MediaQuery.sizeOf(context).height / 3,
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20.r),
+                    bottomRight: Radius.circular(20.r),
+                  ),
+                ),
+                child: CustomRoyelAppbar(leftIcon: true),
+              ),
+              const Expanded(child: Center(child: CustomLoader())),
+            ],
+          );
         }
-        
+
         final data = homeController.contactorDetailsModel.value.data;
-        
+
         // Handle null data case
         if (data == null) {
-          return const Center(
-            child: NotFound(message: "No contractor Profile available", icon: Icons.person),
+          return Column(
+            children: [
+              Container(
+                height: MediaQuery.sizeOf(context).height / 3,
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20.r),
+                    bottomRight: Radius.circular(20.r),
+                  ),
+                ),
+                child: CustomRoyelAppbar(leftIcon: true),
+              ),
+              const Expanded(
+                child: Center(
+                  child: NotFound(
+                    message: "No contractor Profile available",
+                    icon: Icons.person,
+                  ),
+                ),
+              ),
+            ],
           );
         }
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomNetworkImage(
-              imageUrl:data.user?.img != null && data.user!.img!.isNotEmpty
-                  ? ImageHandler.imagesHandle(data.user!.img!)
-                  : AppConstants.girlsPhoto,
+              imageUrl:
+                  data.user?.img != null && data.user!.img!.isNotEmpty
+                      ? ImageHandler.imagesHandle(data.user!.img!)
+                      : AppConstants.girlsPhoto,
               height: MediaQuery.sizeOf(context).height / 3,
               width: MediaQuery.sizeOf(context).width,
               borderRadius: BorderRadius.only(
@@ -122,9 +178,11 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             children: [
                               CustomImage(imageSrc: AppImages.likeImage),
                               CustomText(
-                                text: data.user?.contractor?.ratings != null
-                                    ? data.user!.contractor!.ratings!.toString()
-                                    : "No ratings",
+                                text:
+                                    data.user?.contractor?.ratings != null
+                                        ? data.user!.contractor!.ratings!
+                                            .toString()
+                                        : "No ratings",
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black,
@@ -158,9 +216,15 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             children: [
                               CustomImage(imageSrc: AppImages.manPower),
                               CustomText(
-                                text: (data.user?.contractor?.experience?.isNotEmpty == true)
-                                    ? data.user!.contractor!.experience!
-                                    : "N/A",
+                                text:
+                                    (data
+                                                .user
+                                                ?.contractor
+                                                ?.experience
+                                                ?.isNotEmpty ==
+                                            true)
+                                        ? data.user!.contractor!.experience!
+                                        : "N/A",
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.black,
@@ -191,13 +255,16 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: (data.user?.contractor?.skills?.isNotEmpty == true)
-                          ? data.user!.contractor!.skills!
-                              .map((e) => CustomSkillsContainer(text: e.name))
-                              .toList()
-                          : [
-                              CustomSkillsContainer(text: "No skills listed"),
-                            ],
+                      children:
+                          (data.user?.contractor?.skills?.isNotEmpty == true)
+                              ? data.user!.contractor!.skills!
+                                  .map(
+                                    (e) => CustomSkillsContainer(text: e.name),
+                                  )
+                                  .toList()
+                              : [
+                                CustomSkillsContainer(text: "No skills listed"),
+                              ],
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -219,33 +286,51 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     ),
                   ),
                   // Display actual schedule data or fallback message
-                  if (data.user?.contractor?.myScheduleId?.schedules?.isNotEmpty == true)
+                  if (data
+                          .user
+                          ?.contractor
+                          ?.myScheduleId
+                          ?.schedules
+                          ?.isNotEmpty ==
+                      true)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: data.user!.contractor!.myScheduleId!.schedules!.map((schedule) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 8.h),
-                          child: Row(
-                            children: [
-                              CustomSkillsContainer(text: schedule.days ?? ""),
-                              SizedBox(width: 8.w),
-                              CustomText(
-                                text: ":",
-                                fontSize: 14.w,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black_08,
+                      children:
+                          data.user!.contractor!.myScheduleId!.schedules!.map((
+                            schedule,
+                          ) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 8.h),
+                              child: Row(
+                                children: [
+                                  CustomSkillsContainer(
+                                    text: schedule.days ?? "",
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  CustomText(
+                                    text: ":",
+                                    fontSize: 14.w,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.black_08,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  ...schedule.timeSlots
+                                          ?.map(
+                                            (timeSlot) => Padding(
+                                              padding: EdgeInsets.only(
+                                                right: 8.w,
+                                              ),
+                                              child: CustomSkillsContainer(
+                                                text: timeSlot,
+                                              ),
+                                            ),
+                                          )
+                                          .toList() ??
+                                      [],
+                                ],
                               ),
-                              SizedBox(width: 8.w),
-                              ...schedule.timeSlots?.map((timeSlot) => 
-                                Padding(
-                                  padding: EdgeInsets.only(right: 8.w),
-                                  child: CustomSkillsContainer(text: timeSlot),
-                                )
-                              ).toList() ?? [],
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
                     )
                   else
                     Row(
@@ -274,9 +359,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
-                      text: (data.user?.contractor?.bio?.isNotEmpty == true)
-                          ? data.user!.contractor!.bio!
-                          : "No bio available",
+                      text:
+                          (data.user?.contractor?.bio?.isNotEmpty == true)
+                              ? data.user!.contractor!.bio!
+                              : "No bio available",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w400,
                       maxLines: 10,
@@ -296,11 +382,17 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    children: List.generate(data.reviews?.length==0 ? 1 : data.reviews!.length, (value) {
-                      return CustomReviewList( reviewData: data.reviews != null && data.reviews!.isNotEmpty
-                          ? data.reviews![value]
-                          : null);
-                    }),
+                    children: List.generate(
+                      data.reviews?.length == 0 ? 1 : data.reviews!.length,
+                      (value) {
+                        return CustomReviewList(
+                          reviewData:
+                              data.reviews != null && data.reviews!.isNotEmpty
+                                  ? data.reviews![value]
+                                  : null,
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

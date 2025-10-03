@@ -8,20 +8,23 @@ import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 
 import '../customer_home_screen/widget/custom_service_contractor_card.dart';
-class CustomerAllContractorViewScreen extends StatelessWidget {
-   CustomerAllContractorViewScreen({super.key});
+class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
+   CustomerContractorBasedCategoryListScreen({super.key});
 
   final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args = Get.arguments;
     String name = args?['name'] ?? 'All';
+    String id = args?['id'] ?? '';
+    //category id wise contractors
+    List<dynamic> contractors = args?['contractors'] ?? [];
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
       body: SingleChildScrollView(
         child: Obx(
           () {
-            final contractors = homeController.getAllContactorList;
+            final contractorsWithSubCategory =contractors;
 
             if (homeController.getAllServicesContractorStatus.value.isLoading) {
               return Container(
@@ -44,7 +47,7 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
                 ),
               );
             }
-            if (contractors.isEmpty) {
+            if (contractorsWithSubCategory.isEmpty) {
                 return Center(
                 child: Container(
                   margin: EdgeInsets.only(top: 100.h), 
@@ -63,19 +66,19 @@ class CustomerAllContractorViewScreen extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: contractors.length,
+              itemCount: contractorsWithSubCategory.length,
               itemBuilder: (BuildContext context, int index) {
                // var data = popularDoctorController.popularList[index];
                 return CustomServiceContractorCard(
-                  image: ImageHandler.imagesHandle(contractors[index].userId?.img),
-                  name: contractors[index].userId?.fullName ?? '',
-                  title: contractors[index].skillsCategory ?? 'Service Provider',
-                  rating: contractors[index].ratings?.toString() ?? '0',
+                  image: ImageHandler.imagesHandle(contractorsWithSubCategory[index].userId?.img),
+                  name: contractorsWithSubCategory[index].userId.fullName,
+                  title: contractorsWithSubCategory[index].skillsCategory.toString(),
+                  rating: contractorsWithSubCategory[index].ratings.toString(),
                   onTap: (){
                     Get.toNamed(AppRoutes.customerContractorProfileViewScreen, 
                     arguments: {
-                      'id': contractors[index].userId?.id.toString(),
-                      'name': contractors[index].userId?.fullName.toString()
+                      'id': contractorsWithSubCategory[index].userId.id.toString(),
+                      'name': contractorsWithSubCategory[index].userId.fullName.toString()
                     }
                    
                     );

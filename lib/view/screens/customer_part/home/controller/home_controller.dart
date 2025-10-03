@@ -4,7 +4,6 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
-import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart' as contractor_model;
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/contactor_details_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
@@ -109,7 +108,7 @@ class HomeController extends GetxController {
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
     RxStatus.loading(),
   );
-   RxList<allContractor> getAllContactorList = <allContractor>[].obs;
+   RxList<allContractor> getAllContactorList =<allContractor>[].obs;
 
   Future<void> getAllContactor({String? subCategoryId}) async {
 
@@ -128,7 +127,7 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.body;
         getAllContactorList.value = ContractorResponse.fromJson(data).data;
-        debugPrint('contractor data loaded: ${getAllContactorList.length} contractors');
+        debugPrint('contractor data length: ${getAllContactorList.length} contractors');
         // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
