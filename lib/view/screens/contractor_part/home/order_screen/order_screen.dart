@@ -5,6 +5,7 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
 import '../controller/contractor_home_controller.dart';
 import 'widget/custom_delivered_service_card.dart';
@@ -60,7 +61,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       BookingModelData data =
                           controller.pendingBookingList.value.data!.result![index];
                       return CustomServiceRequestCard(
-                        title: data.subCategoryId?.name ?? " - ",
+                        title: getSubCategoryName(data),
                         rating:
                             data.contractorId?.contractor?.ratings
                                 ?.toString() ??
@@ -84,7 +85,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             controller.completeBookingList.value.data!.result![index];
 
                         return CustomDeliveredServiceCard(
-                          title: data.subCategoryId?.name ?? " - ",
+                          title: getSubCategoryName(data),
                           rating:
                               data.contractorId?.contractor?.ratings
                                   ?.toString() ??

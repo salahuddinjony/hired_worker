@@ -109,9 +109,10 @@ class Contractor {
     String? city;
     String? language;
     String? location;
-    int? rateHourly;
+    num? rateHourly;
+    num? balance;
     String? skillsCategory;
-    int? ratings;
+    num? ratings;
     String? subscriptionStatus;
     String? customerId;
     String? paymentMethodId;
@@ -135,6 +136,7 @@ class Contractor {
         this.language,
         this.location,
         this.rateHourly,
+        this.balance,
         this.skillsCategory,
         this.ratings,
         this.subscriptionStatus,
@@ -162,6 +164,7 @@ class Contractor {
         location: json["location"],
         rateHourly: json["rateHourly"],
         skillsCategory: json["skillsCategory"],
+        balance: json["balance"],
         ratings: json["ratings"],
         subscriptionStatus: json["subscriptionStatus"],
         customerId: json["customerId"],
