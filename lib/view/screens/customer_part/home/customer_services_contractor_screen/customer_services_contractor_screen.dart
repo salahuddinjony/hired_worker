@@ -5,6 +5,7 @@ import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -24,7 +25,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
       ),
       body: Obx(() {
         final categories = homeController.categoryModel.value.data ?? [];
-        final contractors = homeController.getAllContactorList.value;
+        final contractors = homeController.getAllContactorList;
 
         if (homeController.getCategoryStatus.value.isLoading ||
             homeController.getAllServicesContractorStatus.value.isLoading) {
@@ -33,14 +34,17 @@ class CustomerServicesContractorScreen extends StatelessWidget {
 
         return SingleChildScrollView(
           child: Padding(
+            
             padding: const EdgeInsets.only(left: 16, bottom: 30),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Show contractors for each category
                 ...categories.map((category) {
                   final categoryWiseContractors =
                       contractors.where((contractor) {
-                        if (category.id != contractor.category) {
+                        if (category.id != contractor.category.id) {
                           return false;
                         }
                         return true;
@@ -65,11 +69,13 @@ class CustomerServicesContractorScreen extends StatelessWidget {
   Widget buildCategorySection(
     BuildContext context,
     String title,
-    List<dynamic> categoryWiseContractors,
+    List<allContractor> categoryWiseContractors,
     String categoryId,
     String categoryName,
   ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,20 +119,24 @@ class CustomerServicesContractorScreen extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children:
                   categoryWiseContractors.take(4).map((contractor) {
                     return CustomServiceContractorCard(
                       onTap: () {
-                        
                         Get.toNamed(
                           AppRoutes.customerContractorProfileViewScreen,
-                          arguments: {'id': contractor.userId?.id},
+                          arguments: {
+                            'id': contractor.userId.id,
+                            'contractorDetails': contractor,
+                          },
                         );
                       },
-                      image: ImageHandler.imagesHandle(contractor.userId?.img),
-                      name: contractor.userId?.fullName ?? "Unknown",
-                      title: contractor.skillsCategory ?? "Service Provider",
-                      rating: contractor.ratings?.toString() ?? "0",
+                      image: ImageHandler.imagesHandle(contractor.userId.img),
+                      name: contractor.userId.fullName,
+                      title: contractor.skillsCategory,
+                      rating: contractor.ratings.toString(),
                     );
                   }).toList(),
             ),

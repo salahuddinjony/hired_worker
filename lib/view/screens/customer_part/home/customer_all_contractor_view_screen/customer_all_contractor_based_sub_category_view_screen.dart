@@ -23,7 +23,7 @@ class CustomerAllContractorBasedSubCategoryViewScreen extends StatelessWidget {
         child: Obx(
           () {
             // sub category id wise contractors
-            final contractorsWithSubCategory = homeController.getAllContactorList.where((contractor) => contractor.subCategory == id).toList();
+            final contractorsWithSubCategory = homeController.getAllContactorList.where((contractor) => contractor.subCategory.id == id).toList();
 
             if (homeController.getAllServicesContractorStatus.value.isLoading) {
               return Container(
@@ -74,12 +74,12 @@ class CustomerAllContractorBasedSubCategoryViewScreen extends StatelessWidget {
                   title: contractorsWithSubCategory[index].skillsCategory.toString(),
                   rating: contractorsWithSubCategory[index].ratings.toString(),
                   onTap: (){
-                    Get.toNamed(AppRoutes.customerContractorProfileViewScreen, 
-                    arguments: {
-                      'id': contractorsWithSubCategory[index].userId.id.toString(),
-                      'name': contractorsWithSubCategory[index].userId.fullName.toString()
-                    }
-                   
+                    Get.toNamed(
+                      AppRoutes.customerContractorProfileViewScreen,
+                      arguments: {
+                        'id': contractorsWithSubCategory[index].userId.id,
+                        'contractorDetails': contractorsWithSubCategory[index],
+                      }
                     );
                   },
                 );

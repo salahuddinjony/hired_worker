@@ -42,7 +42,7 @@ class ApiUrl {
 
   static String deleteAccount({required String userId}) => "/users/$userId";
 
-  static String getContractorDetails({required String userId}) =>
+  static String getReviewas({required String userId}) =>
       "/reviews/get-average-review/$userId";
 
   /// ==================   candidate part =============
