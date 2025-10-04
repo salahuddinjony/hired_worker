@@ -36,9 +36,12 @@ class SelectMaterialsRow extends StatelessWidget {
                   if (value == true && onIncrement != null) {
                     onIncrement!();
                   } else if (value == false && onDecrement != null) {
-                    // Set quantity to 0 when unchecked
-                    while (int.parse(quantity) > 0 && onDecrement != null) {
+                    // Safely parse quantity; if invalid default to 0
+                    int current = int.tryParse(quantity) ?? 0;
+                    // Decrement until zero
+                    while (current > 0) {
                       onDecrement!();
+                      current--;
                     }
                   }
                 }
@@ -74,7 +77,7 @@ class SelectMaterialsRow extends StatelessWidget {
                 ),
               ),
               CustomText(
-                text: quantity,
+                text: int.tryParse(quantity) != null ? quantity : '0',
                 fontSize: 24.w,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,

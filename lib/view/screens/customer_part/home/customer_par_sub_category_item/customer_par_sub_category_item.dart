@@ -58,7 +58,7 @@ class CustomerParSubCategoryItem extends StatelessWidget {
                       homeController.getAllContactor();
                     Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
                         arguments: {
-                          'id': data[index].id.toString(),
+                          'id': data[index].id.toString(), // subcategory id
                           'name': data[index].name.toString()
                         }
                     

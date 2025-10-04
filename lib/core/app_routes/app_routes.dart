@@ -43,7 +43,7 @@ import '../../view/screens/customer_part/home/customar_service_details_screen/cu
 import '../../view/screens/customer_part/home/customer_all_contractor_view_screen/customer_all_contractor_based_sub_category_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_category_screen/customer_category_screen.dart';
 import '../../view/screens/customer_part/home/customer_confirmations_screen/customer_confirmations_screen.dart';
-import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/customer_contractor_profile_view_screen.dart';
+import '../../view/screens/customer_part/home/customer_contractor_profile_view_screen/screen/customer_contractor_profile_view_screen.dart';
 import '../../view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../view/screens/customer_part/home/customer_par_sub_category_item/customer_par_sub_category_item.dart';
 import '../../view/screens/customer_part/home/customer_services_contractor_screen/customer_services_contractor_screen.dart';

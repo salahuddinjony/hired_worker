@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
@@ -156,8 +157,9 @@ class HomeController extends GetxController {
         ),
       ].obs;
 
-  Future<void> getContractorQuestions({required String subCategoryId}) async {
+  Future<bool> getContractorQuestions({required String subCategoryId}) async {
     getContractorQuestionStatus.value = RxStatus.loading();
+    EasyLoading.show();
 
     try {
       final response = await ApiClient.getData(
@@ -171,14 +173,18 @@ class HomeController extends GetxController {
         debugPrint(
           'Contractor questions loaded successfully: ${contractorQuestions.length} questions',
         );
+        return true;
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
         getContractorQuestionStatus.value = RxStatus.error();
+        return false;
       }
     } catch (e) {
       getContractorQuestionStatus.value = RxStatus.error();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+      return false;
     } finally {
+      EasyLoading.dismiss();
       refresh();
     }
   }
@@ -195,33 +201,38 @@ class HomeController extends GetxController {
   // }
 
   //============= contactor details ==============
-  Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(RxStatus.loading());
-  Rx<ContactorDetailsModel> contactorDetailsModel = ContactorDetailsModel().obs;
-  Future<void> getContractorDetails({required String userId}) async {
-    getContractorDetailsStatus.value = RxStatus.loading();
+  Rx<RxStatus> getContractorReviewsStatus = Rx<RxStatus>(RxStatus.loading());
+  RxList<ReviewData> reviewsData = <ReviewData>[].obs;
+  Future<void> getContractorReviews({required String userId}) async {
+    getContractorReviewsStatus.value = RxStatus.loading();
     try {
       final response = await ApiClient.getData(
-        ApiUrl.getContractorDetails(userId: userId),
+        ApiUrl.getReviewas(userId: userId),
       );
-
-      contactorDetailsModel.value = ContactorDetailsModel.fromJson(
-        response.body,
-      );
-
-      getContractorDetailsStatus.value = RxStatus.success();
-      refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('contractor details loaded successfully');
-        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        final data = response.body;
+        reviewsData.value =
+            ReviewResponse.fromJson(data).data != null
+                ? [ReviewResponse.fromJson(data).data!]
+                : [];
+        debugPrint(
+          'contractor reviews data length: ${reviewsData.length} reviews',
+        );
+        getContractorReviewsStatus.value = RxStatus.success();
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getContractorReviewsStatus.value = RxStatus.error();
+        refresh();
       }
     } catch (e) {
-      print("====> Error in getContractorDetails: $e");
-      getContractorDetailsStatus.value = RxStatus.error();
+
+      print("====> Error in getContractorReviews: $e");
+      getContractorReviewsStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }finally {
+      refresh();
     }
   }
 }

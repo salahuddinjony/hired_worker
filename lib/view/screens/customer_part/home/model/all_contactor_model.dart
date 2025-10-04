@@ -16,7 +16,8 @@ class ContractorResponse {
       success: json['success'] ?? false,
       message: json['message'] ?? '',
       meta: Meta.fromJson(json['meta'] ?? {}),
-      data: (json['data'] as List<dynamic>?)
+      data:
+          (json['data'] as List<dynamic>?)
               ?.map((e) => allContractor.fromJson(e))
               .toList() ??
           [],
@@ -58,19 +59,18 @@ class allContractor {
   final String location;
   final int rateHourly;
   final int balance;
-  final String subCategory; 
-  final String category;
+  final SubCategoryModel subCategory;
+  final CategoryModel category;
   final String skillsCategory;
   final int ratings;
   final String subscriptionStatus;
   final String customerId;
   final String paymentMethodId;
-  final List<String> certificates;
-  final String? myScheduleId;
+  final MyScheduleModel? myScheduleId;
   final String? subscriptionId;
   final bool hasActiveSubscription;
   final bool isDeleted;
-  final dynamic skills; // because sometimes it's a string, sometimes list
+  final List<String> skills;
   final List<MaterialModel> materials;
   final String createdAt;
   final String updatedAt;
@@ -94,7 +94,6 @@ class allContractor {
     required this.subscriptionStatus,
     required this.customerId,
     required this.paymentMethodId,
-    required this.certificates,
     required this.myScheduleId,
     required this.subscriptionId,
     required this.hasActiveSubscription,
@@ -118,26 +117,80 @@ class allContractor {
       location: json['location'] ?? '',
       rateHourly: json['rateHourly'] ?? 0,
       balance: json['balance'] ?? 0,
-      subCategory: json['subCategory'] ?? '',
-      category: json['category'] ?? '',
+      // category and subCategory can come as objects or as ids/strings
+      category: CategoryModel.fromDynamic(json['category']),
+      subCategory: SubCategoryModel.fromDynamic(json['subCategory']),
       skillsCategory: json['skillsCategory'] ?? '',
       ratings: json['ratings'] ?? 0,
       subscriptionStatus: json['subscriptionStatus'] ?? '',
       customerId: json['customerId'] ?? '',
       paymentMethodId: json['paymentMethodId'] ?? '',
-      certificates: (json['certificates'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList() ??
-          [],
-      myScheduleId: json['myScheduleId'],
+      myScheduleId:
+          (() {
+            final raw = json['myScheduleId'];
+            if (raw == null) return null;
+            if (raw is String) {
+              // sometimes API might return an id string
+              return MyScheduleModel(
+                id: raw,
+                contractorId: '',
+                schedules: [],
+                createdAt: '',
+                updatedAt: '',
+                v: 0,
+              );
+            }
+            if (raw is Map<String, dynamic>)
+              return MyScheduleModel.fromJson(raw);
+            // fallback
+            return MyScheduleModel(
+              id: raw.toString(),
+              contractorId: '',
+              schedules: [],
+              createdAt: '',
+              updatedAt: '',
+              v: 0,
+            );
+          })(),
       subscriptionId: json['subscriptionId'],
       hasActiveSubscription: json['hasActiveSubscription'] ?? false,
       isDeleted: json['isDeleted'] ?? false,
-      skills: json['skills'] ?? [],
-      materials: (json['materials'] as List<dynamic>?)
-              ?.map((e) => MaterialModel.fromJson(e))
-              .toList() ??
-          [],
+      // parse skills which can be: null, a JSON list, or a string like "[painting, installing]"
+      skills:
+          (() {
+            final raw = json['skills'];
+            if (raw == null) return <String>[];
+            if (raw is List) return raw.map((e) => e.toString()).toList();
+            if (raw is String) {
+              var s = raw.trim();
+              // remove surrounding brackets if present
+              if (s.startsWith('[') && s.endsWith(']')) {
+                s = s.substring(1, s.length - 1);
+              }
+              if (s.isEmpty) return <String>[];
+              return s
+                  .split(',')
+                  .map((e) => e.trim().replaceAll(RegExp(r'^"|"$'), ''))
+                  .where((e) => e.isNotEmpty)
+                  .toList();
+            }
+            // fallback: convert other types to single-string list
+            return [raw.toString()];
+          })(),
+      // Some API responses contain null entries inside `materials` list
+      // or the whole field may be null. We should safely skip nulls
+      // and only map valid objects to avoid runtime parse errors.
+      materials: (() {
+        final raw = json['materials'];
+        if (raw == null) return <MaterialModel>[];
+        if (raw is List) {
+          return raw
+              .where((e) => e != null && e is Map<String, dynamic>)
+              .map<MaterialModel>((e) => MaterialModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+        }
+        return <MaterialModel>[];
+      })(),
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
       userId: UserId.fromJson(json['userId'] ?? {}),
@@ -217,6 +270,130 @@ class UserId {
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
       v: json['__v'] ?? 0,
+    );
+  }
+}
+
+// New model to represent category which sometimes comes as object and sometimes as string/id
+class CategoryModel {
+  final String id;
+  final String name;
+  final String img;
+
+  CategoryModel({required this.id, required this.name, required this.img});
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      id: json['_id'] ?? json['id'] ?? '',
+      name: json['name'] ?? '',
+      img: json['img'] ?? '',
+    );
+  }
+
+  // Accept either String or Map
+  static CategoryModel fromDynamic(dynamic value) {
+    if (value == null) return CategoryModel(id: '', name: '', img: '');
+    if (value is String) {
+      return CategoryModel(id: value, name: '', img: '');
+    }
+    if (value is Map<String, dynamic>) return CategoryModel.fromJson(value);
+    // fallback for other types
+    return CategoryModel(id: value.toString(), name: '', img: '');
+  }
+}
+
+class SubCategoryModel {
+  final String id;
+  final String categoryId;
+  final String name;
+  final String img;
+
+  SubCategoryModel({
+    required this.id,
+    required this.categoryId,
+    required this.name,
+    required this.img,
+  });
+
+  factory SubCategoryModel.fromJson(Map<String, dynamic> json) {
+    return SubCategoryModel(
+      id: json['_id'] ?? json['id'] ?? '',
+      categoryId: json['categoryId'] ?? '',
+      name: json['name'] ?? '',
+      img: json['img'] ?? '',
+    );
+  }
+
+  static SubCategoryModel fromDynamic(dynamic value) {
+    if (value == null)
+      return SubCategoryModel(id: '', categoryId: '', name: '', img: '');
+    if (value is String) {
+      return SubCategoryModel(id: value, categoryId: '', name: '', img: '');
+    }
+    if (value is Map<String, dynamic>) return SubCategoryModel.fromJson(value);
+    return SubCategoryModel(
+      id: value.toString(),
+      categoryId: '',
+      name: '',
+      img: '',
+    );
+  }
+}
+
+// Model for contractor schedule returned as `myScheduleId` in some responses
+class MyScheduleModel {
+  final String id;
+  final String contractorId;
+  final List<ScheduleModel> schedules;
+  final String createdAt;
+  final String updatedAt;
+  final int v;
+
+  MyScheduleModel({
+    required this.id,
+    required this.contractorId,
+    required this.schedules,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+  });
+
+  factory MyScheduleModel.fromJson(Map<String, dynamic> json) {
+    return MyScheduleModel(
+      id: json['_id'] ?? json['id'] ?? '',
+      contractorId: json['contractorId'] ?? '',
+      schedules:
+          (json['schedules'] as List<dynamic>?)
+              ?.map((e) => ScheduleModel.fromJson(e))
+              .toList() ??
+          [],
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+      v: json['__v'] ?? 0,
+    );
+  }
+}
+
+class ScheduleModel {
+  final String id;
+  final String days;
+  final List<String> timeSlots;
+
+  ScheduleModel({
+    required this.id,
+    required this.days,
+    required this.timeSlots,
+  });
+
+  factory ScheduleModel.fromJson(Map<String, dynamic> json) {
+    return ScheduleModel(
+      id: json['_id'] ?? json['id'] ?? '',
+      days: json['days'] ?? '',
+      timeSlots:
+          (json['timeSlots'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 }

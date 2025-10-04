@@ -27,9 +27,10 @@ import 'package:servana/utils/app_const/app_const.dart';
 /// ]
 class ContractorBookingController extends GetxController {
 
+  int hourlyRate = 0;
+
  List<Map<String, String>> questionsAndAnswers = [];
   List<Map<String, String>> materialsAndQuantity = [];
-  RxBool showMaterials = true.obs;
   
   // Q&A management
   List<TextEditingController> answerControllers = [];
@@ -38,31 +39,43 @@ class ContractorBookingController extends GetxController {
 RxBool isLoading = false.obs;
 RxString bookingType='OneTime'.obs; // OneTime or Recurring
 RxString durations = '1'.obs; // 1,2,3,4,5
-TextEditingController durationController = TextEditingController(text: '1');
-TextEditingController dayController = TextEditingController();
+Rx<TextEditingController> startTimeController = TextEditingController().obs;
+Rx<TextEditingController> dayController = TextEditingController().obs;
+Rx<TextEditingController> endTimeController = TextEditingController().obs;
+// Expose selected date/time as observable strings for the UI to bind to
+RxString selectedHour = ''.obs;
+RxString selectedTime = ''.obs;
 
 Future<void> selectDate(BuildContext context) async {
+  debugPrint('ContractorBookingController.selectDate called; Get.context=${Get.context != null}');
+  final ctx = Get.context ?? context;
   final DateTime? picked = await showDatePicker(
-    context: context,
+    context: ctx,
     initialDate: DateTime.now(),
     firstDate: DateTime.now(),
     lastDate: DateTime(2101),
   );
   if (picked != null) {
-    dayController.text = "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+    final formatted = "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+    dayController.value.text = formatted;
+    // notify listeners
+    debugPrint('ContractorBookingController.selectDate picked: $formatted');
     refresh();
   }
 }
 
 Future<void> selectTime(BuildContext context) async {
+  final ctx = Get.context ?? context;
   final TimeOfDay? picked = await showTimePicker(
-    context: context,
+    context: ctx,
     initialTime: TimeOfDay.now(),
   );
   if (picked != null) {
-    durationController.text = "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
-    refresh();
+    final formatted = "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
+    startTimeController.value.text = formatted;
+    debugPrint('ContractorBookingController.selectTime picked: $formatted');
   }
+  refresh();
 }
 
 Future<void> createBooking({ required String contractorId, required String subcategoryId}) async {
@@ -82,8 +95,9 @@ Future<void> createBooking({ required String contractorId, required String subca
   ],
   "bookingType": bookingType.value,
   "duration": durations.value,
-  "day": dayController.text,
-  "startTime": durationController.text
+  "day": dayController.value.text,
+  "startTime": selectedTime.value
+  
 };
   try{
     final response = await ApiClient.postData(
@@ -112,18 +126,18 @@ Future<void> createBooking({ required String contractorId, required String subca
   }
 }
 
-  // Materials management methods
-  void toggleShowMaterials() {
-    showMaterials.value = !showMaterials.value;
-  }
+
 
   void initializeMaterials(List<dynamic> materials) {
     materialsAndQuantity.clear();
     for (var material in materials) {
       materialsAndQuantity.add({
         'name': material['name'] ?? 'Unknown',
-        'unit': material['unit'] ?? 'pcs',
-        'quantity': '0'
+        // store quantity in 'unit' as a stringified integer; default to '0'
+        'unit': material['unit']?.toString() ?? '0',
+        'price': material['price']?.toString() ?? '0',
+        
+       
       });
     }
     refresh();
@@ -131,17 +145,17 @@ Future<void> createBooking({ required String contractorId, required String subca
 
   void incrementMaterial(int index) {
     if (index < materialsAndQuantity.length) {
-      int currentQuantity = int.parse(materialsAndQuantity[index]['quantity'] ?? '0');
-      materialsAndQuantity[index]['quantity'] = (currentQuantity + 1).toString();
+      final currentQuantity = int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0;
+      materialsAndQuantity[index]['unit'] = (currentQuantity + 1).toString();
       refresh();
     }
   }
 
   void decrementMaterial(int index) {
     if (index < materialsAndQuantity.length) {
-      int currentQuantity = int.parse(materialsAndQuantity[index]['quantity'] ?? '0');
+      final currentQuantity = int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0;
       if (currentQuantity > 0) {
-        materialsAndQuantity[index]['quantity'] = (currentQuantity - 1).toString();
+        materialsAndQuantity[index]['unit'] = (currentQuantity - 1).toString();
         refresh();
       }
     }
@@ -149,10 +163,15 @@ Future<void> createBooking({ required String contractorId, required String subca
 
   bool isMaterialSelected(int index) {
     if (index < materialsAndQuantity.length) {
-      return int.parse(materialsAndQuantity[index]['quantity'] ?? '0') > 0;
+      return (int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0) > 0;
     }
     return false;
   }
+
+
+
+
+
 
   // Q&A management methods
   void initializeQuestions(List<dynamic> questionsList) {
@@ -166,18 +185,30 @@ Future<void> createBooking({ required String contractorId, required String subca
       String questionId;
       String questionText;
       
-      // Handle different question object types
+    
       if (question is Map<String, dynamic>) {
-        questionId = question['id'] ?? i.toString();
-        questionText = question['question'] ?? question['text'] ?? 'Question ${i + 1}';
+        // Support both 'id' and '_id' keys coming from different APIs
+        questionId = question['id'] ?? question['_id'] ?? i.toString();
+
+        
+        final qField = question['question'] ?? question['text'];
+        if (qField is List) {
+          questionText = qField.isNotEmpty ? qField.map((e) => e?.toString() ?? '').join(', ') : 'Question ${i + 1}';
+        } else {
+          questionText = qField?.toString() ?? 'Question ${i + 1}';
+        }
       } else {
-        // Handle FaqData or other custom objects
         try {
           questionId = question.id?.toString() ?? i.toString();
-          questionText = question.question ?? question.text ?? 'Question ${i + 1}';
+
+          final qField = question.question ?? question.text;
+          if (qField is List) {
+            questionText = qField.isNotEmpty ? qField.map((e) => e?.toString() ?? '').join(', ') : 'Question ${i + 1}';
+          } else {
+            questionText = qField?.toString() ?? 'Question ${i + 1}';
+          }
 
         } catch (e) {
-          // Fallback if properties don't exist
           questionId = i.toString();
           questionText = 'Question ${i + 1}';
           debugPrint('Error accessing question properties: $e');
@@ -241,6 +272,38 @@ Future<void> createBooking({ required String contractorId, required String subca
       result += 'A: ${qa['answer']}\n\n';
     }
     return result;
+  }
+
+  // total payable amount
+  int calculateTotalPayableAmount() {
+    int total = 0;
+    
+    // Add hourly rate based on duration
+    int durationHours = int.tryParse(durations.value) ?? 1;
+
+    total += hourlyRate * durationHours;
+    
+    // Add materials cost
+    for (var material in materialsAndQuantity) {
+      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
+      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+      total += quantity * pricePerUnit;
+    }
+    
+  
+
+    // Debug: Print total calculation breakdown
+    debugPrint('=== Total Payable Amount Calculation ===');
+    debugPrint('Hourly Rate: $hourlyRate');
+    debugPrint('Duration (Hours): $durationHours');
+    debugPrint('Total from Hourly Rate: ${hourlyRate * durationHours}');
+    for (var material in materialsAndQuantity) {
+      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
+      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+      debugPrint('Material: ${material['name']}, Quantity: $quantity, Price/Unit: $pricePerUnit, Total: ${quantity * pricePerUnit}');
+    }
+
+    return total;
   }
 
   @override

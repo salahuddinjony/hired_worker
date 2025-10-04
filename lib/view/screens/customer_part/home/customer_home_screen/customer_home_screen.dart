@@ -267,23 +267,26 @@ class CustomerHomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: min(
                     4,
-                    homeController.getAllContactorList.value.length,
+                    homeController.getAllContactorList.length,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     final data =
-                        homeController.getAllContactorList.value[index];
+                        homeController.getAllContactorList[index];
                     return CustomServiceContractorCard(
                       onTap: () {
+                       
                         Get.toNamed(
-                          AppRoutes.customerContractorProfileViewScreen, arguments: {
-                            'id': data.userId?.id
+                          AppRoutes.customerContractorProfileViewScreen,
+                           arguments: {
+                            'id': data.userId.id,
+                            'contractorDetails': data,
                           }
                         );
                       },
                       image:
-                          ImageHandler.imagesHandle(data.userId?.img),
-                      name: data.userId?.fullName ?? "Nishad",
-                      title: data.skillsCategory ?? "423",
+                          ImageHandler.imagesHandle(data.userId.img),
+                      name: data.userId.fullName,
+                      title: data.skillsCategory,
                       rating: data.ratings.toString(),
                     ); // You can pass `serviceList[index]` if needed
                   },

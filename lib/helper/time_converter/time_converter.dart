@@ -63,14 +63,30 @@ class DateConverter {
 //================== Get Age =================
 
   static String getAge({required String dOB}) {
-    // Parse the date of birth from the string input
-    List<String> dobParts = dOB.split("-");
-    int day = int.parse(dobParts[0]);
-    int month = int.parse(dobParts[1]);
-    int year = int.parse(dobParts[2]);
+    if (dOB.isEmpty) return '';
 
-    // Create a DateTime object for the date of birth
-    DateTime birthDate = DateTime(year, month, day);
+    DateTime? birthDate;
+    // Try ISO parse first (e.g. 2020-01-31 or 2020-01-31T00:00:00)
+    try {
+      birthDate = DateTime.parse(dOB);
+    } catch (_) {
+      // Fallback: try split format like 'dd-MM-yyyy' or 'd-m-yyyy'
+      try {
+        final parts = dOB.split('-');
+        if (parts.length >= 3) {
+          final day = int.tryParse(parts[0]) ?? int.tryParse(parts[2]) ?? 0;
+          final month = int.tryParse(parts[1]) ?? 1;
+          final year = int.tryParse(parts[2]) ?? int.tryParse(parts[0]) ?? 0;
+          if (year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+            birthDate = DateTime(year, month, day);
+          }
+        }
+      } catch (_) {
+        birthDate = null;
+      }
+    }
+
+    if (birthDate == null) return '';
     DateTime currentDate = DateTime.now();
 
     // Calculate age
