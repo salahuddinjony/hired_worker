@@ -24,6 +24,8 @@ class RecentAllServiceScreen extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
+        } else if (controller.status.value.isEmpty) {
+          return Center(child: Text('No data found'));
         } else if (controller.status.value.isError) {
           return Center(child: Text(controller.status.value.errorMessage!));
         } else {
@@ -40,7 +42,9 @@ class RecentAllServiceScreen extends StatelessWidget {
                     title: getSubCategoryName(data),
                     updateDate: data.updatedAt!,
                     hourlyRate: data.rateHourly.toString(),
-                    rating: data.contractorId?.contractor?.ratings.toString() ?? " - ",
+                    rating:
+                        data.contractorId?.contractor?.ratings.toString() ??
+                        " - ",
                     status: data.status ?? " - ",
                     image: data.contractorId?.img,
                   );

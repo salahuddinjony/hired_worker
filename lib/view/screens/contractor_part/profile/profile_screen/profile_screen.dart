@@ -109,7 +109,17 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomHomeCard(),
+                  CustomHomeCard(
+                    text:
+                        profileController
+                            .contractorModel
+                            .value
+                            .data
+                            ?.contractor
+                            ?.balance
+                            .toString() ??
+                        " - ",
+                  ),
                   CustomHomeCard(
                     text:
                         homeController.bookingModel.value.data?.meta?.total
@@ -152,7 +162,7 @@ class ProfileScreen extends StatelessWidget {
                               .value
                               .data
                               ?.contractor
-                              ?.city ??
+                              ?.location ??
                           "",
                     ),
                   );
@@ -191,6 +201,9 @@ class ProfileScreen extends StatelessWidget {
                 name: "Eran".tr,
               ),
               CustomProfileMenuList(
+                onTap: () {
+                  Get.toNamed(AppRoutes.recentAllServiceScreen);
+                },
                 image: AppIcons.mdiRecent,
                 name: "Recent Service".tr,
               ),

@@ -28,7 +28,7 @@ class ProfileController extends GetxController {
     nameController.value.text = data.fullName ?? '';
     phoneController.value.text = data.contactNo ?? '';
     dobController.value.text = data.contractor?.dob.toString() ?? '';
-    cityController.value.text = data.contractor?.city ?? '';
+    cityController.value.text = data.contractor?.location ?? '';
     customController.selectedGender.value = data.contractor?.gender ?? '';
   }
 
@@ -61,6 +61,8 @@ class ProfileController extends GetxController {
       selectedImage.value = File(image.path);
     }
   }
+
+  bool flag = false;
 
   @override
   void onInit() {
