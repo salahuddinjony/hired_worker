@@ -38,7 +38,20 @@ class HomeScreen extends StatelessWidget {
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
-          return Center(child: Text(controller.status.value.errorMessage!));
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(controller.status.value.errorMessage!),
+                ElevatedButton(
+                  onPressed: () {
+                    controller.getAllBookings();
+                  },
+                  child: Text('Retry'),
+                ),
+              ],
+            ),
+          );
         } else {
           return Padding(
             padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
@@ -126,11 +139,14 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomHomeCard(
-                            text: profileController
-                                .contractorModel
-                                .value
-                                .data
-                                ?.contractor?.balance.toString() ??
+                            text:
+                                profileController
+                                    .contractorModel
+                                    .value
+                                    .data
+                                    ?.contractor
+                                    ?.balance
+                                    .toString() ??
                                 " - ",
                             title: "Total Earning this month".tr,
                           ),
@@ -157,7 +173,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.data?.result?.length
+                                controller
+                                    .bookingModel
+                                    .value
+                                    .data
+                                    ?.result
+                                    ?.length
                                     .toString() ??
                                 " - ",
                             title: "Recent Services".tr,
@@ -202,22 +223,45 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ).onTap(() {
                             Get.toNamed(AppRoutes.recentAllServiceScreen);
-                          },),
+                          }),
                         ],
                       ),
+
+                      if ((controller.bookingModel.value.data?.result?.length ??
+                              0) ==
+                          0)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: Center(child: Text('No data found')),
+                        ),
 
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.bookingModel.value.data?.result?.length ?? 0,
+                        itemCount:
+                            controller
+                                .bookingModel
+                                .value
+                                .data
+                                ?.result
+                                ?.length ??
+                            0,
                         itemBuilder: (context, index) {
-                          BookingModelData data = controller.bookingModel.value.data!.result![index];
+                          BookingModelData data =
+                              controller
+                                  .bookingModel
+                                  .value
+                                  .data!
+                                  .result![index];
 
                           return CustomServiceCard(
                             title: getSubCategoryName(data),
                             updateDate: data.updatedAt ?? DateTime.now(),
                             hourlyRate: data.rateHourly?.toString() ?? ' - ',
-                            rating: data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
+                            rating:
+                                data.contractorId?.contractor?.ratings
+                                    ?.toString() ??
+                                ' - ',
                             status: data.status ?? 'Unknown',
                             image: data.contractorId?.img,
                           );

@@ -242,7 +242,7 @@ class ApiClient extends GetxService {
       );
       request.fields.addAll(body);
 
-      if (multipartBody!.isNotEmpty) {
+      if (multipartBody != null && multipartBody.isNotEmpty) {
         for (var element in multipartBody) {
           debugPrint("path : ${element.file.path}");
           var mimeType = lookupMimeType(element.file.path);

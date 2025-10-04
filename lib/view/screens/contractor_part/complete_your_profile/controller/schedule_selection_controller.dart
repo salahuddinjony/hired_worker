@@ -30,7 +30,7 @@ class ScheduleSelectionController extends GetxController {
     List<Map<String, dynamic>> schedules = days.map((day) {
       return {
         "days": dayMap[day] ?? day,
-        "timeSlots": ["09:00-11:00"],
+        "timeSlots": ["09:00-23:00"],
       };
     }).toList();
 

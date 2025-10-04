@@ -74,6 +74,12 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                 ),
 
+              if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 0)
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: Center(child: Text('No data found')),
+                ),
+
               if (controller.currentIndex.value == 1)
                 Expanded(
                   child: Expanded(
@@ -97,6 +103,12 @@ class _OrderScreenState extends State<OrderScreen> {
                       },
                     ),
                   ),
+                ),
+
+              if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 1)
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: Center(child: Text('No data found')),
                 ),
             ],
           );

@@ -204,8 +204,6 @@ class MaterialsScreenState extends State<MaterialsScreen> {
 
     final materialList = profileController.contractorModel.value.data?.contractor?.materials ?? [];
 
-    debugPrint('xxx material screen ${profileController.contractorModel.value.data?.contractor?.materials!.length}');
-
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
       body: Padding(

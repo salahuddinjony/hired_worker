@@ -9,6 +9,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/contr
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/sub_category_selection_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/subscription_plan_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/schedule_screen/controller/schedule_controller.dart';
 import 'package:servana/view/screens/message/controller/message_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
@@ -46,5 +47,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => AddMaterialController(), fenix: true);
     Get.lazyPut(() => ChargeController(), fenix: true);
     Get.lazyPut(() => SubscriptionPlanController(), fenix: true);
+    Get.lazyPut(() => ScheduleController(), fenix: true);
   }
 }
