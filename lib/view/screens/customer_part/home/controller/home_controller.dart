@@ -4,6 +4,7 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/model.dart/contractor_question.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/contactor_details_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
@@ -35,7 +36,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${categoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -62,7 +63,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${subCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -73,7 +74,7 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get Sub Category =======//
+  //======= get single Sub Category =======//
   Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SingleSubCategorysModel> singleSubCategoryModel =
       SingleSubCategorysModel().obs;
@@ -93,7 +94,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${singleSubCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -104,24 +105,31 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get All services contractor =======//
+  //======= get All services contractor or[ SubCategory wise Contractors] =======//
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
     RxStatus.loading(),
   );
-  Rx<GetAllContactorModel> getAllContactorModel = GetAllContactorModel().obs;
-  Future<void> getAllContactor() async {
-    getAllServicesContractorStatus.value = RxStatus.loading();
-    try {
-      final response = await ApiClient.getData(ApiUrl.getAllContractors);
+  RxList<allContractor> getAllContactorList = <allContractor>[].obs;
 
-      getAllContactorModel.value = GetAllContactorModel.fromJson(response.body);
+  Future<void> getAllContactor({String? subCategoryId}) async {
+    getAllServicesContractorStatus.value = RxStatus.loading();
+
+    try {
+      final response = await ApiClient.getData(
+        ApiUrl.getAllContractors,
+        query: {if (subCategoryId != null) 'subCategory': subCategoryId},
+      );
 
       getAllServicesContractorStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${getAllContactorModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        final data = response.body;
+        getAllContactorList.value = ContractorResponse.fromJson(data).data;
+        debugPrint(
+          'contractor data length: ${getAllContactorList.length} contractors',
+        );
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -131,33 +139,89 @@ class HomeController extends GetxController {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
+
+  // get contractor question based on subCategory
+  Rx<RxStatus> getContractorQuestionStatus = Rx<RxStatus>(RxStatus.loading());
+  RxList<FaqData> contractorQuestions =
+      <FaqData>[
+        FaqData(
+          id: "1",
+          question: ["What is your experience?"],
+          subCategory: SubCategory(
+            id: "subcat1",
+            name: "Plumbing",
+            img: "https://example.com/plumbing.png",
+          ),
+          isDeleted: false,
+        ),
+      ].obs;
+
+  Future<void> getContractorQuestions({required String subCategoryId}) async {
+    getContractorQuestionStatus.value = RxStatus.loading();
+
+    try {
+      final response = await ApiClient.getData(
+        ApiUrl.getContractorQuestions(subCategoryId: subCategoryId),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.body;
+        contractorQuestions.value = FaqResponse.fromJson(data).data;
+        getContractorQuestionStatus.value = RxStatus.success();
+        debugPrint(
+          'Contractor questions loaded successfully: ${contractorQuestions.length} questions',
+        );
+      } else {
+        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getContractorQuestionStatus.value = RxStatus.error();
+      }
+    } catch (e) {
+      getContractorQuestionStatus.value = RxStatus.error();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    } finally {
+      refresh();
+    }
+  }
+
+  // // Helper method to get the list of contractors
+  // List<contractor_model.Datum> get contractors => getAllContactorModel.value.data ?? [];
+
+  // // Helper method to get contractors by category (if filtering is needed in the future)
+  // List<contractor_model.Datum> getContractorsByCategory(String categoryId) {
+  //   if (categoryId.isEmpty) return contractors;
+  //   // For now, return all contractors since the API doesn't seem to filter by category
+  //   // You can implement filtering logic here when the API supports it
+  //   return contractors;
+  // }
 
   //============= contactor details ==============
-   Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(
-    RxStatus.loading(),
-  );
-  Rx<ContactorDetailsModel>  contactorDetailsModel = ContactorDetailsModel().obs;
-  Future<void> getContractorDetails( {required String userId}) async {
+  Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<ContactorDetailsModel> contactorDetailsModel = ContactorDetailsModel().obs;
+  Future<void> getContractorDetails({required String userId}) async {
     getContractorDetailsStatus.value = RxStatus.loading();
     try {
-      final response = await ApiClient.getData(ApiUrl.getContractorDetails(userId: userId));
+      final response = await ApiClient.getData(
+        ApiUrl.getContractorDetails(userId: userId),
+      );
 
-      contactorDetailsModel.value = ContactorDetailsModel.fromJson(response.body);
+      contactorDetailsModel.value = ContactorDetailsModel.fromJson(
+        response.body,
+      );
 
       getContractorDetailsStatus.value = RxStatus.success();
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${contactorDetailsModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        debugPrint('contractor details loaded successfully');
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
     } catch (e) {
-      getContractorDetailsStatus.value = RxStatus.success();
+      print("====> Error in getContractorDetails: $e");
+      getContractorDetailsStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
   }
-
 }

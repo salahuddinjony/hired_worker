@@ -155,6 +155,8 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // Category Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -187,7 +189,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: categorys.length,
+                    itemCount: min(3, categorys.length),
                   itemBuilder: (BuildContext context, int index) {
                     return CustomPopularServicesCard(
                       image: categorys[index].img ?? AppConstants.electrician,
@@ -204,6 +206,8 @@ class CustomerHomeScreen extends StatelessWidget {
                     );
                   },
                 ),
+
+                // Sub Category Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -263,11 +267,11 @@ class CustomerHomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: min(
                     4,
-                    homeController.getAllContactorModel.value.data?.length ?? 0,
+                    homeController.getAllContactorList.value.length,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     final data =
-                        homeController.getAllContactorModel.value.data![index];
+                        homeController.getAllContactorList.value[index];
                     return CustomServiceContractorCard(
                       onTap: () {
                         Get.toNamed(

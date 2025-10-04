@@ -5,7 +5,8 @@ import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 class CustomReviewList extends StatelessWidget {
-  const CustomReviewList({super.key});
+  final dynamic reviewData;
+  const CustomReviewList({super.key, required this.reviewData});
 
   @override
   Widget build(BuildContext context) {

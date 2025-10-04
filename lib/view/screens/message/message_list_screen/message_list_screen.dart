@@ -18,16 +18,30 @@ class MessageListScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages".tr),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Messages".tr),
       body: Obx(() {
         final data = messageController.allMessageRoomModel.value.data ?? [];
         return Column(
-          children: List.generate(data.length, (value) {
-            return GestureDetector(
-              onTap: () async {
-                debugPrint(
-                  "===========================>> Other UserId:${data[value].otherUserId}",
-                );
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (data.isEmpty) Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "No Conversation Found".tr,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+            ...List.generate(data.length, (value) {
+              return GestureDetector(
+                onTap: () async {
+                  debugPrint(
+                    "===========================>> Other UserId:${data[value].otherUserId}",
+                  );
                 final userId = await SharePrefsHelper.getString(
                   AppConstants.userId,
                 );
@@ -54,12 +68,12 @@ class MessageListScreen extends StatelessWidget {
               ),
             );
           }),
+          ]
         );
       }),
       bottomNavigationBar:
           messageController.role
-              ? const Navbar(currentIndex: 2)
-              : const CustomerNavbar(currentIndex: 2),
+              ? const CustomerNavbar(currentIndex: 2) : const Navbar(currentIndex: 2),
     );
   }
 }

@@ -28,7 +28,7 @@ class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScr
   Widget build(BuildContext context) {
     return Scaffold(      extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "History Status".tr,),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "History Status".tr,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
