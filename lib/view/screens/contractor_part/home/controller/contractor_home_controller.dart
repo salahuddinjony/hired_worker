@@ -72,7 +72,8 @@ class ContractorHomeController extends GetxController {
 
       status.value = RxStatus.success();
     } catch (e) {
-      status.value = RxStatus.error(e.toString());
+      debugPrint(e.toString());
+      status.value = RxStatus.error('Something went wrong. Please try again later.');
     }
   }
 

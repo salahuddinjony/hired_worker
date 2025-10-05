@@ -143,11 +143,11 @@ class ApiClient extends GetxService {
     bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
 
     var mainHeaders = {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Authorization': bearerToken,
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call (PUT): $uri\nHeader: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body');
 
       http.Response response = await http

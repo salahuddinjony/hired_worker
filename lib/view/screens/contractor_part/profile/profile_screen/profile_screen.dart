@@ -119,6 +119,7 @@ class ProfileScreen extends StatelessWidget {
                             ?.balance
                             .toString() ??
                         " - ",
+                    title: "Total Earning this month".tr,
                   ),
                   CustomHomeCard(
                     text:

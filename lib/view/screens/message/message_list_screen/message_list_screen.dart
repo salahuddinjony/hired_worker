@@ -18,7 +18,7 @@ class MessageListScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Messages".tr),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Messages".tr),
       body: Obx(() {
         final data = messageController.allMessageRoomModel.value.data ?? [];
         return Column(
