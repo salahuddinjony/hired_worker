@@ -26,7 +26,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request".tr),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Request".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
           return Center(
