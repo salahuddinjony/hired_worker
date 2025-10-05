@@ -1,233 +1,102 @@
-// To parse this JSON data, do
-//
-//     final contactorDetailsModel = contactorDetailsModelFromJson(jsonString);
+class ReviewResponse {
+  final bool success;
+  final String message;
+  final ReviewData? data;
 
-import 'dart:convert';
+  ReviewResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
 
-ContactorDetailsModel contactorDetailsModelFromJson(String str) => ContactorDetailsModel.fromJson(json.decode(str));
-
-String contactorDetailsModelToJson(ContactorDetailsModel data) => json.encode(data.toJson());
-
-class ContactorDetailsModel {
-    bool? success;
-    String? message;
-    Data? data;
-
-    ContactorDetailsModel({
-        this.success,
-        this.message,
-        this.data,
-    });
-
-    factory ContactorDetailsModel.fromJson(Map<String, dynamic> json) => ContactorDetailsModel(
-        success: json["success"],
-        message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+  factory ReviewResponse.fromJson(Map<String, dynamic> json) {
+    return ReviewResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? '',
+      data: json['data'] != null ? ReviewData.fromJson(json['data']) : null,
     );
-
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "data": data?.toJson(),
-    };
+  }
 }
 
-class Data {
-    User? user;
-    String? averageRating;
-    int? totalCompletedOrder;
-    List<dynamic>? reviews;
+class ReviewData {
+  final dynamic user; // user can be null
+  final String averageRating;
+  final int totalCompletedOrder;
+  final List<Review> reviews;
 
-    Data({
-        this.user,
-        this.averageRating,
-        this.totalCompletedOrder,
-        this.reviews,
-    });
+  ReviewData({
+    required this.user,
+    required this.averageRating,
+    required this.totalCompletedOrder,
+    required this.reviews,
+  });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        averageRating: json["averageRating"],
-        totalCompletedOrder: json["totalCompletedOrder"],
-        reviews: json["reviews"] == null ? [] : List<dynamic>.from(json["reviews"]!.map((x) => x)),
+  factory ReviewData.fromJson(Map<String, dynamic> json) {
+    return ReviewData(
+      user: json['user'],
+      averageRating: json['averageRating']?.toString() ?? '0.0',
+      totalCompletedOrder: json['totalCompletedOrder'] ?? 0,
+      reviews: (json['reviews'] as List?)
+              ?.map((e) => Review.fromJson(e))
+              .toList() ??
+          [],
     );
-
-    Map<String, dynamic> toJson() => {
-        "user": user?.toJson(),
-        "averageRating": averageRating,
-        "totalCompletedOrder": totalCompletedOrder,
-        "reviews": reviews == null ? [] : List<dynamic>.from(reviews!.map((x) => x)),
-    };
+  }
 }
 
-class User {
-    String? id;
-    String? fullName;
-    String? email;
-    String? contactNo;
-    bool? otpVerified;
-    String? img;
-    String? role;
-    String? status;
-    Contractor? contractor;
-    bool? isDeleted;
-    DateTime? passwordChangedAt;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    int? v;
+class Review {
+  final String id;
+  final Customer? customerId;
+  final String contractorId;
+  final int stars;
+  final String description;
+  final bool isDeleted;
+  final String createdAt;
+  final String updatedAt;
 
-    User({
-        this.id,
-        this.fullName,
-        this.email,
-        this.contactNo,
-        this.otpVerified,
-        this.img,
-        this.role,
-        this.status,
-        this.contractor,
-        this.isDeleted,
-        this.passwordChangedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.v,
-    });
+  Review({
+    required this.id,
+    required this.customerId,
+    required this.contractorId,
+    required this.stars,
+    required this.description,
+    required this.isDeleted,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["_id"],
-        fullName: json["fullName"],
-        email: json["email"],
-        contactNo: json["contactNo"],
-        otpVerified: json["otpVerified"],
-        img: json["img"],
-        role: json["role"],
-        status: json["status"],
-        contractor: json["contractor"] == null ? null : Contractor.fromJson(json["contractor"]),
-        isDeleted: json["isDeleted"],
-        passwordChangedAt: json["passwordChangedAt"] == null ? null : DateTime.parse(json["passwordChangedAt"]),
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      id: json['_id'] ?? '',
+      customerId: json['customerId'] != null
+          ? Customer.fromJson(json['customerId'])
+          : null,
+      contractorId: json['contractorId'] ?? '',
+      stars: json['stars'] ?? 0,
+      description: json['description'] ?? '',
+      isDeleted: json['isDeleted'] ?? false,
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
     );
-
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "fullName": fullName,
-        "email": email,
-        "contactNo": contactNo,
-        "otpVerified": otpVerified,
-        "img": img,
-        "role": role,
-        "status": status,
-        "contractor": contractor?.toJson(),
-        "isDeleted": isDeleted,
-        "passwordChangedAt": passwordChangedAt?.toIso8601String(),
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
-    };
+  }
 }
 
-class Contractor {
-    String? id;
-    DateTime? dob;
-    String? gender;
-    String? experience;
-    String? bio;
-    String? city;
-    String? language;
-    String? location;
-    int? rateHourly;
-    String? skillsCategory;
-    int? ratings;
-    String? subscriptionStatus;
-    String? customerId;
-    String? paymentMethodId;
-    List<dynamic>? certificates;
-    dynamic myScheduleId;
-    bool? isDeleted;
-    List<dynamic>? skills;
-    List<dynamic>? materials;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    int? v;
-    String? userId;
+class Customer {
+  final String id;
+  final String fullName;
+  final String img;
 
-    Contractor({
-        this.id,
-        this.dob,
-        this.gender,
-        this.experience,
-        this.bio,
-        this.city,
-        this.language,
-        this.location,
-        this.rateHourly,
-        this.skillsCategory,
-        this.ratings,
-        this.subscriptionStatus,
-        this.customerId,
-        this.paymentMethodId,
-        this.certificates,
-        this.myScheduleId,
-        this.isDeleted,
-        this.skills,
-        this.materials,
-        this.createdAt,
-        this.updatedAt,
-        this.v,
-        this.userId,
-    });
+  Customer({
+    required this.id,
+    required this.fullName,
+    required this.img,
+  });
 
-    factory Contractor.fromJson(Map<String, dynamic> json) => Contractor(
-        id: json["_id"],
-        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
-        gender: json["gender"],
-        experience: json["experience"],
-        bio: json["bio"],
-        city: json["city"],
-        language: json["language"],
-        location: json["location"],
-        rateHourly: json["rateHourly"],
-        skillsCategory: json["skillsCategory"],
-        ratings: json["ratings"],
-        subscriptionStatus: json["subscriptionStatus"],
-        customerId: json["customerId"],
-        paymentMethodId: json["paymentMethodId"],
-        certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
-        myScheduleId: json["myScheduleId"],
-        isDeleted: json["isDeleted"],
-        skills: json["skills"] == null ? [] : List<dynamic>.from(json["skills"]!.map((x) => x)),
-        materials: json["materials"] == null ? [] : List<dynamic>.from(json["materials"]!.map((x) => x)),
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        userId: json["userId"],
+  factory Customer.fromJson(Map<String, dynamic> json) {
+    return Customer(
+      id: json['_id'] ?? '',
+      fullName: json['fullName'] ?? '',
+      img: json['img'] ?? '',
     );
-
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "dob": dob?.toIso8601String(),
-        "gender": gender,
-        "experience": experience,
-        "bio": bio,
-        "city": city,
-        "language": language,
-        "location": location,
-        "rateHourly": rateHourly,
-        "skillsCategory": skillsCategory,
-        "ratings": ratings,
-        "subscriptionStatus": subscriptionStatus,
-        "customerId": customerId,
-        "paymentMethodId": paymentMethodId,
-        "certificates": certificates == null ? [] : List<dynamic>.from(certificates!.map((x) => x)),
-        "myScheduleId": myScheduleId,
-        "isDeleted": isDeleted,
-        "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
-        "materials": materials == null ? [] : List<dynamic>.from(materials!.map((x) => x)),
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
-        "userId": userId,
-    };
+  }
 }

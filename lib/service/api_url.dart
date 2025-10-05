@@ -46,7 +46,7 @@ class ApiUrl {
 
   static String deleteAccount({required String userId}) => "/users/$userId";
 
-  static String getContractorDetails({required String userId}) =>
+  static String getReviewas({required String userId}) =>
       "/reviews/get-average-review/$userId";
 
   /// ==================   candidate part =============
@@ -270,7 +270,7 @@ class ApiUrl {
 
   // user //  Booking service =====================================
 
-  static const String createBooking = "/booking/create";
+  static const String createBooking = "/bookings/create-booking";
 
   //============================= Wish list ==========================
 
@@ -314,4 +314,25 @@ class ApiUrl {
   //=============================== Amount Top up ==================== >>
 
   static const String amountTopUp = '/wallet/initiate-top-up';
+
+  
+// get contractor question based on subCategory
+static String getContractorQuestions({required String subCategoryId}) =>"/questions/$subCategoryId";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+

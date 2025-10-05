@@ -18,6 +18,7 @@ class LanguageController extends GetxController {
     final newLocale = value ? Locale('zh', 'CN') : Locale('en', 'US');
     Get.updateLocale(newLocale);
   }
+  
 
   void _loadLanguagePreference() async {
      isChinese.value = await SharePrefsHelper.getBool('isChinese') ?? false;
@@ -25,4 +26,5 @@ class LanguageController extends GetxController {
         isChinese.value ? Locale('zh', 'CN') : Locale('en', 'US');
     Get.updateLocale(savedLocale);
   }
+
 }

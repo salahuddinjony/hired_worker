@@ -9,13 +9,14 @@ import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Service Details",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Service Details"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -54,7 +55,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     color: Color(0xffCDB3CD),
                     borderRadius: BorderRadius.circular(7),
@@ -146,7 +147,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 6,),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -164,7 +165,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 6,),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -192,7 +193,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             Divider(thickness: .3, color: AppColors.black_02),
             Row(
               children: [
-                Radio(value: true, groupValue: (true), onChanged: (value){}),
+                Radio(value: true, groupValue: (true), onChanged: (value) {}),
                 CustomText(
                   text: "One Time".tr,
                   fontSize: 16.w,
@@ -209,7 +210,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               color: AppColors.black,
             ),
             Divider(thickness: .3, color: AppColors.black_02),
-            SizedBox(height: 8,),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -227,11 +228,13 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30,),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-            },title: "Service Update".tr,)
-            
+            SizedBox(height: 30),
+            CustomButton(
+              onTap: () {
+                Get.toNamed(AppRoutes.customarServiceDetailsScreen);
+              },
+              title: "Service Update".tr,
+            ),
           ],
         ),
       ),

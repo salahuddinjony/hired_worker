@@ -10,7 +10,6 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
-
 import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/contractor_model.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
@@ -18,7 +17,11 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   //   Customer
-  // losegag554@hiepth.com
+  //yefili2009@erynka.com
+  // 12345678
+
+  //contractor
+  // kipeno9207@mv6a.com
   // 12345678
 
   Rx<TextEditingController> nameController =
@@ -88,6 +91,10 @@ class AuthController extends GetxController {
           Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
           String? roleFromToken = decodedToken['role'];
           String? userEmailFromToken = decodedToken['userEmail'];
+          String ? userIdFromToken = decodedToken['id'];
+          if(userIdFromToken != null){ 
+            await SharePrefsHelper.setString(AppConstants.userId, userIdFromToken);
+          }
 
           if (roleFromToken != null) {
             await SharePrefsHelper.setString(AppConstants.role, roleFromToken);
@@ -356,9 +363,9 @@ class AuthController extends GetxController {
   Future<void> resetPasswordOTP() async {
     veryfiOTPLoading.value = RxStatus.loading();
     var body = {
-        "email": emailController.value.text,
-        "otp": int.tryParse(otpController.value.text),
-      };
+      "email": emailController.value.text,
+      "otp": int.tryParse(otpController.value.text),
+    };
 
     try {
       final response = await ApiClient.postData(

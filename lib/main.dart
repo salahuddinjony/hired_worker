@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/socket_service.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 200),
         initialRoute: AppRoutes.splashScreen,
+        builder: EasyLoading.init(),
         navigatorKey: Get.key,
         getPages: AppRoutes.routes,
         translations: Languages(),

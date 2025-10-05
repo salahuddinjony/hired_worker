@@ -24,6 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Future.delayed(const Duration(seconds: 3), () async {
         String token = await SharePrefsHelper.getString(AppConstants.bearerToken);
         String userRole = await SharePrefsHelper.getString(AppConstants.role);
+        String userIdFromToken = await SharePrefsHelper.getString(AppConstants.userId);
+        debugPrint("Logged User Token: $token");
+        debugPrint("Logged User Role: $userRole");
+        debugPrint("Logged User ID: $userIdFromToken");
+
 
         if (token.isNotEmpty) {
           if(userRole == "customer"){

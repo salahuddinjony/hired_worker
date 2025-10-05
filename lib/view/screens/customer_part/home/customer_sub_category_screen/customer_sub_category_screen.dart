@@ -60,7 +60,11 @@ class CustomerSubCategoryScreen extends StatelessWidget {
                             name: item.name ?? '',
                             onTap: () {
                               Get.toNamed(
-                                AppRoutes.customerAllContractorViewScreen,
+                                AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
+                                arguments: {
+                                  'id': item.id ?? '',
+                                  'name': item.name ?? 'Subcategory'
+                                }
                               );
                             },
                           ),

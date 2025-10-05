@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import '../../../../components/custom_button/custom_button.dart';
 
 class CustomarServiceContractorDetailsScreen extends StatelessWidget {
-  const CustomarServiceContractorDetailsScreen({super.key});
+   CustomarServiceContractorDetailsScreen({super.key});
+  final controller = Get.find<ContractorBookingController>();
 
   @override
   Widget build(BuildContext context) {
