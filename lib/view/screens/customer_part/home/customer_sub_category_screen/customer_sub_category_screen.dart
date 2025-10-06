@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/view/components/commot_not_found/not_found.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
@@ -33,6 +34,11 @@ class CustomerSubCategoryScreen extends StatelessWidget {
           final categoryName = item.categoryId?.name ?? 'Unknown';
           groupedData.putIfAbsent(categoryName, () => []);
           groupedData[categoryName]!.add(item);
+        }
+        if (data.isEmpty) {
+          return Center(
+            child: NotFound(message: "No subcategories available".tr, icon: Icons.category)
+          );
         }
 
         return Padding(
