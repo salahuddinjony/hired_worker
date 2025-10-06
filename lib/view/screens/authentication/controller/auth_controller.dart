@@ -89,9 +89,12 @@ class AuthController extends GetxController {
         // Decode JWT token to extract role
         try {
           Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+          debugPrint('Decoded JWT: $decodedToken');
           String? roleFromToken = decodedToken['role'];
           String? userEmailFromToken = decodedToken['userEmail'];
           String ? userIdFromToken = decodedToken['id'];
+
+          // 
           if(userIdFromToken != null){ 
             await SharePrefsHelper.setString(AppConstants.userId, userIdFromToken);
           }
