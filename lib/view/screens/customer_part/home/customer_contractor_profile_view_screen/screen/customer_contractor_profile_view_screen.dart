@@ -288,7 +288,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     PersonalInfoCard(
                       dob: dob,
                       gender: gender,
-                      city: city,
+                      city: city.split(',').reversed.take(2).toList().reversed.join(', ').trim(),
                       language: language,
                     ),
                     SizedBox(height: 20.h),
@@ -351,16 +351,16 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     // Individual Skills
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText(
-                        text: "Skills".tr,
-                        fontSize: 16.w,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.black,
-                        bottom: 8.h,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: CustomText(
+                    //     text: "Skills".tr,
+                    //     fontSize: 16.w,
+                    //     fontWeight: FontWeight.w600,
+                    //     color: AppColors.black,
+                    //     bottom: 8.h,
+                    //   ),
+                    // ),
                     SkillsList(skills: skills),
                     SizedBox(height: 20.h),
 
