@@ -311,20 +311,13 @@ Future<void> selectTime(BuildContext context) async {
 
     final customerId= await SharePrefsHelper.getString(AppConstants.userId);
 
-    // Build payload matching backend expectation:
-    // - questions: List<Map<String, String>> (not nested arrays)
-    // - material: List<Map<String, dynamic>> with numeric price and unit
-    // - duration: numeric
-    // - startTime: use startTimeController text if available
-
-    // Validate contractorId
     if (contractorId.trim().isEmpty) {
       EasyLoading.showError("Invalid contractor id");
       isLoading.value = false;
       return false;
     }
 
-    // Convert questionsAndAnswers to expected shape (flat list)
+
     final List<Map<String, String>> questionsPayload = questionsAndAnswers.map((qa) {
       return {
         'question': (qa['question'] ?? '').toString(),
@@ -364,7 +357,6 @@ Future<void> selectTime(BuildContext context) async {
       'questions': questionsPayload,
       'material': materialsPayload,
       'bookingType': bookingType.value,
-      // ensure duration is numeric in payload
       'duration': int.tryParse(durations.value) ?? durations.value,
       'day': dayController.value.text,
       'startTime': payloadStartTime,
@@ -387,8 +379,7 @@ EasyLoading.show(status: 'Creating booking...');
      
     } else {
       debugPrint('create booking failed: ${response.body}');
-      // EasyLoading.showError("Failed to create booking. Please try again.");
-        EasyLoading.showSuccess(  'Booking created successfully!');
+      EasyLoading.showError("Failed to create booking. Please try again.");
       isLoading.value = false;
       return false;
     }
@@ -396,8 +387,7 @@ EasyLoading.show(status: 'Creating booking...');
   }catch(e){
     isLoading.value = false;
     debugPrint('create booking error: $e');
-    // EasyLoading.showError("Failed to create booking. Please try again.");
-      EasyLoading.showSuccess(  'Booking created successfully!');
+    EasyLoading.showError("Failed to create booking. Please try again.");
     return false;
   }finally{
     EasyLoading.dismiss();
