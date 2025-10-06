@@ -52,11 +52,16 @@ class CustomerHomeScreen extends StatelessWidget {
                       // Check if an image is selected, if not use the default profile image
 
                       return (data?.img != null)
-                          ? CustomNetworkImage(
-                            imageUrl: ImageHandler.imagesHandle(data?.img),
-                            height: 55.h,
-                            width: 55.w,
-                            boxShape: BoxShape.circle,
+                          ? GestureDetector(
+                            onTap: () {
+                              Get.toNamed(AppRoutes.editCustomerProfileScreen);
+                            },
+                            child: CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            ),
                           )
                           : CustomNetworkImage(
                             imageUrl: AppConstants.profileImage,
@@ -189,7 +194,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                    itemCount: min(3, categorys.length),
+                  itemCount: min(3, categorys.length),
                   itemBuilder: (BuildContext context, int index) {
                     return CustomPopularServicesCard(
                       image: categorys[index].img ?? AppConstants.electrician,
@@ -265,26 +270,20 @@ class CustomerHomeScreen extends StatelessWidget {
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: min(
-                    4,
-                    homeController.getAllContactorList.length,
-                  ),
+                  itemCount: min(4, homeController.getAllContactorList.length),
                   itemBuilder: (BuildContext context, int index) {
-                    final data =
-                        homeController.getAllContactorList[index];
+                    final data = homeController.getAllContactorList[index];
                     return CustomServiceContractorCard(
                       onTap: () {
-                       
                         Get.toNamed(
                           AppRoutes.customerContractorProfileViewScreen,
-                           arguments: {
+                          arguments: {
                             'id': data.userId.id,
                             'contractorDetails': data,
-                          }
+                          },
                         );
                       },
-                      image:
-                          ImageHandler.imagesHandle(data.userId.img),
+                      image: ImageHandler.imagesHandle(data.userId.img),
                       name: data.userId.fullName,
                       title: data.skillsCategory,
                       rating: data.ratings.toString(),

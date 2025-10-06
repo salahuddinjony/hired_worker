@@ -18,6 +18,9 @@ class CustomerCategoryScreen extends StatelessWidget {
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Categories".tr),
       body: Obx(() {
         final categorys = homeController.categoryModel.value.data ?? [];
+        if (homeController.getCategoryStatus.value.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
         return Column(
           children: [
