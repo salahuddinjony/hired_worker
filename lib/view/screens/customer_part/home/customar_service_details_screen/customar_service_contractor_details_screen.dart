@@ -6,7 +6,6 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
-import 'package:servana/view/screens/customer_part/home/customer_home_screen/customer_home_screen.dart';
 import '../../../../components/custom_button/custom_button.dart';
 
 class CustomarServiceContractorDetailsScreen extends StatelessWidget {
@@ -64,7 +63,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   CustomText(
                     top: 4,
                     text:
-                        "Category : ${categoryName == null ? '' : categoryName} - ${subCategoryName == null ? '' : subCategoryName}",
+                        "Category : ${categoryName} - ${subCategoryName}",
                     fontSize: 16.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,

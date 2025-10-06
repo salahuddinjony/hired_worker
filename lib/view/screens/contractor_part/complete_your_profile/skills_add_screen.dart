@@ -189,9 +189,11 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Color(0xFF3C003D).withOpacity(0.1),
+                                color: Color(0xFF3C003D).withValues(alpha: .1),
                                 border: Border.all(
-                                  color: Color(0xFF3C003D).withOpacity(0.3),
+                                  color: Color(
+                                    0xFF3C003D,
+                                  ).withValues(alpha: .3),
                                 ),
                               ),
                               child: Row(

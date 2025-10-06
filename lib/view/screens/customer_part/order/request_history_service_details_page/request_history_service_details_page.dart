@@ -24,8 +24,14 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
 
     // split bookings into completed and others
     List<BookingResult> all = controller.bookingReportList;
-    List<BookingResult> completed = all.where((b) => (b.status ?? '').toLowerCase() == 'completed').toList();
-    List<BookingResult> requests = all.where((b) => (b.status ?? '').toLowerCase() != 'completed').toList();
+    List<BookingResult> completed =
+        all
+            .where((b) => (b.status ?? '').toLowerCase() == 'completed')
+            .toList();
+    List<BookingResult> requests =
+        all
+            .where((b) => (b.status ?? '').toLowerCase() != 'completed')
+            .toList();
 
     return DefaultTabController(
       length: 2,
@@ -33,44 +39,45 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Service Details"),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: bookingArg != null
-              ? _buildDetailView(context, bookingArg)
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 12.h),
-                      TabBar(
-                        labelColor: AppColors.black,
-                        indicatorColor: AppColors.primary,
-                        unselectedLabelColor: Color(0xff6F767E),
-                        tabs: [
-                          Tab(text: 'Request History'.tr),
-                          Tab(text: 'Completed'.tr),
-                        ],
-                      ),
-                      SizedBox(height: 12.h),
-                      // Constrain TabBarView to a fixed height so it plays nicely inside a scroll view
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: TabBarView(
-                          children: [
-                            // Requests list
-                            _buildBookingList(requests),
-                            // Completed list
-                            _buildBookingList(completed),
+          child:
+              bookingArg != null
+                  ? buildDetailView(context, bookingArg)
+                  : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 12.h),
+                        TabBar(
+                          labelColor: AppColors.black,
+                          indicatorColor: AppColors.primary,
+                          unselectedLabelColor: Color(0xff6F767E),
+                          tabs: [
+                            Tab(text: 'Request History'.tr),
+                            Tab(text: 'Completed'.tr),
                           ],
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 12.h),
+                        // Constrain TabBarView to a fixed height so it plays nicely inside a scroll view
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: TabBarView(
+                            children: [
+                              // Requests list
+                              _buildBookingList(requests),
+                              // Completed list
+                              _buildBookingList(completed),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
         ),
       ),
     );
   }
 
-  Widget _buildDetailView(BuildContext context, BookingResult booking) {
+  Widget buildDetailView(BuildContext context, BookingResult booking) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -186,23 +193,25 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         Divider(thickness: .3, color: AppColors.black_02),
         if (booking.material.isNotEmpty)
-          ...booking.material.map((m) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "${m.name ?? ''}",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
-                  ),
-                  CustomText(
-                    text: "${m.price ?? ''}",
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
-                  ),
-                ],
-              ))
+          ...booking.material.map(
+            (m) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "${m.name ?? ''}",
+                  fontSize: 16.w,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
+                CustomText(
+                  text: "${m.price ?? ''}",
+                  fontSize: 16.w,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
+              ],
+            ),
+          )
         else
           CustomText(
             top: 8,
@@ -266,6 +275,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
       ],
     );
   }
+
   Widget _buildBookingList(List<BookingResult> list) {
     if (list.isEmpty) {
       return Center(child: Text('No data available'.tr));
@@ -334,7 +344,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${booking.bookingDate ?? ''}',
+                      text:
+                          '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${booking.bookingDate ?? ''}',
                       fontSize: 16.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black,
@@ -365,7 +376,10 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: booking.contractorId != null ? '${booking.contractorId}' : 'Not Assigned',
+                          text:
+                              booking.contractorId != null
+                                  ? '${booking.contractorId}'
+                                  : 'Not Assigned',
                           fontSize: 14.w,
                           fontWeight: FontWeight.w700,
                           bottom: 4.h,
@@ -383,7 +397,10 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Color(0xffCDB3CD),
                         borderRadius: BorderRadius.circular(7),
@@ -397,7 +414,10 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     ),
                     SizedBox(width: 6),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: AppColors.primary, width: .6),
@@ -411,7 +431,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
             SizedBox(height: 12.h),

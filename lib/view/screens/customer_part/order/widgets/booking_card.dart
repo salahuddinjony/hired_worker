@@ -14,9 +14,9 @@ class BookingCard extends StatelessWidget {
   final bool isCompleted;
   final VoidCallback? onTap;
 
-  BookingCard({Key? key, required this.booking, this.onTap}) :
-    isCompleted = (booking.status ?? '').toLowerCase() == 'completed',
-    super(key: key);
+  BookingCard({Key? key, required this.booking, this.onTap})
+    : isCompleted = (booking.status ?? '').toLowerCase() == 'completed',
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class BookingCard extends StatelessWidget {
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: borderColor.withOpacity(.25)),
+          side: BorderSide(color: borderColor.withValues(alpha: .25)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -45,7 +45,7 @@ class BookingCard extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 26,
-                        backgroundColor: borderColor.withOpacity(.15),
+                        backgroundColor: borderColor.withValues(alpha: .15),
                         child: const CustomImage(imageSrc: AppIcons.cleaner),
                       ),
                       SizedBox(width: 12.w),
@@ -84,9 +84,12 @@ class BookingCard extends StatelessWidget {
                     color: const Color(0xff6F767E),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: borderColor.withOpacity(.25),
+                      color: borderColor.withValues(alpha: .25),
                       borderRadius: BorderRadius.circular(7),
                     ),
                     child: CustomText(
@@ -107,7 +110,8 @@ class BookingCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${booking.bookingDate ?? ''}',
+                        text:
+                            '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${booking.bookingDate ?? ''}',
                         fontSize: 16.w,
                         fontWeight: FontWeight.w700,
                         color: AppColors.black,
@@ -138,7 +142,10 @@ class BookingCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: booking.contractorId != null ? '${booking.contractorId}' : 'Not Assigned',
+                            text:
+                                booking.contractorId != null
+                                    ? '${booking.contractorId}'
+                                    : 'Not Assigned',
                             fontSize: 16.w,
                             fontWeight: FontWeight.w700,
                             color: AppColors.black,
@@ -157,39 +164,40 @@ class BookingCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xffCDB3CD),
                           borderRadius: BorderRadius.circular(7),
                         ),
                         child: GestureDetector(
                           onTap: () {
-                          if (isCompleted) {
-                            debugPrint('Navigate to message screen');
-                          } else {
-                            debugPrint('Navigate to update screen');
-                          }
+                            if (isCompleted) {
+                              debugPrint('Navigate to message screen');
+                            } else {
+                              debugPrint('Navigate to update screen');
+                            }
                           },
                           child: Row(
-                          children: [
-                            Icon(
-                            isCompleted ? Icons.message : Icons.edit,
-                            color: AppColors.primary,
-                            size: 18.w,
-                            ),
-                            SizedBox(width: 6.w),
-                            CustomText(
-                            text: isCompleted ? 'Message'.tr : 'Update'.tr,
-                            fontSize: 14.w,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
-                            ),
-                          ],
-                          
-                        ),
+                            children: [
+                              Icon(
+                                isCompleted ? Icons.message : Icons.edit,
+                                color: AppColors.primary,
+                                size: 18.w,
+                              ),
+                              SizedBox(width: 6.w),
+                              CustomText(
+                                text: isCompleted ? 'Message'.tr : 'Update'.tr,
+                                fontSize: 14.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                  
                     ],
                   ),
                 ],

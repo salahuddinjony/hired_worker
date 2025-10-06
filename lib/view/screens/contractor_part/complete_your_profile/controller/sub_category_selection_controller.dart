@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:servana/view/screens/contractor_part/complete_your_profile/model/category_model.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/sub_category_model.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
