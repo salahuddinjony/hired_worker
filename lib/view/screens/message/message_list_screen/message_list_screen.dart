@@ -71,9 +71,11 @@ class MessageListScreen extends StatelessWidget {
           ]
         );
       }),
-      bottomNavigationBar:
-          messageController.role
-              ? const CustomerNavbar(currentIndex: 2) : const Navbar(currentIndex: 2),
+    bottomNavigationBar: Obx(() {
+    return messageController.thisRole.value
+      ? const CustomerNavbar(currentIndex: 2)
+      : const Navbar(currentIndex: 2);
+    }),
     );
   }
 }

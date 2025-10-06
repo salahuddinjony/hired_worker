@@ -22,12 +22,15 @@ class MessageController extends GetxController {
 
   //  RxString userId = ''.obs;
 
-  bool role = true;
+  final RxBool thisRole = true.obs;
 
   @override
   void onInit() async {
     //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
     await getRole();
+  String roles = await SharePrefsHelper.getString(AppConstants.role);
+  debugPrint("User Role================>> $roles");
+  debugPrint("User Role bool================>> ${this.thisRole.value}");
 
     getAllRoomList();
     receiveMessage();
@@ -37,7 +40,7 @@ class MessageController extends GetxController {
 
   Future<void> getRole() async {
     String role = await SharePrefsHelper.getString(AppConstants.role);
-    this.role = role == "customer" ? true : false;
+    thisRole.value = role == "customer" ? true : false;
   }
 
   Future<void> getAllRoomList() async {

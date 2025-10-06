@@ -77,6 +77,7 @@ class SharePrefsHelper {
       await prefs.remove(AppConstants.email); //Delete the saved user email
       await prefs.remove(AppConstants.bearerToken); //Delete the saved token
       await prefs.remove(AppConstants.role); //Delete the saved token
+      await prefs.remove(AppConstants.userId); //Delete the saved user id
     }
   }
 
