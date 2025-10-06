@@ -17,7 +17,7 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args = Get.arguments;
     String name = args?['name'] ?? 'All';
-    String id = args?['id'] ?? '';
+    // String id = args?['id'] ?? '';
     List<allContractor> contractors = args?['contractors'] ?? [];
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
@@ -70,7 +70,7 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                // var data = popularDoctorController.popularList[index];
                 return CustomServiceContractorCard(
-                  image: ImageHandler.imagesHandle(contractorsWithCategory[index].userId?.img),
+                  image: ImageHandler.imagesHandle(contractorsWithCategory[index].userId.img),
                   name: contractorsWithCategory[index].userId.fullName,
                   title: contractorsWithCategory[index].skillsCategory,
                   rating: contractorsWithCategory[index].ratings.toString(),

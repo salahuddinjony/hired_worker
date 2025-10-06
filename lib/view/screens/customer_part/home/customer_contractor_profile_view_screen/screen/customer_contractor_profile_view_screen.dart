@@ -249,12 +249,24 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                 CustomText(
                                   text:
                                       (experience.isNotEmpty
-                                            ? (() {
-                                                final match = RegExp(r'\d+').firstMatch(experience);
-                                                final years = match != null ? int.tryParse(match.group(0) ?? '') ?? 0 : 0;
-                                                final suffix = years == 1 ? " yr" : " yrs";
-                                                return (years > 0 ? years.toString() : experience) + suffix;
-                                              })()
+                                          ? (() {
+                                            final match = RegExp(
+                                              r'\d+',
+                                            ).firstMatch(experience);
+                                            final years =
+                                                match != null
+                                                    ? int.tryParse(
+                                                          match.group(0) ?? '',
+                                                        ) ??
+                                                        0
+                                                    : 0;
+                                            final suffix =
+                                                years == 1 ? " yr" : " yrs";
+                                            return (years > 0
+                                                    ? years.toString()
+                                                    : experience) +
+                                                suffix;
+                                          })()
                                           : "N/A"),
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
@@ -288,7 +300,15 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     PersonalInfoCard(
                       dob: dob,
                       gender: gender,
-                      city: city.split(',').reversed.take(2).toList().reversed.join(', ').trim(),
+                      city:
+                          city
+                              .split(',')
+                              .reversed
+                              .take(2)
+                              .toList()
+                              .reversed
+                              .join(', ')
+                              .trim(),
                       language: language,
                     ),
                     SizedBox(height: 20.h),
@@ -437,8 +457,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               'hourlyRate': rateHourlyStr,
                               'contractorName': fullName,
                               'categoryName':
-                                  contractorData?.skillsCategory ??
-                                  "N/A",
+                                  contractorData?.skillsCategory ?? "N/A",
                               'subCategoryName':
                                   contractorData?.subCategory.name ?? 'N/A',
                             },
@@ -508,10 +527,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                 vertical: 2.h,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.amber.withOpacity(0.15),
+                                color: Colors.amber.withValues(alpha: .15),
                                 borderRadius: BorderRadius.circular(20.r),
                                 border: Border.all(
-                                  color: Colors.amber.withOpacity(0.3),
+                                  color: Colors.amber.withValues(alpha: .3),
                                   width: 1,
                                 ),
                               ),

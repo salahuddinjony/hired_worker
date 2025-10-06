@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:servana/service/api_url.dart';
-import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
 import '../../../../utils/app_colors/app_colors.dart';
