@@ -1,362 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/utils/app_icons/app_icons.dart';
-import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
-import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/components/custom_text/custom_text.dart';
+// ...existing imports...
 
-import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
+// ...existing imports...
 import '../controller/customer_order_controller.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
+import '../model/customer_order_model.dart';
+import 'package:servana/view/screens/customer_part/order/widgets/booking_card.dart';
 
-class CustomerRequestHistoryScreen extends StatefulWidget {
+class CustomerRequestHistoryScreen extends StatelessWidget {
   const CustomerRequestHistoryScreen({super.key});
 
   @override
-  State<CustomerRequestHistoryScreen> createState() => _CustomerRequestHistoryScreenState();
-}
-
-class _CustomerRequestHistoryScreenState extends State<CustomerRequestHistoryScreen> {
-  final customerOrderController = Get.find<CustomerOrderController>();
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(      extendBody: true,
+    final customerOrderController = Get.find<CustomerOrderController>();
 
-      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "History Status".tr,),
+    return Scaffold(
+      extendBody: true,
+      appBar: CustomRoyelAppbar(
+        leftIcon: false,
+        titleName: "History Status".tr,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTabBar(
-              tabs: customerOrderController.nameList,
-              selectedIndex: customerOrderController.currentIndex.value,
-              onTabSelected: (value) {
-                customerOrderController.currentIndex.value = value;
-                setState(() {});
-              },
-              selectedColor: AppColors.primary,
-              unselectedColor: AppColors.primary,
-            ),
-           if(customerOrderController.currentIndex.value==0)
-             Expanded(child: ListView(
-               children: [
-                 SizedBox(height: 20,),
-                 GestureDetector(
-                   onTap: (){
-                     Get.toNamed(AppRoutes.requestHistoryServiceDetailsPage);
-                   },
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     crossAxisAlignment: CrossAxisAlignment.center,
-                     children: [
-                       Row(
-                         children: [
-                           CircleAvatar(
-                             radius: 26,
-                             backgroundColor: Color(0xffCDB3CD),
-                             child: CustomImage(imageSrc: AppIcons.cleaner),
-                           ),
-                           SizedBox(width: 12.w),
-                           Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                               CustomText(
-                                 text: "House Cleaning",
-                                 fontSize: 16.w,
-                                 fontWeight: FontWeight.w700,
-                                 color: AppColors.black,
-                                 bottom: 4.h,
-                               ),
-                               CustomText(
-                                 text: "Reference Code: #D-571224",
-                                 fontSize: 12.w,
-                                 fontWeight: FontWeight.w500,
-                                 color: Color(0xff6F767E),
-                               ),
-                             ],
-                           ),
-                         ],
-                       ),
-                       Icon(Icons.arrow_forward_sharp)
-                     ],
-                   ),
-                 ),
-                 Divider(thickness: .6, color: AppColors.white),
-                 SizedBox(height: 10.h),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
-                     CustomText(
-                       text: "Status".tr,
-                       fontSize: 14.w,
-                       fontWeight: FontWeight.w500,
-                       color: Color(0xff6F767E),
-                     ),
-                     Container(
-                       padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                       decoration: BoxDecoration(
-                         color: Color(0xffCDB3CD),
-                         borderRadius: BorderRadius.circular(7),
-                       ),
-                       child: CustomText(
-                         text: "Pending".tr,
-                         fontSize: 14.w,
-                         fontWeight: FontWeight.w600,
-                         color: AppColors.primary,
-                       ),
-                     ),
-                   ],
-                 ),
-                 SizedBox(height: 10.h),
-                 Row(
-                   children: [
-                     CustomImage(imageSrc: AppIcons.calenderIcon),
-                     SizedBox(width: 12.w),
-                     Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         CustomText(
-                           text: "8:00-9:00 AM,  09 Dec",
-                           fontSize: 16.w,
-                           fontWeight: FontWeight.w700,
-                           color: AppColors.black,
-                           bottom: 4.h,
-                         ),
-                         CustomText(
-                           text: "Schedule".tr,
-                           fontSize: 12.w,
-                           fontWeight: FontWeight.w500,
-                           color: Color(0xff6F767E),
-                         ),
-                       ],
-                     ),
-                   ],
-                 ),
-                 SizedBox(height: 10.h),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
-                     Row(
-                       children: [
-                         CircleAvatar(
-                           //  foregroundColor: AppColors.red,
-                           radius: 26,
-                           //  backgroundColor: Color(0xffCDB3CD),
-                           child: CustomImage(imageSrc: AppIcons.girlVactor),
-                         ),
-                         SizedBox(width: 12.w),
-                         Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             CustomText(
-                               text: "Sindenayu",
-                               fontSize: 16.w,
-                               fontWeight: FontWeight.w700,
-                               color: AppColors.black,
-                               bottom: 4.h,
-                             ),
-                             CustomText(
-                               text: "Service provider".tr,
-                               fontSize: 12.w,
-                               fontWeight: FontWeight.w500,
-                               color: Color(0xff6F767E),
-                             ),
-                           ],
-                         ),
-                       ],
-                     ),
-                     Row(
-                       children: [
-                         Container(
-                           padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                           decoration: BoxDecoration(
-                             color: Color(0xffCDB3CD),
-                             borderRadius: BorderRadius.circular(7),
-                           ),
-                           child: CustomText(
-                             text: "Update".tr,
-                             fontSize: 14.w,
-                             fontWeight: FontWeight.w600,
-                             color: AppColors.primary,
-                           ),
-                         ),
-                         SizedBox(width: 6,),
-                         Container(
-                           padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                           decoration: BoxDecoration(
-                             color: Colors.transparent,
-                             border: Border.all(color: AppColors.primary,width: .6),
-                             borderRadius: BorderRadius.circular(7),
-                           ),
-                           child: CustomText(
-                             text: "Cancel".tr,
-                             fontSize: 14.w,
-                             fontWeight: FontWeight.w600,
-                             color: AppColors.primary,
-                           ),
-                         ),
-                       ],
-                     )
-                   ],
-                 ),
-                 SizedBox(height: 10.h),
-                 Divider(thickness: .6, color: AppColors.white),
-               ],
-             )),
-            if(customerOrderController.currentIndex.value==1)
-              Expanded(child: ListView(
-                children: [
-                  SizedBox(height: 20.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 26,
-                            backgroundColor: Color(0xffCDB3CD),
-                            child: CustomImage(imageSrc: AppIcons.cleaner),
-                          ),
-                          SizedBox(width: 12.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "House Cleaning",
-                                fontSize: 16.w,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.black,
-                                bottom: 4.h,
-                              ),
-                              CustomText(
-                                text: "Reference Code: #D-571224",
-                                fontSize: 12.w,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff6F767E),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Icon(Icons.arrow_forward_sharp)
-                    ],
-                  ),
-                  Divider(thickness: .6, color: AppColors.white),
-                  SizedBox(height: 10.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        text: "Status".tr,
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff6F767E),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.greenAccent.withValues(alpha: .3),
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: CustomText(
-                          text: "Confirmed".tr,
-                          fontSize: 14.w,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.green,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      CustomImage(imageSrc: AppIcons.calenderIcon),
-                      SizedBox(width: 12.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: "8:00-9:00 AM,  09 Dec",
-                            fontSize: 16.w,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.black,
-                            bottom: 4.h,
-                          ),
-                          CustomText(
-                            text: "Schedule".tr,
-                            fontSize: 12.w,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff6F767E),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CustomNetworkImage(imageUrl: AppConstants.girlsPhoto, height: 35, width: 35,boxShape: BoxShape.circle,),
-                          SizedBox(width: 12.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "Sindenayu",
-                                fontSize: 16.w,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.black,
-                                bottom: 4.h,
-                              ),
-                              CustomText(
-                                text: "Service provider".tr,
-                                fontSize: 12.w,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff6F767E),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Color(0xffCDB3CD),
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: CustomImage(imageSrc: AppIcons.call)
-                          ),
-                          SizedBox(width: 6,),
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Color(0xffCDB3CD),
-                                borderRadius: BorderRadius.circular(7),
-                              ), child: CustomImage(imageSrc: AppIcons.message)
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 12.h),
+              TabBar(
+                labelColor: AppColors.black,
+                indicatorColor: AppColors.primary,
+                unselectedLabelColor: Color(0xff6F767E),
+                tabs: [
+                  Tab(text: 'Request History'.tr),
+                  Tab(text: 'Completed History'.tr),
                 ],
-              ))
-          ],
+              ),
+              SizedBox(height: 12.h),
+              Expanded(
+                child: Obx(() {
+                  final all = customerOrderController.bookingReportList;
+                  final completed =
+                      all
+                          .where(
+                            (b) =>
+                                (b.status ?? '').toLowerCase() == 'completed',
+                          )
+                          .toList();
+                  final requests =
+                      all
+                          .where(
+                            (b) =>
+                                (b.status ?? '').toLowerCase() != 'completed',
+                          )
+                          .toList();
+
+                  return TabBarView(
+                    children: [
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await customerOrderController.getBookingReport();
+                        },
+                        child: buildBookingList(
+                          requests.isEmpty ? dummyRequests() : requests,
+                        ),
+                      ),
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await customerOrderController.getBookingReport();
+                        },
+                        child: buildBookingList(
+                          completed.isEmpty ? dummyCompleted() : completed,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+
+              SizedBox(height: 80.h),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomerNavbar(currentIndex: 1),
+    );
+  }
+
+  // Dummy data generators
+  List<BookingResult> dummyRequests() {
+    return List.generate(
+      3,
+      (i) => BookingResult(
+        id: 'R-100${i + 1}',
+        customerId: 'C-123',
+        contractorId: null,
+        subCategoryId: SubCategory(id: 'sc${i + 1}', name: 'House Cleaning'),
+        bookingType: 'One Time',
+        status: i == 0 ? 'pending' : 'in_progress',
+        paymentStatus: 'unpaid',
+        questions: [],
+        material: [],
+        bookingDate: '09 Dec',
+        day: 'Tue',
+        startTime: '8:00 AM',
+        endTime: '9:00 AM',
+        duration: 60,
+        timeSlots: ['8:00-9:00'],
+        price: 50,
+        rateHourly: 50,
+        files: [],
+        isDeleted: false,
+        createdAt: '',
+        updatedAt: '',
+      ),
+    );
+  }
+
+  List<BookingResult> dummyCompleted() {
+    return List.generate(
+      2,
+      (i) => BookingResult(
+        id: 'C-200${i + 1}',
+        customerId: 'C-123',
+        contractorId: 'Thomas',
+        subCategoryId: SubCategory(id: 'scc${i + 1}', name: 'Electrician'),
+        bookingType: 'One Time',
+        status: 'completed',
+        paymentStatus: 'paid',
+        questions: [],
+        material: [],
+        bookingDate: '05 Dec',
+        day: 'Fri',
+        startTime: '10:00 AM',
+        endTime: '12:00 PM',
+        duration: 120,
+        timeSlots: ['10:00-12:00'],
+        price: 120,
+        rateHourly: 60,
+        files: [],
+        isDeleted: false,
+        createdAt: '',
+        updatedAt: '',
+      ),
+    );
+  }
+
+  Widget buildBookingList(List<BookingResult> list) {
+    if (list.isEmpty)
+      return ListView(
+        children: [
+          SizedBox(height: 40),
+          Center(child: Text('No data available'.tr)),
+        ],
+      );
+
+    return ListView.separated(
+      padding: EdgeInsets.only(top: 8, bottom: 16),
+      itemBuilder: (context, index) {
+        final booking = list[index];
+        return BookingCard(
+          booking: booking,
+          onTap:
+              () => Get.toNamed(
+                AppRoutes.requestHistoryServiceDetailsPage,
+                arguments: booking,
+              ),
+        );
+      },
+      separatorBuilder: (_, __) => SizedBox(height: 8),
+      itemCount: list.length,
     );
   }
 }
