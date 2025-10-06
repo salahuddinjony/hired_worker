@@ -16,11 +16,13 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ContractorBookingController controller =
-        Get.find<ContractorBookingController>();
-
-    // default hourly rate for UI demo (you may set it from API in real flow)
-    // controller.hourlyRate = 50;
+    Map<String, dynamic> args = Get.arguments ?? {};
+    final ContractorBookingController controller = args['controller'];
+    final String contractorId = args['contractorId']?.toString() ?? '';
+    final String subcategoryId = args['subcategoryId']?.toString() ?? '';
+    final String contractorName = args['contractorName'] ?? '';
+    final String categoryName = args['categoryName'] ?? '';
+    final String subCategoryName = args['subCategoryName'] ?? '';
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -235,7 +237,15 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                   CustomButton(
                     onTap: () {
                       // Navigate or perform booking creation
-                      Get.toNamed(AppRoutes.customarServiceContractorDetailsScreen);
+                      Get.toNamed(AppRoutes.customarServiceContractorDetailsScreen, 
+                      arguments: {
+                        'contractorId': contractorId,
+                        'subcategoryId': subcategoryId,
+                        'controller': controller,
+                        'contractorName': contractorName,
+                        'categoryName': categoryName,
+                        'subCategoryName': subCategoryName,
+                      });
                     },
                     title: "Continue".tr,
                   )

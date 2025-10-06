@@ -26,6 +26,10 @@ class CustomarQaScreen extends StatelessWidget {
     String contractorId = rawContractorId?.toString() ?? '';
     String subcategoryId = rawSubcategoryId?.toString() ?? '';
   final List<dynamic> materials = args['materials'] ?? [];
+   final String contractorName = args['contractorName'] ?? '';
+   final String categoryName= args['categoryName'] ?? '';
+   final String subCategoryName= args['subCategoryName'] ?? '';
+   
 
     // hourlyRate may come as String, int, or double - parse defensively
     final dynamic rawHourly = args['hourlyRate'];
@@ -127,6 +131,9 @@ class CustomarQaScreen extends StatelessWidget {
                             'subcategoryId': subcategoryId,
                             'materials': materials,
                             'controller': controller,
+                            'contractorName': contractorName,
+                            'categoryName': categoryName,
+                            'subCategoryName': subCategoryName,
                           },
                         );
                       }

@@ -14,10 +14,14 @@ class CustomarMaterialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ContractorBookingController controller = Get.arguments['controller'];
-  final List<dynamic> materials = Get.arguments['materials'] ?? [];
-    final String contractorId = Get.arguments['contractorId'] ?? '';
-    final String subcategoryId = Get.arguments['subcategoryId'] ?? '';
+    final Map<String, dynamic> args = Get.arguments ?? {};
+    final ContractorBookingController controller = args['controller'];
+    final List<dynamic> materials = args['materials'] ?? [];
+    final String contractorId = args['contractorId'] ?? '';
+    final String subcategoryId = args['subcategoryId'] ?? '';
+    final String contractorName = args['contractorName'] ?? '';
+    final String categoryName = args['categoryName'] ?? '';
+    final String subCategoryName = args['subCategoryName'] ?? '';
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -109,6 +113,9 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'controller': controller,
                 'contractorId': contractorId,
                 'subcategoryId': subcategoryId,
+                'contractorName': contractorName,
+                'categoryName': categoryName,
+                'subCategoryName': subCategoryName,
               },
             );
           },
