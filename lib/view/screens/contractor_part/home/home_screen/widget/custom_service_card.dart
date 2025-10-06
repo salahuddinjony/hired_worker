@@ -30,7 +30,9 @@ class CustomServiceCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: image != null && image!.isNotEmpty ? 0 : 15.w),
+        padding: EdgeInsetsGeometry.symmetric(
+          horizontal: image != null && image!.isNotEmpty ? 0 : 15.w,
+        ),
         width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           color: AppColors.cardClr,
@@ -40,15 +42,16 @@ class CustomServiceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (image != null && image!.isNotEmpty) CustomNetworkImage(
-              imageUrl: image!,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(13),
-                bottomLeft: Radius.circular(13),
+            if (image != null && image!.isEmpty)
+              CustomNetworkImage(
+                imageUrl: image!,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  bottomLeft: Radius.circular(13),
+                ),
+                height: 110.h,
+                width: 150.w,
               ),
-              height: 110.h,
-              width: 150.w,
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -112,30 +115,6 @@ class CustomServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // SizedBox(height: 4.h),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     CustomText(
-                    //       text: "View Post (120)",
-                    //       fontSize: 10.w,
-                    //       fontWeight: FontWeight.w400,
-                    //       color: AppColors.black_04,
-                    //       right: 10.w,
-                    //     ),
-                    //     CustomText(
-                    //       text: "Service Request".tr,
-                    //       fontSize: 10.w,
-                    //       fontWeight: FontWeight.w400,
-                    //       color: AppColors.black,
-                    //       right: 10.w,
-                    //     ),
-                    //     Align(
-                    //       alignment: Alignment.centerRight,
-                    //       child: Icon(Icons.more_horiz, size: 16),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

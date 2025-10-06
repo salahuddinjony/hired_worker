@@ -256,7 +256,7 @@ class HomeScreen extends StatelessWidget {
 
                           return CustomServiceCard(
                             title: getSubCategoryName(data),
-                            updateDate: data.updatedAt ?? DateTime.now(),
+                            updateDate: data.createdAt ?? DateTime.now(),
                             hourlyRate: data.rateHourly?.toString() ?? ' - ',
                             rating:
                                 data.contractorId?.contractor?.ratings
