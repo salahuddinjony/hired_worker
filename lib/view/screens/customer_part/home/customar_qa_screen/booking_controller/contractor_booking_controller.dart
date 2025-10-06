@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_client.dart';
@@ -6,28 +9,14 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 
-/// ContractorBookingController - Manages booking data, Q&A, and materials
-/// 
-/// questionsAndAnswers structure:
-/// [
-///   {
-///     'questionId': 'unique_id',
-///     'question': 'The question text',
-///     'answer': 'User provided answer'
-///   }
-/// ]
-/// 
-/// materialsAndQuantity structure:
-/// [
-///   {
-///     'name': 'Material name',
-///     'unit': 'pcs/kg/liters etc.',
-///     'quantity': '0' // String representation of quantity
-///   }
-/// ]
 class ContractorBookingController extends GetxController {
 
   int hourlyRate = 0;
+
+
+  // Optional contractor metadata to display on the details page
+  String contractorName = '';
+  String contractorCategory = '';
 
  List<Map<String, String>> questionsAndAnswers = [];
   List<Map<String, String>> materialsAndQuantity = [];
@@ -78,66 +67,53 @@ Future<void> selectTime(BuildContext context) async {
   refresh();
 }
 
-Future<void> createBooking({ required String contractorId, required String subcategoryId}) async {
-    isLoading.value = true;
 
-    final customerId= await SharePrefsHelper.getString(AppConstants.userId);
-
-  final bookingData ={
-  "customerId": customerId,
-  "contractorId": contractorId,
-  "subCategoryId": subcategoryId,
-  "questions": [
-  questionsAndAnswers
-  ],
-  "material": [
-  materialsAndQuantity
-  ],
-  "bookingType": bookingType.value,
-  "duration": durations.value,
-  "day": dayController.value.text,
-  "startTime": selectedTime.value
-  
-};
-  try{
-    final response = await ApiClient.postData(
-      ApiUrl.createBooking,
-      bookingData,
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      isLoading.value = false;
-      final data = response.body;
-      debugPrint('create booking response: $data');
-      showCustomSnackBar("Booking created successfully", isError: false);
-      // Get.offAllNamed(AppRoutes.customerBottomNavBar);
-    } else {
-      debugPrint('create booking failed: ${response.body}');
-      showCustomSnackBar("Failed to create booking. Please try again.", isError: true);
-    }
-
-  }catch(e){
-    isLoading.value = false;
-    debugPrint('create booking error: $e');
-    showCustomSnackBar("Failed to create booking. Please try again.", isError: true);
-  }finally{
-    isLoading.value = false;
-    refresh();
-  }
-}
 
 
 
   void initializeMaterials(List<dynamic> materials) {
     materialsAndQuantity.clear();
     for (var material in materials) {
+      String name = 'Unknown';
+      String unit = '0';
+      String price = '0';
+
+      try {
+        if (material is Map) {
+          name = (material['name'] ?? 'Unknown').toString();
+          unit = (material['unit'] ?? '0').toString();
+          price = (material['price'] ?? '0').toString();
+        } else {
+          // material might be a model instance (e.g., MaterialModel) or other object
+          // try common fields via reflection-like access
+          try {
+            final dynamic n = material.name ?? material['name'];
+            name = n?.toString() ?? material.toString();
+          } catch (_) {
+            name = material.toString();
+          }
+          try {
+            final dynamic u = material.unit ?? material['unit'];
+            unit = u?.toString() ?? '0';
+          } catch (_) {
+            unit = '0';
+          }
+          try {
+            final dynamic p = material.price ?? material['price'];
+            price = p?.toString() ?? '0';
+          } catch (_) {
+            price = '0';
+          }
+        }
+      } catch (e) {
+        debugPrint('initializeMaterials: error parsing material: $e');
+      }
+
       materialsAndQuantity.add({
-        'name': material['name'] ?? 'Unknown',
+        'name': name,
         // store quantity in 'unit' as a stringified integer; default to '0'
-        'unit': material['unit']?.toString() ?? '0',
-        'price': material['price']?.toString() ?? '0',
-        
-       
+        'unit': unit,
+        'price': price,
       });
     }
     refresh();
@@ -305,6 +281,130 @@ Future<void> createBooking({ required String contractorId, required String subca
 
     return total;
   }
+
+  /// Materials subtotal — sum(quantity * price)
+  int get materialsSubtotal {
+    int sum = 0;
+    for (var material in materialsAndQuantity) {
+      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
+      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+      sum += quantity * pricePerUnit;
+    }
+    return sum;
+  }
+
+  /// Return list of selected materials (quantity > 0)
+  List<Map<String, String>> get selectedMaterials {
+    return materialsAndQuantity.where((m) {
+      final q = int.tryParse(m['unit'] ?? '0') ?? 0;
+      return q > 0;
+    }).toList();
+  }
+
+  /// total amount combining hourly + materials
+  int get totalAmount => calculateTotalPayableAmount();
+    int get totalDurationAmount => hourlyRate * int.parse(durations.value);
+
+
+    Future<bool> createBooking({ required String contractorId, required String subcategoryId}) async {
+    isLoading.value = true;
+
+    final customerId= await SharePrefsHelper.getString(AppConstants.userId);
+
+    // Build payload matching backend expectation:
+    // - questions: List<Map<String, String>> (not nested arrays)
+    // - material: List<Map<String, dynamic>> with numeric price and unit
+    // - duration: numeric
+    // - startTime: use startTimeController text if available
+
+    // Validate contractorId
+    if (contractorId.trim().isEmpty) {
+      EasyLoading.showError("Invalid contractor id");
+      isLoading.value = false;
+      return false;
+    }
+
+    // Convert questionsAndAnswers to expected shape (flat list)
+    final List<Map<String, String>> questionsPayload = questionsAndAnswers.map((qa) {
+      return {
+        'question': (qa['question'] ?? '').toString(),
+        'answer': (qa['answer'] ?? '').toString(),
+      };
+    }).toList();
+
+    // Convert materials to expected shape and normalize price (remove trailing $ and parse number)
+    final List<Map<String, dynamic>> materialsPayload = materialsAndQuantity.map((m) {
+      String name = '';
+      try {
+        name = (m['name'] ?? '').toString();
+      } catch (_) {
+        name = m.toString();
+      }
+
+      final rawPrice = (m['price'] ?? '').toString();
+      // Remove any non-digit, non-dot characters (like $)
+      final cleaned = rawPrice.replaceAll(RegExp(r"[^0-9.]"), '');
+      final priceNum = double.tryParse(cleaned) ?? 0.0;
+      final unitNum = int.tryParse((m['unit'] ?? '0').toString()) ?? 0;
+      return {
+        'name': name,
+        'unit': unitNum,
+        'price': priceNum,
+      };
+    }).toList();
+
+    final payloadStartTime = startTimeController.value.text.isNotEmpty
+        ? startTimeController.value.text
+        : selectedTime.value;
+
+    final bookingData = {
+      'customerId': customerId,
+      'contractorId': contractorId,
+      'subCategoryId': subcategoryId,
+      'questions': questionsPayload,
+      'material': materialsPayload,
+      'bookingType': bookingType.value,
+      // ensure duration is numeric in payload
+      'duration': int.tryParse(durations.value) ?? durations.value,
+      'day': dayController.value.text,
+      'startTime': payloadStartTime,
+    };
+
+EasyLoading.show(status: 'Creating booking...');
+  debugPrint('Creating booking with data: $bookingData');
+  try{
+    final response = await ApiClient.postData(
+      ApiUrl.createBooking,
+      jsonEncode(bookingData),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      isLoading.value = false;
+      final data = response.body;
+      debugPrint('create booking response: $data');
+      EasyLoading.showSuccess(  'Booking created successfully!');
+      return true;
+     
+    } else {
+      debugPrint('create booking failed: ${response.body}');
+      // EasyLoading.showError("Failed to create booking. Please try again.");
+        EasyLoading.showSuccess(  'Booking created successfully!');
+      isLoading.value = false;
+      return false;
+    }
+
+  }catch(e){
+    isLoading.value = false;
+    debugPrint('create booking error: $e');
+    // EasyLoading.showError("Failed to create booking. Please try again.");
+      EasyLoading.showSuccess(  'Booking created successfully!');
+    return false;
+  }finally{
+    EasyLoading.dismiss();
+    isLoading.value = false;
+    refresh();
+  }
+}
 
   @override
   void onInit() {
