@@ -49,7 +49,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
       }
 
       // Fetch reviews regardless; controller handles loading state
-      homeController.getContractorReviews(userId: userId);
+      homeController.getContractorReviews(userId: maybeContractor.id);
     }
 
     return Scaffold(
