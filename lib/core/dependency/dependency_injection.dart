@@ -52,5 +52,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => ScheduleController(), fenix: true);
     Get.lazyPut(() => SupportController(), fenix: true);
     Get.lazyPut(() => ContractorBookingController(), fenix: true);
+    Get.lazyPut(() => CustomerOrderController(), fenix: true);
   }
 }

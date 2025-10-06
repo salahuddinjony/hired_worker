@@ -22,6 +22,8 @@ class ApiUrl {
   static const String deleteMaterial = "/contractors/materials/"; // id
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
+  static const String getNotificationList = '/notifications';
+  static const String getAllBookings = "/bookings/get_user_bookings";
 
   static String singleSubCategory({required String categoryId}) =>
       "/sub-categories?categoryId=$categoryId";

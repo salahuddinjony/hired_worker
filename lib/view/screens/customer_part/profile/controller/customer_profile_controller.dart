@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
@@ -9,6 +10,7 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/model/notification_model.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
 import '../../../../../utils/app_strings/app_strings.dart';
 
@@ -127,6 +129,41 @@ class CustomerProfileController extends GetxController {
     } else {
       updateProfileStatus.value = RxStatus.success();
       showCustomSnackBar("Something went wrong", isError: false);
+    }
+  }
+
+  // get notifications
+
+  RxList<CustomNotification> notificationsList = <CustomNotification>[].obs;
+  Rx<RxStatus> getNotificationStatus = Rx<RxStatus>(RxStatus.success());
+  Future<void> getNotifications() async {
+    // EasyLoading.show();
+    try {
+      getNotificationStatus.value = RxStatus.loading();
+      String userId = await SharePrefsHelper.getString(AppConstants.userId);
+      final Map<String, String> queryParams = {
+        'userId': userId,
+      };
+      final response = await ApiClient.getData(
+        ApiUrl.getNotificationList,
+        query: queryParams);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        notificationsList.value =NotificationModel.fromJson(response.body).data ?? [];
+        getNotificationStatus.value = RxStatus.success();
+      } else {
+        getNotificationStatus.value = RxStatus.error();
+        showCustomSnackBar(
+          response.body['message'] ?? "Something went wrong",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      getNotificationStatus.value = RxStatus.error();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+      debugPrint('Error in getNotifications: $e');
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
