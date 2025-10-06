@@ -92,11 +92,14 @@ class AuthController extends GetxController {
           debugPrint('Decoded JWT: $decodedToken');
           String? roleFromToken = decodedToken['role'];
           String? userEmailFromToken = decodedToken['userEmail'];
-          String ? userIdFromToken = decodedToken['id'];
+          String? userIdFromToken = decodedToken['id'];
 
-          // 
-          if(userIdFromToken != null){ 
-            await SharePrefsHelper.setString(AppConstants.userId, userIdFromToken);
+          //
+          if (userIdFromToken != null) {
+            await SharePrefsHelper.setString(
+              AppConstants.userId,
+              userIdFromToken,
+            );
           }
 
           if (roleFromToken != null) {
@@ -199,11 +202,13 @@ class AuthController extends GetxController {
 
         switch (role) {
           case 'contractor':
-            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) == null) {
+            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
+                null) {
               Get.offAllNamed(AppRoutes.seletedMapScreen);
             } else {
               Get.offAllNamed(AppRoutes.homeScreen);
-            };
+            }
+            ;
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.customerHomeScreen);
