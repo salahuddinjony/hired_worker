@@ -7,6 +7,7 @@ import 'package:servana/view/screens/customer_part/order/controller/customer_ord
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
 
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../review_page/review_page.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -63,9 +64,9 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                           child: TabBarView(
                             children: [
                               // Requests list
-                              _buildBookingList(requests),
+                              buildBookingList(requests),
                               // Completed list
-                              _buildBookingList(completed),
+                              buildBookingList(completed),
                             ],
                           ),
                         ),
@@ -266,17 +267,25 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           ],
         ),
         SizedBox(height: 30),
-        CustomButton(
-          onTap: () {
-            Get.toNamed('/customarServiceDetailsScreen');
-          },
-          title: "Service Update".tr,
-        ),
+        booking.status?.toLowerCase() == 'completed'
+            ? CustomButton(
+                onTap: () {
+                  // Navigate to ReviewPage and pass the booking as argument
+                  Get.to(() => const ReviewPage(), arguments: booking);
+                },
+                title: "Review".tr,
+              )
+            : CustomButton(
+              onTap: () {
+                Get.toNamed('/customarServiceDetailsScreen');
+              },
+              title: "Service Update".tr,
+            ),
       ],
     );
   }
 
-  Widget _buildBookingList(List<BookingResult> list) {
+  Widget buildBookingList(List<BookingResult> list) {
     if (list.isEmpty) {
       return Center(child: Text('No data available'.tr));
     }
