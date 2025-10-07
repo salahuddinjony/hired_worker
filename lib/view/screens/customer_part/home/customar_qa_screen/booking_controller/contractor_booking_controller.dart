@@ -8,6 +8,8 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
+import 'package:servana/view/screens/contractor_part/profile/model/material_model.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 class ContractorBookingController extends GetxController {
   int hourlyRate = 0;
@@ -24,37 +26,261 @@ class ContractorBookingController extends GetxController {
   List<Map<String, dynamic>> questions = [];
 
   RxBool isLoading = false.obs;
-  RxString bookingType = 'OneTime'.obs; // OneTime or Recurring
+  RxString bookingType = 'oneTime'.obs; // OneTime or Recurring
   RxString durations = '1'.obs; // 1,2,3,4,5
   Rx<TextEditingController> startTimeController = TextEditingController().obs;
   Rx<TextEditingController> dayController = TextEditingController().obs;
   Rx<TextEditingController> endTimeController = TextEditingController().obs;
+  // When multiple dates are selected (for recurring bookings), store them here
+  RxList<String> selectedDates = <String>[].obs;
   // Expose selected date/time as observable strings for the UI to bind to
   RxString selectedHour = ''.obs;
   RxString selectedTime = ''.obs;
 
-  Future<void> selectDate(BuildContext context) async {
+  Future<void> selectDate(BuildContext context, bool isOneTime) async {
     debugPrint(
-      'ContractorBookingController.selectDate called; Get.context=${Get.context != null}',
+      'ContractorBookingController.selectDate called; Get.context=${Get.context != null}, isOneTime=$isOneTime',
     );
     final ctx = Get.context ?? context;
-    final DateTime? picked = await showDatePicker(
-      context: ctx,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      final formatted =
-          "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-      dayController.value.text = formatted;
-      // notify listeners
-      debugPrint('ContractorBookingController.selectDate picked: $formatted');
-      refresh();
+
+    if (isOneTime) {
+      // Single date selection (existing behavior)
+      final DateTime? picked = await showDatePicker(
+        context: ctx,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null) {
+        final formatted =
+            "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        // Clear any previous multiple selections
+        selectedDates.clear();
+        selectedDates.add(formatted);
+        dayController.value.text = formatted;
+        debugPrint('ContractorBookingController.selectDate picked: $formatted');
+        refresh();
+      }
+    } else {
+      // Multiple individual date selection (non-contiguous). We'll show a small dialog
+      // where the user can add one date at a time, see the list, remove items, and finish.
+      await showModalBottomSheet<void>(
+        context: ctx,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheetCtx) {
+          final List<String> tempDates = List<String>.from(selectedDates);
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.55,
+            minChildSize: 0.3,
+            maxChildSize: 0.9,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 48,
+                            height: 4,
+                            margin: EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Select Dates',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Choose one or more days for recurring booking',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed:
+                                  () => setState(() => tempDates.clear()),
+                              child: Text(
+                                'Clear All',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        // Selected dates as chips
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children:
+                                      tempDates.isEmpty
+                                          ? [
+                                            Chip(
+                                              label: Text('No dates selected'),
+                                            ),
+                                          ]
+                                          : tempDates.map((d) {
+                                            return InputChip(
+                                              label: Text(d),
+                                              onDeleted:
+                                                  () => setState(
+                                                    () => tempDates.remove(d),
+                                                  ),
+                                              deleteIcon: Icon(
+                                                Icons.close,
+                                                size: 18,
+                                              ),
+                                            );
+                                          }).toList(),
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    ElevatedButton.icon(
+                                      icon: Icon(Icons.calendar_today_outlined),
+                                      label: Text('Add Date'),
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        final DateTime? picked =
+                                            await showDatePicker(
+                                              context: sheetCtx,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now(),
+                                              lastDate: DateTime(2101),
+                                            );
+                                        if (picked != null) {
+                                          final formatted =
+                                              "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                                          if (!tempDates.contains(formatted)) {
+                                            setState(
+                                              () => tempDates.add(formatted),
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(width: 12),
+                                    OutlinedButton.icon(
+                                      icon: Icon(Icons.sort_by_alpha),
+                                      label: Text('Sort'),
+                                      onPressed:
+                                          () =>
+                                              setState(() => tempDates.sort()),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                // Small help / summary
+                                Text(
+                                  '${tempDates.length} dates selected',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                SizedBox(height: 24),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(sheetCtx).pop();
+                                },
+                                child: Text('Cancel'),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Commit the selection
+                                  selectedDates.clear();
+                                  selectedDates.addAll(tempDates);
+
+                                  if (selectedDates.isEmpty) {
+                                    dayController.value.text = '';
+                                  } else if (selectedDates.length == 1) {
+                                    dayController.value.text =
+                                        selectedDates.first;
+                                  } else if (selectedDates.length <= 2) {
+                                    dayController.value.text = selectedDates
+                                        .join(', ');
+                                  } else {
+                                    dayController.value.text =
+                                        '${selectedDates.length} dates selected';
+                                  }
+
+                                  debugPrint(
+                                    'Selected multiple dates: ${selectedDates.length}',
+                                  );
+                                  Navigator.of(sheetCtx).pop();
+                                  refresh();
+                                },
+                                child: Text('Done'),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 30),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+      );
     }
   }
 
-  Future<void> selectTime(BuildContext context) async {
+  Future<void> selectTime(
+    BuildContext context,
+    TextEditingController textController,
+  ) async {
     final ctx = Get.context ?? context;
     final TimeOfDay? picked = await showTimePicker(
       context: ctx,
@@ -63,55 +289,34 @@ class ContractorBookingController extends GetxController {
     if (picked != null) {
       final formatted =
           "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
-      startTimeController.value.text = formatted;
+      textController.text = formatted;
       debugPrint('ContractorBookingController.selectTime picked: $formatted');
     }
     refresh();
   }
 
-  void initializeMaterials(List<dynamic> materials) {
+  void initializeMaterials(List<MaterialsModel> materials) {
     materialsAndQuantity.clear();
+
     for (var material in materials) {
       String name = 'Unknown';
       String unit = '0';
       String price = '0';
 
       try {
-        if (material is Map) {
-          name = (material['name'] ?? 'Unknown').toString();
-          unit = (material['unit'] ?? '0').toString();
-          price = (material['price'] ?? '0').toString();
-        } else {
-          // material might be a model instance (e.g., MaterialModel) or other object
-          // try common fields via reflection-like access
-          try {
-            final dynamic n = material.name ?? material['name'];
-            name = n?.toString() ?? material.toString();
-          } catch (_) {
-            name = material.toString();
-          }
-          try {
-            final dynamic u = material.unit ?? material['unit'];
-            unit = u?.toString() ?? '0';
-          } catch (_) {
-            unit = '0';
-          }
-          try {
-            final dynamic p = material.price ?? material['price'];
-            price = p?.toString() ?? '0';
-          } catch (_) {
-            price = '0';
-          }
-        }
+        name = material.name;
+        unit = material.unit.toString();
+        price = material.price.toString();
+        debugPrint('Parsed material: $name, unit: $unit, price: $price');
       } catch (e) {
         debugPrint('initializeMaterials: error parsing material: $e');
       }
 
       materialsAndQuantity.add({
         'name': name,
-        // store quantity in 'unit' as a stringified integer; default to '0'
-        'unit': unit,
+        'unit': 'pcs',
         'price': price,
+        'count': '0',
       });
     }
     refresh();
@@ -120,8 +325,8 @@ class ContractorBookingController extends GetxController {
   void incrementMaterial(int index) {
     if (index < materialsAndQuantity.length) {
       final currentQuantity =
-          int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0;
-      materialsAndQuantity[index]['unit'] = (currentQuantity + 1).toString();
+          int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
+      materialsAndQuantity[index]['count'] = (currentQuantity + 1).toString();
       refresh();
     }
   }
@@ -129,9 +334,9 @@ class ContractorBookingController extends GetxController {
   void decrementMaterial(int index) {
     if (index < materialsAndQuantity.length) {
       final currentQuantity =
-          int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0;
+          int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
       if (currentQuantity > 0) {
-        materialsAndQuantity[index]['unit'] = (currentQuantity - 1).toString();
+        materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
         refresh();
       }
     }
@@ -139,7 +344,7 @@ class ContractorBookingController extends GetxController {
 
   bool isMaterialSelected(int index) {
     if (index < materialsAndQuantity.length) {
-      return (int.tryParse(materialsAndQuantity[index]['unit'] ?? '0') ?? 0) >
+      return (int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0) >
           0;
     }
     return false;
@@ -243,29 +448,43 @@ class ContractorBookingController extends GetxController {
     return result;
   }
 
-  // total payable amount
-  int calculateTotalPayableAmount() {
+  // ---------total payable amount-----------------
+
+  /// Duration in hours
+  int get durationInt => int.tryParse(durations.value) ?? 1;
+  int get totalDurationAmount => hourlyRate * durationInt;
+
+  int get materialsTotalAmount {
     int total = 0;
-
-    // Add hourly rate based on duration
-    int durationHours = int.tryParse(durations.value) ?? 1;
-
-    total += hourlyRate * durationHours;
-
-    // Add materials cost
     for (var material in materialsAndQuantity) {
-      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
+      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
       int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       total += quantity * pricePerUnit;
     }
+    return total;
+  }
+
+  int get weeklyTotalAmount => totalDurationAmount * selectedDates.length;
+
+  int calculateTotalPayableAmount() {
+    int total = 0;
+
+    if (bookingType.value == 'weekly' && selectedDates.length > 1) {
+      total += weeklyTotalAmount;
+    } else {
+      total += totalDurationAmount;
+    }
+    // Add materials cost
+    total += materialsTotalAmount;
 
     // Debug: Print total calculation breakdown
+
     debugPrint('=== Total Payable Amount Calculation ===');
     debugPrint('Hourly Rate: $hourlyRate');
-    debugPrint('Duration (Hours): $durationHours');
-    debugPrint('Total from Hourly Rate: ${hourlyRate * durationHours}');
+    debugPrint('Duration (Hours): $durationInt');
+    debugPrint('Total from Hourly Rate: ${hourlyRate * durationInt}');
     for (var material in materialsAndQuantity) {
-      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
+      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
       int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       debugPrint(
         'Material: ${material['name']}, Quantity: $quantity, Price/Unit: $pricePerUnit, Total: ${quantity * pricePerUnit}',
@@ -275,28 +494,29 @@ class ContractorBookingController extends GetxController {
     return total;
   }
 
-  /// Materials subtotal — sum(quantity * price)
-  int get materialsSubtotal {
-    int sum = 0;
-    for (var material in materialsAndQuantity) {
-      int quantity = int.tryParse(material['unit'] ?? '0') ?? 0;
-      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
-      sum += quantity * pricePerUnit;
-    }
-    return sum;
-  }
-
-  /// Return list of selected materials (quantity > 0)
-  List<Map<String, String>> get selectedMaterials {
-    return materialsAndQuantity.where((m) {
-      final q = int.tryParse(m['unit'] ?? '0') ?? 0;
-      return q > 0;
-    }).toList();
-  }
-
-  /// total amount combining hourly + materials
   int get totalAmount => calculateTotalPayableAmount();
-  int get totalDurationAmount => hourlyRate * int.parse(durations.value);
+
+
+  bool isNotEmptyField(){
+
+      if(startTimeController.value.text.isEmpty || endTimeController.value.text.isEmpty) {
+      EasyLoading.showInfo("Please select start and end time");
+      isLoading.value = false;
+      return false;
+    }
+    if (dayController.value.text.isEmpty) {
+      EasyLoading.showInfo("Please select day(s)");
+      isLoading.value = false;
+      return false;
+    }
+    if(selectedDates.isEmpty) {
+      EasyLoading.showInfo("Please select at least one date");
+      isLoading.value = false;
+      return false;
+    }
+    return true;
+  }
+
 
   Future<bool> createBooking({
     required String contractorId,
@@ -312,6 +532,8 @@ class ContractorBookingController extends GetxController {
       return false;
     }
 
+
+
     final List<Map<String, String>> questionsPayload =
         questionsAndAnswers.map((qa) {
           return {
@@ -320,7 +542,8 @@ class ContractorBookingController extends GetxController {
           };
         }).toList();
 
-    // Convert materials to expected shape and normalize price (remove trailing $ and parse number)
+    // Convert materials to the requested shape: {name, count, unit, price}
+
     final List<Map<String, dynamic>> materialsPayload =
         materialsAndQuantity.map((m) {
           String name = '';
@@ -334,8 +557,19 @@ class ContractorBookingController extends GetxController {
           // Remove any non-digit, non-dot characters (like $)
           final cleaned = rawPrice.replaceAll(RegExp(r"[^0-9.]"), '');
           final priceNum = double.tryParse(cleaned) ?? 0.0;
-          final unitNum = int.tryParse((m['unit'] ?? '0').toString()) ?? 0;
-          return {'name': name, 'unit': unitNum, 'price': priceNum};
+
+          // unit in our internal structure stores the quantity; rename to count
+          final countNum = int.tryParse((m['count'] ?? '0').toString()) ?? 0;
+
+          // keep unit if provided as part of material map, otherwise default to 'pcs'
+          final unitStr = (m['unit_name'] ?? m['count'] ?? 'pcs').toString();
+
+          return {
+            'name': name,
+            'count': countNum,
+            'unit': 'pcs',
+            'price': priceNum,
+          };
         }).toList();
 
     final payloadStartTime =
@@ -350,9 +584,15 @@ class ContractorBookingController extends GetxController {
       'questions': questionsPayload,
       'material': materialsPayload,
       'bookingType': bookingType.value,
-      'duration': int.tryParse(durations.value) ?? durations.value,
-      'day': dayController.value.text,
+      'duration': durationInt,
       'startTime': payloadStartTime,
+      'endTime': endTimeController.value.text,
+      'day':
+          bookingType.value == 'oneTime'
+              ? dayController.value.text
+              : selectedDates.toList(),
+      'price': calculateTotalPayableAmount(),
+      'rateHourly': hourlyRate,
     };
 
     EasyLoading.show(status: 'Creating booking...');
@@ -371,14 +611,58 @@ class ContractorBookingController extends GetxController {
         return true;
       } else {
         debugPrint('create booking failed: ${response.body}');
-        EasyLoading.showError("Failed to create booking. Please try again.");
+        // Try to show API error message if available
+        String errorMsg = "Something went wrong";
+        try {
+          final body = response.body;
+          dynamic decoded;
+          if (body is String && body.isNotEmpty) {
+            decoded = jsonDecode(body);
+          } else if (body is Map) {
+            decoded = body;
+          }
+
+          if (decoded is Map<String, dynamic>) {
+            // 1) Prefer explicit message field
+            if (decoded['message'] is String &&
+                (decoded['message'] as String).isNotEmpty) {
+              errorMsg = decoded['message'];
+            }
+
+            // 2) Then check errorSources array
+            if (errorMsg.isEmpty &&
+                decoded['errorSources'] is List &&
+                decoded['errorSources'].isNotEmpty) {
+              final firstError = decoded['errorSources'][0];
+              if (firstError is Map &&
+                  firstError['message'] is String &&
+                  (firstError['message'] as String).isNotEmpty) {
+                errorMsg = firstError['message'];
+              }
+            }
+
+            // 3) Some APIs return nested err or errors
+            if (errorMsg.isEmpty &&
+                decoded['err'] is Map &&
+                decoded['err']['message'] is String) {
+              errorMsg = decoded['err']['message'];
+            }
+          }
+        } catch (e) {
+          debugPrint('Error parsing error body: $e');
+        }
+
+        // Final fallback
+        if (errorMsg.isEmpty) errorMsg = 'Failed to create booking';
+
+        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
         isLoading.value = false;
         return false;
       }
     } catch (e) {
       isLoading.value = false;
       debugPrint('create booking error: $e');
-      EasyLoading.showError("Failed to create booking. Please try again.");
+      EasyLoading.showError("$e");
       return false;
     } finally {
       EasyLoading.dismiss();

@@ -143,19 +143,7 @@ class HomeController extends GetxController {
 
   // get contractor question based on subCategory
   Rx<RxStatus> getContractorQuestionStatus = Rx<RxStatus>(RxStatus.loading());
-  RxList<FaqData> contractorQuestions =
-      <FaqData>[
-        FaqData(
-          id: "1",
-          question: ["What is your experience?"],
-          subCategory: SubCategory(
-            id: "subcat1",
-            name: "Plumbing",
-            img: "https://example.com/plumbing.png",
-          ),
-          isDeleted: false,
-        ),
-      ].obs;
+  RxList<FaqData> contractorQuestions = <FaqData>[].obs;
 
   Future<bool> getContractorQuestions({required String subCategoryId}) async {
     getContractorQuestionStatus.value = RxStatus.loading();
@@ -188,17 +176,6 @@ class HomeController extends GetxController {
       refresh();
     }
   }
-
-  // // Helper method to get the list of contractors
-  // List<contractor_model.Datum> get contractors => getAllContactorModel.value.data ?? [];
-
-  // // Helper method to get contractors by category (if filtering is needed in the future)
-  // List<contractor_model.Datum> getContractorsByCategory(String categoryId) {
-  //   if (categoryId.isEmpty) return contractors;
-  //   // For now, return all contractors since the API doesn't seem to filter by category
-  //   // You can implement filtering logic here when the API supports it
-  //   return contractors;
-  // }
 
   //============= contactor details ==============
   Rx<RxStatus> getContractorReviewsStatus = Rx<RxStatus>(RxStatus.loading());

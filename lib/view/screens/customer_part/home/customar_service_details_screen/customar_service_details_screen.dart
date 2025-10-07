@@ -62,58 +62,89 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Obx(() {
-                        final isOneTime = controller.bookingType.value == 'OneTime';
+                        final isOneTime =
+                            controller.bookingType.value == 'oneTime';
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: () => controller.bookingType.value = 'OneTime',
+                              onTap:
+                                  (){
+                                    debugPrint('CustomarServiceDetailsScreen: One Time selected');
+                                    controller.selectedDates.length > 1
+                                        ? controller.dayController.value.clear()
+                                        : null;
+                                    controller.bookingType.value = 'oneTime';
+                                  },
+                                     
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: isOneTime ? AppColors.primary : AppColors.white,
+                                  color:
+                                      isOneTime
+                                          ? AppColors.primary
+                                          : AppColors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.timer, color: isOneTime ? AppColors.white : AppColors.black),
+                                    Icon(
+                                      Icons.timer,
+                                      color:
+                                          isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                    ),
                                     CustomText(
                                       left: 8.w,
                                       text: "One Time".tr,
                                       fontSize: 16.w,
                                       fontWeight: FontWeight.w500,
-                                      color: isOneTime ? AppColors.white : AppColors.black,
+                                      color:
+                                          isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => controller.bookingType.value = 'Weekly',
+                              onTap:
+                                  () => controller.bookingType.value = 'weekly',
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: !isOneTime ? AppColors.primary : AppColors.white,
+                                  color:
+                                      !isOneTime
+                                          ? AppColors.primary
+                                          : AppColors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.calendar_month,
-                                      color: !isOneTime ? AppColors.white : AppColors.black,
+                                      color:
+                                          !isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
                                     ),
                                     CustomText(
                                       left: 8.w,
                                       text: "Weekly".tr,
                                       fontSize: 16.w,
                                       fontWeight: FontWeight.w500,
-                                      color: !isOneTime ? AppColors.white : AppColors.black,
+                                      color:
+                                          !isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
                                     ),
                                   ],
                                 ),
@@ -144,7 +175,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Obx(() {
-                        final selected = int.tryParse(controller.durations.value) ?? 1;
+                        final selected =
+                            int.tryParse(controller.durations.value) ?? 1;
                         return Row(
                           children: List.generate(5, (index) {
                             final isSelected = selected == (index + 1);
@@ -154,15 +186,23 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                 // controller.durationController.text = controller.durations.value;
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
                                 child: CircleAvatar(
                                   radius: 15,
-                                  backgroundColor: isSelected ? AppColors.primary : AppColors.white,
+                                  backgroundColor:
+                                      isSelected
+                                          ? AppColors.primary
+                                          : AppColors.white,
                                   child: CustomText(
                                     text: "${index + 1}",
                                     fontSize: 16.w,
                                     fontWeight: FontWeight.w500,
-                                    color: isSelected ? AppColors.white : AppColors.black,
+                                    color:
+                                        isSelected
+                                            ? AppColors.white
+                                            : AppColors.black,
                                   ),
                                 ),
                               ),
@@ -173,46 +213,97 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 30.h),
-                  Obx(() => CustomFormCard(
-                        readOnly: true,
-                        onTap: () {
-                          debugPrint('CustomarServiceDetailsScreen: Date field tapped');
-                          controller.selectDate(context);
-                        },
-                        title: "Date".tr,
-                        hintText: controller.dayController.value.text.isEmpty
-                            ? "mm/dd/yyyy"
-                            : controller.dayController.value.text,
-                        prefixIcon: Icon(
-                          Icons.calendar_month,
-                          color: AppColors.black_08,
-                        ),
-                        suffixIcon: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: AppColors.black_08,
-                        ),
-                        controller: controller.dayController.value,
-                      )),
+                  Obx(
+                    () => CustomFormCard(
+                      readOnly: true,
+                      onTap: () {
+                        debugPrint(
+                          'CustomarServiceDetailsScreen: Date field tapped',
+                        );
+                      
+                        controller.selectDate(context,controller.bookingType.value == 'oneTime' );
+                      },
+                      title: controller.bookingType.value == 'oneTime'
+                          ? "Select Date".tr
+                          : "Select Multiple Dates ".tr,
+                      hintText:
+                          controller.dayController.value.text.isEmpty
+                              ? "mm/dd/yyyy"
+                              : controller.dayController.value.text,
+                      prefixIcon: Icon(
+                        Icons.calendar_month,
+                        color: AppColors.black_08,
+                      ),
+                      suffixIcon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.black_08,
+                      ),
+                      controller: controller.dayController.value,
+                    ),
+                  ),
                   SizedBox(height: 12.h),
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(() => CustomFormCard(
-                              readOnly: true,
-                              title: "Start time".tr,
-                              
-                              onTap: () {
-                                debugPrint('CustomarServiceDetailsScreen: From field tapped');
-                                controller.selectTime(context);
-                              },
-                              hintText: controller.startTimeController.value.text.isEmpty
-                                  ? "hh:mm AM/PM"
-                                  : controller.startTimeController.value.text,
-                              prefixIcon: Icon(Icons.access_time, color: AppColors.black_08),
-                              controller: controller.startTimeController.value,
-                            )),
+                        child: Obx(
+                          () => CustomFormCard(
+                            readOnly: true,
+                            title: "Start time".tr,
+
+                            onTap: () {
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.startTimeController.value,
+                              );
+                            },
+                            hintText:
+                                controller
+                                        .startTimeController
+                                        .value
+                                        .text
+                                        .isEmpty
+                                    ? "hh:mm"
+                                    : controller.startTimeController.value.text,
+                            prefixIcon: Icon(
+                              Icons.access_time,
+                              color: AppColors.black_08,
+                            ),
+                            controller: controller.startTimeController.value,
+                          ),
+                        ),
                       ),
-                   
+                      SizedBox(width: 10.w),
+
+                      Expanded(
+                        child: Obx(
+                          () => CustomFormCard(
+                            readOnly: true,
+                            title: "End time".tr,
+
+                            onTap: () {
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.endTimeController.value,
+                              );
+                            },
+                            hintText:
+                                controller.endTimeController.value.text.isEmpty
+                                    ? "hh:mm"
+                                    : controller.endTimeController.value.text,
+                            prefixIcon: Icon(
+                              Icons.access_time,
+                              color: AppColors.black_08,
+                            ),
+                            controller: controller.endTimeController.value,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -236,19 +327,23 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                   }),
                   CustomButton(
                     onTap: () {
-                      // Navigate or perform booking creation
-                      Get.toNamed(AppRoutes.customarServiceContractorDetailsScreen, 
-                      arguments: {
-                        'contractorId': contractorId,
-                        'subcategoryId': subcategoryId,
-                        'controller': controller,
-                        'contractorName': contractorName,
-                        'categoryName': categoryName,
-                        'subCategoryName': subCategoryName,
-                      });
+                       if (!controller.isNotEmptyField()) {
+            return;}
+          // Navigate or perform booking creation
+          Get.toNamed(
+            AppRoutes.customarServiceContractorDetailsScreen,
+            arguments: {
+              'contractorId': contractorId,
+                          'subcategoryId': subcategoryId,
+                          'controller': controller,
+                          'contractorName': contractorName,
+                          'categoryName': categoryName,
+                          'subCategoryName': subCategoryName,
+                        },
+                      );
                     },
                     title: "Continue".tr,
-                  )
+                  ),
                 ],
               ),
             ),
