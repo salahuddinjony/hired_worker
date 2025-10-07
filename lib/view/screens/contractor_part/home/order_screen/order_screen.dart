@@ -97,7 +97,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ?.toString() ??
                               ' - ',
                           dateTime: data.updatedAt!,
-                          price: data.price.toString(),
+                          price: data.totalAmount.toString(),
                           image: data.contractorId?.img,
                         );
                       },

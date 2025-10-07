@@ -42,7 +42,7 @@ class CustomServiceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (image != null && image!.isEmpty)
+            if (image != null && image!.isNotEmpty)
               CustomNetworkImage(
                 imageUrl: image!,
                 borderRadius: BorderRadius.only(
