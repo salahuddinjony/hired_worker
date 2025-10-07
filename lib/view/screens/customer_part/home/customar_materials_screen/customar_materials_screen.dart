@@ -5,6 +5,7 @@ import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'widget/select_materials_row.dart';
@@ -26,13 +27,11 @@ class CustomarMaterialsScreen extends StatelessWidget {
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (materials.isNotEmpty) {
-        controller.initializeMaterials(materials);
+        controller.initializeMaterials(materials as dynamic);
       } else {
         // Fallback: initialize with some default materials if none provided
         controller.initializeMaterials([
-          {'name': 'Power Point', 'price': '10\$'},
-          {'name': 'Smoke Alarm', 'price': '10\$'},
-          {'name': 'Circuit Breaker', 'price': '10\$'},
+          MaterialsModel(name: 'Material A', unit: 'pcs', price: 10, id: '1'), 
         ]);
       }
     });
@@ -78,8 +77,9 @@ class CustomarMaterialsScreen extends StatelessWidget {
                                       controller.materialsAndQuantity[index];
                                   return SelectMaterialsRow(
                                     name: material['name'],
-                                    unit: material['price'] ?? '0',
-                                    quantity: material['unit'] ?? '0',
+                                    unit: material['unit'] ?? 'pcs',
+                                    price: material['price'] ?? '0',
+                                    count: material['count'] ?? '0',
                                     isSelected: controller.isMaterialSelected(
                                       index,
                                     ),
@@ -104,6 +104,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 100, right: 20, left: 20),
         child: CustomButton(
           onTap: () {
+           
             debugPrint(
               'Selected Materials: ${controller.materialsAndQuantity.where((m) => controller.isMaterialSelected(controller.materialsAndQuantity.indexOf(m))).toList()}',
             );

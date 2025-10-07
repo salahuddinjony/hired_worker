@@ -28,7 +28,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
     Map<String, dynamic> args = Get.arguments ?? {};
-    // Attempt to read provided contractor details; it may be null when only id is passed
+   
     final dynamic maybeContractor = args['contractorDetails'];
     allContractor? contractorData =
         maybeContractor is allContractor ? maybeContractor : null;
@@ -36,7 +36,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
     debugPrint("Received userId: $userId");
 
     if (userId.isNotEmpty) {
-      // If we don't have full contractor data, try to find it in controller cached list
+    
       if (contractorData == null) {
         try {
           final found = homeController.getAllContactorList.firstWhere(
@@ -44,11 +44,11 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           );
           contractorData = found;
         } catch (_) {
-          // not found in cached list
+        
         }
       }
 
-      // Fetch reviews regardless; controller handles loading state
+     
       homeController.getContractorReviews(userId: maybeContractor.id);
     }
 
@@ -119,7 +119,6 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           final String rateHourlyStr =
               contractorData?.rateHourly.toString() ?? '';
           final List<String> skills = contractorData?.skills ?? <String>[];
-          final itemsMaterials = contractorData?.materials ?? [];
           final scheduleModel = contractorData?.myScheduleId;
           final String bio = contractorData?.bio ?? '';
 
@@ -405,54 +404,15 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                         debugPrint("Subcategory ID: $subCategoryId");
 
                         if (isSuccess) {
-                          final materialMaps =
-                              itemsMaterials.map((m) {
-                                if (m is Map<String, dynamic>) {
-                                  final map = m as Map<String, dynamic>;
-                                  return {
-                                    'name': (map['name'] ?? '').toString(),
-                                    'unit': (map['unit'] ?? '').toString(),
-                                    'price': (map['price'] ?? 0),
-                                    '_id':
-                                        (map['_id'] ?? map['id'] ?? '')
-                                            .toString(),
-                                  };
-                                }
 
-                                try {
-                                  final name =
-                                      (m as dynamic).name?.toString() ?? '';
-                                  final unit =
-                                      (m as dynamic).unit?.toString() ?? '';
-                                  final price = (m as dynamic).price ?? 0;
-                                  final id =
-                                      (m as dynamic)._id ??
-                                      (m as dynamic).id ??
-                                      '';
-                                  return {
-                                    'name': name,
-                                    'unit': unit,
-                                    'price': price,
-                                    '_id': id?.toString() ?? '',
-                                  };
-                                } catch (_) {
-                                  return {
-                                    'name': m.toString(),
-                                    'unit': '0',
-                                    'price': 0,
-                                    '_id': '',
-                                  };
-                                }
-                              }).toList();
-
+                          final List<MaterialsModel> itemsMaterials = 
+                              contractorData?.materials ?? [];
                           Get.toNamed(
                             AppRoutes.customarQaScreen,
                             arguments: {
-                              // Prefer contractor internal document id if available,
-                              // otherwise fall back to the userId we already had.
-                              'contractorId': contractorData?.id ?? userId,
+                              'contractorId': contractorData?.userId.id,
                               'subcategoryId': subCategoryId,
-                              'materials': materialMaps,
+                              'materials': itemsMaterials,
                               'questions': homeController.contractorQuestions,
                               'hourlyRate': rateHourlyStr,
                               'contractorName': fullName,

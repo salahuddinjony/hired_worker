@@ -71,7 +71,7 @@ class allContractor {
   final bool hasActiveSubscription;
   final bool isDeleted;
   final List<String> skills;
-  final List<MaterialModel> materials;
+  final List<MaterialsModel> materials;
   final String createdAt;
   final String updatedAt;
   final UserId userId;
@@ -182,14 +182,14 @@ class allContractor {
       // and only map valid objects to avoid runtime parse errors.
       materials: (() {
         final raw = json['materials'];
-        if (raw == null) return <MaterialModel>[];
+        if (raw == null) return <MaterialsModel>[];
         if (raw is List) {
           return raw
               .where((e) => e != null && e is Map<String, dynamic>)
-              .map<MaterialModel>((e) => MaterialModel.fromJson(e as Map<String, dynamic>))
+              .map<MaterialsModel>((e) => MaterialsModel.fromJson(e as Map<String, dynamic>))
               .toList();
         }
-        return <MaterialModel>[];
+        return <MaterialsModel>[];
       })(),
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
@@ -198,21 +198,21 @@ class allContractor {
   }
 }
 
-class MaterialModel {
+class MaterialsModel {
   final String name;
   final String unit;
   final int price;
   final String id;
 
-  MaterialModel({
+  MaterialsModel({
     required this.name,
     required this.unit,
     required this.price,
     required this.id,
   });
 
-  factory MaterialModel.fromJson(Map<String, dynamic> json) {
-    return MaterialModel(
+  factory MaterialsModel.fromJson(Map<String, dynamic> json) {
+    return MaterialsModel(
       name: json['name'] ?? '',
       unit: json['unit'] ?? '',
       price: json['price'] ?? 0,

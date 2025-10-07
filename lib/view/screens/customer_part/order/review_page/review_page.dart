@@ -68,15 +68,15 @@ class ReviewPage extends StatelessWidget {
               onTap: () async {
                 // If booking id is passed we can forward it. BookingArg may be a BookingResult or a map
                 final booking = passed;
-                String? bookingId;
+                String? contractorId;
                 if (booking != null) {
-                  if (booking is Map && booking.containsKey('id')) bookingId = booking['id']?.toString();
-                  else if (booking is Map && booking.containsKey('bookingId')) bookingId = booking['bookingId']?.toString();
-                  else if (booking != null && booking.id != null) bookingId = booking.id.toString();
+                  if (booking is Map && booking.containsKey('id')) contractorId = booking['id']?.toString();
+                  else if (booking is Map && booking.containsKey('bookingId')) contractorId = booking['bookingId']?.toString();
+                  else if (booking != null && booking.id != null) contractorId = booking.id.toString();
                 }
 
                 final success = await controller.submitReview(
-                  bookingId: bookingId,
+                  contractorId: contractorId,
                   rating: controller.rating.value,
                   review: controller.reviewTextController.text,
                 );

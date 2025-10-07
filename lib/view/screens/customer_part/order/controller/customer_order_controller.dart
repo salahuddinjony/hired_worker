@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,15 +45,16 @@ class CustomerOrderController extends GetxController {
     }
   }
 
-  Future<bool> submitReview({String? bookingId, required int rating, String? review}) async {
+  Future<bool> submitReview({String? contractorId, required int rating, String? review}) async {
     try {
     final body = {
-        'bookingId': bookingId,
-        'rating': rating,
-        'review': review,
+        // 'contractorId': "68e37eace27dfa0359e49b82",
+        'contractorId': contractorId,
+        'stars': rating,
+        'description': review,
       };
       EasyLoading.show(status: 'Submitting review...');
-      final response = await ApiClient.postData(ApiUrl.submitReview, body);
+      final response = await ApiClient.postData(ApiUrl.submitReview, jsonEncode(body));
       if (response.statusCode == 200 || response.statusCode == 201) {
         EasyLoading.showSuccess('Review submitted successfully');
         print('Review submitted successfully');

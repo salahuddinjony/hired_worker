@@ -5,7 +5,8 @@ import '../../../../../components/custom_text/custom_text.dart';
 class SelectMaterialsRow extends StatelessWidget {
   final String? name;
   final String? unit;
-  final String quantity;
+  final String price;
+  final String count;
   final bool isSelected;
   final VoidCallback? onIncrement;
   final VoidCallback? onDecrement;
@@ -14,7 +15,8 @@ class SelectMaterialsRow extends StatelessWidget {
     super.key, 
     this.name,
     this.unit,
-    required this.quantity,
+    this.count = '0',
+    required this.price,
     required this.isSelected,
     this.onIncrement,
     this.onDecrement,
@@ -36,8 +38,8 @@ class SelectMaterialsRow extends StatelessWidget {
                   if (value == true && onIncrement != null) {
                     onIncrement!();
                   } else if (value == false && onDecrement != null) {
-                    // Safely parse quantity; if invalid default to 0
-                    int current = int.tryParse(quantity) ?? 0;
+                    // Safely parse price; if invalid default to 0
+                    double current = double.tryParse(price) ?? 0;
                     // Decrement until zero
                     while (current > 0) {
                       onDecrement!();
@@ -55,13 +57,13 @@ class SelectMaterialsRow extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
-                  if (unit != null)
-                    CustomText(
-                      text: "Unit: $unit", 
+                  CustomText(
+                      text: "Unit price: $price", 
                       fontSize: 12.w,
                       fontWeight: FontWeight.w400,
                       color: AppColors.black_08,
-                    ),
+                    ), 
+                    
                 ],
               ),
             ],
@@ -77,7 +79,7 @@ class SelectMaterialsRow extends StatelessWidget {
                 ),
               ),
               CustomText(
-                text: int.tryParse(quantity) != null ? quantity : '0',
+                text: count,
                 fontSize: 24.w,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,

@@ -4,9 +4,6 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-// ...existing imports...
-
-// ...existing imports...
 import '../controller/customer_order_controller.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import '../model/customer_order_model.dart';
@@ -68,7 +65,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                           await customerOrderController.getBookingReport();
                         },
                         child: buildBookingList(
-                          requests.isEmpty ? dummyRequests() : requests,
+                       requests,
                         ),
                       ),
                       RefreshIndicator(
@@ -76,7 +73,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                           await customerOrderController.getBookingReport();
                         },
                         child: buildBookingList(
-                          completed.isEmpty ? dummyCompleted() : completed,
+                          completed,
                         ),
                       ),
                     ],
@@ -93,64 +90,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
     );
   }
 
-  // Dummy data generators
-  List<BookingResult> dummyRequests() {
-    return List.generate(
-      3,
-      (i) => BookingResult(
-        id: 'R-100${i + 1}',
-        customerId: 'C-123',
-        contractorId: null,
-        subCategoryId: SubCategory(id: 'sc${i + 1}', name: 'House Cleaning'),
-        bookingType: 'One Time',
-        status: i == 0 ? 'pending' : 'in_progress',
-        paymentStatus: 'unpaid',
-        questions: [],
-        material: [],
-        bookingDate: '09 Dec',
-        day: 'Tue',
-        startTime: '8:00 AM',
-        endTime: '9:00 AM',
-        duration: 60,
-        timeSlots: ['8:00-9:00'],
-        price: 50,
-        rateHourly: 50,
-        files: [],
-        isDeleted: false,
-        createdAt: '',
-        updatedAt: '',
-      ),
-    );
-  }
 
-  List<BookingResult> dummyCompleted() {
-    return List.generate(
-      2,
-      (i) => BookingResult(
-        id: 'C-200${i + 1}',
-        customerId: 'C-123',
-        contractorId: 'Thomas',
-        subCategoryId: SubCategory(id: 'scc${i + 1}', name: 'Electrician'),
-        bookingType: 'One Time',
-        status: 'completed',
-        paymentStatus: 'paid',
-        questions: [],
-        material: [],
-        bookingDate: '05 Dec',
-        day: 'Fri',
-        startTime: '10:00 AM',
-        endTime: '12:00 PM',
-        duration: 120,
-        timeSlots: ['10:00-12:00'],
-        price: 120,
-        rateHourly: 60,
-        files: [],
-        isDeleted: false,
-        createdAt: '',
-        updatedAt: '',
-      ),
-    );
-  }
 
   Widget buildBookingList(List<BookingResult> list) {
     if (list.isEmpty)
