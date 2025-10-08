@@ -62,7 +62,7 @@ class allContractor {
   final SubCategoryModel subCategory;
   final CategoryModel category;
   final String skillsCategory;
-  final int ratings;
+  final double ratings;
   final String subscriptionStatus;
   final String customerId;
   final String paymentMethodId;
@@ -115,13 +115,13 @@ class allContractor {
       city: json['city'] ?? '',
       language: json['language'] ?? '',
       location: json['location'] ?? '',
-      rateHourly: json['rateHourly'] ?? 0,
-      balance: json['balance'] ?? 0,
+      rateHourly: (json['rateHourly'] ?? 0).toInt(),
+      balance: (json['balance'] ?? 0).toInt(),
       // category and subCategory can come as objects or as ids/strings
       category: CategoryModel.fromDynamic(json['category']),
       subCategory: SubCategoryModel.fromDynamic(json['subCategory']),
       skillsCategory: json['skillsCategory'] ?? '',
-      ratings: json['ratings'] ?? 0,
+      ratings: (json['ratings'] ?? 0).toDouble(),
       subscriptionStatus: json['subscriptionStatus'] ?? '',
       customerId: json['customerId'] ?? '',
       paymentMethodId: json['paymentMethodId'] ?? '',

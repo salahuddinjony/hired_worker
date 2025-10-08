@@ -5,6 +5,7 @@ import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/components/extension/extension.dart';
 import '../model/customer_order_model.dart';
 
 typedef BookingTapCallback = void Function(BookingResult booking);
@@ -60,7 +61,7 @@ class BookingCard extends StatelessWidget {
                             bottom: 4.h,
                           ),
                           CustomText(
-                            text: 'Reference Code: #${booking.id ?? ''}',
+                            text: '#${booking.bookingId ?? ''}',
                             fontSize: 12.w,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xff6F767E),
@@ -111,7 +112,7 @@ class BookingCard extends StatelessWidget {
                     children: [
                       CustomText(
                         text:
-                            '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${booking.bookingDate ?? ''}',
+                            '${booking.startTime ?? ''} - ${booking.endTime ?? ''}, ${(booking.bookingDate != null && booking.bookingDate!.isNotEmpty) ? DateTime.parse(booking.bookingDate!).formatDate() : ''}',
                         fontSize: 16.w,
                         fontWeight: FontWeight.w700,
                         color: AppColors.black,
@@ -144,7 +145,7 @@ class BookingCard extends StatelessWidget {
                           CustomText(
                             text:
                                 booking.contractorId != null
-                                    ? '${booking.contractorId}'
+                                    ? '${booking.contractorId?.fullName.safeCap() ?? ''}'
                                     : 'Not Assigned',
                             fontSize: 16.w,
                             fontWeight: FontWeight.w700,

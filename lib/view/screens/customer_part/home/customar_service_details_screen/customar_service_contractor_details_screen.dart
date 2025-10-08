@@ -395,7 +395,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           subcategoryId: subcategoryId,
                         );
                         if (bookingSuccess) {
-                          Get.toNamed(AppRoutes.customerHomeScreen);
+                          Get.toNamed(AppRoutes.customerRequestHistoryScreen);
                         } else {
                           debugPrint('Booking creation failed');
                         }

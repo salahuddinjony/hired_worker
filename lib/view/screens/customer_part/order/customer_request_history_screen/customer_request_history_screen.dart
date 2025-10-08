@@ -43,6 +43,8 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   final all = customerOrderController.bookingReportList;
+                  if(customerOrderController.getBookingReportStatus.value.isLoading)
+                    return Center(child: CircularProgressIndicator());
                   final completed =
                       all
                           .where(

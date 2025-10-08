@@ -26,7 +26,8 @@ class ReviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CustomerOrderController>();
-    final passed = Get.arguments;
+    final Map<String, dynamic> args = Get.arguments;
+    final String contractorId= args['contractorId'] ?? '';
 
     return Scaffold(
       appBar: AppBar(
@@ -66,15 +67,7 @@ class ReviewPage extends StatelessWidget {
             CustomButton(
               title: 'Review'.tr,
               onTap: () async {
-                // If booking id is passed we can forward it. BookingArg may be a BookingResult or a map
-                final booking = passed;
-                String? contractorId;
-                if (booking != null) {
-                  if (booking is Map && booking.containsKey('id')) contractorId = booking['id']?.toString();
-                  else if (booking is Map && booking.containsKey('bookingId')) contractorId = booking['bookingId']?.toString();
-                  else if (booking != null && booking.id != null) contractorId = booking.id.toString();
-                }
-
+            
                 final success = await controller.submitReview(
                   contractorId: contractorId,
                   rating: controller.rating.value,
