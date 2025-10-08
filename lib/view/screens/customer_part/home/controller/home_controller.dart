@@ -121,21 +121,34 @@ class HomeController extends GetxController {
         query: {if (subCategoryId != null) 'subCategory': subCategoryId},
       );
 
-      getAllServicesContractorStatus.value = RxStatus.success();
-      refresh();
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.body;
-        getAllContactorList.value = ContractorResponse.fromJson(data).data;
+        debugPrint('Raw API response: $data');
+        
+        // Parse the response
+        final contractorResponse = ContractorResponse.fromJson(data);
+        getAllContactorList.value = contractorResponse.data;
+        
         debugPrint(
           'contractor data length: ${getAllContactorList.length} contractors',
         );
+        
+        // Debug: Print each contractor's basic info
+        for (int i = 0; i < getAllContactorList.length; i++) {
+          final contractor = getAllContactorList[i];
+          debugPrint('Contractor $i: ${contractor.userId.fullName}, Skills: ${contractor.skillsCategory}');
+        }
+        
+        getAllServicesContractorStatus.value = RxStatus.success();
+        refresh();
         // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getAllServicesContractorStatus.value = RxStatus.error();
+        showCustomSnackBar(response.body['message'] ?? " ", isError: true);
       }
     } catch (e) {
-      getAllServicesContractorStatus.value = RxStatus.success();
+      debugPrint('Error in getAllContractor: $e');
+      getAllServicesContractorStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }

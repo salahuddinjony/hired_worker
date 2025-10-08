@@ -28,28 +28,26 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
     Map<String, dynamic> args = Get.arguments ?? {};
-   
-    final dynamic maybeContractor = args['contractorDetails'];
+
+    final dynamic contractor = args['contractorDetails'];
     allContractor? contractorData =
-        maybeContractor is allContractor ? maybeContractor : null;
+        contractor is allContractor ? contractor : null;
     String userId = args['id']?.toString() ?? contractorData?.userId.id ?? '';
     debugPrint("Received userId: $userId");
 
     if (userId.isNotEmpty) {
-    
       if (contractorData == null) {
         try {
           final found = homeController.getAllContactorList.firstWhere(
             (c) => c.userId.id == userId,
           );
           contractorData = found;
-        } catch (_) {
-        
-        }
+        } catch (_) {}
       }
 
-     
-      homeController.getContractorReviews(userId: maybeContractor.id);
+      if (contractorData != null) {
+        homeController.getContractorReviews(userId: contractorData.userId.id);
+      }
     }
 
     return Scaffold(
@@ -98,6 +96,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           final String imgUrl =
               contractorData?.userId.img ??
               (reviewUser != null ? (reviewUser['img'] ?? '') : '');
+          debugPrint("Image URL for contractor: '$imgUrl'");
+          debugPrint("Contractor data exists: ${contractorData != null}");
+          debugPrint("Contractor userId.img: '${contractorData?.userId.img}'");
+          
           final String fullName =
               contractorData?.userId.fullName ??
               (reviewUser != null ? (reviewUser['fullName'] ?? '') : '');
@@ -404,8 +406,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                         debugPrint("Subcategory ID: $subCategoryId");
 
                         if (isSuccess) {
-
-                          final List<MaterialsModel> itemsMaterials = 
+                          final List<MaterialsModel> itemsMaterials =
                               contractorData?.materials ?? [];
                           Get.toNamed(
                             AppRoutes.customarQaScreen,

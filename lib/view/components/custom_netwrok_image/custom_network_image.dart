@@ -29,24 +29,59 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      imageBuilder: (context, imageProvider) => Container(
+    // Add debug print and validation
+    debugPrint("CustomNetworkImage loading URL: '$imageUrl'");
+    
+    // Check if URL is empty or invalid
+    if (imageUrl.isEmpty || imageUrl == 'null') {
+      return Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
           border: border,
+          color: Colors.grey.withValues(alpha: 0.6),
           borderRadius: borderRadius,
           shape: boxShape,
-          color: backgroundColor,
-          image: DecorationImage(
-            image: imageProvider,
-            fit: fit,
-            colorFilter: colorFilter,
-          ),
         ),
-        child: child,
-      ),
+        child: child ?? const Icon(Icons.person, color: Colors.white),
+      );
+    }
+    
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      imageBuilder: (context, imageProvider) {
+        debugPrint("SUCCESS: Image loaded successfully for URL: $imageUrl");
+        return Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            border: border,
+            borderRadius: borderRadius,
+            shape: boxShape,
+            color: backgroundColor,
+          ),
+          child: Stack(
+            children: [
+              // Background image
+              Container(
+                height: height,
+                width: width,
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  shape: boxShape,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: fit,
+                    colorFilter: colorFilter,
+                  ),
+                ),
+              ),
+              // Overlay child (like AppBar)
+              if (child != null) child!,
+            ],
+          ),
+        );
+      },
       placeholder: (context, url) => Shimmer.fromColors(
           baseColor: Colors.grey.withValues(alpha: 0.6),
           highlightColor: Colors.grey.withValues(alpha: 0.3),
@@ -61,17 +96,20 @@ class CustomNetworkImage extends StatelessWidget {
             ),
             child: child,
           )),
-      errorWidget: (context, url, error) => Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          border: border,
-          color: Colors.grey.withValues(alpha: 0.6),
-          borderRadius: borderRadius,
-          shape: boxShape,
-        ),
-        child: const Icon(Icons.error),
-      ),
+      errorWidget: (context, url, error) {
+        debugPrint("Error loading image: $error");
+        return Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            border: border,
+            color: Colors.grey.withValues(alpha: 0.6),
+            borderRadius: borderRadius,
+            shape: boxShape,
+          ),
+          child: child ?? const Icon(Icons.person, color: Colors.white),
+        );
+      },
     );
   }
 }
