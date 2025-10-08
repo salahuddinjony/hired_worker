@@ -286,10 +286,13 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ? CustomButton(
               onTap: () {
                 // Navigate to ReviewPage and pass the booking as argument
-                Get.to(() => const ReviewPage(), arguments: {
-                  'contractorId': booking.contractorId?.id,
-                });
-                debugPrint('Navigating to ReviewPage with contractorId: ${booking.contractorId?.id}');
+                Get.to(
+                  () => const ReviewPage(),
+                  arguments: {'contractorId': booking.contractorId?.id},
+                );
+                debugPrint(
+                  'Navigating to ReviewPage with contractorId: ${booking.contractorId?.id}',
+                );
               },
               title: "Review".tr,
             )
@@ -302,5 +305,4 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
       ],
     );
   }
-
 }
