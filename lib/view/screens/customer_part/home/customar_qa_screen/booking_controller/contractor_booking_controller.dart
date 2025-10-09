@@ -8,8 +8,6 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/view/screens/contractor_part/profile/model/material_model.dart';
-import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 class ContractorBookingController extends GetxController {
   int hourlyRate = 0;
@@ -26,14 +24,12 @@ class ContractorBookingController extends GetxController {
   List<Map<String, dynamic>> questions = [];
 
   RxBool isLoading = false.obs;
-  RxString bookingType = 'oneTime'.obs; // OneTime or Recurring
-  RxString durations = '1'.obs; // 1,2,3,4,5
+  RxString bookingType = 'oneTime'.obs; 
+  RxString durations = '1'.obs;
   Rx<TextEditingController> startTimeController = TextEditingController().obs;
   Rx<TextEditingController> dayController = TextEditingController().obs;
   Rx<TextEditingController> endTimeController = TextEditingController().obs;
-  // When multiple dates are selected (for recurring bookings), store them here
   RxList<String> selectedDates = <String>[].obs;
-  // Expose selected date/time as observable strings for the UI to bind to
   RxString selectedHour = ''.obs;
   RxString selectedTime = ''.obs;
 
@@ -295,28 +291,75 @@ class ContractorBookingController extends GetxController {
     refresh();
   }
 
-  void initializeMaterials(List<MaterialsModel> materials) {
+  void initializeMaterials(dynamic materials) {
     materialsAndQuantity.clear();
 
-    for (var material in materials) {
+    if (materials == null) {
+      refresh();
+      return;
+    }
+
+    // Handle both List<MaterialsModel> and List<MaterialItem>
+    List<dynamic> materialsList = materials is List ? materials : [materials];
+
+    for (var material in materialsList) {
       String name = 'Unknown';
-      String unit = '0';
+      String unit = 'pcs';
       String price = '0';
+      String count = '0'; // Default count
 
       try {
-        name = material.name;
-        unit = material.unit.toString();
-        price = material.price.toString();
-        debugPrint('Parsed material: $name, unit: $unit, price: $price');
+        // Handle MaterialsModel type
+        if (material.runtimeType.toString().contains('MaterialsModel')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          // MaterialsModel doesn't have count, keep default '0'
+        }
+        // Handle MaterialItem type (from booking data)
+        else if (material.runtimeType.toString().contains('MaterialItem')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          count = material.count?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle Map/JSON data
+        else if (material is Map<String, dynamic>) {
+          name = material['name']?.toString() ?? 'Unknown';
+          unit = material['unit']?.toString() ?? 'pcs';
+          price = material['price']?.toString() ?? '0';
+          count =
+              material['count']?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle dynamic objects with properties
+        else {
+          try {
+            name = material.name?.toString() ?? 'Unknown';
+            unit = material.unit?.toString() ?? 'pcs';
+            price = material.price?.toString() ?? '0';
+            // Try to get count if it exists
+            try {
+              count = material.count?.toString() ?? '0';
+            } catch (e) {
+              count = '0'; // Fallback if count doesn't exist
+            }
+          } catch (e) {
+            debugPrint('Error accessing material properties: $e');
+          }
+        }
+
+        debugPrint(
+          'Parsed material: $name, unit: $unit, price: $price, count: $count',
+        );
       } catch (e) {
         debugPrint('initializeMaterials: error parsing material: $e');
       }
 
       materialsAndQuantity.add({
         'name': name,
-        'unit': 'pcs',
+        'unit': unit,
         'price': price,
-        'count': '0',
+        'count': count, // Use the extracted count value
       });
     }
     refresh();
@@ -496,10 +539,9 @@ class ContractorBookingController extends GetxController {
 
   int get totalAmount => calculateTotalPayableAmount();
 
-
-  bool isNotEmptyField(){
-
-      if(startTimeController.value.text.isEmpty || endTimeController.value.text.isEmpty) {
+  bool isNotEmptyField() {
+    if (startTimeController.value.text.isEmpty ||
+        endTimeController.value.text.isEmpty) {
       EasyLoading.showInfo("Please select start and end time");
       isLoading.value = false;
       return false;
@@ -509,14 +551,13 @@ class ContractorBookingController extends GetxController {
       isLoading.value = false;
       return false;
     }
-    if(selectedDates.isEmpty) {
+    if (selectedDates.isEmpty) {
       EasyLoading.showInfo("Please select at least one date");
       isLoading.value = false;
       return false;
     }
     return true;
   }
-
 
   Future<bool> createBooking({
     required String contractorId,
@@ -531,8 +572,6 @@ class ContractorBookingController extends GetxController {
       isLoading.value = false;
       return false;
     }
-
-
 
     final List<Map<String, String>> questionsPayload =
         questionsAndAnswers.map((qa) {
@@ -561,9 +600,6 @@ class ContractorBookingController extends GetxController {
           // unit in our internal structure stores the quantity; rename to count
           final countNum = int.tryParse((m['count'] ?? '0').toString()) ?? 0;
 
-          // keep unit if provided as part of material map, otherwise default to 'pcs'
-          final unitStr = (m['unit_name'] ?? m['count'] ?? 'pcs').toString();
-
           return {
             'name': name,
             'count': countNum,
@@ -591,7 +627,11 @@ class ContractorBookingController extends GetxController {
           bookingType.value == 'oneTime'
               ? dayController.value.text
               : selectedDates.toList(),
-      'price': calculateTotalPayableAmount(),
+      'price':
+          bookingType.value == 'weekly' && selectedDates.length > 1
+              ? weeklyTotalAmount
+              : totalDurationAmount,
+      'totalAmount': calculateTotalPayableAmount(),
       'rateHourly': hourlyRate,
     };
 
@@ -662,6 +702,174 @@ class ContractorBookingController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       debugPrint('create booking error: $e');
+      EasyLoading.showError("$e");
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+      isLoading.value = false;
+      refresh();
+    }
+  }
+
+  Future<bool> updateBooking({
+    required String bookingId,
+    required String contractorId,
+    required String subcategoryId,
+  }) async {
+    isLoading.value = true;
+
+    final customerId = await SharePrefsHelper.getString(AppConstants.userId);
+
+    if (contractorId.trim().isEmpty) {
+      EasyLoading.showError("Invalid contractor id");
+      isLoading.value = false;
+      return false;
+    }
+
+    if (bookingId.trim().isEmpty) {
+      EasyLoading.showError("Invalid booking id");
+      isLoading.value = false;
+      return false;
+    }
+
+    if (!isNotEmptyField()) {
+      return false;
+    }
+
+    final List<Map<String, String>> questionsPayload =
+        questionsAndAnswers.map((qa) {
+          return {
+            'question': qa['question'] ?? '',
+            'answer': qa['answer'] ?? '',
+          };
+        }).toList();
+
+    // Convert materials to the requested shape: {name, count, unit, price}
+    final List<Map<String, dynamic>> materialsPayload =
+        materialsAndQuantity.map((m) {
+          String name = '';
+          try {
+            name = (m['name'] ?? '').toString();
+          } catch (_) {
+            name = '';
+          }
+
+          final rawPrice = (m['price'] ?? '').toString();
+          // Remove any non-digit, non-dot characters (like $)
+          final cleaned = rawPrice.replaceAll(RegExp(r"[^0-9.]"), '');
+          final priceNum = double.tryParse(cleaned) ?? 0.0;
+
+          // unit in our internal structure stores the quantity; rename to count
+          final countNum = int.tryParse((m['count'] ?? '0').toString()) ?? 0;
+
+          return {
+            'name': name,
+            'count': countNum,
+            'unit': 'pcs',
+            'price': priceNum,
+          };
+        }).toList();
+
+    final payloadStartTime =
+        startTimeController.value.text.isNotEmpty
+            ? startTimeController.value.text
+            : selectedTime.value;
+
+    final bookingData = {
+      'customerId': customerId,
+      'contractorId': contractorId,
+      'subCategoryId': subcategoryId,
+      'questions': questionsPayload,
+      'material': materialsPayload,
+      'bookingType': bookingType.value,
+      'duration': durationInt,
+      'startTime': payloadStartTime,
+      'endTime': endTimeController.value.text,
+      'day':
+          bookingType.value == 'oneTime'
+              ? selectedDates.isNotEmpty
+                  ? selectedDates.first
+                  : dayController.value.text
+              : selectedDates.toList(),
+      'price':
+          bookingType.value == 'weekly' && selectedDates.length > 1
+              ? weeklyTotalAmount
+              : totalDurationAmount,
+      'totalAmount': calculateTotalPayableAmount(),
+      'rateHourly': hourlyRate,
+    };
+
+    EasyLoading.show(status: 'Updating booking...');
+    debugPrint('Updating booking with ID: $bookingId');
+    debugPrint('Update data: $bookingData');
+
+    try {
+      // Assuming the API endpoint for updating is a PUT request to /booking/{id}
+      final response = await ApiClient.putData(
+        '${ApiUrl.createBooking}/$bookingId', // Assuming createBooking base URL + /{id}
+        jsonEncode(bookingData),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        isLoading.value = false;
+        final data = response.body;
+        debugPrint('update booking response: $data');
+        EasyLoading.showSuccess('Booking updated successfully!');
+        return true;
+      } else {
+        debugPrint('update booking failed: ${response.body}');
+        // Try to show API error message if available
+        String errorMsg = "Something went wrong";
+        try {
+          final body = response.body;
+          Map<String, dynamic>? decoded;
+
+          if (body is String) {
+            decoded = jsonDecode(body);
+          } else if (body is Map) {
+            decoded = Map<String, dynamic>.from(body);
+          }
+
+          if (decoded is Map<String, dynamic>) {
+            // 1) Prefer explicit message field
+            if (decoded['message'] is String &&
+                (decoded['message'] as String).isNotEmpty) {
+              errorMsg = decoded['message'];
+            }
+
+            // 2) Then check errorSources array
+            if (errorMsg.isEmpty &&
+                decoded['errorSources'] is List &&
+                decoded['errorSources'].isNotEmpty) {
+              final firstError = decoded['errorSources'][0];
+              if (firstError is Map &&
+                  firstError['message'] is String &&
+                  (firstError['message'] as String).isNotEmpty) {
+                errorMsg = firstError['message'];
+              }
+            }
+
+            // 3) Some APIs return nested err or errors
+            if (errorMsg.isEmpty &&
+                decoded['err'] is Map &&
+                decoded['err']['message'] is String) {
+              errorMsg = decoded['err']['message'];
+            }
+          }
+        } catch (e) {
+          debugPrint('Error parsing error body: $e');
+        }
+
+        // Final fallback
+        if (errorMsg.isEmpty) errorMsg = 'Failed to update booking';
+
+        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        isLoading.value = false;
+        return false;
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint('update booking error: $e');
       EasyLoading.showError("$e");
       return false;
     } finally {
