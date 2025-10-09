@@ -25,58 +25,95 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: DefaultTabController(
-          length: 2,
+          length: 4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.h),
               TabBar(
+                // isScrollable: true,
+                // tabAlignment: TabAlignment.center,
+                // labelPadding: EdgeInsets.only(left: 8.0, right: 16.0),
+                dividerColor: Colors.grey,
+
                 labelColor: AppColors.black,
                 indicatorColor: AppColors.primary,
                 unselectedLabelColor: Color(0xff6F767E),
                 tabs: [
-                  Tab(text: 'Request History'.tr),
-                  Tab(text: 'Completed History'.tr),
+                  Tab(text: 'Pending'.tr),
+                  Tab(text: 'Accepted'.tr),
+                  Tab(text: 'On-Going'.tr),
+                  Tab(text: 'History'.tr),
                 ],
               ),
               SizedBox(height: 12.h),
               Expanded(
                 child: Obx(() {
                   final all = customerOrderController.bookingReportList;
-                  if(customerOrderController.getBookingReportStatus.value.isLoading)
+                  if (customerOrderController
+                      .getBookingReportStatus
+                      .value
+                      .isLoading)
                     return Center(child: CircularProgressIndicator());
-                  final completed =
+                  final pending =
                       all
                           .where(
-                            (b) =>
-                                (b.status ?? '').toLowerCase() == 'completed',
+                            (b) => (b.status ?? '').toLowerCase() == 'pending',
                           )
                           .toList();
-                  final requests =
+                  final accepted =
+                      all
+                          .where(
+                            (b) => (b.status ?? '').toLowerCase() == 'accepted',
+                          )
+                          .toList();
+                  final onGoing =
+                      all
+                          .where(
+                            (b) => (b.status ?? '').toLowerCase() == 'on-going',
+                          )
+                          .toList();
+                  final history =
                       all
                           .where(
                             (b) =>
-                                (b.status ?? '').toLowerCase() != 'completed',
+                                (b.status ?? '').toLowerCase() == 'cancelled' ||
+                                (b.status ?? '').toLowerCase() == 'confirmed',
                           )
                           .toList();
 
                   return TabBarView(
                     children: [
+                      // Pending Tab
                       RefreshIndicator(
                         onRefresh: () async {
                           await customerOrderController.getBookingReport();
                         },
-                        child: buildBookingList(
-                       requests,
-                        ),
+                        child: buildBookingList(pending),
                       ),
+
+                      // Accepted Tab
                       RefreshIndicator(
                         onRefresh: () async {
                           await customerOrderController.getBookingReport();
                         },
-                        child: buildBookingList(
-                          completed,
-                        ),
+                        child: buildBookingList(accepted),
+                      ),
+
+                      // On-Going Tab 
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await customerOrderController.getBookingReport();
+                        },
+                        child: buildBookingList(onGoing),
+                      ),
+                      // History Tab 
+
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await customerOrderController.getBookingReport();
+                        },
+                        child: buildBookingList(history),
                       ),
                     ],
                   );
@@ -91,8 +128,6 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
       bottomNavigationBar: CustomerNavbar(currentIndex: 1),
     );
   }
-
-
 
   Widget buildBookingList(List<BookingResult> list) {
     if (list.isEmpty)
@@ -109,7 +144,8 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         final booking = list[index];
         return BookingCard(
           booking: booking,
-          onTap:
+          onTap: 
+
               () => Get.toNamed(
                 AppRoutes.requestHistoryServiceDetailsPage,
                 arguments: booking,

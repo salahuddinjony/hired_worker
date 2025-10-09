@@ -24,6 +24,53 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
     final String categoryName = args['categoryName'] ?? '';
     final String subCategoryName = args['subCategoryName'] ?? '';
 
+    // Extract booking schedule data for updates
+    final String bookingType = args['bookingType']?.toString() ?? 'oneTime';
+    final String duration = args['duration']?.toString() ?? '1';
+    final String startTime = args['startTime']?.toString() ?? '';
+    final String endTime = args['endTime']?.toString() ?? '';
+    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final bool isUpdate = args['isUpdate'] ?? false;
+    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
+
+    // Initialize controller with existing booking data if this is an update
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isUpdate) {
+        // Set booking type
+        controller.bookingType.value = bookingType;
+        
+        // Set duration
+        controller.durations.value = duration;
+        
+        // Set hourly rate
+        controller.hourlyRate = hourlyRate;
+        
+        // Set start and end times
+        controller.startTimeController.value.text = startTime;
+        controller.endTimeController.value.text = endTime;
+        
+        // Set selected dates
+        controller.selectedDates.clear();
+        controller.selectedDates.addAll(selectedDates);
+        
+        // Set day controller text based on booking type
+        if (bookingType == 'oneTime' && selectedDates.isNotEmpty) {
+          controller.dayController.value.text = selectedDates.first;
+        } else if (bookingType == 'weekly' && selectedDates.isNotEmpty) {
+          controller.dayController.value.text = '${selectedDates.length} dates selected';
+        }
+        
+        debugPrint('Initialized controller with existing booking data:');
+        debugPrint('BookingType: $bookingType');
+        debugPrint('Duration: $duration');
+        debugPrint('StartTime: $startTime');
+        debugPrint('EndTime: $endTime');
+        debugPrint('SelectedDates: $selectedDates');
+        debugPrint('HourlyRate: $hourlyRate');
+      }
+    });
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -326,23 +373,44 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     );
                   }),
                   CustomButton(
-                    onTap: () {
-                       if (!controller.isNotEmptyField()) {
-            return;}
-          // Navigate or perform booking creation
-          Get.toNamed(
-            AppRoutes.customarServiceContractorDetailsScreen,
-            arguments: {
-              'contractorId': contractorId,
-                          'subcategoryId': subcategoryId,
-                          'controller': controller,
-                          'contractorName': contractorName,
-                          'categoryName': categoryName,
-                          'subCategoryName': subCategoryName,
-                        },
-                      );
+                    onTap: () async {
+                      if (!controller.isNotEmptyField()) {
+                        return;
+                      }
+                      
+                      // Check if this is an update operation
+                      // if (isUpdate && bookingId.isNotEmpty) {
+                      //   // Update existing booking
+                      //   final success = await controller.updateBooking(
+                      //     bookingId: bookingId,
+                      //     contractorId: contractorId,
+                      //     subcategoryId: subcategoryId,
+                      //   );
+                        
+                      //   if (success) {
+                      //     // Navigate back to history or show success
+                      //     Get.back(); // Go back to previous screen
+                      //     Get.back(); // Go back to materials screen
+                      //     Get.back(); // Go back to history page
+                      //   }
+                      // } else {
+                        // Create new booking (original flow)
+                        Get.toNamed(
+                          AppRoutes.customarServiceContractorDetailsScreen,
+                          arguments: {
+                            'isUpdate': isUpdate,
+                            'bookingId': bookingId,
+                            'contractorId': contractorId,
+                            'subcategoryId': subcategoryId,
+                            'controller': controller,
+                            'contractorName': contractorName,
+                            'categoryName': categoryName,
+                            'subCategoryName': subCategoryName,
+                          },
+                        );
+                      
                     },
-                    title: "Continue".tr,
+                    title: isUpdate ? "Update Booking".tr : "Continue".tr,
                   ),
                 ],
               ),

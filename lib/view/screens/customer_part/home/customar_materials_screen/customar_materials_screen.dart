@@ -5,7 +5,6 @@ import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'widget/select_materials_row.dart';
@@ -23,15 +22,24 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final String contractorName = args['contractorName'] ?? '';
     final String categoryName = args['categoryName'] ?? '';
     final String subCategoryName = args['subCategoryName'] ?? '';
+    
+    // Extract booking schedule data
+    final String bookingType = args['bookingType']?.toString() ?? 'oneTime';
+    final String duration = args['duration']?.toString() ?? '1';
+    final String startTime = args['startTime']?.toString() ?? '';
+    final String endTime = args['endTime']?.toString() ?? '';
+    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (materials.isNotEmpty) {
-        controller.initializeMaterials(materials as dynamic);
+        controller.initializeMaterials(materials);
       } else {
         // Fallback: initialize with some default materials if none provided
         controller.initializeMaterials([
-          MaterialsModel(name: 'Material A', unit: 'pcs', price: 10, id: '1'), 
+          {'name': 'Material A', 'unit': 'pcs', 'price': 10},
         ]);
       }
     });
@@ -117,6 +125,15 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'contractorName': contractorName,
                 'categoryName': categoryName,
                 'subCategoryName': subCategoryName,
+                // Forward booking schedule data for updates
+                'bookingType': bookingType,
+                'duration': duration,
+                'startTime': startTime,
+                'endTime': endTime,
+                'selectedDates': selectedDates,
+                'hourlyRate': hourlyRate,
+                'isUpdate': true, // Flag to indicate this is an update flow
+                'bookingId': bookingId, // Forward booking ID
               },
             );
           },
