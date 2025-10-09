@@ -1,48 +1,35 @@
 class CustomerOrderModel {
   final bool success;
   final String message;
-  final BookingData? data;
+  final Meta? meta;
+  final List<BookingResult> data;
 
   CustomerOrderModel({
     required this.success,
     required this.message,
-    this.data,
+    this.meta,
+    required this.data,
   });
 
   factory CustomerOrderModel.fromJson(Map<String, dynamic> json) {
     return CustomerOrderModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: json['data'] != null ? BookingData.fromJson(json['data']) : null,
-    );
-  }
-}
-
-class BookingData {
-  final List<BookingResult> result;
-  final Meta? meta;
-
-  BookingData({
-    required this.result,
-    this.meta,
-  });
-
-  factory BookingData.fromJson(Map<String, dynamic> json) {
-    return BookingData(
-      result: (json['result'] as List?)
+      meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
+      data: (json['data'] as List?)
               ?.map((e) => BookingResult.fromJson(e))
               .toList() ??
           [],
-      meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
     );
   }
 }
+
 
 class BookingResult {
   final String? id;
   final Customer? customerId;
   final Contractor? contractorId;
-  final SubCategory? subCategoryId;
+  final String? subCategoryId;
   final int? bookingId;
   final String? bookingType;
   final String? status;
@@ -55,6 +42,7 @@ class BookingResult {
   final String? endTime;
   final int? duration;
   final List<String> timeSlots;
+  final num? price;
   final num? rateHourly;
   final num? totalAmount;
   final List<dynamic> files;
@@ -79,6 +67,7 @@ class BookingResult {
     this.endTime,
     this.duration,
     required this.timeSlots,
+    this.price,
     this.rateHourly,
     this.totalAmount,
     required this.files,
@@ -98,10 +87,7 @@ class BookingResult {
               json['contractorId'] is Map<String, dynamic>
           ? Contractor.fromJson(json['contractorId'])
           : null,
-      subCategoryId: json['subCategoryId'] != null &&
-              json['subCategoryId'] is Map<String, dynamic>
-          ? SubCategory.fromJson(json['subCategoryId'])
-          : null,
+      subCategoryId: json['subCategoryId'] ?? '',
       bookingId: json['bookingId'] ?? 0,
       bookingType: json['bookingType'] ?? '',
       status: json['status'] ?? '',
@@ -121,6 +107,7 @@ class BookingResult {
       duration: json['duration'] ?? 0,
       timeSlots:
           (json['timeSlots'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      price: json['price'] ?? 0,
       rateHourly: json['rateHourly'] ?? 0,
       totalAmount: json['totalAmount'] ?? 0,
       files: json['files'] ?? [],
@@ -177,22 +164,7 @@ class MaterialItem {
   }
 }
 
-class SubCategory {
-  final String? id;
-  final String? name;
 
-  SubCategory({
-    this.id,
-    this.name,
-  });
-
-  factory SubCategory.fromJson(Map<String, dynamic> json) {
-    return SubCategory(
-      id: json['_id'] ?? '',
-      name: json['name'] ?? '',
-    );
-  }
-}
 
 class Meta {
   final int? page;
@@ -220,11 +192,13 @@ class Meta {
 class Customer {
   final String? id;
   final String? fullName;
+  final String? email;
   final String? img;
 
   Customer({
     this.id,
     this.fullName,
+    this.email,
     this.img,
   });
 
@@ -232,6 +206,7 @@ class Customer {
     return Customer(
       id: json['_id'] ?? '',
       fullName: json['fullName'] ?? '',
+      email: json['email'] ?? '',
       img: json['img'] ?? '',
     );
   }

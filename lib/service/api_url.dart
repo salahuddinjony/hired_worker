@@ -23,7 +23,7 @@ class ApiUrl {
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
   static const String getNotificationList = '/notifications';
-  static const String getAllBookings = "/bookings/";
+  static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
   static String singleSubCategory({required String categoryId}) =>

@@ -56,7 +56,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: booking.subCategoryId?.name ?? 'Service',
+                      text: booking.subCategoryId ?? 'Service',
                       fontSize: 16.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black,
@@ -115,7 +115,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 4,
-          text: "Category : ${booking.subCategoryId?.name ?? ''}",
+          text: "Category : ${booking.subCategoryId ?? ''}",
           fontSize: 16.w,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
@@ -157,7 +157,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "${m.name  ?? ''} - ${m.count ?? ''} x \$${m.price ?? ''}",
+                  text:
+                      "${m.name ?? ''} - ${m.count ?? ''} x \$${m.price ?? ''}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -284,7 +285,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           ],
         ),
         SizedBox(height: 30),
-        booking.status?.toLowerCase() == 'completed'
+        booking.status?.toLowerCase() == 'completed' || booking.status?.toLowerCase() == 'confirmed'
             ? CustomButton(
               onTap: () {
                 // Navigate to ReviewPage and pass the booking as argument
@@ -298,35 +299,53 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               },
               title: "Review".tr,
             )
-            : CustomButton(
+            : booking.status?.toLowerCase() == 'accepted'
+            ? CustomButton(
+              onTap: () {
+                Get.back();
+              },
+              title: "Payment".tr,
+            )
+            : booking.status?.toLowerCase() == 'pending'
+            ? CustomButton(
               onTap: () {
                 final controller = Get.find<ContractorBookingController>();
                 Get.toNamed(
                   AppRoutes.customarMaterialsScreen,
                   arguments: {
                     'contractorId': booking.contractorId?.id,
-                    'subcategoryId': booking.subCategoryId?.id,
+                    'subcategoryId': booking.subCategoryId,
                     'materials': booking.material,
                     'controller': controller,
                     'contractorName': booking.contractorId?.fullName,
                     'categoryName': "",
-                    'subCategoryName': booking.subCategoryId?.name,
+                    'subCategoryName': booking.subCategoryId ?? '',
                     // Pass booking schedule data for updates
                     'bookingType': booking.bookingType ?? 'oneTime',
                     'duration': booking.duration?.toString() ?? '1',
                     'startTime': booking.startTime ?? '',
                     'endTime': booking.endTime ?? '',
-                    'selectedDates': booking.day is List 
-                        ? (booking.day as List).map((e) => e.toString()).toList()
-                        : booking.day is String 
+                    'selectedDates':
+                        booking.day is List
+                            ? (booking.day as List)
+                                .map((e) => e.toString())
+                                .toList()
+                            : booking.day is String
                             ? [booking.day as String]
                             : [],
                     'hourlyRate': booking.rateHourly ?? 0,
-                    'bookingId': booking.bookingId, // Pass booking ID for updates
+                    'bookingId':
+                        booking.bookingId, // Pass booking ID for updates
                   },
                 );
               },
               title: "Service Update".tr,
+            )
+            : CustomButton(
+              onTap: () {
+                Get.back();
+              },
+              title: "Back".tr,
             ),
       ],
     );
