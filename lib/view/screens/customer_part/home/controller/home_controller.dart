@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/model.dart/contractor_question.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/contactor_details_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
@@ -35,7 +37,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${categoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -62,7 +64,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${subCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -73,7 +75,7 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get Sub Category =======//
+  //======= get single Sub Category =======//
   Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SingleSubCategorysModel> singleSubCategoryModel =
       SingleSubCategorysModel().obs;
@@ -93,7 +95,7 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${singleSubCategoryModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -104,60 +106,123 @@ class HomeController extends GetxController {
     }
   }
 
-  //======= get All services contractor =======//
+  //======= get All services contractor or[ SubCategory wise Contractors] =======//
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
     RxStatus.loading(),
   );
-  Rx<GetAllContactorModel> getAllContactorModel = GetAllContactorModel().obs;
-  Future<void> getAllContactor() async {
+  RxList<allContractor> getAllContactorList = <allContractor>[].obs;
+
+  Future<void> getAllContactor({String? subCategoryId}) async {
     getAllServicesContractorStatus.value = RxStatus.loading();
+
     try {
-      final response = await ApiClient.getData(ApiUrl.getAllContractors);
-
-      getAllContactorModel.value = GetAllContactorModel.fromJson(response.body);
-
-      getAllServicesContractorStatus.value = RxStatus.success();
-      refresh();
+      final response = await ApiClient.getData(
+        ApiUrl.getAllContractors,
+        query: {if (subCategoryId != null) 'subCategory': subCategoryId},
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${getAllContactorModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        final data = response.body;
+        debugPrint('Raw API response: $data');
+        
+        // Parse the response
+        final contractorResponse = ContractorResponse.fromJson(data);
+        getAllContactorList.value = contractorResponse.data;
+        
+        debugPrint(
+          'contractor data length: ${getAllContactorList.length} contractors',
+        );
+        
+        // Debug: Print each contractor's basic info
+        for (int i = 0; i < getAllContactorList.length; i++) {
+          final contractor = getAllContactorList[i];
+          debugPrint('Contractor $i: ${contractor.userId.fullName}, Skills: ${contractor.skillsCategory}');
+        }
+        
+        getAllServicesContractorStatus.value = RxStatus.success();
+        refresh();
+        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getAllServicesContractorStatus.value = RxStatus.error();
+        showCustomSnackBar(response.body['message'] ?? " ", isError: true);
       }
     } catch (e) {
-      getAllServicesContractorStatus.value = RxStatus.success();
+      debugPrint('Error in getAllContractor: $e');
+      getAllServicesContractorStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
+
+  // get contractor question based on subCategory
+  Rx<RxStatus> getContractorQuestionStatus = Rx<RxStatus>(RxStatus.loading());
+  RxList<FaqData> contractorQuestions = <FaqData>[].obs;
+
+  Future<bool> getContractorQuestions({required String subCategoryId}) async {
+    getContractorQuestionStatus.value = RxStatus.loading();
+    EasyLoading.show();
+
+    try {
+      final response = await ApiClient.getData(
+        ApiUrl.getContractorQuestions(subCategoryId: subCategoryId),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.body;
+        contractorQuestions.value = FaqResponse.fromJson(data).data;
+        getContractorQuestionStatus.value = RxStatus.success();
+        debugPrint(
+          'Contractor questions loaded successfully: ${contractorQuestions.length} questions',
+        );
+        return true;
+      } else {
+        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getContractorQuestionStatus.value = RxStatus.error();
+        return false;
+      }
+    } catch (e) {
+      getContractorQuestionStatus.value = RxStatus.error();
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+      refresh();
     }
   }
 
   //============= contactor details ==============
-   Rx<RxStatus> getContractorDetailsStatus = Rx<RxStatus>(
-    RxStatus.loading(),
-  );
-  Rx<ContactorDetailsModel>  contactorDetailsModel = ContactorDetailsModel().obs;
-  Future<void> getContractorDetails( {required String userId}) async {
-    getContractorDetailsStatus.value = RxStatus.loading();
+  Rx<RxStatus> getContractorReviewsStatus = Rx<RxStatus>(RxStatus.loading());
+  RxList<ReviewData> reviewsData = <ReviewData>[].obs;
+  Future<void> getContractorReviews({required String userId}) async {
+    getContractorReviewsStatus.value = RxStatus.loading();
     try {
-      final response = await ApiClient.getData(ApiUrl.getContractorDetails(userId: userId));
-
-      contactorDetailsModel.value = ContactorDetailsModel.fromJson(response.body);
-
-      getContractorDetailsStatus.value = RxStatus.success();
-      refresh();
+      final response = await ApiClient.getData(
+        ApiUrl.getReviewas(userId: userId),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${contactorDetailsModel.value}');
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        final data = response.body;
+        reviewsData.value =
+            ReviewResponse.fromJson(data).data != null
+                ? [ReviewResponse.fromJson(data).data!]
+                : [];
+        debugPrint(
+          'contractor reviews data length: ${reviewsData.length} reviews',
+        );
+        getContractorReviewsStatus.value = RxStatus.success();
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getContractorReviewsStatus.value = RxStatus.error();
+        refresh();
       }
     } catch (e) {
-      getContractorDetailsStatus.value = RxStatus.success();
+
+      print("====> Error in getContractorReviews: $e");
+      getContractorReviewsStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }finally {
+      refresh();
     }
   }
-
 }

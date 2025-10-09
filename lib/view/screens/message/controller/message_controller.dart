@@ -20,14 +20,17 @@ class MessageController extends GetxController {
   final TextEditingController messageController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
- //  RxString userId = ''.obs;
+  //  RxString userId = ''.obs;
 
-   bool role = true;
+  final RxBool thisRole = true.obs;
 
   @override
   void onInit() async {
-  //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
+    //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
     await getRole();
+  String roles = await SharePrefsHelper.getString(AppConstants.role);
+  debugPrint("User Role================>> $roles");
+  debugPrint("User Role bool================>> ${this.thisRole.value}");
 
     getAllRoomList();
     receiveMessage();
@@ -37,12 +40,11 @@ class MessageController extends GetxController {
 
   Future<void> getRole() async {
     String role = await SharePrefsHelper.getString(AppConstants.role);
-    this.role = role == "customer" ? true : false;
+    thisRole.value = role == "customer" ? true : false;
   }
 
-  Future<void> getAllRoomList() async { 
-
-   final userId = await SharePrefsHelper.getString(AppConstants.userId);
+  Future<void> getAllRoomList() async {
+    final userId = await SharePrefsHelper.getString(AppConstants.userId);
     try {
       getAllRoomListStatus.value = RxStatus.loading();
       var response = await ApiClient.getData(
@@ -82,8 +84,8 @@ class MessageController extends GetxController {
   Future<void> sendMessage({
     required String receiverId,
     required String chatRoomId,
-  }) async {    
-   final userId = await SharePrefsHelper.getString(AppConstants.userId); 
+  }) async {
+    final userId = await SharePrefsHelper.getString(AppConstants.userId);
 
     debugPrint("userId============================= >> $userId");
     final messageText = messageController.text.trim();
@@ -94,10 +96,11 @@ class MessageController extends GetxController {
       "sender": userId,
       "receiver": receiverId,
       "message": messageText,
-    }; 
+    };
 
-
-    debugPrint("before send============================= >> ${body.toString()}");
+    debugPrint(
+      "before send============================= >> ${body.toString()}",
+    );
 
     SocketApi.sendEvent('sendMessage', body);
     messageController.clear();

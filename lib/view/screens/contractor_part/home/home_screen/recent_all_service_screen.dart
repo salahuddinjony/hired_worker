@@ -5,6 +5,7 @@ import 'package:servana/view/screens/contractor_part/home/controller/recent_all_
 import 'package:servana/view/screens/contractor_part/home/home_screen/widget/custom_service_card.dart';
 
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../model/booking_model.dart';
 
@@ -23,6 +24,8 @@ class RecentAllServiceScreen extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
+        } else if (controller.status.value.isEmpty) {
+          return Center(child: Text('No data found'));
         } else if (controller.status.value.isError) {
           return Center(child: Text(controller.status.value.errorMessage!));
         } else {
@@ -36,10 +39,12 @@ class RecentAllServiceScreen extends StatelessWidget {
                   BookingModelData data = controller.recentServiceList[index];
 
                   return CustomServiceCard(
-                    title: data.subCategoryId?.name ?? " - ",
+                    title: getSubCategoryName(data),
                     updateDate: data.updatedAt!,
                     hourlyRate: data.rateHourly.toString(),
-                    rating: data.contractorId?.contractor?.ratings.toString() ?? " - ",
+                    rating:
+                        data.contractorId?.contractor?.ratings.toString() ??
+                        " - ",
                     status: data.status ?? " - ",
                     image: data.contractorId?.img,
                   );

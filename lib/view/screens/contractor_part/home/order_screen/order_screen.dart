@@ -5,6 +5,7 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
 import '../controller/contractor_home_controller.dart';
 import 'widget/custom_delivered_service_card.dart';
@@ -25,7 +26,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       extendBody: true,
 
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request".tr),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Request".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
           return Center(
@@ -60,7 +61,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       BookingModelData data =
                           controller.pendingBookingList.value.data!.result![index];
                       return CustomServiceRequestCard(
-                        title: data.subCategoryId?.name ?? " - ",
+                        title: getSubCategoryName(data),
                         rating:
                             data.contractorId?.contractor?.ratings
                                 ?.toString() ??
@@ -73,6 +74,12 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                 ),
 
+              // if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 0)
+              //   SizedBox(
+              //     height: MediaQuery.of(context).size.height * 0.8,
+              //     child: Center(child: Text('No data found')),
+              //   ),
+
               if (controller.currentIndex.value == 1)
                 Expanded(
                   child: Expanded(
@@ -84,7 +91,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             controller.completeBookingList.value.data!.result![index];
 
                         return CustomDeliveredServiceCard(
-                          title: data.subCategoryId?.name ?? " - ",
+                          title: getSubCategoryName(data),
                           rating:
                               data.contractorId?.contractor?.ratings
                                   ?.toString() ??
@@ -97,6 +104,12 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                 ),
+
+              // if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 1)
+              //   SizedBox(
+              //     height: MediaQuery.of(context).size.height * 0.8,
+              //     child: Center(child: Text('No data found')),
+              //   ),
             ],
           );
         }

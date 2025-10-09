@@ -6,167 +6,140 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'widget/select_materials_row.dart';
 
-class CustomarMaterialsScreen extends StatefulWidget {
+class CustomarMaterialsScreen extends StatelessWidget {
   const CustomarMaterialsScreen({super.key});
 
   @override
-  State<CustomarMaterialsScreen> createState() => _CustomarMaterialsScreenState();
-}
-
-class _CustomarMaterialsScreenState extends State<CustomarMaterialsScreen> {
-  bool showMaterials = true;
-
-  @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> args = Get.arguments ?? {};
+    final ContractorBookingController controller = args['controller'];
+    final List<dynamic> materials = args['materials'] ?? [];
+    final String contractorId = args['contractorId'] ?? '';
+    final String subcategoryId = args['subcategoryId'] ?? '';
+    final String contractorName = args['contractorName'] ?? '';
+    final String categoryName = args['categoryName'] ?? '';
+    final String subCategoryName = args['subCategoryName'] ?? '';
+    
+    // Extract booking schedule data
+    final String bookingType = args['bookingType']?.toString() ?? 'oneTime';
+    final String duration = args['duration']?.toString() ?? '1';
+    final String startTime = args['startTime']?.toString() ?? '';
+    final String endTime = args['endTime']?.toString() ?? '';
+    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
+
+    // Initialize materials in controller
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (materials.isNotEmpty) {
+        controller.initializeMaterials(materials);
+      } else {
+        // Fallback: initialize with some default materials if none provided
+        controller.initializeMaterials([
+          {'name': 'Material A', 'unit': 'pcs', 'price': 10},
+        ]);
+      }
+    });
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials".tr),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 4),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      text: "Need Materials Select".tr,
-                      fontSize: 18.w,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black,
-                    ),
-                    Switch(
-                      value: showMaterials,
-                      onChanged: (value) {
-                        setState(() {
-                          showMaterials = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                if (showMaterials)
-                  Column(
-                    children: List.generate(
-                      5,
-                          (index) => SelectMaterialsRow(name: "Powerpoint"),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20,),
-        child: CustomButton(onTap: (){
-          Get.toNamed(AppRoutes.customarServiceDetailsScreen);
-        },title: "Continue".tr,),
-      ),
-    );
-  }
-}
-
-
-/*Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-              height: MediaQuery.sizeOf(context).height / 3,
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.r),
-                  topRight: Radius.circular(30.r),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      body: GetBuilder<ContractorBookingController>(
+        builder: (controller) {
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 4),
                 child: Column(
                   children: [
-                    CustomText(
-                      text: "Taotal Amount Info",
-                      fontSize: 20.w,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.black,
-                    ),
-                    Divider(thickness: .3, color: AppColors.black_08),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: "Electrician",
-                              fontSize: 18.w,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black,
-                            ),
-                            CustomText(
-                              text: "AC Repair",
-                              fontSize: 12.w,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.black_08,
-                            ),
-                          ],
-                        ),
-                        CustomText(
-                          text: "250.00\$",
-                          fontSize: 18.w,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12.h,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          text: "Total Materials",
+                          text: "Need Materials Select".tr,
                           fontSize: 18.w,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,
                         ),
-                        CustomText(
-                          text: "250.00\$",
-                          fontSize: 18.w,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black,
-                        ),
                       ],
                     ),
-                    SizedBox(height: 12.h,),
-                    Divider(thickness: .3, color: AppColors.black_08),
-                    SizedBox(height: 12.h,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: "Total Materials",
-                          fontSize: 20.w,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.black,
-                        ),
-                        CustomText(
-                          text: "250.00\$",
-                          fontSize: 20.w,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.black,
-                        ),
-                      ],
+                    SizedBox(height: 20.h),
+                    Expanded(
+                      child:
+                          controller.materialsAndQuantity.isEmpty
+                              ? Center(
+                                child: CustomText(
+                                  text: "No materials available".tr,
+                                  fontSize: 16.w,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black_08,
+                                ),
+                              )
+                              : ListView.builder(
+                                itemCount:
+                                    controller.materialsAndQuantity.length,
+                                itemBuilder: (context, index) {
+                                  final material =
+                                      controller.materialsAndQuantity[index];
+                                  return SelectMaterialsRow(
+                                    name: material['name'],
+                                    unit: material['unit'] ?? 'pcs',
+                                    price: material['price'] ?? '0',
+                                    count: material['count'] ?? '0',
+                                    isSelected: controller.isMaterialSelected(
+                                      index,
+                                    ),
+                                    onIncrement:
+                                        () =>
+                                            controller.incrementMaterial(index),
+                                    onDecrement:
+                                        () =>
+                                            controller.decrementMaterial(index),
+                                  );
+                                },
+                              ),
                     ),
-                    SizedBox(height: 12.h,),
-                    CustomButton(onTap: (){
-                      Get.toNamed(AppRoutes.customerServicesContractorScreen);
-                    }, title: "Booking Confirm",)
                   ],
                 ),
               ),
-            ),
-          ),*/
+            ],
+          );
+        },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 100, right: 20, left: 20),
+        child: CustomButton(
+          onTap: () {
+           
+            debugPrint(
+              'Selected Materials: ${controller.materialsAndQuantity.where((m) => controller.isMaterialSelected(controller.materialsAndQuantity.indexOf(m))).toList()}',
+            );
+            Get.toNamed(
+              AppRoutes.customarServiceDetailsScreen,
+              arguments: {
+                'controller': controller,
+                'contractorId': contractorId,
+                'subcategoryId': subcategoryId,
+                'contractorName': contractorName,
+                'categoryName': categoryName,
+                'subCategoryName': subCategoryName,
+                // Forward booking schedule data for updates
+                'bookingType': bookingType,
+                'duration': duration,
+                'startTime': startTime,
+                'endTime': endTime,
+                'selectedDates': selectedDates,
+                'hourlyRate': hourlyRate,
+                'isUpdate': true, // Flag to indicate this is an update flow
+                'bookingId': bookingId, // Forward booking ID
+              },
+            );
+          },
+          title: "Continue".tr,
+        ),
+      ),
+    );
+  }
+}

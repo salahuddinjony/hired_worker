@@ -1,0 +1,895 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
+import 'package:servana/service/api_client.dart';
+import 'package:servana/service/api_url.dart';
+import 'package:servana/utils/ToastMsg/toast_message.dart';
+import 'package:servana/utils/app_const/app_const.dart';
+
+class ContractorBookingController extends GetxController {
+  int hourlyRate = 0;
+
+  // Optional contractor metadata to display on the details page
+  String contractorName = '';
+  String contractorCategory = '';
+
+  List<Map<String, String>> questionsAndAnswers = [];
+  List<Map<String, String>> materialsAndQuantity = [];
+
+  // Q&A management
+  List<TextEditingController> answerControllers = [];
+  List<Map<String, dynamic>> questions = [];
+
+  RxBool isLoading = false.obs;
+  RxString bookingType = 'oneTime'.obs; 
+  RxString durations = '1'.obs;
+  Rx<TextEditingController> startTimeController = TextEditingController().obs;
+  Rx<TextEditingController> dayController = TextEditingController().obs;
+  Rx<TextEditingController> endTimeController = TextEditingController().obs;
+  RxList<String> selectedDates = <String>[].obs;
+  RxString selectedHour = ''.obs;
+  RxString selectedTime = ''.obs;
+
+  Future<void> selectDate(BuildContext context, bool isOneTime) async {
+    debugPrint(
+      'ContractorBookingController.selectDate called; Get.context=${Get.context != null}, isOneTime=$isOneTime',
+    );
+    final ctx = Get.context ?? context;
+
+    if (isOneTime) {
+      // Single date selection (existing behavior)
+      final DateTime? picked = await showDatePicker(
+        context: ctx,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null) {
+        final formatted =
+            "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        // Clear any previous multiple selections
+        selectedDates.clear();
+        selectedDates.add(formatted);
+        dayController.value.text = formatted;
+        debugPrint('ContractorBookingController.selectDate picked: $formatted');
+        refresh();
+      }
+    } else {
+      // Multiple individual date selection (non-contiguous). We'll show a small dialog
+      // where the user can add one date at a time, see the list, remove items, and finish.
+      await showModalBottomSheet<void>(
+        context: ctx,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheetCtx) {
+          final List<String> tempDates = List<String>.from(selectedDates);
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.55,
+            minChildSize: 0.3,
+            maxChildSize: 0.9,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 48,
+                            height: 4,
+                            margin: EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Select Dates',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Choose one or more days for recurring booking',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed:
+                                  () => setState(() => tempDates.clear()),
+                              child: Text(
+                                'Clear All',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        // Selected dates as chips
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children:
+                                      tempDates.isEmpty
+                                          ? [
+                                            Chip(
+                                              label: Text('No dates selected'),
+                                            ),
+                                          ]
+                                          : tempDates.map((d) {
+                                            return InputChip(
+                                              label: Text(d),
+                                              onDeleted:
+                                                  () => setState(
+                                                    () => tempDates.remove(d),
+                                                  ),
+                                              deleteIcon: Icon(
+                                                Icons.close,
+                                                size: 18,
+                                              ),
+                                            );
+                                          }).toList(),
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    ElevatedButton.icon(
+                                      icon: Icon(Icons.calendar_today_outlined),
+                                      label: Text('Add Date'),
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        final DateTime? picked =
+                                            await showDatePicker(
+                                              context: sheetCtx,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now(),
+                                              lastDate: DateTime(2101),
+                                            );
+                                        if (picked != null) {
+                                          final formatted =
+                                              "${picked.year.toString().padLeft(4, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                                          if (!tempDates.contains(formatted)) {
+                                            setState(
+                                              () => tempDates.add(formatted),
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(width: 12),
+                                    OutlinedButton.icon(
+                                      icon: Icon(Icons.sort_by_alpha),
+                                      label: Text('Sort'),
+                                      onPressed:
+                                          () =>
+                                              setState(() => tempDates.sort()),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                // Small help / summary
+                                Text(
+                                  '${tempDates.length} dates selected',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                SizedBox(height: 24),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(sheetCtx).pop();
+                                },
+                                child: Text('Cancel'),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Commit the selection
+                                  selectedDates.clear();
+                                  selectedDates.addAll(tempDates);
+
+                                  if (selectedDates.isEmpty) {
+                                    dayController.value.text = '';
+                                  } else if (selectedDates.length == 1) {
+                                    dayController.value.text =
+                                        selectedDates.first;
+                                  } else if (selectedDates.length <= 2) {
+                                    dayController.value.text = selectedDates
+                                        .join(', ');
+                                  } else {
+                                    dayController.value.text =
+                                        '${selectedDates.length} dates selected';
+                                  }
+
+                                  debugPrint(
+                                    'Selected multiple dates: ${selectedDates.length}',
+                                  );
+                                  Navigator.of(sheetCtx).pop();
+                                  refresh();
+                                },
+                                child: Text('Done'),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 30),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> selectTime(
+    BuildContext context,
+    TextEditingController textController,
+  ) async {
+    final ctx = Get.context ?? context;
+    final TimeOfDay? picked = await showTimePicker(
+      context: ctx,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      final formatted =
+          "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
+      textController.text = formatted;
+      debugPrint('ContractorBookingController.selectTime picked: $formatted');
+    }
+    refresh();
+  }
+
+  void initializeMaterials(dynamic materials) {
+    materialsAndQuantity.clear();
+
+    if (materials == null) {
+      refresh();
+      return;
+    }
+
+    // Handle both List<MaterialsModel> and List<MaterialItem>
+    List<dynamic> materialsList = materials is List ? materials : [materials];
+
+    for (var material in materialsList) {
+      String name = 'Unknown';
+      String unit = 'pcs';
+      String price = '0';
+      String count = '0'; // Default count
+
+      try {
+        // Handle MaterialsModel type
+        if (material.runtimeType.toString().contains('MaterialsModel')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          // MaterialsModel doesn't have count, keep default '0'
+        }
+        // Handle MaterialItem type (from booking data)
+        else if (material.runtimeType.toString().contains('MaterialItem')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          count = material.count?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle Map/JSON data
+        else if (material is Map<String, dynamic>) {
+          name = material['name']?.toString() ?? 'Unknown';
+          unit = material['unit']?.toString() ?? 'pcs';
+          price = material['price']?.toString() ?? '0';
+          count =
+              material['count']?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle dynamic objects with properties
+        else {
+          try {
+            name = material.name?.toString() ?? 'Unknown';
+            unit = material.unit?.toString() ?? 'pcs';
+            price = material.price?.toString() ?? '0';
+            // Try to get count if it exists
+            try {
+              count = material.count?.toString() ?? '0';
+            } catch (e) {
+              count = '0'; // Fallback if count doesn't exist
+            }
+          } catch (e) {
+            debugPrint('Error accessing material properties: $e');
+          }
+        }
+
+        debugPrint(
+          'Parsed material: $name, unit: $unit, price: $price, count: $count',
+        );
+      } catch (e) {
+        debugPrint('initializeMaterials: error parsing material: $e');
+      }
+
+      materialsAndQuantity.add({
+        'name': name,
+        'unit': unit,
+        'price': price,
+        'count': count, // Use the extracted count value
+      });
+    }
+    refresh();
+  }
+
+  void incrementMaterial(int index) {
+    if (index < materialsAndQuantity.length) {
+      final currentQuantity =
+          int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
+      materialsAndQuantity[index]['count'] = (currentQuantity + 1).toString();
+      refresh();
+    }
+  }
+
+  void decrementMaterial(int index) {
+    if (index < materialsAndQuantity.length) {
+      final currentQuantity =
+          int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
+      if (currentQuantity > 0) {
+        materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
+        refresh();
+      }
+    }
+  }
+
+  bool isMaterialSelected(int index) {
+    if (index < materialsAndQuantity.length) {
+      return (int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0) >
+          0;
+    }
+    return false;
+  }
+
+  // Q&A management methods
+  void initializeQuestions(List<dynamic> questionsList) {
+    questions.clear();
+    answerControllers.clear();
+    questionsAndAnswers.clear();
+
+    for (int i = 0; i < questionsList.length; i++) {
+      var question = questionsList[i];
+
+      String questionId;
+      String questionText;
+
+      if (question is Map<String, dynamic>) {
+        // Support both 'id' and '_id' keys coming from different APIs
+        questionId = question['id'] ?? question['_id'] ?? i.toString();
+
+        final qField = question['question'] ?? question['text'];
+        if (qField is List) {
+          questionText =
+              qField.isNotEmpty
+                  ? qField.map((e) => e?.toString() ?? '').join(', ')
+                  : 'Question ${i + 1}';
+        } else {
+          questionText = qField?.toString() ?? 'Question ${i + 1}';
+        }
+      } else {
+        try {
+          questionId = question.id?.toString() ?? i.toString();
+
+          final qField = question.question ?? question.text;
+          if (qField is List) {
+            questionText =
+                qField.isNotEmpty
+                    ? qField.map((e) => e?.toString() ?? '').join(', ')
+                    : 'Question ${i + 1}';
+          } else {
+            questionText = qField?.toString() ?? 'Question ${i + 1}';
+          }
+        } catch (e) {
+          questionId = i.toString();
+          questionText = 'Question ${i + 1}';
+          debugPrint('Error accessing question properties: $e');
+        }
+      }
+
+      questions.add({'id': questionId, 'question': questionText});
+
+      // Create a controller for each question
+      answerControllers.add(TextEditingController());
+
+      // Initialize empty answer
+      questionsAndAnswers.add({'question': questionText, 'answer': ''});
+    }
+    refresh();
+  }
+
+  void updateAnswer(int index, String answer) {
+    if (index < questionsAndAnswers.length) {
+      questionsAndAnswers[index]['answer'] = answer;
+      refresh();
+    }
+  }
+
+  bool validateAnswers() {
+    for (var qa in questionsAndAnswers) {
+      if (qa['answer']?.trim().isEmpty ?? true) {
+        showCustomSnackBar("Please answer all questions", isError: true);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void collectAllAnswers() {
+    for (int i = 0; i < answerControllers.length; i++) {
+      if (i < questionsAndAnswers.length) {
+        questionsAndAnswers[i]['answer'] = answerControllers[i].text.trim();
+      }
+    }
+
+    // Debug: Print collected Q&A data
+    debugPrint('=== Collected Questions and Answers ===');
+    for (var qa in questionsAndAnswers) {
+      debugPrint('Q: ${qa['question']}');
+      debugPrint('A: ${qa['answer']}');
+      debugPrint('---');
+    }
+  }
+
+  String getQuestionsAndAnswersAsString() {
+    String result = '';
+    for (var qa in questionsAndAnswers) {
+      result += 'Q: ${qa['question']}\n';
+      result += 'A: ${qa['answer']}\n\n';
+    }
+    return result;
+  }
+
+  // ---------total payable amount-----------------
+
+  /// Duration in hours
+  int get durationInt => int.tryParse(durations.value) ?? 1;
+  int get totalDurationAmount => hourlyRate * durationInt;
+
+  int get materialsTotalAmount {
+    int total = 0;
+    for (var material in materialsAndQuantity) {
+      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
+      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+      total += quantity * pricePerUnit;
+    }
+    return total;
+  }
+
+  int get weeklyTotalAmount => totalDurationAmount * selectedDates.length;
+
+  int calculateTotalPayableAmount() {
+    int total = 0;
+
+    if (bookingType.value == 'weekly' && selectedDates.length > 1) {
+      total += weeklyTotalAmount;
+    } else {
+      total += totalDurationAmount;
+    }
+    // Add materials cost
+    total += materialsTotalAmount;
+
+    // Debug: Print total calculation breakdown
+
+    debugPrint('=== Total Payable Amount Calculation ===');
+    debugPrint('Hourly Rate: $hourlyRate');
+    debugPrint('Duration (Hours): $durationInt');
+    debugPrint('Total from Hourly Rate: ${hourlyRate * durationInt}');
+    for (var material in materialsAndQuantity) {
+      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
+      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+      debugPrint(
+        'Material: ${material['name']}, Quantity: $quantity, Price/Unit: $pricePerUnit, Total: ${quantity * pricePerUnit}',
+      );
+    }
+
+    return total;
+  }
+
+  int get totalAmount => calculateTotalPayableAmount();
+
+  bool isNotEmptyField() {
+    if (startTimeController.value.text.isEmpty ||
+        endTimeController.value.text.isEmpty) {
+      EasyLoading.showInfo("Please select start and end time");
+      isLoading.value = false;
+      return false;
+    }
+    if (dayController.value.text.isEmpty) {
+      EasyLoading.showInfo("Please select day(s)");
+      isLoading.value = false;
+      return false;
+    }
+    if (selectedDates.isEmpty) {
+      EasyLoading.showInfo("Please select at least one date");
+      isLoading.value = false;
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> createBooking({
+    required String contractorId,
+    required String subcategoryId,
+  }) async {
+    isLoading.value = true;
+
+    final customerId = await SharePrefsHelper.getString(AppConstants.userId);
+
+    if (contractorId.trim().isEmpty) {
+      EasyLoading.showError("Invalid contractor id");
+      isLoading.value = false;
+      return false;
+    }
+
+    final List<Map<String, String>> questionsPayload =
+        questionsAndAnswers.map((qa) {
+          return {
+            'question': (qa['question'] ?? '').toString(),
+            'answer': (qa['answer'] ?? '').toString(),
+          };
+        }).toList();
+
+    // Convert materials to the requested shape: {name, count, unit, price}
+
+    final List<Map<String, dynamic>> materialsPayload =
+        materialsAndQuantity.map((m) {
+          String name = '';
+          try {
+            name = (m['name'] ?? '').toString();
+          } catch (_) {
+            name = m.toString();
+          }
+
+          final rawPrice = (m['price'] ?? '').toString();
+          // Remove any non-digit, non-dot characters (like $)
+          final cleaned = rawPrice.replaceAll(RegExp(r"[^0-9.]"), '');
+          final priceNum = double.tryParse(cleaned) ?? 0.0;
+
+          // unit in our internal structure stores the quantity; rename to count
+          final countNum = int.tryParse((m['count'] ?? '0').toString()) ?? 0;
+
+          return {
+            'name': name,
+            'count': countNum,
+            'unit': 'pcs',
+            'price': priceNum,
+          };
+        }).toList();
+
+    final payloadStartTime =
+        startTimeController.value.text.isNotEmpty
+            ? startTimeController.value.text
+            : selectedTime.value;
+
+    final bookingData = {
+      'customerId': customerId,
+      'contractorId': contractorId,
+      'subCategoryId': subcategoryId,
+      'questions': questionsPayload,
+      'material': materialsPayload,
+      'bookingType': bookingType.value,
+      'duration': durationInt,
+      'startTime': payloadStartTime,
+      'endTime': endTimeController.value.text,
+      'day':
+          bookingType.value == 'oneTime'
+              ? dayController.value.text
+              : selectedDates.toList(),
+      'price':
+          bookingType.value == 'weekly' && selectedDates.length > 1
+              ? weeklyTotalAmount
+              : totalDurationAmount,
+      'totalAmount': calculateTotalPayableAmount(),
+      'rateHourly': hourlyRate,
+    };
+
+    EasyLoading.show(status: 'Creating booking...');
+    debugPrint('Creating booking with data: $bookingData');
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.createBooking,
+        jsonEncode(bookingData),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        isLoading.value = false;
+        final data = response.body;
+        debugPrint('create booking response: $data');
+        EasyLoading.showSuccess('Booking created successfully!');
+        return true;
+      } else {
+        debugPrint('create booking failed: ${response.body}');
+        // Try to show API error message if available
+        String errorMsg = "Something went wrong";
+        try {
+          final body = response.body;
+          dynamic decoded;
+          if (body is String && body.isNotEmpty) {
+            decoded = jsonDecode(body);
+          } else if (body is Map) {
+            decoded = body;
+          }
+
+          if (decoded is Map<String, dynamic>) {
+            // 1) Prefer explicit message field
+            if (decoded['message'] is String &&
+                (decoded['message'] as String).isNotEmpty) {
+              errorMsg = decoded['message'];
+            }
+
+            // 2) Then check errorSources array
+            if (errorMsg.isEmpty &&
+                decoded['errorSources'] is List &&
+                decoded['errorSources'].isNotEmpty) {
+              final firstError = decoded['errorSources'][0];
+              if (firstError is Map &&
+                  firstError['message'] is String &&
+                  (firstError['message'] as String).isNotEmpty) {
+                errorMsg = firstError['message'];
+              }
+            }
+
+            // 3) Some APIs return nested err or errors
+            if (errorMsg.isEmpty &&
+                decoded['err'] is Map &&
+                decoded['err']['message'] is String) {
+              errorMsg = decoded['err']['message'];
+            }
+          }
+        } catch (e) {
+          debugPrint('Error parsing error body: $e');
+        }
+
+        // Final fallback
+        if (errorMsg.isEmpty) errorMsg = 'Failed to create booking';
+
+        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        isLoading.value = false;
+        return false;
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint('create booking error: $e');
+      EasyLoading.showError("$e");
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+      isLoading.value = false;
+      refresh();
+    }
+  }
+
+  Future<bool> updateBooking({
+    required String bookingId,
+    required String contractorId,
+    required String subcategoryId,
+  }) async {
+    isLoading.value = true;
+
+    final customerId = await SharePrefsHelper.getString(AppConstants.userId);
+
+    if (contractorId.trim().isEmpty) {
+      EasyLoading.showError("Invalid contractor id");
+      isLoading.value = false;
+      return false;
+    }
+
+    if (bookingId.trim().isEmpty) {
+      EasyLoading.showError("Invalid booking id");
+      isLoading.value = false;
+      return false;
+    }
+
+    if (!isNotEmptyField()) {
+      return false;
+    }
+
+    final List<Map<String, String>> questionsPayload =
+        questionsAndAnswers.map((qa) {
+          return {
+            'question': qa['question'] ?? '',
+            'answer': qa['answer'] ?? '',
+          };
+        }).toList();
+
+    // Convert materials to the requested shape: {name, count, unit, price}
+    final List<Map<String, dynamic>> materialsPayload =
+        materialsAndQuantity.map((m) {
+          String name = '';
+          try {
+            name = (m['name'] ?? '').toString();
+          } catch (_) {
+            name = '';
+          }
+
+          final rawPrice = (m['price'] ?? '').toString();
+          // Remove any non-digit, non-dot characters (like $)
+          final cleaned = rawPrice.replaceAll(RegExp(r"[^0-9.]"), '');
+          final priceNum = double.tryParse(cleaned) ?? 0.0;
+
+          // unit in our internal structure stores the quantity; rename to count
+          final countNum = int.tryParse((m['count'] ?? '0').toString()) ?? 0;
+
+          return {
+            'name': name,
+            'count': countNum,
+            'unit': 'pcs',
+            'price': priceNum,
+          };
+        }).toList();
+
+    final payloadStartTime =
+        startTimeController.value.text.isNotEmpty
+            ? startTimeController.value.text
+            : selectedTime.value;
+
+    final bookingData = {
+      'customerId': customerId,
+      'contractorId': contractorId,
+      'subCategoryId': subcategoryId,
+      'questions': questionsPayload,
+      'material': materialsPayload,
+      'bookingType': bookingType.value,
+      'duration': durationInt,
+      'startTime': payloadStartTime,
+      'endTime': endTimeController.value.text,
+      'day':
+          bookingType.value == 'oneTime'
+              ? selectedDates.isNotEmpty
+                  ? selectedDates.first
+                  : dayController.value.text
+              : selectedDates.toList(),
+      'price':
+          bookingType.value == 'weekly' && selectedDates.length > 1
+              ? weeklyTotalAmount
+              : totalDurationAmount,
+      'totalAmount': calculateTotalPayableAmount(),
+      'rateHourly': hourlyRate,
+    };
+
+    EasyLoading.show(status: 'Updating booking...');
+    debugPrint('Updating booking with ID: $bookingId');
+    debugPrint('Update data: $bookingData');
+
+    try {
+      // Assuming the API endpoint for updating is a PUT request to /booking/{id}
+      final response = await ApiClient.putData(
+        '${ApiUrl.createBooking}/$bookingId', // Assuming createBooking base URL + /{id}
+        jsonEncode(bookingData),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        isLoading.value = false;
+        final data = response.body;
+        debugPrint('update booking response: $data');
+        EasyLoading.showSuccess('Booking updated successfully!');
+        return true;
+      } else {
+        debugPrint('update booking failed: ${response.body}');
+        // Try to show API error message if available
+        String errorMsg = "Something went wrong";
+        try {
+          final body = response.body;
+          Map<String, dynamic>? decoded;
+
+          if (body is String) {
+            decoded = jsonDecode(body);
+          } else if (body is Map) {
+            decoded = Map<String, dynamic>.from(body);
+          }
+
+          if (decoded is Map<String, dynamic>) {
+            // 1) Prefer explicit message field
+            if (decoded['message'] is String &&
+                (decoded['message'] as String).isNotEmpty) {
+              errorMsg = decoded['message'];
+            }
+
+            // 2) Then check errorSources array
+            if (errorMsg.isEmpty &&
+                decoded['errorSources'] is List &&
+                decoded['errorSources'].isNotEmpty) {
+              final firstError = decoded['errorSources'][0];
+              if (firstError is Map &&
+                  firstError['message'] is String &&
+                  (firstError['message'] as String).isNotEmpty) {
+                errorMsg = firstError['message'];
+              }
+            }
+
+            // 3) Some APIs return nested err or errors
+            if (errorMsg.isEmpty &&
+                decoded['err'] is Map &&
+                decoded['err']['message'] is String) {
+              errorMsg = decoded['err']['message'];
+            }
+          }
+        } catch (e) {
+          debugPrint('Error parsing error body: $e');
+        }
+
+        // Final fallback
+        if (errorMsg.isEmpty) errorMsg = 'Failed to update booking';
+
+        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        isLoading.value = false;
+        return false;
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint('update booking error: $e');
+      EasyLoading.showError("$e");
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+      isLoading.value = false;
+      refresh();
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // Dispose all controllers
+    for (var controller in answerControllers) {
+      controller.dispose();
+    }
+    super.onClose();
+  }
+}

@@ -90,13 +90,13 @@ class SubscriptionCard extends StatelessWidget {
                       children: [
                         CustomText(
                           text: price,
-                          fontSize: 20.w,
+                          fontSize: 16.w,
                           color: AppColors.black,
                           fontWeight: FontWeight.w700,
                         ),
                         CustomText(
                           text: duration,
-                          fontSize: 20.w,
+                          fontSize: 15.w,
                           color: AppColors.black,
                           fontWeight: FontWeight.w700,
                         ),
@@ -129,7 +129,7 @@ class SubscriptionCard extends StatelessWidget {
               ),
               child: CustomText(
                 text: planName,
-                fontSize: 20.w,
+                fontSize: 17.w,
                 color: AppColors.white,
                 fontWeight: FontWeight.w700,
               ),

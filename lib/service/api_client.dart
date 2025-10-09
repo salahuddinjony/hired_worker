@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -50,24 +49,50 @@ class ApiClient extends GetxService {
       'Accept': 'application/json',
       'Authorization': bearerToken,
     };
+     // Build final URI with query params (merging any already present in uri)
+     if(!uri.startsWith("http" ) && !uri.startsWith("https")){
+       uri = ApiUrl.baseUrl+uri;
+     }
+    Uri baseUri = Uri.parse(uri);
+    if (query != null) {
+      baseUri = baseUri.replace(queryParameters: query);
+    }
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('🚀 ====> GET REQUEST START ====>');
+      debugPrint('📍 URL: ${baseUri.toString()}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      if (query != null && query.isNotEmpty) {
+        debugPrint('🔍 Query Parameters:');
+        printPrettyJson(query);
+      }
+      debugPrint('⏱️  Timeout: ${timeoutInSeconds}s');
 
       http.Response response = await client
-          .get(Uri.parse(ApiUrl.baseUrl + uri), headers: headers ?? mainHeaders)
+          .get(baseUri, headers: headers ?? mainHeaders)
           .timeout(const Duration(seconds: timeoutInSeconds));
 
+      debugPrint('📥 ====> GET RESPONSE START ====>');
+      debugPrint('📍 URL: ${baseUri.toString()}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📋 Response Headers:');
+      debugPrint('  content-type: ${response.headers['content-type']}');
+      debugPrint('  date: ${response.headers['date']}');
+      debugPrint('  server: ${response.headers['server']}');
+      debugPrint('  content-length: ${response.headers['content-length']}');
+      debugPrint('📄 Response Body:');
       try {
-        final prettyJson = const JsonEncoder.withIndent('  ')
+          final prettyJson = const JsonEncoder.withIndent('  ')
             .convert(jsonDecode(response.body));
-        developer.log("====> API Response [${response.statusCode}]:\n$prettyJson");
+        debugPrint(prettyJson);
       } catch (e) {
-        developer.log("====> API Response [${response.statusCode}]: ${response.body}");
+        debugPrint('Response body (not JSON): ${response.body}');
       }
+      debugPrint('🏁 ====> GET RESPONSE END ====>');
 
       return handleResponse(response, uri);
     } catch (e) {
-      debugPrint('------------${e.toString()}');
+      debugPrint('❌ GET REQUEST ERROR for $uri: ${e.toString()}');
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
   }
@@ -85,8 +110,26 @@ class ApiClient extends GetxService {
             ? {'Content-Type': 'application/json', 'Authorization': bearerToken}
             : {'Accept': 'application/json', 'Authorization': bearerToken};
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body');
+      debugPrint('🚀 ====> POST REQUEST START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      debugPrint('📦 Request Body:');
+      if (body != null) {
+        try {
+          // Try to parse and pretty print if it's JSON
+          if (body is String) {
+            final decodedBody = jsonDecode(body);
+            printPrettyJson(decodedBody);
+          } else {
+            printPrettyJson(body);
+          }
+        } catch (e) {
+          debugPrint(body.toString());
+        }
+      } else {
+        debugPrint('null');
+      }
 
       http.Response response = await client
           .post(
@@ -95,10 +138,27 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
+      
+      debugPrint('📥 ====> POST RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📋 Response Headers:');
+      printPrettyJson(response.headers);
+      debugPrint('📄 Response Body:');
+      try {
+        final prettyJson = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(response.body));
+        debugPrint(prettyJson);
+      } catch (e) {
+        debugPrint('Response body (not JSON): ${response.body}');
+      }
+      debugPrint('🏁 ====> POST RESPONSE END ====>');
+      
       return handleResponse(response, uri);
     } catch (e, s) {
-      debugPrint('Error------------${e.toString()}');
-      debugPrint('S------------${s.toString()}');
+      debugPrint('❌ POST REQUEST ERROR for ${ApiUrl.baseUrl + uri}:');
+      debugPrint('Error: ${e.toString()}');
+      debugPrint('Stack trace: ${s.toString()}');
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -117,8 +177,25 @@ class ApiClient extends GetxService {
             ? {'Content-Type': 'application/json', 'Authorization': bearerToken}
             : {'Accept': 'application/json', 'Authorization': bearerToken};
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body');
+      debugPrint('🚀 ====> PATCH REQUEST START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      debugPrint('📦 Request Body:');
+      if (body != null) {
+        try {
+          if (body is String) {
+            final decodedBody = jsonDecode(body);
+            printPrettyJson(decodedBody);
+          } else {
+            printPrettyJson(body);
+          }
+        } catch (e) {
+          debugPrint(body.toString());
+        }
+      } else {
+        debugPrint('null');
+      }
 
       http.Response response = await client
           .patch(
@@ -127,9 +204,25 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
+      
+      debugPrint('📥 ====> PATCH RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📋 Response Headers:');
+      printPrettyJson(response.headers);
+      debugPrint('📄 Response Body:');
+      try {
+        final prettyJson = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(response.body));
+        debugPrint(prettyJson);
+      } catch (e) {
+        debugPrint('Response body (not JSON): ${response.body}');
+      }
+      debugPrint('🏁 ====> PATCH RESPONSE END ====>');
+      
       return handleResponse(response, uri);
     } catch (e) {
-      debugPrint('------------${e.toString()}');
+      debugPrint('❌ PATCH REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -143,11 +236,11 @@ class ApiClient extends GetxService {
     bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
 
     var mainHeaders = {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Authorization': bearerToken,
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call (PUT): $uri\nHeader: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body');
 
       http.Response response = await http
@@ -157,8 +250,25 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
+      
+      debugPrint('📥 ====> PUT RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📋 Response Headers:');
+      printPrettyJson(response.headers);
+      debugPrint('📄 Response Body:');
+      try {
+        final prettyJson = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(response.body));
+        debugPrint(prettyJson);
+      } catch (e) {
+        debugPrint('Response body (not JSON): ${response.body}');
+      }
+      debugPrint('🏁 ====> PUT RESPONSE END ====>');
+      
       return handleResponse(response, uri);
     } catch (e) {
+      debugPrint('❌ PUT REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
   }
@@ -177,8 +287,13 @@ class ApiClient extends GetxService {
         'Authorization': bearerToken,
       };
 
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
+      debugPrint('🚀 ====> POST MULTIPART REQUEST START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      debugPrint('📦 Request Body Fields:');
+      printPrettyJson(body);
+      debugPrint('📷 Multipart Files: ${multipartBody?.length ?? 0} files');
 
       var request = http.MultipartRequest(
         'POST',
@@ -188,9 +303,9 @@ class ApiClient extends GetxService {
 
       if (multipartBody!.isNotEmpty) {
         for (var element in multipartBody) {
-          debugPrint("path : ${element.file.path}");
+          debugPrint("📁 File path: ${element.file.path}");
           var mimeType = lookupMimeType(element.file.path);
-          debugPrint("MimeType================$mimeType");
+          debugPrint("🎭 MimeType: $mimeType");
 
           var multipartImg = await http.MultipartFile.fromPath(
             element.key,
@@ -204,8 +319,17 @@ class ApiClient extends GetxService {
       request.headers.addAll(mainHeaders);
       http.StreamedResponse response = await request.send();
       final content = await response.stream.bytesToString();
-      debugPrint('====> API Response: [${response.statusCode}] $uri');
-      printPrettyJson(jsonDecode(content));
+      
+      debugPrint('📥 ====> POST MULTIPART RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📄 Response Body:');
+      try {
+        printPrettyJson(jsonDecode(content));
+      } catch (e) {
+        debugPrint('Response body (not JSON): $content');
+      }
+      debugPrint('🏁 ====> POST MULTIPART RESPONSE END ====>');
 
       return Response(
         statusCode: response.statusCode,
@@ -213,7 +337,7 @@ class ApiClient extends GetxService {
         body: content,
       );
     } catch (e) {
-      debugPrint('------------${e.toString()}');
+      debugPrint('❌ POST MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -233,8 +357,13 @@ class ApiClient extends GetxService {
         'Authorization': bearerToken,
       };
 
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
+      debugPrint('🚀 ====> PATCH MULTIPART REQUEST START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      debugPrint('📦 Request Body Fields:');
+      printPrettyJson(body);
+      debugPrint('📷 Multipart Files: ${multipartBody?.length ?? 0} files');
 
       var request = http.MultipartRequest(
         'PATCH',
@@ -242,11 +371,11 @@ class ApiClient extends GetxService {
       );
       request.fields.addAll(body);
 
-      if (multipartBody!.isNotEmpty) {
+      if (multipartBody != null && multipartBody.isNotEmpty) {
         for (var element in multipartBody) {
-          debugPrint("path : ${element.file.path}");
+          debugPrint("📁 File path: ${element.file.path}");
           var mimeType = lookupMimeType(element.file.path);
-          debugPrint("MimeType================$mimeType");
+          debugPrint("🎭 MimeType: $mimeType");
 
           var multipartImg = await http.MultipartFile.fromPath(
             element.key,
@@ -260,8 +389,17 @@ class ApiClient extends GetxService {
       request.headers.addAll(mainHeaders);
       http.StreamedResponse response = await request.send();
       final content = await response.stream.bytesToString();
-      debugPrint('====> API Response: [${response.statusCode}] $uri');
-      printPrettyJson(jsonDecode(content));
+      
+      debugPrint('📥 ====> PATCH MULTIPART RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📄 Response Body:');
+      try {
+        printPrettyJson(jsonDecode(content));
+      } catch (e) {
+        debugPrint('Response body (not JSON): $content');
+      }
+      debugPrint('🏁 ====> PATCH MULTIPART RESPONSE END ====>');
 
       return Response(
         statusCode: response.statusCode,
@@ -269,7 +407,7 @@ class ApiClient extends GetxService {
         body: content,
       );
     } catch (e) {
-      debugPrint('------------${e.toString()}');
+      debugPrint('❌ PATCH MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -357,8 +495,23 @@ class ApiClient extends GetxService {
       'Authorization': bearerToken,
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Call: $uri\n Body: $body');
+      debugPrint('🚀 ====> DELETE REQUEST START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📋 Headers:');
+      printPrettyJson(headers ?? mainHeaders);
+      if (body != null) {
+        debugPrint('📦 Request Body:');
+        try {
+          if (body is String) {
+            final decodedBody = jsonDecode(body);
+            printPrettyJson(decodedBody);
+          } else {
+            printPrettyJson(body);
+          }
+        } catch (e) {
+          debugPrint(body.toString());
+        }
+      }
 
       http.Response response = await http
           .delete(
@@ -367,8 +520,25 @@ class ApiClient extends GetxService {
             body: body,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
+      
+      debugPrint('📥 ====> DELETE RESPONSE START ====>');
+      debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
+      debugPrint('📊 Status Code: ${response.statusCode}');
+      debugPrint('📋 Response Headers:');
+      printPrettyJson(response.headers);
+      debugPrint('📄 Response Body:');
+      try {
+        final prettyJson = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(response.body));
+        debugPrint(prettyJson);
+      } catch (e) {
+        debugPrint('Response body (not JSON): ${response.body}');
+      }
+      debugPrint('🏁 ====> DELETE RESPONSE END ====>');
+      
       return handleResponse(response, uri);
     } catch (e) {
+      debugPrint('❌ DELETE REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
   }
@@ -406,10 +576,6 @@ class ApiClient extends GetxService {
       response0 = const Response(statusCode: 0, statusText: somethingWentWrong);
     }
 
-    debugPrint('====> API Response: [${response0.statusCode}] $uri');
-    if (response0.body != null) {
-      printPrettyJson(response0.body);
-    }
     return response0;
   }
 }

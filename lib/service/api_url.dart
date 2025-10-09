@@ -1,7 +1,7 @@
 class ApiUrl {
   // static const String baseUrl = "http://13.237.45.213/api/v1";
-  static const String imageUrl = "http://13.237.45.213/api/v1";
-  static const String baseUrl = "http://10.10.20.24:5002/api/v1"; 
+  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
   static String socketUrl = "http://13.237.45.213";
 
   ///========================= Authentication =========================
@@ -15,7 +15,16 @@ class ApiUrl {
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
   static const String categories = "/categories/";
+  static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
+  static const String subscriptionPlanList = "/dashboards/subscription-plans";
+  static const String createMaterial = "/contractors/materials";
+  static const String deleteMaterial = "/contractors/materials/"; // id
+  static const String updateMaterial = '/contractors/materials';
+  static const String createSupport = '/contractors/create_support';
+  static const String getNotificationList = '/notifications';
+  static const String getAllBookings = "/bookings/";
+  static const String submitReview = "/reviews/create-review";
 
   static String singleSubCategory({required String categoryId}) =>
       "/sub-categories?categoryId=$categoryId";
@@ -40,7 +49,7 @@ class ApiUrl {
 
   static String deleteAccount({required String userId}) => "/users/$userId";
 
-  static String getContractorDetails({required String userId}) =>
+  static String getReviewas({required String userId}) =>
       "/reviews/get-average-review/$userId";
 
   /// ==================   candidate part =============
@@ -264,7 +273,7 @@ class ApiUrl {
 
   // user //  Booking service =====================================
 
-  static const String createBooking = "/booking/create";
+  static const String createBooking = "/bookings/create-booking";
 
   //============================= Wish list ==========================
 
@@ -308,4 +317,8 @@ class ApiUrl {
   //=============================== Amount Top up ==================== >>
 
   static const String amountTopUp = '/wallet/initiate-top-up';
+
+  // get contractor question based on subCategory
+  static String getContractorQuestions({required String subCategoryId}) =>
+      "/questions/$subCategoryId";
 }

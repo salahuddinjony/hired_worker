@@ -201,7 +201,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AddMaterialController controller = Get.find<AddMaterialController>();
+    final MaterialController controller = Get.find<MaterialController>();
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),

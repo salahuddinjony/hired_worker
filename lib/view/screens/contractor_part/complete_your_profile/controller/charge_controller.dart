@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:servana/utils/app_strings/app_strings.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
@@ -12,7 +13,6 @@ class ChargeController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
 
   Future<void> updateContractorData(String rateHourly) async {
-
     if (rateHourly.isEmpty) {
       showCustomSnackBar("Please enter amount to continue.");
       return;
@@ -34,6 +34,8 @@ class ChargeController extends GetxController {
 
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
+
+        await SharePrefsHelper.setBool(AppStrings.isProfileComplete, true);
 
         Get.toNamed(AppRoutes.subscribeScreen);
       } else {

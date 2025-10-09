@@ -9,20 +9,68 @@ import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 
-class CustomarServiceDetailsScreen extends StatefulWidget {
+class CustomarServiceDetailsScreen extends StatelessWidget {
   const CustomarServiceDetailsScreen({super.key});
 
   @override
-  State<CustomarServiceDetailsScreen> createState() =>
-      _CustomarServiceDetailsScreenState();
-}
-
-class _CustomarServiceDetailsScreenState
-    extends State<CustomarServiceDetailsScreen> {
-  int selectedIndex = -1; //
-  @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> args = Get.arguments ?? {};
+    final ContractorBookingController controller = args['controller'];
+    final String contractorId = args['contractorId']?.toString() ?? '';
+    final String subcategoryId = args['subcategoryId']?.toString() ?? '';
+    final String contractorName = args['contractorName'] ?? '';
+    final String categoryName = args['categoryName'] ?? '';
+    final String subCategoryName = args['subCategoryName'] ?? '';
+
+    // Extract booking schedule data for updates
+    final String bookingType = args['bookingType']?.toString() ?? 'oneTime';
+    final String duration = args['duration']?.toString() ?? '1';
+    final String startTime = args['startTime']?.toString() ?? '';
+    final String endTime = args['endTime']?.toString() ?? '';
+    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final bool isUpdate = args['isUpdate'] ?? false;
+    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
+
+    // Initialize controller with existing booking data if this is an update
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isUpdate) {
+        // Set booking type
+        controller.bookingType.value = bookingType;
+        
+        // Set duration
+        controller.durations.value = duration;
+        
+        // Set hourly rate
+        controller.hourlyRate = hourlyRate;
+        
+        // Set start and end times
+        controller.startTimeController.value.text = startTime;
+        controller.endTimeController.value.text = endTime;
+        
+        // Set selected dates
+        controller.selectedDates.clear();
+        controller.selectedDates.addAll(selectedDates);
+        
+        // Set day controller text based on booking type
+        if (bookingType == 'oneTime' && selectedDates.isNotEmpty) {
+          controller.dayController.value.text = selectedDates.first;
+        } else if (bookingType == 'weekly' && selectedDates.isNotEmpty) {
+          controller.dayController.value.text = '${selectedDates.length} dates selected';
+        }
+        
+        debugPrint('Initialized controller with existing booking data:');
+        debugPrint('BookingType: $bookingType');
+        debugPrint('Duration: $duration');
+        debugPrint('StartTime: $startTime');
+        debugPrint('EndTime: $endTime');
+        debugPrint('SelectedDates: $selectedDates');
+        debugPrint('HourlyRate: $hourlyRate');
+      }
+    });
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -57,62 +105,101 @@ class _CustomarServiceDetailsScreenState
                   left: 20,
                   right: 20,
                   child: Card(
-                    //color: AppColors.red,
                     elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.timer, color: AppColors.black),
-                                CustomText(
-                                  left: 8.w,
-                                  text: "One Time".tr,
-                                  fontSize: 16.w,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
+                      child: Obx(() {
+                        final isOneTime =
+                            controller.bookingType.value == 'oneTime';
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            GestureDetector(
+                              onTap:
+                                  (){
+                                    debugPrint('CustomarServiceDetailsScreen: One Time selected');
+                                    controller.selectedDates.length > 1
+                                        ? controller.dayController.value.clear()
+                                        : null;
+                                    controller.bookingType.value = 'oneTime';
+                                  },
+                                     
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_month,
-                                  color: AppColors.black,
+                                decoration: BoxDecoration(
+                                  color:
+                                      isOneTime
+                                          ? AppColors.primary
+                                          : AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                CustomText(
-                                  left: 8.w,
-                                  text: "Weekly".tr,
-                                  fontSize: 16.w,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.timer,
+                                      color:
+                                          isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                    ),
+                                    CustomText(
+                                      left: 8.w,
+                                      text: "One Time".tr,
+                                      fontSize: 16.w,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                            GestureDetector(
+                              onTap:
+                                  () => controller.bookingType.value = 'weekly',
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      !isOneTime
+                                          ? AppColors.primary
+                                          : AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_month,
+                                      color:
+                                          !isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                    ),
+                                    CustomText(
+                                      left: 8.w,
+                                      text: "Weekly".tr,
+                                      fontSize: 16.w,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          !isOneTime
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
                     ),
                   ),
                 ),
@@ -133,89 +220,198 @@ class _CustomarServiceDetailsScreenState
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
                       ),
-                      Row(
-                        children: List.generate(5, (index) {
-                          final isSelected = selectedIndex == index;
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6),
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundColor:
-                                    isSelected
-                                        ? AppColors.primary
-                                        : AppColors.white,
-                                child: CustomText(
-                                  text: "${index + 1}",
-                                  fontSize: 16.w,
-                                  fontWeight: FontWeight.w500,
-                                  color:
+                      SizedBox(width: 8.w),
+                      Obx(() {
+                        final selected =
+                            int.tryParse(controller.durations.value) ?? 1;
+                        return Row(
+                          children: List.generate(5, (index) {
+                            final isSelected = selected == (index + 1);
+                            return GestureDetector(
+                              onTap: () {
+                                controller.durations.value = '${index + 1}';
+                                // controller.durationController.text = controller.durations.value;
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor:
                                       isSelected
-                                          ? AppColors.white
-                                          : AppColors.black,
+                                          ? AppColors.primary
+                                          : AppColors.white,
+                                  child: CustomText(
+                                    text: "${index + 1}",
+                                    fontSize: 16.w,
+                                    fontWeight: FontWeight.w500,
+                                    color:
+                                        isSelected
+                                            ? AppColors.white
+                                            : AppColors.black,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                      ),
+                            );
+                          }),
+                        );
+                      }),
                     ],
                   ),
                   SizedBox(height: 30.h),
-                  CustomFormCard(
-                    title: "Time".tr,
-                    hintText: "mm/dd/yyyy",
-                    prefixIcon: Icon(
-                      Icons.calendar_month,
-                      color: AppColors.black_08,
+                  Obx(
+                    () => CustomFormCard(
+                      readOnly: true,
+                      onTap: () {
+                        debugPrint(
+                          'CustomarServiceDetailsScreen: Date field tapped',
+                        );
+                      
+                        controller.selectDate(context,controller.bookingType.value == 'oneTime' );
+                      },
+                      title: controller.bookingType.value == 'oneTime'
+                          ? "Select Date".tr
+                          : "Select Multiple Dates ".tr,
+                      hintText:
+                          controller.dayController.value.text.isEmpty
+                              ? "mm/dd/yyyy"
+                              : controller.dayController.value.text,
+                      prefixIcon: Icon(
+                        Icons.calendar_month,
+                        color: AppColors.black_08,
+                      ),
+                      suffixIcon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.black_08,
+                      ),
+                      controller: controller.dayController.value,
                     ),
-                    suffixIcon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: AppColors.black_08,
-                    ),
-                    controller: TextEditingController(),
                   ),
-                  CustomFormCard(
-                    title: "Category".tr,
-                    hintText: "Select Category".tr,
-                    suffixIcon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: AppColors.black_08,
-                    ),
-                    controller: TextEditingController(),
-                  ),
-                  CustomFormCard(
-                    title: "Sub Category".tr,
-                    hintText: "Select Category".tr,
-                    suffixIcon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: AppColors.black_08,
-                    ),
-                    controller: TextEditingController(),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Obx(
+                          () => CustomFormCard(
+                            readOnly: true,
+                            title: "Start time".tr,
+
+                            onTap: () {
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.startTimeController.value,
+                              );
+                            },
+                            hintText:
+                                controller
+                                        .startTimeController
+                                        .value
+                                        .text
+                                        .isEmpty
+                                    ? "hh:mm"
+                                    : controller.startTimeController.value.text,
+                            prefixIcon: Icon(
+                              Icons.access_time,
+                              color: AppColors.black_08,
+                            ),
+                            controller: controller.startTimeController.value,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+
+                      Expanded(
+                        child: Obx(
+                          () => CustomFormCard(
+                            readOnly: true,
+                            title: "End time".tr,
+
+                            onTap: () {
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.endTimeController.value,
+                              );
+                            },
+                            hintText:
+                                controller.endTimeController.value.text.isEmpty
+                                    ? "hh:mm"
+                                    : controller.endTimeController.value.text,
+                            prefixIcon: Icon(
+                              Icons.access_time,
+                              color: AppColors.black_08,
+                            ),
+                            controller: controller.endTimeController.value,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20.h),
                   CustomText(
-                    text: "Charge /Hour 50\$",
+                    text: 'Charge /Hour \$${controller.hourlyRate}',
                     fontSize: 18.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                     bottom: 8,
                   ),
-                  CustomText(
-                    text: "Total:  USD 250.00 (5 Hours)",
-                    fontSize: 18.w,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
-                    bottom: 50,
+                  Obx(() {
+                    final total = controller.calculateTotalPayableAmount();
+                    final hours = controller.durations.value;
+                    return CustomText(
+                      text: "Total:  USD $total ($hours Hours)",
+                      fontSize: 18.w,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                      bottom: 50,
+                    );
+                  }),
+                  CustomButton(
+                    onTap: () async {
+                      if (!controller.isNotEmptyField()) {
+                        return;
+                      }
+                      
+                      // Check if this is an update operation
+                      // if (isUpdate && bookingId.isNotEmpty) {
+                      //   // Update existing booking
+                      //   final success = await controller.updateBooking(
+                      //     bookingId: bookingId,
+                      //     contractorId: contractorId,
+                      //     subcategoryId: subcategoryId,
+                      //   );
+                        
+                      //   if (success) {
+                      //     // Navigate back to history or show success
+                      //     Get.back(); // Go back to previous screen
+                      //     Get.back(); // Go back to materials screen
+                      //     Get.back(); // Go back to history page
+                      //   }
+                      // } else {
+                        // Create new booking (original flow)
+                        Get.toNamed(
+                          AppRoutes.customarServiceContractorDetailsScreen,
+                          arguments: {
+                            'isUpdate': isUpdate,
+                            'bookingId': bookingId,
+                            'contractorId': contractorId,
+                            'subcategoryId': subcategoryId,
+                            'controller': controller,
+                            'contractorName': contractorName,
+                            'categoryName': categoryName,
+                            'subCategoryName': subCategoryName,
+                          },
+                        );
+                      
+                    },
+                    title: isUpdate ? "Update Booking".tr : "Continue".tr,
                   ),
-                  CustomButton(onTap: (){
-                    Get.toNamed(AppRoutes.customarServiceContractorDetailsScreen);
-                  }, title: "Continue".tr,)
                 ],
               ),
             ),

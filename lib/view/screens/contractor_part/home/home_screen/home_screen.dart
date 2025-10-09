@@ -14,6 +14,7 @@ import 'package:servana/view/screens/contractor_part/home/home_screen/widget/cus
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart'; // App navigation routes
+import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_nav_bar/navbar.dart'; // Custom bottom navigation bar
 import 'widget/custom_home_card.dart'; // Custom card widget for home screen
 
@@ -37,7 +38,20 @@ class HomeScreen extends StatelessWidget {
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
-          return Center(child: Text(controller.status.value.errorMessage!));
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(controller.status.value.errorMessage!),
+                ElevatedButton(
+                  onPressed: () {
+                    controller.getAllBookings();
+                  },
+                  child: Text('Retry'),
+                ),
+              ],
+            ),
+          );
         } else {
           return Padding(
             padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
@@ -125,7 +139,15 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomHomeCard(
-                            text: '11',
+                            text:
+                                profileController
+                                    .contractorModel
+                                    .value
+                                    .data
+                                    ?.contractor
+                                    ?.balance
+                                    .toString() ??
+                                " - ",
                             title: "Total Earning this month".tr,
                           ),
                           CustomHomeCard(
@@ -151,7 +173,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.data?.result?.length
+                                controller
+                                    .bookingModel
+                                    .value
+                                    .data
+                                    ?.result
+                                    ?.length
                                     .toString() ??
                                 " - ",
                             title: "Recent Services".tr,
@@ -196,29 +223,46 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ).onTap(() {
                             Get.toNamed(AppRoutes.recentAllServiceScreen);
-                          },),
+                          }),
                         ],
                       ),
 
-                      // List of recent service cards
+                      if ((controller.bookingModel.value.data?.result?.length ??
+                              0) ==
+                          0)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: Center(child: Text('No data found')),
+                        ),
+
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount:
-                            controller.bookingModel.value.data?.result?.length ?? 0,
+                            controller
+                                .bookingModel
+                                .value
+                                .data
+                                ?.result
+                                ?.length ??
+                            0,
                         itemBuilder: (context, index) {
                           BookingModelData data =
-                              controller.bookingModel.value.data!.result![index];
+                              controller
+                                  .bookingModel
+                                  .value
+                                  .data!
+                                  .result![index];
 
                           return CustomServiceCard(
-                            title: data.subCategoryId?.name ?? ' - ',
-                            updateDate: data.updatedAt!,
-                            hourlyRate: data.rateHourly.toString(),
+                            title: getSubCategoryName(data),
+                            updateDate: data.createdAt ?? DateTime.now(),
+                            hourlyRate: data.rateHourly?.toString() ?? ' - ',
                             rating:
                                 data.contractorId?.contractor?.ratings
                                     ?.toString() ??
                                 ' - ',
-                            status: data.status ?? ' - ',
+                            status: data.status ?? 'Unknown',
                             image: data.contractorId?.img,
                           );
                         },

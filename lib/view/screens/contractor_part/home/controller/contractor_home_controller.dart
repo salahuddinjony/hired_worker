@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
@@ -64,14 +65,15 @@ class ContractorHomeController extends GetxController {
       );
 
       if (ongoingResponse.body != null &&
-          ongoingResponse.body['meta'] != null) {
-        final totalOngoing = ongoingResponse.body['meta']['total'] ?? 0;
+          ongoingResponse.body['data'] != null) {
+        final totalOngoing = ongoingResponse.body['data']['meta']['total'] ?? 0;
         onGoingServices.value = totalOngoing;
       }
 
       status.value = RxStatus.success();
     } catch (e) {
-      status.value = RxStatus.error(e.toString());
+      debugPrint(e.toString());
+      status.value = RxStatus.error('Something went wrong. Please try again later.');
     }
   }
 
@@ -79,20 +81,25 @@ class ContractorHomeController extends GetxController {
     Map<String, String> data = {"status": "ongoing"};
 
     try {
-      final response = await ApiClient.patchData(
+      final response = await ApiClient.patchMultipartData(
         '${ApiUrl.bookings}/$id',
-        jsonEncode(data),
+        data,
+        multipartBody: null,
       );
 
-      removeBookingData(id);
+      if (response.statusCode == 200) {
+        removeBookingData(id);
 
-      onGoingServices.value++;
+        onGoingServices.value++;
 
-      if (requestedServices.value > 1) {
-        requestedServices.value--;
+        if (requestedServices.value > 1) {
+          requestedServices.value--;
+        }
+
+        showCustomSnackBar('Order accepted successfully', isError: false);
+      } else {
+        showCustomSnackBar('Something went wrong', isError: false);
       }
-
-      showCustomSnackBar(response.body['message'], isError: false);
     } catch (e) {
       showCustomSnackBar(e.toString());
     }
