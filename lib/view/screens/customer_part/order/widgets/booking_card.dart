@@ -54,7 +54,7 @@ class BookingCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: booking.subCategoryId?.name ?? 'Service',
+                            text: booking.subCategoryId ?? 'Service',
                             fontSize: 16.w,
                             fontWeight: FontWeight.w700,
                             color: AppColors.black,
@@ -184,13 +184,13 @@ class BookingCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Icon(
-                                isCompleted ? Icons.message : Icons.edit,
+                                booking.status?.toLowerCase() == 'pending' ? Icons.edit : Icons.message,
                                 color: AppColors.primary,
                                 size: 18.w,
                               ),
                               SizedBox(width: 6.w),
                               CustomText(
-                                text: isCompleted ? 'Message'.tr : 'Update'.tr,
+                                text: booking.status?.toLowerCase() == 'pending' ? 'Update'.tr : 'Message'.tr,
                                 fontSize: 14.w,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primary,
