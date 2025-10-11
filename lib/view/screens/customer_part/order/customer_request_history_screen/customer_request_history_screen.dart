@@ -80,7 +80,23 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
   ) {
     return RefreshIndicator(
       onRefresh: () {
-        final status = 'rejected'; // Default for History tab
+        String status;
+        switch (tabIndex) {
+          case 0:
+            status = 'pending';
+            break;
+          case 1:
+            status = 'accepted';
+            break;
+          case 2:
+            status = 'on-going';
+            break;
+          case 3:
+            status = ''; // For History tab, load all
+            break;
+          default:
+            status = '';
+        }
         if (status.isEmpty) {
           return controller.loadAllBookings();
         } else {
@@ -124,6 +140,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
 
             return BookingCard(
               booking: booking,
+              controller: controller,
               onTap:
                   () => Get.toNamed(
                     AppRoutes.requestHistoryServiceDetailsPage,

@@ -15,9 +15,9 @@ class CustomerOrderModel {
     return CustomerOrderModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
-      data: (json['data'] as List?)
-              ?.map((e) => BookingResult.fromJson(e))
+      meta: json['meta'] != null ? Meta.fromJson(json['meta'] as Map<String, dynamic>) : null,
+      data: (json['data'] as List<dynamic>?)
+              ?.map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
     );
@@ -29,7 +29,7 @@ class BookingResult {
   final String? id;
   final Customer? customerId;
   final Contractor? contractorId;
-  final String? subCategoryId;
+  final SubCategory? subCategoryId;
   final int? bookingId;
   final String? bookingType;
   final String? status;
@@ -87,7 +87,10 @@ class BookingResult {
               json['contractorId'] is Map<String, dynamic>
           ? Contractor.fromJson(json['contractorId'])
           : null,
-      subCategoryId: json['subCategoryId'] ?? '',
+      subCategoryId: json['subCategoryId'] != null &&
+              json['subCategoryId'] is Map<String, dynamic>
+          ? SubCategory.fromJson(json['subCategoryId'])
+          : null,
       bookingId: json['bookingId'] ?? 0,
       bookingType: json['bookingType'] ?? '',
       status: json['status'] ?? '',
@@ -280,6 +283,38 @@ class ContractorDetails {
       id: json['_id'] ?? '',
       rateHourly: json['rateHourly'] ?? 0,
       ratings: json['ratings'] ?? 0,
+    );
+  }
+}
+
+class SubCategory {
+  final String? id;
+  final String? categoryId;
+  final String? name;
+  final String? img;
+  final bool? isDeleted;
+  final String? createdAt;
+  final String? updatedAt;
+
+  SubCategory({
+    this.id,
+    this.categoryId,
+    this.name,
+    this.img,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory SubCategory.fromJson(Map<String, dynamic> json) {
+    return SubCategory(
+      id: json['_id'] ?? '',
+      categoryId: json['categoryId'] ?? '',
+      name: json['name'] ?? '',
+      img: json['img'] ?? '',
+      isDeleted: json['isDeleted'] ?? false,
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
     );
   }
 }
