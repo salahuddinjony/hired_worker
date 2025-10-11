@@ -82,7 +82,7 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
 
       final Map<String, String> queryParams = {
         'page': page.toString(),
-        'limit': '3',
+        'limit': '10',
       };
       
       // Add status filter if provided
