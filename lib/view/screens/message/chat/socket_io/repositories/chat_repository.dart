@@ -40,14 +40,20 @@ class ChatRepository {
     required String senderId,
     required String text,
     List<String>? attachment,
+    String? receiverId,
   }) async {
     _socket.sendMessage(
       conversationId: conversationId,
       senderId: senderId,
       text: text,
       attachment: attachment,
+      receiverId: receiverId,
     );
   }
+
+  // Helper methods for debugging
+  bool get isConnected => _socket.isConnected;
+  String get socketId => _socket.socketId;
 
   // New: fetch messages REST fallback / initial history load
   Future<List<ChatMessage>> fetchMessages(String conversationId) async {

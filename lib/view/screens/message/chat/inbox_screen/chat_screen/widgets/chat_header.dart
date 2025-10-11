@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -15,8 +14,9 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
     required this.receiverName,
     required this.receiverImage,
     required this.onBack,
-    this.onMore, 
-    required this.id, required this.isCustomer,
+    this.onMore,
+    required this.id,
+    required this.isCustomer,
   });
 
   @override
@@ -33,7 +33,10 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   ClipOval(
                     child: CustomNetworkImage(
-                        imageUrl: receiverImage, height: 48, width: 48),
+                      imageUrl: receiverImage,
+                      height: 48,
+                      width: 48,
+                    ),
                   ),
                   Positioned(
                     right: 0,
@@ -59,7 +62,9 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
                   Text(
                     receiverName,
                     style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 16),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   const Text(
@@ -69,22 +74,7 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
             ),
-            // clearer "Make Offer" action for users
-           if(isCustomer) TextButton.icon(
-              onPressed: onMore,
-              icon: const Icon(Icons.local_offer, color: AppColors.primary, size: 20),
-              label: const Text(
-                'Make Offer',
-                style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
-              ),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                backgroundColor: Colors.grey.shade100,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-            )else Icon( Icons.more_vert, color: Colors.grey.shade600),
-            // Text(id
-            //   , style: const TextStyle(fontSize: 12, color: Colors.grey),)
+            Icon(Icons.more_vert, color: Colors.grey.shade600),
           ],
         ),
       ),

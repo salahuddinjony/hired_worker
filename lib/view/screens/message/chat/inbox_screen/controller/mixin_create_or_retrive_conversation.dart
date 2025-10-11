@@ -1,24 +1,27 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 
 mixin class MixinCreateOrRetrieveConversation {
+  Rx<RxStatus> conversationStatus = RxStatus.success().obs;
   Future<String?> createOrRetrieveConversation({
     String? senderId, // logged in user
     required String receiverId, // other user
   }) async {
-    final userId = senderId ??
+    conversationStatus.value = RxStatus.loading();
+    final userId =
+        senderId ??
         await SharePrefsHelper.getString(
-            AppConstants.userId); // here set sernder as logged user
+          AppConstants.userId,
+        ); // here set sernder as logged user
 
     try {
-      final body = {
-        'members': [userId, receiverId],
-      };
+      final body = {"contractorId": receiverId, "customerId": senderId};
 
       debugPrint('Request Body: $body');
 
@@ -30,6 +33,7 @@ mixin class MixinCreateOrRetrieveConversation {
       debugPrint('Response: ${response.body}');
 
       if (response.statusCode == 200) {
+        conversationStatus.value = RxStatus.success();
         final dynamic rawBody = response.body;
         final conversationId = rawBody['data']['_id'] as String?;
 
@@ -39,14 +43,20 @@ mixin class MixinCreateOrRetrieveConversation {
 
         return conversationId;
       } else {
+        conversationStatus.value = RxStatus.error();
         debugPrint(
-            'Failed to create/retrieve conversation: ${response.statusText}');
+          'Failed to create/retrieve conversation: ${response.statusText}',
+        );
         throw Exception(
-            'Failed to create/retrieve conversation: ${response.statusText}');
+          'Failed to create/retrieve conversation: ${response.statusText}',
+        );
       }
     } catch (e) {
+      conversationStatus.value = RxStatus.error();
       debugPrint('Error in createOrRetrieveConversation: $e');
       return null;
-    } finally {}
+    } finally {
+      debugPrint('createOrRetrieveConversation completed.');
+    }
   }
 }

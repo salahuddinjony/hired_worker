@@ -12,7 +12,7 @@ class   AppStrings {
 
   //================== Custom Controller String ===================//
   static const String item = "Item";
-static const String chatList = "Chat List";
+static const String chatList = "Inbox";
 
   ///============================ Commom Auth =========================//
   static const String welcomeBack = "Welcome Back !";

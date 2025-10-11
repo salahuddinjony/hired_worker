@@ -9,7 +9,6 @@ import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/components/message_card/message_card.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/controller/conversation_controller.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/widgets/empty_conversations.dart';
@@ -19,12 +18,34 @@ class InboxScreen extends StatelessWidget {
   final bool isCustomer;
   InboxScreen({super.key, this.isCustomer = false});
 
+  String _formatMessageTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+    
+    if (difference.inDays == 0) {
+     
+      return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+    } else if (difference.inDays == 1) {
+      
+      return "Yesterday";
+    } else if (difference.inDays < 7) {
+    
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      return days[dateTime.weekday - 1];
+    } else {
+    
+      return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+    }
+  }
+
   final controller = Get.find<ConversationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+
+      // custom bottom nav bar
       bottomNavigationBar: Obx(() {
         return controller.thisRole.value
             ? const CustomerNavbar(currentIndex: 2)
@@ -51,7 +72,8 @@ class InboxScreen extends StatelessWidget {
                   await controller.loadConversations();
                 },
                 child: Obx(() {
-                  final conversations = controller.conversationList;
+                  // Create a copy of the list to avoid modifying the reactive list during build
+                  final conversations = List.from(controller.conversationList);
                   conversations.sort((a, b) {
                     final aTime = controller.parseDate(a.updatedAt) ??
                         DateTime.fromMillisecondsSinceEpoch(0);
@@ -68,6 +90,7 @@ class InboxScreen extends StatelessWidget {
                     return EmptyConversations(controller: controller);
                   }
                   return ListView.builder(
+                    // controller: controller.scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: conversations.length,
                     itemBuilder: (context, index) {
@@ -78,12 +101,14 @@ class InboxScreen extends StatelessWidget {
                       final image =
                           participant?.img ??
                           AppConstants.profileImage;
-                      final receiverRole = 'Unknown'; // Role not available in new structure
                       final receiverName =
                           participant?.fullName ?? 'Unknown';
                       final recieverId = participant?.id ?? '';
                       final messageText = convo.lastMessage?.toString() ?? '';
-                      final lastdateTime = convo.lastMessageTime?.getDateTime();
+                      final parsedDateTime = controller.parseDate(convo.lastMessageTime);
+                      final lastdateTime = parsedDateTime != null 
+                          ? _formatMessageTime(parsedDateTime)
+                          : null;
 
                       return Padding(
                         padding: EdgeInsets.only(top: 10.h),
@@ -104,12 +129,9 @@ class InboxScreen extends StatelessWidget {
                             debugPrint(
                               'Tapped conversation ID: ${convo.id}\nSender ID: $recieverId',
                             );
-                            // open chat screen and wait until it's popped
-
                             Get.toNamed(
                               AppRoutes.chatScreen,
                               arguments: {
-                                'receiverRole': receiverRole,
                                 'receiverName': receiverName,
                                 'receiverImage': image,
                                 'conversationId': convo.id,

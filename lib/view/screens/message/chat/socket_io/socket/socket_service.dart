@@ -31,9 +31,16 @@ class SocketService {
       'autoConnect': true,
     });
 
-    _socket!.on('connect', (_) => print('[SocketService] connected'));
-    _socket!.on('disconnect', (_) => print('[SocketService] disconnected'));
-    _socket!.on('connect_error', (err) => print('[SocketService] connect_error: $err'));
+    _socket!.on('connect', (_) {
+      print('[SocketService] 🟢 CONNECTED to server');
+      print('[SocketService] 🆔 Socket ID: ${_socket!.id}');
+    });
+    _socket!.on('disconnect', (_) {
+      print('[SocketService] 🔴 DISCONNECTED from server');
+    });
+    _socket!.on('connect_error', (err) {
+      print('[SocketService] ❌ CONNECTION ERROR: $err');
+    });
 
 
 // setup user 
@@ -45,14 +52,17 @@ class SocketService {
       }
     });
 
-    // Incoming message events
-    _socket!.on('message', (data) {
-      if (data is Map) _messageController.add(Map<String, dynamic>.from(data));
-    });
-
-    // New message event (alternative)
-    _socket!.on('receive-message', (data) {
-      if (data is Map) _messageController.add(Map<String, dynamic>.from(data));
+    // Incoming message events - listen for 'newMessage' event
+    _socket!.on('newMessage', (data) {
+      print('[SocketService] 📨 RECEIVED newMessage: $data');
+      print('[SocketService] 📨 Data type: ${data.runtimeType}');
+      if (data is Map) {
+        final messageData = Map<String, dynamic>.from(data);
+        print('[SocketService] 📨 Processing message: ${messageData['message']}');
+        _messageController.add(messageData);
+      } else {
+        print('[SocketService] ❌ Received data is not a Map: $data');
+      }
     });
 
     // Typing events
@@ -94,13 +104,19 @@ class SocketService {
   /// Generic emitter used by repositories for custom events (fixes emitRaw missing error).
   void emitRaw(String event, [dynamic data]) {
     if (_socket == null) {
-      print('[SocketService] emitRaw: socket is null, event=$event');
+      print('[SocketService] ❌ emitRaw: socket is null, event=$event');
+      return;
+    }
+    if (!_socket!.connected) {
+      print('[SocketService] ❌ emitRaw: socket not connected, event=$event');
       return;
     }
     try {
+      print('[SocketService] 📤 EMITTING EVENT: $event with data: $data');
       _socket!.emit(event, data);
+      print('[SocketService] ✅ EVENT EMITTED SUCCESSFULLY: $event');
     } catch (e) {
-      print('[SocketService] emitRaw error: $e');
+      print('[SocketService] ❌ emitRaw error: $e');
     }
   }
   void setupUser(String userId) {
@@ -127,14 +143,17 @@ class SocketService {
     required String senderId,
     required String text,
     List<String>? attachment,
+    String? receiverId,
   }) {
     final payload = {
-      'conversationId': conversationId,
-      'senderId': senderId,
-      'text': text,
-      'attachment': attachment ?? [],
+      'sender': senderId,
+      'receiver': receiverId ?? '',
+      'message': text,
+      'chatRoomId': conversationId,
     };
-    emitRaw('send-message', payload);
+    print('[SocketService] 🚀 SENDING MESSAGE: $payload');
+    print('[SocketService] 📡 Socket connected: ${_socket?.connected}');
+    emitRaw('sendMessage', payload);
   }
 
   void dispose() {
@@ -142,4 +161,8 @@ class SocketService {
     _typingController.close();
     disconnect();
   }
+
+  // Helper method to check connection status
+  bool get isConnected => _socket?.connected ?? false;
+  String get socketId => _socket?.id ?? 'No ID';
 }

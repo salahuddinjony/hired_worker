@@ -12,7 +12,6 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = Get.arguments;
-    final String receiverRole = args['receiverRole'];
     final String receiverName = args['receiverName'];
     final String receiverImage = args['receiverImage'];
     final String conversationId = args['conversationId'];
@@ -29,6 +28,7 @@ class ChatScreen extends StatelessWidget {
                 conversationId: conversationId,
                 userRole: userRole,
                 userId: userId,
+                receiverId: receiverId,
               ),
               tag: conversationId,
             );
@@ -62,7 +62,7 @@ class ChatScreen extends StatelessWidget {
                   receiverImage: receiverImage,
                 ),
               ),
-              Obx(() => TypingIndicator(visible: controller.isTyping.value)),
+              // Obx(() => TypingIndicator(visible: controller.isTyping.value)),
             ],
           ),
         ),
