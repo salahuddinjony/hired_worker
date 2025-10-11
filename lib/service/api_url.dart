@@ -112,6 +112,7 @@ class ApiUrl {
   static const String getPopularTherapist = "/user/retrive/therapists/popular";
 
   static const String bookings = "/bookings";
+  static const String singleUserBookings = "/bookings/all-bookings-by-user";
   static const String notification = "/notifications";
 
   static String getTherapistBySpeciality({

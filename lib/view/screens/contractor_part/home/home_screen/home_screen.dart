@@ -152,7 +152,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.data!.meta?.total
+                                controller.bookingModel.value.meta?.total
                                     .toString() ??
                                 " - ",
                             title: "Total Service".tr,
@@ -177,7 +177,6 @@ class HomeScreen extends StatelessWidget {
                                     .bookingModel
                                     .value
                                     .data
-                                    ?.result
                                     ?.length
                                     .toString() ??
                                 " - ",
@@ -227,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      if ((controller.bookingModel.value.data?.result?.length ??
+                      if ((controller.bookingModel.value.data?.length ??
                               0) ==
                           0)
                         SizedBox(
@@ -243,7 +242,6 @@ class HomeScreen extends StatelessWidget {
                                 .bookingModel
                                 .value
                                 .data
-                                ?.result
                                 ?.length ??
                             0,
                         itemBuilder: (context, index) {
@@ -251,8 +249,7 @@ class HomeScreen extends StatelessWidget {
                               controller
                                   .bookingModel
                                   .value
-                                  .data!
-                                  .result![index];
+                                  .data![index];
 
                           return CustomServiceCard(
                             title: getSubCategoryName(data),
