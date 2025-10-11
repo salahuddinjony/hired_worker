@@ -12,6 +12,7 @@ import 'package:servana/view/screens/contractor_part/home/controller/contractor_
 import 'package:servana/view/screens/contractor_part/profile/controller/support_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/schedule_screen/controller/schedule_controller.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/controller/conversation_controller.dart';
 import 'package:servana/view/screens/message/controller/message_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
@@ -41,7 +42,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => RecentAllServiceController(), fenix: true);
     Get.lazyPut(() => MapController(), fenix: true);
     Get.lazyPut(() => CustomController(), fenix: true);
-    Get.lazyPut(() => MessageController(), fenix: true);
+    Get.lazyPut(() => ConversationController(), fenix: true);
     Get.lazyPut(() => ScheduleSelectionController(), fenix: true);
     Get.lazyPut(() => CategorySelectionController(), fenix: true);
     Get.lazyPut(() => SubCategorySelectionController(), fenix: true);

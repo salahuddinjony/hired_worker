@@ -321,4 +321,18 @@ class ApiUrl {
   // get contractor question based on subCategory
   static String getContractorQuestions({required String subCategoryId}) =>
       "/questions/$subCategoryId";
+
+//get all message rooms for user
+  static String getAllMessages({required String conversationId}) =>
+      "/chats/$conversationId/messages";
+
+//get conversation list for user
+  static String getConversationList({required String userId}) =>
+      "/chat-rooms/my-chat-list/$userId";
+
+// create or retrieve conversation
+  static const String createOrRetrieveConversation =
+      "/chat-rooms/create-chat-room";
+// upload image
+  static const String uploadImage = "/upload";
 }

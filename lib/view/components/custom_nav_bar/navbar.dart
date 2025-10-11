@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/screen/inbox_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
 import '../../screens/contractor_part/home/home_screen/home_screen.dart';
@@ -51,7 +52,7 @@ class _NavbarState extends State<Navbar> {
         Get.to(() => OrderScreen());
         break;
       case 2:
-        Get.to(() => MessageListScreen());
+        Get.to(() => InboxScreen());
         break;
       case 3:
         Get.to(() => ProfileScreen());
