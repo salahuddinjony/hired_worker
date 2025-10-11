@@ -24,7 +24,7 @@ class ContractorBookingController extends GetxController {
   List<Map<String, dynamic>> questions = [];
 
   RxBool isLoading = false.obs;
-  RxString bookingType = 'oneTime'.obs; 
+  RxString bookingType = 'oneTime'.obs;
   RxString durations = '1'.obs;
   Rx<TextEditingController> startTimeController = TextEditingController().obs;
   Rx<TextEditingController> dayController = TextEditingController().obs;
@@ -785,12 +785,7 @@ class ContractorBookingController extends GetxController {
       'duration': durationInt,
       'startTime': payloadStartTime,
       'endTime': endTimeController.value.text,
-      'day':
-          bookingType.value == 'oneTime'
-              ? selectedDates.isNotEmpty
-                  ? selectedDates.first
-                  : dayController.value.text
-              : selectedDates.toList(),
+      'day': selectedDates.toList(),
       'price':
           bookingType.value == 'weekly' && selectedDates.length > 1
               ? weeklyTotalAmount

@@ -56,7 +56,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: booking.subCategoryId ?? 'Service',
+                      text: booking.bookingId.toString(),
                       fontSize: 16.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black,

@@ -7,8 +7,9 @@ import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/controller/mixin_create_or_retrive_conversation.dart';
 
-class CustomerOrderController extends GetxController with GetSingleTickerProviderStateMixin {
+class CustomerOrderController extends GetxController with GetSingleTickerProviderStateMixin, MixinCreateOrRetrieveConversation {
   RxInt bookingReportIndex = 0.obs;
   RxInt currentIndex = 0.obs;
   RxList<String> nameList = ["Request History", "Complete History"].obs;
@@ -42,6 +43,7 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
     tabController.addListener(() {
       if (!tabController.indexIsChanging) {
         final status = tabStatuses[tabController.index];
+        currentStatus.value = status; // Update current status immediately
         
         if (status.isEmpty) {
           // For "History" tab, load all bookings and filter client-side
@@ -55,6 +57,7 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
     scrollController.addListener(_onScroll);
     
     // Load initial data for the first tab (pending)
+    currentStatus.value = 'pending'; // Set initial status
     loadBookingsByStatus('pending');
   }
 
@@ -133,7 +136,11 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
 
   // Refresh data from the beginning
   Future<void> refreshBookingReport() async {
-    await getBookingReport(page: 1, isRefresh: true, status: currentStatus.value.isNotEmpty ? currentStatus.value : null);
+    await getBookingReport(
+      page: 1, 
+      isRefresh: true, 
+      status: currentStatus.value.isNotEmpty ? currentStatus.value : null
+    );
   }
   
   // Load bookings by status
