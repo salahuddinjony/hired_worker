@@ -11,7 +11,7 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProfileController controller = Get.find<ProfileController>();
+    final ProfileController controller = Get.find<ProfileController>();
 
     controller.getNotification();
 
@@ -19,11 +19,11 @@ class NotificationScreen extends StatelessWidget {
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Notification".tr),
       body: Obx(() {
         if (controller.notificationStatus.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.notificationStatus.value.isEmpty) {
-          return Center(child: Text('There are no notifications available for you.'),);
+          return const Center(child: Text('There are no notifications available for you.'),);
         } else if (controller.notificationStatus.value.isError) {
           return Center(
             child: Text(controller.notificationStatus.value.errorMessage!),
@@ -34,7 +34,7 @@ class NotificationScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: controller.notificationModel.value.data!.length,
               itemBuilder: (context, index) {
-                CustomNotification notification =
+                final CustomNotification notification =
                     controller.notificationModel.value.data![index];
 
                 return CustomNotificationList(

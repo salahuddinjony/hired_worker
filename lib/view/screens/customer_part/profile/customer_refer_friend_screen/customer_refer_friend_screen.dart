@@ -20,7 +20,7 @@ class CustomerReferFriendScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
         child: Column(
           children: [
-            Center(child: CustomImage(imageSrc: AppImages.referImage)),
+            const Center(child: CustomImage(imageSrc: AppImages.referImage)),
             CustomText(
               top: 20.h,
               text: "Refer a Friend &\nGet 50% off",

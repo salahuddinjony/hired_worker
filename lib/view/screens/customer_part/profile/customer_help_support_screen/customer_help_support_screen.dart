@@ -20,7 +20,7 @@ class CustomerHelpSupportScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
-            Center(child: CustomImage(imageSrc: AppImages.helpImage)),
+            const Center(child: CustomImage(imageSrc: AppImages.helpImage)),
             CustomText(
               text: "Hello, how can we assist you?".tr,
               fontSize: 16.w,

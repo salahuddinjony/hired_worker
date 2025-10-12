@@ -64,7 +64,7 @@ class SubscribeScreen extends StatelessWidget {
                     List.generate(
                       controller.subscriptionPlan.value.data!.length,
                       (index) {
-                        SubscriptionPlan subscriptionPlan =
+                        final SubscriptionPlan subscriptionPlan =
                             controller.subscriptionPlan.value.data![index];
 
                         return SubscriptionCard(

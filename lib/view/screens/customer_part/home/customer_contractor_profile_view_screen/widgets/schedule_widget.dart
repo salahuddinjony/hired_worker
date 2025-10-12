@@ -14,7 +14,7 @@ class ScheduleWidget extends StatelessWidget {
       return Row(
         children: [
           // reuse the skills container for compact UI
-          Text("No schedule"),
+          const Text("No schedule"),
           SizedBox(width: 6.w),
           CustomText(text: "available", fontSize: 14.w, fontWeight: FontWeight.w500, color: AppColors.black_08),
         ],

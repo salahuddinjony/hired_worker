@@ -8,7 +8,6 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/view/screens/contractor_part/profile/model/material_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 class ContractorBookingController extends GetxController {
@@ -79,9 +78,9 @@ class ContractorBookingController extends GetxController {
               return Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: StatefulBuilder(
                   builder: (context, setState) {
                     return Column(
@@ -91,7 +90,7 @@ class ContractorBookingController extends GetxController {
                           child: Container(
                             width: 48,
                             height: 4,
-                            margin: EdgeInsets.only(bottom: 12),
+                            margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
                               color: Colors.grey.shade300,
                               borderRadius: BorderRadius.circular(2),
@@ -101,7 +100,7 @@ class ContractorBookingController extends GetxController {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -133,7 +132,7 @@ class ContractorBookingController extends GetxController {
                             ),
                           ],
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         // Selected dates as chips
                         Expanded(
                           child: SingleChildScrollView(
@@ -147,7 +146,7 @@ class ContractorBookingController extends GetxController {
                                   children:
                                       tempDates.isEmpty
                                           ? [
-                                            Chip(
+                                            const Chip(
                                               label: Text('No dates selected'),
                                             ),
                                           ]
@@ -158,22 +157,22 @@ class ContractorBookingController extends GetxController {
                                                   () => setState(
                                                     () => tempDates.remove(d),
                                                   ),
-                                              deleteIcon: Icon(
+                                              deleteIcon: const Icon(
                                                 Icons.close,
                                                 size: 18,
                                               ),
                                             );
                                           }).toList(),
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 Row(
                                   children: [
                                     ElevatedButton.icon(
-                                      icon: Icon(Icons.calendar_today_outlined),
-                                      label: Text('Add Date'),
+                                      icon: const Icon(Icons.calendar_today_outlined),
+                                      label: const Text('Add Date'),
                                       style: ElevatedButton.styleFrom(
                                         elevation: 0,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
                                           vertical: 12,
                                         ),
@@ -197,26 +196,26 @@ class ContractorBookingController extends GetxController {
                                         }
                                       },
                                     ),
-                                    SizedBox(width: 12),
+                                    const SizedBox(width: 12),
                                     OutlinedButton.icon(
-                                      icon: Icon(Icons.sort_by_alpha),
-                                      label: Text('Sort'),
+                                      icon: const Icon(Icons.sort_by_alpha),
+                                      label: const Text('Sort'),
                                       onPressed:
                                           () =>
                                               setState(() => tempDates.sort()),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 // Small help / summary
                                 Text(
                                   '${tempDates.length} dates selected',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                SizedBox(height: 24),
+                                const SizedBox(height: 24),
                               ],
                             ),
                           ),
@@ -228,10 +227,10 @@ class ContractorBookingController extends GetxController {
                                 onPressed: () {
                                   Navigator.of(sheetCtx).pop();
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
                             ),
-                            SizedBox(width: 12),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
@@ -258,13 +257,13 @@ class ContractorBookingController extends GetxController {
                                   Navigator.of(sheetCtx).pop();
                                   refresh();
                                 },
-                                child: Text('Done'),
+                                child: const Text('Done'),
                               ),
                             ),
                           ],
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ],
                     );
                   },
@@ -298,7 +297,7 @@ class ContractorBookingController extends GetxController {
   void initializeMaterials(List<MaterialsModel> materials) {
     materialsAndQuantity.clear();
 
-    for (var material in materials) {
+    for (final material in materials) {
       String name = 'Unknown';
       String unit = '0';
       String price = '0';
@@ -357,7 +356,7 @@ class ContractorBookingController extends GetxController {
     questionsAndAnswers.clear();
 
     for (int i = 0; i < questionsList.length; i++) {
-      var question = questionsList[i];
+      final question = questionsList[i];
 
       String questionId;
       String questionText;
@@ -414,7 +413,7 @@ class ContractorBookingController extends GetxController {
   }
 
   bool validateAnswers() {
-    for (var qa in questionsAndAnswers) {
+    for (final qa in questionsAndAnswers) {
       if (qa['answer']?.trim().isEmpty ?? true) {
         showCustomSnackBar("Please answer all questions", isError: true);
         return false;
@@ -432,7 +431,7 @@ class ContractorBookingController extends GetxController {
 
     // Debug: Print collected Q&A data
     debugPrint('=== Collected Questions and Answers ===');
-    for (var qa in questionsAndAnswers) {
+    for (final qa in questionsAndAnswers) {
       debugPrint('Q: ${qa['question']}');
       debugPrint('A: ${qa['answer']}');
       debugPrint('---');
@@ -441,7 +440,7 @@ class ContractorBookingController extends GetxController {
 
   String getQuestionsAndAnswersAsString() {
     String result = '';
-    for (var qa in questionsAndAnswers) {
+    for (final qa in questionsAndAnswers) {
       result += 'Q: ${qa['question']}\n';
       result += 'A: ${qa['answer']}\n\n';
     }
@@ -456,9 +455,9 @@ class ContractorBookingController extends GetxController {
 
   int get materialsTotalAmount {
     int total = 0;
-    for (var material in materialsAndQuantity) {
-      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
-      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+    for (final material in materialsAndQuantity) {
+      final int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
+      final int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       total += quantity * pricePerUnit;
     }
     return total;
@@ -483,9 +482,9 @@ class ContractorBookingController extends GetxController {
     debugPrint('Hourly Rate: $hourlyRate');
     debugPrint('Duration (Hours): $durationInt');
     debugPrint('Total from Hourly Rate: ${hourlyRate * durationInt}');
-    for (var material in materialsAndQuantity) {
-      int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
-      int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
+    for (final material in materialsAndQuantity) {
+      final int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
+      final int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       debugPrint(
         'Material: ${material['name']}, Quantity: $quantity, Price/Unit: $pricePerUnit, Total: ${quantity * pricePerUnit}',
       );
@@ -655,7 +654,7 @@ class ContractorBookingController extends GetxController {
         // Final fallback
         if (errorMsg.isEmpty) errorMsg = 'Failed to create booking';
 
-        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        EasyLoading.showInfo(errorMsg, duration: const Duration(seconds: 3));
         isLoading.value = false;
         return false;
       }
@@ -679,7 +678,7 @@ class ContractorBookingController extends GetxController {
   @override
   void onClose() {
     // Dispose all controllers
-    for (var controller in answerControllers) {
+    for (final controller in answerControllers) {
       controller.dispose();
     }
     super.onClose();

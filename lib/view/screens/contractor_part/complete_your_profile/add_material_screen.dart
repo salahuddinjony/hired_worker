@@ -204,7 +204,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
     final MaterialController controller = Get.find<MaterialController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
@@ -349,7 +349,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
               children: [
                 Obx(() {
                   return controller.status.value.isLoading
-                      ? CustomLoader()
+                      ? const CustomLoader()
                       : Container(
                     width: 0.4.sw,
                     padding: EdgeInsets.symmetric(vertical: 12.h),

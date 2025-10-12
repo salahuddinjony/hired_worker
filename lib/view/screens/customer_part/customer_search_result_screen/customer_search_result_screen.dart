@@ -18,9 +18,9 @@ class CustomerSearchResultScreen extends StatelessWidget {
               CustomTextField(
                 fillColor: AppColors.white,
                 hintText: "Search......".tr,
-                hintStyle: TextStyle(color: AppColors.black_08),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                hintStyle: const TextStyle(color: AppColors.black_08),
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: CustomImage(imageSrc: AppIcons.search, ),
                 ),
 

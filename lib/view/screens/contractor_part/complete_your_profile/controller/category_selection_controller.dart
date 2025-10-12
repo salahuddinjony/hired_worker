@@ -52,12 +52,12 @@ class CategorySelectionController extends GetxController {
     updateStatus.value = RxStatus.loading();
 
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-    String uri = '${ApiUrl.updateUser}/$userId';
+    final String uri = '${ApiUrl.updateUser}/$userId';
 
-    Map<String, String> body = {'data': '{"category": "$categoryId"}'};
+    final Map<String, String> body = {'data': '{"category": "$categoryId"}'};
 
     try {
-      var response = await ApiClient.patchMultipartData(
+      final response = await ApiClient.patchMultipartData(
         uri,
         body,
         multipartBody: [],

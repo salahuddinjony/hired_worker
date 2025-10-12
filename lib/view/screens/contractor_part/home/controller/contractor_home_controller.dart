@@ -62,7 +62,7 @@ class ContractorHomeController extends GetxController {
 
       // get ongoing service number
       final ongoingResponse = await ApiClient.getData(
-        '${ApiUrl.singleUserBookings}?status=ongoing',
+        '${ApiUrl.singleUserBookings}?status=on-going',
       );
 
       onGoingBookingList.value = BookingModel.fromJson(
@@ -79,7 +79,7 @@ class ContractorHomeController extends GetxController {
   }
 
   Future<void> acceptOrder(String id) async {
-    Map<String, String> data = {"status": "ongoing"};
+    final Map<String, String> data = {"status": "on-going"};
 
     try {
       final response = await ApiClient.patchMultipartData(
@@ -107,7 +107,7 @@ class ContractorHomeController extends GetxController {
   }
 
   Future<void> cancelOrder(String id) async {
-    Map<String, String> data = {"status": "cancelled"};
+    final Map<String, String> data = {"status": "cancelled"};
 
     try {
       final response = await ApiClient.patchData(

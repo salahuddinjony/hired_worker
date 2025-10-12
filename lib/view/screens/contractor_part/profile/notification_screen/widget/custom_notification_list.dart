@@ -21,7 +21,7 @@ class CustomNotificationList extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               backgroundColor: AppColors.primary,
               radius: 20,
               child: Icon(Icons.notifications_none, color: AppColors.white),

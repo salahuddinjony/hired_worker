@@ -74,11 +74,11 @@ class GeneralController extends GetxController {
   RxString about = ''.obs;
 
   Future<void> getAbout() async {
-    var response = await ApiClient.getData(ApiUrl.about);
+    final response = await ApiClient.getData(ApiUrl.about);
 
     if (response.statusCode == 200) {
       try {
-        var data = response.body['data'];
+        final data = response.body['data'];
         about.value = data['description'] ?? '';
       } catch (e) {
         debugPrint("Parsing error: $e");
@@ -92,11 +92,11 @@ class GeneralController extends GetxController {
   RxString privacy = ''.obs;
 
   Future<void> getPrivacy() async {
-    var response = await ApiClient.getData(ApiUrl.privacyPolicy);
+    final response = await ApiClient.getData(ApiUrl.privacyPolicy);
 
     if (response.statusCode == 200) {
       try {
-        var data = response.body['data'];
+        final data = response.body['data'];
         privacy.value = data['description'] ?? '';
       } catch (e) {
         debugPrint("Parsing error: $e");
@@ -110,11 +110,11 @@ class GeneralController extends GetxController {
   RxString terms = ''.obs;
 
   Future<void> getTerms() async {
-    var response = await ApiClient.getData(ApiUrl.termsCondition);
+    final response = await ApiClient.getData(ApiUrl.termsCondition);
 
     if (response.statusCode == 200) {
       try {
-        var data = response.body['data'];
+        final data = response.body['data'];
         terms.value = data['description'] ?? '';
       } catch (e) {
         debugPrint("Parsing error: $e");
@@ -131,7 +131,7 @@ Deleting your account removes personal information our database. Your email beco
 ''';
   Future<void> deleteAccount() async {
     final userId = await SharePrefsHelper.getString(AppConstants.userId);
-    var response = await ApiClient.deleteData(
+    final response = await ApiClient.deleteData(
       ApiUrl.deleteAccount(userId: userId),
     );
 

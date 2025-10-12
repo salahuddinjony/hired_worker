@@ -27,14 +27,14 @@ class HomeScreen extends StatelessWidget {
     final ProfileController profileController = Get.find<ProfileController>();
     profileController.getMe();
 
-    ContractorHomeController controller = Get.find<ContractorHomeController>();
+    final ContractorHomeController controller = Get.find<ContractorHomeController>();
 
     return Scaffold(
       extendBody: true, // Ensures the body extends behind the navigation bar
       body: Obx(() {
         // Using Obx to reactively update the UI when contractorData changes
         if (controller.status.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     controller.getAllBookings();
                   },
-                  child: Text('Retry'),
+                  child: const Text('Retry'),
                 ),
               ],
             ),
@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                           0)
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.3,
-                          child: Center(child: Text('No data found')),
+                          child: const Center(child: Text('No data found')),
                         ),
 
                       ListView.builder(
@@ -245,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                                 ?.length ??
                             0,
                         itemBuilder: (context, index) {
-                          BookingModelData data =
+                          final BookingModelData data =
                               controller
                                   .bookingModel
                                   .value
@@ -274,7 +274,7 @@ class HomeScreen extends StatelessWidget {
         }
       }),
       // Bottom navigation bar with current index set to 0 (Home)
-      bottomNavigationBar: Navbar(currentIndex: 0),
+      bottomNavigationBar: const Navbar(currentIndex: 0),
     );
   }
 }

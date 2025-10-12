@@ -15,7 +15,7 @@ class CustomerSuccessfullyPaidScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true),
+      appBar: const CustomRoyelAppbar(leftIcon: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -30,7 +30,7 @@ class CustomerSuccessfullyPaidScreen extends StatelessWidget {
                 color: AppColors.primary,
               ),
             ),
-            CustomImage(imageSrc: AppImages.cardImage),
+            const CustomImage(imageSrc: AppImages.cardImage),
             CustomText(
               text: "You have successfully signed up for Business user.\nLet’s setup your Business now".tr,
               fontSize: 14.w,

@@ -76,7 +76,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                         child: Container(
                           height: 30,
                           width: 30,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.primary,
                             shape: BoxShape.circle,
                           ),
@@ -126,7 +126,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                 controller: profileController.dobController.value,
                 readOnly: true,
                 onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
+                  final DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime(2000, 1, 1),
                     firstDate: DateTime(1900),
@@ -148,7 +148,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
               Obx(
                 () =>
                     profileController.updateProfileStatus.value.isLoading
-                        ? CustomLoader()
+                        ? const CustomLoader()
                         : CustomButton(
                           onTap: () {
                             profileController.updateProfile();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/on_going_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
@@ -16,10 +17,11 @@ class CustomOngoingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BookingModelData data = Get.find<ContractorHomeController>().onGoingBookingList.value.data![index];
+    final BookingModelData data =
+        Get.find<OnGoingController>().onGoingBookingList[index];
 
     return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: 10.0),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 10.0),
       child: Column(
         children: [
           Row(
@@ -44,7 +46,7 @@ class CustomOngoingCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.location_on_outlined, size: 20),
+                      const Icon(Icons.location_on_outlined, size: 20),
                       CustomText(
                         text: "38 Chestnut Street Staunton",
                         fontSize: 14.w,
@@ -74,10 +76,10 @@ class CustomOngoingCard extends StatelessWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      Icon(Icons.home_repair_service, size: 20),
+                      const Icon(Icons.home_repair_service, size: 20),
                       CustomText(
                         left: 8,
-                        text: data.subCategoryId?.name ??  " - ",
+                        text: data.subCategoryId?.name ?? " - ",
                         fontSize: 14.w,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
@@ -87,7 +89,7 @@ class CustomOngoingCard extends StatelessWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      Icon(Icons.price_check, size: 20),
+                      const Icon(Icons.price_check, size: 20),
                       CustomText(
                         left: 8,
                         text: "${data.totalAmount} \$ ",
@@ -100,10 +102,13 @@ class CustomOngoingCard extends StatelessWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      Icon(Icons.access_time, size: 20),
+                      const Icon(Icons.access_time, size: 20),
                       CustomText(
                         left: 8,
-                        text: "${data.day?[0] ?? ""} - ${data.day?[1] ?? ""}",
+                        text:
+                            data.day == null || data.day!.length != 2
+                                ? " - "
+                                : "${data.day?[0] ?? ""} - ${data.day?[1] ?? ""}",
                         fontSize: 14.w,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
@@ -139,7 +144,7 @@ class CustomOngoingCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Divider(
             thickness: .5,
             color: AppColors.primary.withValues(alpha: .5),

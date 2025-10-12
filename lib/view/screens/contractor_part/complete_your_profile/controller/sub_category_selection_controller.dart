@@ -55,12 +55,12 @@ class SubCategorySelectionController extends GetxController {
     updateStatus.value = RxStatus.loading();
 
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-    String uri = '${ApiUrl.updateUser}/$userId';
+    final String uri = '${ApiUrl.updateUser}/$userId';
 
-    Map<String, String> body = {'data': '{"subCategory": "$subCategoryId"}'};
+    final Map<String, String> body = {'data': '{"subCategory": "$subCategoryId"}'};
 
     try {
-      var response = await ApiClient.patchMultipartData(
+      final response = await ApiClient.patchMultipartData(
         uri,
         body,
         multipartBody: [],

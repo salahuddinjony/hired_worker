@@ -63,7 +63,7 @@ class _EranScreenState extends State<EranScreen> {
                   textColor: AppColors.primary,
                   fillColor: AppColors.white,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -96,7 +96,7 @@ class _EranScreenState extends State<EranScreen> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: List.generate(3, (value) {
-                  return CustomEarnContainer();
+                  return const CustomEarnContainer();
                 }),
               ),
             ),

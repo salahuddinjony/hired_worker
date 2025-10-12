@@ -27,12 +27,12 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-    Map<String, dynamic> args = Get.arguments ?? {};
+    final Map<String, dynamic> args = Get.arguments ?? {};
 
     final dynamic contractor = args['contractorDetails'];
     allContractor? contractorData =
         contractor is allContractor ? contractor : null;
-    String userId = args['id']?.toString() ?? contractorData?.userId.id ?? '';
+    final String userId = args['id']?.toString() ?? contractorData?.userId.id ?? '';
     debugPrint("Received userId: $userId");
 
     if (userId.isNotEmpty) {
@@ -67,9 +67,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                       bottomRight: Radius.circular(20.r),
                     ),
                   ),
-                  child: CustomRoyelAppbar(leftIcon: true),
+                  child: const CustomRoyelAppbar(leftIcon: true),
                 ),
-                Expanded(
+                const Expanded(
                   child: Center(
                     child: CustomText(
                       text: "Invalid contractor ID",
@@ -190,9 +190,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            CustomImage(imageSrc: AppIcons.callCircle),
+                            const CustomImage(imageSrc: AppIcons.callCircle),
                             SizedBox(width: 12.w),
-                            CustomImage(imageSrc: AppIcons.heartMajor),
+                            const CustomImage(imageSrc: AppIcons.heartMajor),
                           ],
                         ),
                       ],
@@ -212,7 +212,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                CustomImage(imageSrc: AppImages.likeImage),
+                                const CustomImage(imageSrc: AppImages.likeImage),
                                 CustomText(
                                   text: ratingsStr,
                                   fontSize: 16.w,
@@ -229,7 +229,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                CustomImage(imageSrc: AppImages.clickImage),
+                                const CustomImage(imageSrc: AppImages.clickImage),
                                 CustomText(
                                   text: '0',
                                   fontSize: 16.w,
@@ -246,7 +246,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                CustomImage(imageSrc: AppImages.manPower),
+                                const CustomImage(imageSrc: AppImages.manPower),
                                 CustomText(
                                   text:
                                       (experience.isNotEmpty
@@ -387,7 +387,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
 
                     CustomButton(
                       onTap: () async {
-                        String subCategoryId =
+                        final String subCategoryId =
                             contractorData?.subCategory.id ?? '';
                         if (subCategoryId.isEmpty) {
                           showCustomSnackBar(
@@ -396,7 +396,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                           );
                           return;
                         }
-                        bool isSuccess = await homeController
+                        final bool isSuccess = await homeController
                             .getContractorQuestions(
                               subCategoryId: subCategoryId,
                             );

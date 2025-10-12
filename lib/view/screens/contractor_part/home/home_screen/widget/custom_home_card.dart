@@ -23,7 +23,7 @@ class CustomHomeCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         width: MediaQuery.sizeOf(context).width / 2.3,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.r),

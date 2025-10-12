@@ -22,11 +22,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 3), () async {
-        String token = await SharePrefsHelper.getString(
+        final String token = await SharePrefsHelper.getString(
           AppConstants.bearerToken,
         );
-        String userRole = await SharePrefsHelper.getString(AppConstants.role);
-        String userIdFromToken = await SharePrefsHelper.getString(
+        final String userRole = await SharePrefsHelper.getString(AppConstants.role);
+        final String userIdFromToken = await SharePrefsHelper.getString(
           AppConstants.userId,
         );
         debugPrint("Logged User Token: $token");

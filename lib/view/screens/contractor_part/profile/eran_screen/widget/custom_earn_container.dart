@@ -15,7 +15,7 @@ class CustomEarnContainer extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8.0),
       child: Container(
         width: MediaQuery.sizeOf(context).width,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(17),
@@ -33,7 +33,7 @@ class CustomEarnContainer extends StatelessWidget {
                   color: AppColors.black,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
                   ),
@@ -67,9 +67,9 @@ class CustomEarnContainer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomImage(imageSrc: AppIcons.stripe),
+                const CustomImage(imageSrc: AppIcons.stripe),
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 6,
                   ),

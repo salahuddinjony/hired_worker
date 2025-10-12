@@ -22,7 +22,7 @@ class ChatInputField extends StatelessWidget {
             hintText: "Type a message",
             fillColor: AppColors.white,
             isDens: true,
-            hintStyle: TextStyle(color: AppColors.black_08),
+            hintStyle: const TextStyle(color: AppColors.black_08),
             fieldBorderColor: AppColors.backgroundClr,
           ),
         ),

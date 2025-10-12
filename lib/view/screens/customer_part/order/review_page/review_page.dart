@@ -34,7 +34,7 @@ class ReviewPage extends StatelessWidget {
         backgroundColor: Colors.purple.shade100,
         title: CustomText(text: 'Ratting'.tr, fontSize: 18.w, fontWeight: FontWeight.w600, color: AppColors.black,),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -52,7 +52,7 @@ class ReviewPage extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(12),
@@ -88,7 +88,7 @@ class ReviewPage extends StatelessWidget {
               },
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(
                   color: Colors.purple.shade100,
                   borderRadius: BorderRadius.circular(8),

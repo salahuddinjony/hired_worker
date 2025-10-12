@@ -47,7 +47,7 @@ class ScheduleController extends GetxController {
       return;
     }
 
-    List<Map<String, dynamic>> schedules =
+    final List<Map<String, dynamic>> schedules =
         scheduleData.entries.map((entry) {
           final day = entry.key;
           final data = entry.value;
@@ -60,13 +60,13 @@ class ScheduleController extends GetxController {
           };
         }).toList();
 
-    Map<String, dynamic> body = {"schedules": schedules};
+    final Map<String, dynamic> body = {"schedules": schedules};
 
     debugPrint('Sending schedule data: ${jsonEncode(body)}');
 
     status.value = RxStatus.loading();
     try {
-      var response = await ApiClient.postData(
+      final response = await ApiClient.postData(
         ApiUrl.updateSchedule,
         jsonEncode(body),
       );

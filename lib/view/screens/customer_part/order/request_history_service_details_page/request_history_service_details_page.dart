@@ -25,7 +25,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
     // split bookings into completed and others
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Service Details"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Service Details"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: buildDetailView(context, bookingArg!),
@@ -44,7 +44,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 26,
                   backgroundColor: Color(0xffCDB3CD),
                   child: CustomImage(imageSrc: AppIcons.cleaner),
@@ -64,16 +64,16 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                       text: '#${booking.bookingId ?? ''}',
                       fontSize: 12.w,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff6F767E),
+                      color: const Color(0xff6F767E),
                     ),
                   ],
                 ),
               ],
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: Color(0xffCDB3CD),
+                color: const Color(0xffCDB3CD),
                 borderRadius: BorderRadius.circular(7),
               ),
               child: CustomText(
@@ -92,7 +92,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        Divider(thickness: .3, color: AppColors.black_02),
+        const Divider(thickness: .3, color: AppColors.black_02),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -125,7 +125,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        Divider(thickness: .3, color: AppColors.black_02),
+        const Divider(thickness: .3, color: AppColors.black_02),
         if (booking.questions.isNotEmpty) ...[
           CustomText(
             text: "Question : ${booking.questions.first.question ?? ''}",
@@ -148,7 +148,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        Divider(thickness: .3, color: AppColors.black_02),
+        const Divider(thickness: .3, color: AppColors.black_02),
         if (booking.material.isNotEmpty)
           ...booking.material.map(
             (m) => Row(
@@ -175,7 +175,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             text: 'No materials'.tr,
             fontSize: 14.w,
             fontWeight: FontWeight.w500,
-            color: Color(0xff6F767E),
+            color: const Color(0xff6F767E),
           ),
         CustomText(
           top: 20,
@@ -184,7 +184,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        Divider(thickness: .3, color: AppColors.black_02),
+        const Divider(thickness: .3, color: AppColors.black_02),
         Row(
           children: [
             Radio(value: true, groupValue: (true), onChanged: (value) {}),
@@ -196,14 +196,14 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         CustomText(
           text: "Schedule".tr,
           fontSize: 16.w,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         if (booking.day is String)
           Chip(
             label: Text(
@@ -214,7 +214,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 color: AppColors.black,
               ),
             ),
-            backgroundColor: Color(0xffEDEDED),
+            backgroundColor: const Color(0xffEDEDED),
           )
         else if (booking.day is List)
           () {
@@ -235,7 +235,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                                   color: AppColors.black,
                                 ),
                               ),
-                              backgroundColor: Color(0xffEDEDED),
+                              backgroundColor: const Color(0xffEDEDED),
                             ),
                           )
                           .toList(),
@@ -244,7 +244,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   text: 'No schedule selected'.tr,
                   fontSize: 14.w,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff6F767E),
+                  color: const Color(0xff6F767E),
                 );
           }()
         else
@@ -252,7 +252,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             text: 'No schedule available'.tr,
             fontSize: 14.w,
             fontWeight: FontWeight.w500,
-            color: Color(0xff6F767E),
+            color: const Color(0xff6F767E),
           ),
         CustomText(
           top: 20,
@@ -261,8 +261,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
-        Divider(thickness: .3, color: AppColors.black_02),
-        SizedBox(height: 8),
+        const Divider(thickness: .3, color: AppColors.black_02),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -281,7 +281,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         booking.status?.toLowerCase() != 'completed'
             ? CustomButton(
               onTap: () {

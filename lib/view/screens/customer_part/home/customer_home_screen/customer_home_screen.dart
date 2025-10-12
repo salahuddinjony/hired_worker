@@ -90,7 +90,7 @@ class CustomerHomeScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on_outlined,
                               color: Color(0xff8891AA),
                               size: 20,
@@ -99,7 +99,7 @@ class CustomerHomeScreen extends StatelessWidget {
                               text: "38 Chestnut StreetStaunton",
                               fontSize: 14.w,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff8891AA),
+                              color: const Color(0xff8891AA),
                             ),
                           ],
                         ),
@@ -114,7 +114,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     imageUrl: AppConstants.electrician,
                     height: 135,
                     width: MediaQuery.sizeOf(context).width,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
@@ -129,7 +129,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     child: Container(
                       height: 55.h,
                       width: MediaQuery.sizeOf(context).width,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.white,
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(10),
@@ -143,7 +143,7 @@ class CustomerHomeScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                CustomImage(imageSrc: AppIcons.search),
+                                const CustomImage(imageSrc: AppIcons.search),
                                 CustomText(
                                   left: 10.w,
                                   text: "Search here.....".tr,
@@ -153,7 +153,7 @@ class CustomerHomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            CustomImage(imageSrc: AppIcons.filter),
+                            const CustomImage(imageSrc: AppIcons.filter),
                           ],
                         ),
                       ),
@@ -236,7 +236,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                SubCategoryPreviewSection(),
+                const SubCategoryPreviewSection(),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -292,8 +292,8 @@ class CustomerHomeScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 16.h),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                const Padding(
+                  padding: EdgeInsets.only(right: 16.0),
                   child: Center(child: CustomImage(imageSrc: AppImages.banner)),
                 ),
                 SizedBox(height: 50.h),
@@ -302,7 +302,7 @@ class CustomerHomeScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: CustomerNavbar(currentIndex: 0),
+      bottomNavigationBar: const CustomerNavbar(currentIndex: 0),
     );
   }
 }

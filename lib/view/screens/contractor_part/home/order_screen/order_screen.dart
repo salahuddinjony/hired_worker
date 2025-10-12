@@ -29,7 +29,7 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Request".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
@@ -58,7 +58,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: ListView.builder(
                     itemCount: controller.pendingBookingList.value.data!.length,
                     itemBuilder: (context, index) {
-                      BookingModelData data =
+                      final BookingModelData data =
                           controller.pendingBookingList.value.data![index];
                       return CustomServiceRequestCard(
                         title: getSubCategoryName(data),
@@ -81,7 +81,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       itemCount:
                           controller.completeBookingList.value.data!.length,
                       itemBuilder: (context, index) {
-                        BookingModelData data =
+                        final BookingModelData data =
                             controller.completeBookingList.value.data![index];
 
                         return CustomDeliveredServiceCard(
@@ -102,7 +102,7 @@ class _OrderScreenState extends State<OrderScreen> {
           );
         }
       }),
-      bottomNavigationBar: Navbar(currentIndex: 1),
+      bottomNavigationBar: const Navbar(currentIndex: 1),
     );
   }
 }

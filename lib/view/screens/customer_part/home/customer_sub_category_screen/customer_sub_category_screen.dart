@@ -30,7 +30,7 @@ class CustomerSubCategoryScreen extends StatelessWidget {
 
         // Group subcategories by category name
         final Map<String, List<sub.Datum>> groupedData = {};
-        for (var item in data) {
+        for (final item in data) {
           final categoryName = item.categoryId?.name ?? 'Unknown';
           groupedData.putIfAbsent(categoryName, () => []);
           groupedData[categoryName]!.add(item);

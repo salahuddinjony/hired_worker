@@ -12,7 +12,7 @@ class CustomMaterialCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.sizeOf(context).width,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.primary.withValues(alpha: .5)),
         color: Colors.transparent,
@@ -38,9 +38,9 @@ class CustomMaterialCard extends StatelessWidget {
                 bottom: 4.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Color(0xffCDB3CD),
+                  color: const Color(0xffCDB3CD),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: CustomText(
@@ -56,11 +56,11 @@ class CustomMaterialCard extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.edit, color: AppColors.black),
+                icon: const Icon(Icons.edit, color: AppColors.black),
               ),
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.delete_outline, color: AppColors.red),
+                icon: const Icon(Icons.delete_outline, color: AppColors.red),
               ),
             ],
           ),

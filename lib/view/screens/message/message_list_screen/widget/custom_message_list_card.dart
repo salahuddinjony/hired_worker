@@ -63,7 +63,7 @@ class CustomMessageListCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     CustomText(
                       text:
                           lastMessage ??

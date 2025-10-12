@@ -18,7 +18,7 @@ class CustomCertificatePdfButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(text: label?? "", fontSize: 14.w,fontWeight: FontWeight.w600,color: AppColors.black,),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           GestureDetector(
             onTap: onTap,
             child: Container(
@@ -26,12 +26,12 @@ class CustomCertificatePdfButton extends StatelessWidget {
               width: double.infinity,
               margin: const EdgeInsets.only(bottom: 6),
               decoration: BoxDecoration(
-                color: Color(0xFFD8C6D7),
+                color: const Color(0xFFD8C6D7),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.transparent, width: 1),
               ),
               alignment: Alignment.center,
-              child: CustomImage(imageSrc: AppImages.pdfIcon),
+              child: const CustomImage(imageSrc: AppImages.pdfIcon),
             ),
           ),
           CustomText(

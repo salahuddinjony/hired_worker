@@ -15,8 +15,8 @@ class CustomerParSubCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
 
-    String name = Get.arguments['name'];
-    String id = Get.arguments['id'];
+    final String name = Get.arguments['name'];
+    final String id = Get.arguments['id'];
     debugPrint("Sub Category ID: $id");
     debugPrint("Sub Category Name: $name");
     
@@ -35,7 +35,7 @@ class CustomerParSubCategoryItem extends StatelessWidget {
           );
         }
         if (data.isEmpty) {
-          return NotFound(message: "No Sub Categories Found", icon: Icons.category);
+          return const NotFound(message: "No Sub Categories Found", icon: Icons.category);
         }
         return Column(
           children: [

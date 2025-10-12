@@ -40,7 +40,7 @@ class RecentAllServiceController extends GetxController {
         '${ApiUrl.singleUserBookings}?page=$currentPage&limit=10',
       );
 
-      BookingModel bookingModel = BookingModel.fromJson(response.body);
+      final BookingModel bookingModel = BookingModel.fromJson(response.body);
 
       if (bookingModel.data == null || bookingModel.data!.isEmpty) {
         status.value = RxStatus.empty();
@@ -65,7 +65,7 @@ class RecentAllServiceController extends GetxController {
         '${ApiUrl.bookings}?page=$currentPage&limit=10',
       );
 
-      BookingModel bookingModel = BookingModel.fromJson(response.body);
+      final BookingModel bookingModel = BookingModel.fromJson(response.body);
 
       if (bookingModel.data == null || bookingModel.data!.isEmpty) {
         showCustomSnackBar('No more data to load');

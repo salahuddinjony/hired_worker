@@ -28,9 +28,9 @@ class MessageController extends GetxController {
   void onInit() async {
     //  userId.value = await SharePrefsHelper.getString(AppConstants.userId);
     await getRole();
-  String roles = await SharePrefsHelper.getString(AppConstants.role);
+  final String roles = await SharePrefsHelper.getString(AppConstants.role);
   debugPrint("User Role================>> $roles");
-  debugPrint("User Role bool================>> ${this.thisRole.value}");
+  debugPrint("User Role bool================>> ${thisRole.value}");
 
     getAllRoomList();
     receiveMessage();
@@ -39,7 +39,7 @@ class MessageController extends GetxController {
   }
 
   Future<void> getRole() async {
-    String role = await SharePrefsHelper.getString(AppConstants.role);
+    final String role = await SharePrefsHelper.getString(AppConstants.role);
     thisRole.value = role == "customer" ? true : false;
   }
 
@@ -47,7 +47,7 @@ class MessageController extends GetxController {
     final userId = await SharePrefsHelper.getString(AppConstants.userId);
     try {
       getAllRoomListStatus.value = RxStatus.loading();
-      var response = await ApiClient.getData(
+      final response = await ApiClient.getData(
         ApiUrl.allMessageRoom(userId: userId),
       );
 
@@ -67,7 +67,7 @@ class MessageController extends GetxController {
   Future<void> getAllMessageList(String roomId) async {
     try {
       getAllMessageListStatus.value = RxStatus.loading();
-      var response = await ApiClient.getData(ApiUrl.allMessage(roomId: roomId));
+      final response = await ApiClient.getData(ApiUrl.allMessage(roomId: roomId));
       if (response.statusCode == 200) {
         conversationModel.value = ConvarsationModel.fromJson(response.body);
         getAllMessageListStatus.value = RxStatus.success();
@@ -91,7 +91,7 @@ class MessageController extends GetxController {
     final messageText = messageController.text.trim();
     if (messageText.isEmpty) return;
 
-    var body = {
+    final body = {
       "chatRoomId": chatRoomId,
       "sender": userId,
       "receiver": receiverId,
@@ -124,11 +124,11 @@ class MessageController extends GetxController {
   }
 
   void scrollToBottom() {
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       if (scrollController.hasClients) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       }

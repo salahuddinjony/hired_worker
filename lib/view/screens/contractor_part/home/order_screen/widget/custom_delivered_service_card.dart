@@ -42,7 +42,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (image != null && image!.isNotEmpty) ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(13),
                 bottomLeft: Radius.circular(13),
               ),
@@ -54,7 +54,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -83,7 +83,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                     SizedBox(height: 4.h),
                     Row(
                       children: [
-                        CustomImage(imageSrc: AppIcons.filled),
+                        const CustomImage(imageSrc: AppIcons.filled),
                         SizedBox(width: 4.w),
                         CustomText(
                           text: rating,
@@ -96,7 +96,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                     SizedBox(height: 4.h),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.calendar_month,
                           size: 14,
                           color: AppColors.black_04,
@@ -110,7 +110,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

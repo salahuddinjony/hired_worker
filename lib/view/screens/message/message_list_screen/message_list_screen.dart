@@ -29,7 +29,7 @@ class MessageListScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   "No Conversation Found".tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),

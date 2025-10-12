@@ -33,7 +33,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
               TabBar(
                 labelColor: AppColors.black,
                 indicatorColor: AppColors.primary,
-                unselectedLabelColor: Color(0xff6F767E),
+                unselectedLabelColor: const Color(0xff6F767E),
                 tabs: [
                   Tab(text: 'Request History'.tr),
                   Tab(text: 'Completed History'.tr),
@@ -44,7 +44,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                 child: Obx(() {
                   final all = customerOrderController.bookingReportList;
                   if(customerOrderController.getBookingReportStatus.value.isLoading)
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   final completed =
                       all
                           .where(
@@ -88,7 +88,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: CustomerNavbar(currentIndex: 1),
+      bottomNavigationBar: const CustomerNavbar(currentIndex: 1),
     );
   }
 
@@ -98,13 +98,13 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
     if (list.isEmpty)
       return ListView(
         children: [
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           Center(child: Text('No data available'.tr)),
         ],
       );
 
     return ListView.separated(
-      padding: EdgeInsets.only(top: 8, bottom: 16),
+      padding: const EdgeInsets.only(top: 8, bottom: 16),
       itemBuilder: (context, index) {
         final booking = list[index];
         return BookingCard(
@@ -116,7 +116,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
               ),
         );
       },
-      separatorBuilder: (_, __) => SizedBox(height: 8),
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemCount: list.length,
     );
   }
