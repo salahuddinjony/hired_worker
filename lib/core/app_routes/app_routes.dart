@@ -5,6 +5,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
@@ -148,7 +149,7 @@ class AppRoutes {
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
-    GetPage(name: messageListScreen, page: () => MessageListScreen()),
+    // GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfileScreen()),

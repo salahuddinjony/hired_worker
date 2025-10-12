@@ -23,7 +23,7 @@ class ApiUrl {
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
   static const String getNotificationList = '/notifications';
-  static const String getAllBookings = "/bookings/";
+  static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
   static String singleSubCategory({required String categoryId}) =>
@@ -322,4 +322,18 @@ class ApiUrl {
   // get contractor question based on subCategory
   static String getContractorQuestions({required String subCategoryId}) =>
       "/questions/$subCategoryId";
+
+//get all message rooms for user
+  static String getAllMessages({required String conversationId}) =>
+      "/chats/$conversationId/messages";
+
+//get conversation list for user
+  static String getConversationList({required String userId}) =>
+      "/chat-rooms/my-chat-list/$userId";
+
+// create or retrieve conversation
+  static const String createOrRetrieveConversation =
+      "/chat-rooms/create-chat-room";
+// upload image
+  static const String uploadImage = "/upload";
 }

@@ -63,6 +63,8 @@ dependencies:
   geocoding: ^4.0.0
   jwt_decoder: ^2.0.1
   flutter_easyloading: ^3.0.5
+  flutter_chat_ui: ^1.6.15
+
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1 

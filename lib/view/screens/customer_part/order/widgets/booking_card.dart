@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/extension/extension.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/customer_order_model.dart';
 
 typedef BookingTapCallback = void Function(BookingResult booking);
 
 class BookingCard extends StatelessWidget {
   final BookingResult booking;
+  final controller;
   final bool isCompleted;
   final VoidCallback? onTap;
 
-  BookingCard({Key? key, required this.booking, this.onTap})
+  BookingCard({Key? key, required this.booking, this.onTap, this.controller})
     : isCompleted = (booking.status ?? '').toLowerCase() == 'completed',
       super(key: key);
+
+  // Create a unique loading state for this booking
+  final RxBool isLoadingConversation = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -132,74 +140,138 @@ class BookingCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 26,
-                        child: CustomImage(imageSrc: AppIcons.girlVactor),
-                      ),
-                      SizedBox(width: 12.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text:
-                                booking.contractorId != null
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 26,
+                          child: CustomImage(imageSrc: AppIcons.girlVactor),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: booking.contractorId != null
                                     ? '${booking.contractorId?.fullName.safeCap() ?? ''}'
                                     : 'Not Assigned',
-                            fontSize: 16.w,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.black,
-                            bottom: 4.h,
-                          ),
-                          CustomText(
-                            text: 'Service provider'.tr,
-                            fontSize: 12.w,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xff6F767E),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xffCDB3CD),
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            if (isCompleted) {
-                              debugPrint('Navigate to message screen');
-                            } else {
-                              debugPrint('Navigate to update screen');
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                isCompleted ? Icons.message : Icons.edit,
-                                color: AppColors.primary,
-                                size: 18.w,
+                                fontSize: 16.w,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                                bottom: 4.h,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(width: 6.w),
                               CustomText(
-                                text: isCompleted ? 'Message'.tr : 'Update'.tr,
-                                fontSize: 14.w,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
+                                text: 'Service provider'.tr,
+                                fontSize: 12.w,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff6F767E),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffCDB3CD),
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (booking.status?.toLowerCase() != 'pending') {
+                          debugPrint('Navigate to message screen');
+                          
+                          // Set loading state for this specific card
+                          isLoadingConversation.value = true;
+                          
+                          try {
+                            final loggedUserId =
+                                await SharePrefsHelper.getString(
+                              AppConstants.userId,
+                            );
+                            final loggedUserRole =
+                                await SharePrefsHelper.getString(
+                              AppConstants.role,
+                            );
+
+                            final conversationId = await controller
+                                .createOrRetrieveConversation(
+                                  senderId: loggedUserId,
+                                  receiverId: booking.contractorId?.id ?? '',
+                                );
+
+                            if (conversationId != null &&
+                                conversationId.isNotEmpty) {
+                              Get.toNamed(
+                                AppRoutes.chatScreen,
+                                arguments: {
+                                  'receiverName':
+                                      booking.contractorId?.fullName ??
+                                      'Service Provider',
+                                  'receiverImage':
+                                      booking.contractorId?.img ?? '',
+                                  'conversationId': conversationId,
+                                  'userId': loggedUserId,
+                                  'receiverId': booking.contractorId?.id,
+                                  'userRole': loggedUserRole,
+                                  'isCustomer': loggedUserRole == 'customer',
+                                },
+                              );
+                            } else {
+                              debugPrint(
+                                'Error: Conversation ID is null or empty',
+                              );
+                            }
+                          } finally {
+                            // Reset loading state
+                            isLoadingConversation.value = false;
+                          }
+                        } else {
+                          debugPrint('Navigate to update screen');
+                        }
+                      },
+                      child: Obx(
+                        () => Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            isLoadingConversation.value
+                                ? SizedBox(
+                                    width: 18.w,
+                                    height: 18.w,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppColors.primary,
+                                    ),
+                                  )
+                                : Icon(
+                                    booking.status?.toLowerCase() == 'pending'
+                                        ? Icons.edit
+                                        : Icons.message,
+                                    color: AppColors.primary,
+                                    size: 18.w,
+                                  ),
+                            SizedBox(width: 6.w),
+                            CustomText(
+                              text: booking.status?.toLowerCase() == 'pending'
+                                  ? 'Update'.tr
+                                  : 'Message'.tr,
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ],
+                        ),
+                      )
+                    ),
                   ),
                 ],
               ),

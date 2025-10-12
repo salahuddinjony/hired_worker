@@ -21,7 +21,7 @@ void main() async {
   );
   final DependencyInjection di = DependencyInjection();
   di.dependencies();
-  SocketApi.init();
+  // SocketApi.init();
   runApp(const MyApp());
 }
 

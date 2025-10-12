@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/controller/customer_order_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
 
@@ -54,7 +56,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: booking.subCategoryId?.name ?? 'Service',
+                      text: booking.bookingId.toString(),
                       fontSize: 16.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black,
@@ -113,7 +115,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 4,
-          text: "Category : ${booking.subCategoryId?.name ?? ''}",
+          text: "Category : ${booking.subCategoryId ?? ''}",
           fontSize: 16.w,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
@@ -155,13 +157,14 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "${m.name ?? ''}",
+                  text:
+                      "${m.name ?? ''} - ${m.count ?? ''} x \$${m.price ?? ''}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
                 ),
                 CustomText(
-                  text: "${m.price ?? ''}",
+                  text: "\$${(m.price ?? 0) * (m.count ?? 0)}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -296,11 +299,53 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               },
               title: "Review".tr,
             )
-            : CustomButton(
+            : booking.status?.toLowerCase() == 'accepted'
+            ? CustomButton(
               onTap: () {
-                Get.toNamed('/customarServiceDetailsScreen');
+                Get.back();
+              },
+              title: "Payment".tr,
+            )
+            : booking.status?.toLowerCase() == 'pending'
+            ? CustomButton(
+              onTap: () {
+                final controller = Get.find<ContractorBookingController>();
+                Get.toNamed(
+                  AppRoutes.customarMaterialsScreen,
+                  arguments: {
+                    'contractorId': booking.contractorId?.id,
+                    'subcategoryId': booking.subCategoryId,
+                    'materials': booking.material,
+                    'controller': controller,
+                    'contractorName': booking.contractorId?.fullName,
+                    'categoryName': "",
+                    'subCategoryName': booking.subCategoryId ?? '',
+                    // Pass booking schedule data for updates
+                    'bookingType': booking.bookingType ?? 'oneTime',
+                    'duration': booking.duration?.toString() ?? '1',
+                    'startTime': booking.startTime ?? '',
+                    'endTime': booking.endTime ?? '',
+                    'selectedDates':
+                        booking.day is List
+                            ? (booking.day as List)
+                                .map((e) => e.toString())
+                                .toList()
+                            : booking.day is String
+                            ? [booking.day as String]
+                            : [],
+                    'hourlyRate': booking.rateHourly ?? 0,
+                    'bookingId':
+                        booking.bookingId, // Pass booking ID for updates
+                  },
+                );
               },
               title: "Service Update".tr,
+            )
+            : CustomButton(
+              onTap: () {
+                Get.back();
+              },
+              title: "Back".tr,
             ),
       ],
     );
