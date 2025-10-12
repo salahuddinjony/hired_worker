@@ -12,7 +12,7 @@ class ReviewsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) return Center(child: SizedBox(height: 48, width: 48, child: CircularProgressIndicator()));
+    if (isLoading) return const Center(child: SizedBox(height: 48, width: 48, child: CircularProgressIndicator()));
     if (reviewItems.isEmpty) return Center(child: Text("No reviews available".tr, style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500, color: AppColors.black_08)));
 
     final outer = reviewItems.first;

@@ -37,15 +37,15 @@ class RecentAllServiceController extends GetxController {
     try {
       // get recent services
       final response = await ApiClient.getData(
-        '${ApiUrl.bookings}?page=$currentPage&limit=10',
+        '${ApiUrl.singleUserBookings}?page=$currentPage&limit=10',
       );
 
-      BookingModel bookingModel = BookingModel.fromJson(response.body);
+      final BookingModel bookingModel = BookingModel.fromJson(response.body);
 
-      if (bookingModel.data == null || bookingModel.data!.result!.isEmpty) {
+      if (bookingModel.data == null || bookingModel.data!.isEmpty) {
         status.value = RxStatus.empty();
       } else {
-        recentServiceList.addAll(bookingModel.data!.result!);
+        recentServiceList.addAll(bookingModel.data!);
         status.value = RxStatus.success();
       }
     } catch (e) {
@@ -65,13 +65,13 @@ class RecentAllServiceController extends GetxController {
         '${ApiUrl.bookings}?page=$currentPage&limit=10',
       );
 
-      BookingModel bookingModel = BookingModel.fromJson(response.body);
+      final BookingModel bookingModel = BookingModel.fromJson(response.body);
 
-      if (bookingModel.data == null || bookingModel.data!.result!.isEmpty) {
+      if (bookingModel.data == null || bookingModel.data!.isEmpty) {
         showCustomSnackBar('No more data to load');
         isLock = true;
       } else {
-        recentServiceList.addAll(bookingModel.data!.result!);
+        recentServiceList.addAll(bookingModel.data!);
       }
     } catch (e) {
       currentPage--;

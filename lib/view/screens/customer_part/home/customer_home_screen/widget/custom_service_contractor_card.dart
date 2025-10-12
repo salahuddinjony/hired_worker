@@ -20,7 +20,7 @@ class CustomServiceContractorCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           width: MediaQuery.sizeOf(context).width / 2.3,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10),
@@ -52,7 +52,7 @@ class CustomServiceContractorCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.star, size: 10, color: AppColors.blue),
+                      const Icon(Icons.star, size: 10, color: AppColors.blue),
                       CustomText(
                         text: rating ?? "4.8",
                         fontSize: 12.w,
@@ -62,7 +62,7 @@ class CustomServiceContractorCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.blue,
                       borderRadius: BorderRadius.circular(8),

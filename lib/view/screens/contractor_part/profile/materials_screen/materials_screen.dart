@@ -19,7 +19,7 @@ class MaterialsScreenState extends State<MaterialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Materials"),
       body: Obx(() {
         final materialList = profileController.contractorModel.value.data?.contractor?.materials ?? [];
 
@@ -328,12 +328,12 @@ class MaterialsScreenState extends State<MaterialsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Delete Material"),
-        content: Text("Are you sure you want to delete this material?"),
+        title: const Text("Delete Material"),
+        content: const Text("Are you sure you want to delete this material?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
+            child: const Text("Cancel"),
           ),
           TextButton(
             onPressed: () {
@@ -342,7 +342,7 @@ class MaterialsScreenState extends State<MaterialsScreen> {
               Get.find<MaterialController>().deleteMaterial(id);
               Navigator.pop(context);
             },
-            child: Text("Delete", style: TextStyle(color: Colors.red)),
+            child: const Text("Delete", style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

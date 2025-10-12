@@ -11,10 +11,10 @@ class CustomGetCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         width: MediaQuery.sizeOf(context).width / 1.8,
         decoration: BoxDecoration(
-          color:bkColor?? Color(0xffFFBC99),
+          color:bkColor?? const Color(0xffFFBC99),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -29,7 +29,7 @@ class CustomGetCard extends StatelessWidget {
                   color: AppColors.black_09,
                   right: 6,
                 ),
-                Icon(
+                const Icon(
                   Icons.info_rounded,
                   color: AppColors.black_09,
                   size: 17,
@@ -44,7 +44,7 @@ class CustomGetCard extends StatelessWidget {
             ),
             Container(
               width: 108,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 8,
               ),
@@ -58,10 +58,10 @@ class CustomGetCard extends StatelessWidget {
                     text: "Grab Offer",
                     fontSize: 14.w,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff6A9B7E),
+                    color: const Color(0xff6A9B7E),
                     right: 4,
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined,size: 14,color: Color(0xff6A9B7E),)
+                  const Icon(Icons.arrow_forward_ios_outlined,size: 14,color: Color(0xff6A9B7E),)
                 ],
               ),
             ),

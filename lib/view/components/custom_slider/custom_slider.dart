@@ -57,11 +57,11 @@ class _CustomSliderState extends State<CustomSlider> {
     if (widget.max != null &&
         widget.min != null &&
         widget.currentValue != null) {
-      double minMax = widget.max! - widget.min!;
+      final double minMax = widget.max! - widget.min!;
 
-      double percent = minMax / widget.currentValue!;
+      final double percent = minMax / widget.currentValue!;
 
-      double mediaHight =
+      final double mediaHight =
           widget.currentWidth ?? MediaQuery.sizeOf(context).width / 3;
 
       width = mediaHight / percent;

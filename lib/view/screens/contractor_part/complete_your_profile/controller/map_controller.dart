@@ -37,16 +37,16 @@ class MapController extends GetxController {
 
   void _addInitialMarker() {
     markers.add(
-      Marker(
-        markerId: const MarkerId('initial_marker'),
-        position: const LatLng(37.7749, -122.4194),
-        infoWindow: const InfoWindow(title: 'San Francisco'),
+      const Marker(
+        markerId: MarkerId('initial_marker'),
+        position: LatLng(37.7749, -122.4194),
+        infoWindow: InfoWindow(title: 'San Francisco'),
       ),
     );
   }
 
   Future<void> getUserLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Get.snackbar('Error', 'Location services are disabled.');
       return;
@@ -66,8 +66,8 @@ class MapController extends GetxController {
       return;
     }
 
-    Position position = await Geolocator.getCurrentPosition(
-      locationSettings: LocationSettings(
+    final Position position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
       ),
     );
@@ -300,14 +300,14 @@ class MapController extends GetxController {
 
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
 
-    String uri = '${ApiUrl.updateUser}/$userId';
+    final String uri = '${ApiUrl.updateUser}/$userId';
 
-    Map<String, String> body = {
+    final Map<String, String> body = {
       'data': '{"location": "${selectedLocation.value?['address']}"}',
     };
 
     try {
-      var response = await ApiClient.patchMultipartData(
+      final response = await ApiClient.patchMultipartData(
         uri,
         body,
         multipartBody: [],

@@ -18,13 +18,13 @@ class CustomarQaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Map<String, dynamic> args = Get.arguments ?? {};
+    final Map<String, dynamic> args = Get.arguments ?? {};
 
     // Ensure IDs are strings even if passed as numbers
     final dynamic rawContractorId = args['contractorId'];
     final dynamic rawSubcategoryId = args['subcategoryId'];
-    String contractorId = rawContractorId?.toString() ?? '';
-    String subcategoryId = rawSubcategoryId?.toString() ?? '';
+    final String contractorId = rawContractorId?.toString() ?? '';
+    final String subcategoryId = rawSubcategoryId?.toString() ?? '';
   final List<dynamic> materials = args['materials'] ?? [];
    final String contractorName = args['contractorName'] ?? '';
    final String categoryName= args['categoryName'] ?? '';
@@ -47,7 +47,7 @@ class CustomarQaScreen extends StatelessWidget {
       controller.hourlyRate = 0;
     }
 
-    var rawQuestions = args['questions'];
+    final rawQuestions = args['questions'];
 
     List<dynamic> questions = [];
     if (rawQuestions == null) {

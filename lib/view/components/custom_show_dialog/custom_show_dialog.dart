@@ -50,7 +50,7 @@ class _CustomShowDialogState extends State<CustomShowDialog> {
                 alignment: Alignment.topRight,
                 child: GestureDetector(
                     onTap: () => Navigator.of(context).pop(), child: Icon(Icons.close, color: widget.textColor?? AppColors.black,))),
-          ): SizedBox(),
+          ): const SizedBox(),
           CustomText(
             text: "${widget.title}",
             fontSize: 22,
@@ -98,7 +98,7 @@ class _CustomShowDialogState extends State<CustomShowDialog> {
                     ],
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
           widget.showColumnButton == true
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -126,7 +126,7 @@ class _CustomShowDialogState extends State<CustomShowDialog> {
                     ],
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
       padding: EdgeInsets.only(bottom: 10.0, top: 10.h),

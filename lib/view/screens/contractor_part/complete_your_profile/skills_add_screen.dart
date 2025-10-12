@@ -71,11 +71,11 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
             const SizedBox(height: 8),
             Text(
               "Add your skills and expertise.".tr,
-              style: TextStyle(color: Colors.black87),
+              style: const TextStyle(color: Colors.black87),
             ),
             Text(
               "You can always change it later.".tr,
-              style: TextStyle(color: Colors.black54),
+              style: const TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
 
@@ -109,7 +109,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                     ),
                     IconButton(
                       onPressed: addSkill,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_circle,
                         color: Color(0xFF3C003D),
                         size: 28,
@@ -138,7 +138,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "${"Your Skills".tr}(${selectedSkills.length})",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -189,9 +189,9 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Color(0xFF3C003D).withValues(alpha: .1),
+                                color: const Color(0xFF3C003D).withValues(alpha: .1),
                                 border: Border.all(
-                                  color: Color(
+                                  color: const Color(
                                     0xFF3C003D,
                                   ).withValues(alpha: .3),
                                 ),
@@ -200,11 +200,11 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF3C003D),
+                                      color: const Color(0xFF3C003D),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     padding: const EdgeInsets.all(6),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.check,
                                       size: 20,
                                       color: Colors.white,
@@ -228,7 +228,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                                       size: 20,
                                     ),
                                     padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
+                                    constraints: const BoxConstraints(),
                                   ),
                                 ],
                               ),
@@ -254,7 +254,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                       ),
                     ),
                   controller.status.value.isLoading
-                      ? CustomLoader()
+                      ? const CustomLoader()
                       : CustomButton(
                         onTap: () {
                           if (selectedSkills.isNotEmpty) {

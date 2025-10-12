@@ -18,34 +18,34 @@
 //     return Scaffold(
 //       extendBody: true,
 
-//       appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Messages".tr),
-//       body: Obx(() {
-//         final data = messageController.allMessageRoomModel.value.data ?? [];
-//         return Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             if (data.isEmpty) Center(
-//               child: Padding(
-//                 padding: const EdgeInsets.symmetric(vertical: 10.0),
-//                 child: Text(
-//                   "No Conversation Found".tr,
-//                   style: TextStyle(
-//                     fontSize: 16,
-//                     fontWeight: FontWeight.w500,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             ...List.generate(data.length, (value) {
-//               return GestureDetector(
-//                 onTap: () async {
-//                   debugPrint(
-//                     "===========================>> Other UserId:${data[value].otherUserId}",
-//                   );
-//                 final userId = await SharePrefsHelper.getString(
-//                   AppConstants.userId,
-//                 );
-//                 debugPrint("===========================>> User Id:$userId");
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Messages".tr),
+      body: Obx(() {
+        final data = messageController.allMessageRoomModel.value.data ?? [];
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (data.isEmpty) Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "No Conversation Found".tr,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+            ...List.generate(data.length, (value) {
+              return GestureDetector(
+                onTap: () async {
+                  debugPrint(
+                    "===========================>> Other UserId:${data[value].otherUserId}",
+                  );
+                final userId = await SharePrefsHelper.getString(
+                  AppConstants.userId,
+                );
+                debugPrint("===========================>> User Id:$userId");
 
 //                 Get.toNamed(
 //                   AppRoutes.chatScreen,

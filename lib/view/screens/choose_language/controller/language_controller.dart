@@ -15,7 +15,7 @@ class LanguageController extends GetxController {
   void toggleLanguage(bool value) async {
     isChinese.value = value;
      await SharePrefsHelper.setBool('isChinese', value);
-    final newLocale = value ? Locale('zh', 'CN') : Locale('en', 'US');
+    final newLocale = value ? const Locale('zh', 'CN') : const Locale('en', 'US');
     Get.updateLocale(newLocale);
   }
   
@@ -23,7 +23,7 @@ class LanguageController extends GetxController {
   void _loadLanguagePreference() async {
      isChinese.value = await SharePrefsHelper.getBool('isChinese') ?? false;
     final savedLocale =
-        isChinese.value ? Locale('zh', 'CN') : Locale('en', 'US');
+        isChinese.value ? const Locale('zh', 'CN') : const Locale('en', 'US');
     Get.updateLocale(savedLocale);
   }
 

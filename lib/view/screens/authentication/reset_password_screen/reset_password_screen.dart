@@ -47,7 +47,7 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 30.h),
             Obx(() {
               return authController.setNewPasswordLoading.value.isLoading
-                  ? CustomLoader()
+                  ? const CustomLoader()
                   : CustomButton(
                     onTap: () {
                       authController.setNewPassword();

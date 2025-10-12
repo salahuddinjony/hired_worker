@@ -27,14 +27,14 @@ class HomeScreen extends StatelessWidget {
     final ProfileController profileController = Get.find<ProfileController>();
     profileController.getMe();
 
-    ContractorHomeController controller = Get.find<ContractorHomeController>();
+    final ContractorHomeController controller = Get.find<ContractorHomeController>();
 
     return Scaffold(
       extendBody: true, // Ensures the body extends behind the navigation bar
       body: Obx(() {
         // Using Obx to reactively update the UI when contractorData changes
         if (controller.status.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     controller.getAllBookings();
                   },
-                  child: Text('Retry'),
+                  child: const Text('Retry'),
                 ),
               ],
             ),
@@ -152,7 +152,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CustomHomeCard(
                             text:
-                                controller.bookingModel.value.data!.meta?.total
+                                controller.bookingModel.value.meta?.total
                                     .toString() ??
                                 " - ",
                             title: "Total Service".tr,
@@ -177,7 +177,6 @@ class HomeScreen extends StatelessWidget {
                                     .bookingModel
                                     .value
                                     .data
-                                    ?.result
                                     ?.length
                                     .toString() ??
                                 " - ",
@@ -227,12 +226,12 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      if ((controller.bookingModel.value.data?.result?.length ??
+                      if ((controller.bookingModel.value.data?.length ??
                               0) ==
                           0)
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.3,
-                          child: Center(child: Text('No data found')),
+                          child: const Center(child: Text('No data found')),
                         ),
 
                       ListView.builder(
@@ -243,16 +242,14 @@ class HomeScreen extends StatelessWidget {
                                 .bookingModel
                                 .value
                                 .data
-                                ?.result
                                 ?.length ??
                             0,
                         itemBuilder: (context, index) {
-                          BookingModelData data =
+                          final BookingModelData data =
                               controller
                                   .bookingModel
                                   .value
-                                  .data!
-                                  .result![index];
+                                  .data![index];
 
                           return CustomServiceCard(
                             title: getSubCategoryName(data),
@@ -277,7 +274,7 @@ class HomeScreen extends StatelessWidget {
         }
       }),
       // Bottom navigation bar with current index set to 0 (Home)
-      bottomNavigationBar: Navbar(currentIndex: 0),
+      bottomNavigationBar: const Navbar(currentIndex: 0),
     );
   }
 }

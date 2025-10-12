@@ -19,7 +19,7 @@ class OnGoingFinishScreen extends StatelessWidget {
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
       body: Column(
         children: [
-          Center(child: CustomImage(imageSrc: AppIcons.group)),
+          const Center(child: CustomImage(imageSrc: AppIcons.group)),
           CustomText(
             top: 8,
             text: "Finished".tr,

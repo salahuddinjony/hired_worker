@@ -17,7 +17,7 @@ class ContractorSignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
-    bool isContactor = Get.arguments['isContactor'] ?? false;
+    final bool isContactor = Get.arguments['isContactor'] ?? false;
     return Scaffold(
       appBar: CustomRoyelAppbar(
         titleName:
@@ -120,7 +120,7 @@ class ContractorSignUpScreen extends StatelessWidget {
               SizedBox(height: 30.h),
               Obx(() {
                 return authController.signUpLoading.value.isLoading
-                    ? CustomLoader()
+                    ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
                         authController.customerSignUp(isContactor);

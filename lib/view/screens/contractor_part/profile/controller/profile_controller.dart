@@ -129,8 +129,8 @@ class ProfileController extends GetxController {
   Future<void> updateProfile() async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
-    String userId = await SharePrefsHelper.getString(AppConstants.userId);
-    Map<String, String> body = {
+    final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+    final Map<String, String> body = {
       'fullName': nameController.value.text,
       'contactNo': phoneController.value.text,
       'city': cityController.value.text,

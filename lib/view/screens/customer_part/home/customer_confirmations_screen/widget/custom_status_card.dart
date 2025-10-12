@@ -20,7 +20,7 @@ class CustomStatusCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
-                backgroundColor: Color(0xffCDB3CD),
+                backgroundColor: const Color(0xffCDB3CD),
                 child: CustomNetworkImage(
                   imageUrl: AppConstants.profileImage,
                   height: 30,
@@ -50,7 +50,7 @@ class CustomStatusCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Divider(thickness: .6,color: AppColors.white,),
+          const Divider(thickness: .6,color: AppColors.white,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -61,7 +61,7 @@ class CustomStatusCard extends StatelessWidget {
                 color: AppColors.black_08,
               ),
               Card(
-                color: Color(0xffCDB3CD),
+                color: const Color(0xffCDB3CD),
                 elevation: 0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -81,7 +81,7 @@ class CustomStatusCard extends StatelessWidget {
           SizedBox(height: 10.h),
           Row(
             children: [
-              CustomImage(imageSrc: AppIcons.calenderIcon),
+              const CustomImage(imageSrc: AppIcons.calenderIcon),
               SizedBox(width: 10.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +146,7 @@ class CustomStatusCard extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      CustomImage(
+                      const CustomImage(
                         imageSrc: AppIcons.call,
                         imageColor: AppColors.white,
                       ),
@@ -164,7 +164,7 @@ class CustomStatusCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Divider(thickness: .6,color: AppColors.white,),
+          const Divider(thickness: .6,color: AppColors.white,),
         ],
       ),
     );

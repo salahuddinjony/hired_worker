@@ -45,7 +45,7 @@ class CustomServiceCard extends StatelessWidget {
             if (image != null && image!.isNotEmpty)
               CustomNetworkImage(
                 imageUrl: image!,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(13),
                   bottomLeft: Radius.circular(13),
                 ),
@@ -106,7 +106,7 @@ class CustomServiceCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        CustomImage(imageSrc: AppIcons.filled),
+                        const CustomImage(imageSrc: AppIcons.filled),
                         CustomText(
                           text: rating,
                           fontSize: 12.w,

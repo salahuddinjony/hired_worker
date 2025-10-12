@@ -48,7 +48,7 @@ class SeletedMapScreen extends StatelessWidget {
               children: [
                 CustomTextField(
                   textEditingController: searchController,
-                  prefixIcon: Icon(Icons.search, color: AppColors.textCLr),
+                  prefixIcon: const Icon(Icons.search, color: AppColors.textCLr),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
                       mapController.setIsClean(true);
@@ -61,7 +61,7 @@ class SeletedMapScreen extends StatelessWidget {
                   suffixIcon:
                       mapController.isClean.value
                           ? IconButton(
-                            icon: Icon(Icons.clear, color: AppColors.textCLr),
+                            icon: const Icon(Icons.clear, color: AppColors.textCLr),
                             onPressed: () {
                               searchController.clear();
                               mapController.clearSelectedLocation();
@@ -69,7 +69,7 @@ class SeletedMapScreen extends StatelessWidget {
                           )
                           : null,
                   hintText: 'Enter your address'.tr,
-                  hintStyle: TextStyle(color: AppColors.textCLr),
+                  hintStyle: const TextStyle(color: AppColors.textCLr),
                   fillColor: AppColors.white,
                   onFieldSubmitted: (value) {
                     if (value.isNotEmpty) {
@@ -104,7 +104,7 @@ class SeletedMapScreen extends StatelessWidget {
                                 return ListTile(
                                   title: Text(
                                     suggestion,
-                                    style: TextStyle(color: AppColors.textCLr),
+                                    style: const TextStyle(color: AppColors.textCLr),
                                   ),
                                   onTap: () {
                                     searchController.text = suggestion;
@@ -130,7 +130,7 @@ class SeletedMapScreen extends StatelessWidget {
               left: 30,
               child:
                   mapController.status.value.isLoading
-                      ? CustomLoader()
+                      ? const CustomLoader()
                       : CustomButton(
                         onTap: () {
                           if (mapController.selectedLocation.value != null) {

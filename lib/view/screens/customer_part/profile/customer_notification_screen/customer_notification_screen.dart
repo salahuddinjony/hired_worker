@@ -22,9 +22,9 @@ class CustomerNotificationScreen extends StatelessWidget {
         child: Obx(() {
           final notifications = controller.notificationsList;
           if (controller.getNotificationStatus.value.isLoading) {
-            return Center(child: CustomLoader());
+            return const Center(child: CustomLoader());
           } else if (notifications.isEmpty) {
-            return Center(
+            return const Center(
               child: NotFound(
                 message: "No notifications Available",
                 icon: Icons.notifications_off,
@@ -34,7 +34,7 @@ class CustomerNotificationScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: notifications.length,
               itemBuilder: (context, index) {
-                CustomNotification notification = notifications[index];
+                final CustomNotification notification = notifications[index];
                 return CustomNotificationList(
                   title: notification.title ?? " - ",
                   message: notification.message ?? " - ",

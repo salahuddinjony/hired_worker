@@ -46,13 +46,13 @@ class CustomTextfieldWithPopupState extends State<CustomTextfieldWithPopup> {
       onTap: _showPopupMenu,
       child: AbsorbPointer(
         child: CustomTextField(
-          inputTextStyle: TextStyle(color: AppColors.white),
+          inputTextStyle: const TextStyle(color: AppColors.white),
           onChanged: widget.onChanged,
           fieldBorderRadius: 12,
           validator: widget.validator,
           fillColor: widget.fillColor ?? AppColors.white_50,
           hintText: widget.hintText ?? AppStrings.selectSpecialization,
-          hintStyle: TextStyle(color: AppColors.white,),
+          hintStyle: const TextStyle(color: AppColors.white,),
           textEditingController: widget.controller,
           fieldBorderColor: AppColors.white_50.withValues(alpha: .2),
           readOnly: true,

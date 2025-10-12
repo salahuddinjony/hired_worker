@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/controller/on_going_controller.dart';
 
-import '../../../../../core/app_routes/app_routes.dart';
 import 'widget/custom_ongoing_card.dart';
 
 class OnGoingScreen extends StatelessWidget {
@@ -13,30 +12,48 @@ class OnGoingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OnGoingController controller =
+        Get.find<OnGoingController>();
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(child: Icon(Icons.access_time, size: 45)),
-            CustomText(
-              text: "03 : 22 PM",
-              fontSize: 32.w,
-              fontWeight: FontWeight.w600,
-              color: AppColors.black,
-            ),
-            Column(
-              children: List.generate(4, (value){
-                return CustomOngoingCard(
-                  rightOnTap: (){
-                    Get.toNamed(AppRoutes.onGoingFinishScreen);
+      body: Obx(() {
+        if (controller.status.value.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
+        } else if (controller.status.value.isError) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(controller.status.value.errorMessage!),
+                ElevatedButton(
+                  onPressed: () {
+                    controller.getOnGoingBookings();
                   },
-                );
-              })
-            )
-          ],
-        ),
-      ),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(
+                  children: List.generate(
+                    controller.onGoingBookingList.length,
+                    (value) {
+                      return CustomOngoingCard(index: value);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      }),
     );
   }
 }

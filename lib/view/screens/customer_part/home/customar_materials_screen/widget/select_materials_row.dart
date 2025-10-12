@@ -72,7 +72,7 @@ class SelectMaterialsRow extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: onDecrement,
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove,
                   color: AppColors.black,
                   size: 18,
@@ -88,7 +88,7 @@ class SelectMaterialsRow extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onIncrement,
-                icon: Icon(
+                icon: const Icon(
                   Icons.add,
                   color: AppColors.black,
                   size: 18,

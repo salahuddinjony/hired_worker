@@ -18,8 +18,8 @@ class VerifayCodeScreen extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
     final email = authController.emailController.value.text;
 
-    var args = Get.arguments;
-    String register = args[0];
+    final args = Get.arguments;
+    final String register = args[0];
     return Scaffold(
       appBar: CustomRoyelAppbar(titleName: "Verify Your Email".tr, leftIcon: true),
       body: Padding(
@@ -53,7 +53,7 @@ class VerifayCodeScreen extends StatelessWidget {
             SizedBox(height: 30.h),
             Obx(() {
               return authController.veryfiOTPLoading.value.isLoading
-                  ? CustomLoader()
+                  ? const CustomLoader()
                   : CustomButton(
                     onTap: () {
                       if (authController.otpController.value.text.isNotEmpty) {

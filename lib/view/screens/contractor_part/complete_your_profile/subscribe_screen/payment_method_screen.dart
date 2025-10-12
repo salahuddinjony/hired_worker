@@ -15,7 +15,7 @@ class PaymentMethodScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Payment Method"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Payment Method"),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: 12.0.h),
         child: Column(
@@ -23,7 +23,7 @@ class PaymentMethodScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Select payment gateway"),
+                const Text("Select payment gateway"),
                 Container(
                   padding: EdgeInsetsGeometry.symmetric(
                     vertical: 1.0.h,
@@ -50,7 +50,7 @@ class PaymentMethodScreen extends StatelessWidget {
             SizedBox(height: 16.h),
 
             Container(
-              padding: EdgeInsetsGeometry.symmetric(
+              padding: const EdgeInsetsGeometry.symmetric(
                 vertical: 16.0,
                 horizontal: 8.0,
               ),
@@ -61,7 +61,7 @@ class PaymentMethodScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  const Row(
                     spacing: 6.0,
                     children: [
                       Icon(Icons.circle),
@@ -79,7 +79,7 @@ class PaymentMethodScreen extends StatelessWidget {
 
             }),
 
-            Spacer(),
+            const Spacer(),
 
             SizedBox(
               width: context.width * 0.7,

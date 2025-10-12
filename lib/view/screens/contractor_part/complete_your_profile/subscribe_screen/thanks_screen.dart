@@ -13,7 +13,7 @@ class ThanksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: false),
+      appBar: const CustomRoyelAppbar(leftIcon: false),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: 12.0.h),
         child: Column(
@@ -36,9 +36,9 @@ class ThanksScreen extends StatelessWidget {
 
                 Center(child: Image.asset('assets/icons/credit-card.png')),
 
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "You have successfully signed up for business user.",
@@ -46,7 +46,7 @@ class ThanksScreen extends StatelessWidget {
                   ),
                 ),
 
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Let's setup your business now.",
