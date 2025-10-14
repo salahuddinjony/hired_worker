@@ -9,7 +9,6 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/extension/extension.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../model/customer_order_model.dart';
 
 typedef BookingTapCallback = void Function(BookingResult booking);
@@ -247,7 +246,7 @@ class BookingCard extends StatelessWidget {
                                 ? SizedBox(
                                     width: 18.w,
                                     height: 18.w,
-                                    child: CircularProgressIndicator(
+                                    child: const CircularProgressIndicator(
                                       strokeWidth: 2,
                                       color: AppColors.primary,
                                     ),
