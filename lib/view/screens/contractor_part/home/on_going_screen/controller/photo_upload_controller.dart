@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/service/api_client.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
 import '../../../../../../service/api_url.dart';
@@ -30,10 +33,13 @@ class PhotoUploadController extends GetxController {
 
     if (pickedImages != null) {
       workImages.addAll(pickedImages);
+      debugPrint('Picked images: ${workImages.length}');
     }
   }
 
   Future<void> finishService() async {
+    debugPrint('xxFinish service called for booking ID: $bookingId');
+    debugPrint('xxindex: ${Get.arguments['id']}');
     if (status.value.isLoading) return;
 
     status.value = RxStatus.loading();
@@ -41,29 +47,30 @@ class PhotoUploadController extends GetxController {
     // patch
     final String endPoint = '${ApiUrl.bookings}/$bookingId';
 
-    /*
 
-    {
+   final body= {
     "status": "completed"
-    "files": files
-    }
+    };
 
-     */
 
     try {
-      Get.toNamed(
-        AppRoutes.onGoingFinishScreen,
-        arguments: {'id': Get.arguments['id']},
+      final response = await ApiClient.patchMultipartData(
+        endPoint,
+        body,
+        multipartBody: workImages
+            .map((image) => MultipartBody("file", File(image.path)))
+            .toList(),
       );
 
-      // replace this one
-      // final response = await ApiClient.patchData(endPoint, jsonEncode({}));
-      //
-      // if (response.status == 200) {
-      //   Get.toNamed(AppRoutes.onGoingFinishScreen);
-      // } else {
-      //   showCustomSnackBar(response.body['message'], isError: false);
-      // }
+      if (response.statusCode == 200) {
+        debugPrint('xxResponse: ${response.body}'); 
+        Get.toNamed(
+          AppRoutes.onGoingFinishScreen,
+          arguments: {'id': Get.arguments['id']},
+        );
+      } else {
+        showCustomSnackBar(response.body['message'], isError: false);
+      }
     } catch (e) {
       showCustomSnackBar(e.toString());
     } finally {
