@@ -25,7 +25,7 @@ class OnGoingController extends GetxController {
 
     try {
       final response = await ApiClient.getData(
-        '${ApiUrl.singleUserBookings}?status=on-going&page=$currentPage&limit=10',
+        '${ApiUrl.singleUserBookings}?status=ongoing&page=$currentPage&limit=10',
       );
 
       final BookingModel bookingModel = BookingModel.fromJson(response.body);
@@ -47,7 +47,7 @@ class OnGoingController extends GetxController {
   }
 
   Future<void> acceptOrder(String id) async {
-    final Map<String, String> data = {"status": "on-going"};
+    final Map<String, String> data = {"status": "ongoing"};
 
     try {
       final response = await ApiClient.patchMultipartData(
