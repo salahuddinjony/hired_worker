@@ -58,7 +58,7 @@ class InboxScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: 'All Message',
+              text: 'All Conversations'.tr,
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black,
