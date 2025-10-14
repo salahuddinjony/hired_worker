@@ -30,7 +30,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ScheduleSelectionController controller =
+    final ScheduleSelectionController controller =
         Get.find<ScheduleSelectionController>();
 
     return Scaffold(
@@ -43,11 +43,11 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
             const SizedBox(height: 8),
             Text(
               "Set up your personal information.".tr,
-              style: TextStyle(color: Colors.black87),
+              style: const TextStyle(color: Colors.black87),
             ),
             Text(
               "You can always change it later.".tr,
-              style: TextStyle(color: Colors.black54),
+              style: const TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -109,7 +109,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
             const SizedBox(height: 16),
             Obx(() {
               return controller.status.value.isLoading
-                  ? CustomLoader()
+                  ? const CustomLoader()
                   : CustomButton(
                     onTap: () {
                       controller.updateContractorData(selectedDays);

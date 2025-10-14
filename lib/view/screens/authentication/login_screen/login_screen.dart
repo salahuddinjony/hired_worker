@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       body: Obx(() {
@@ -121,7 +121,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   authController.loginStatus.value.isLoading
-                      ? CustomLoader()
+                      ? const CustomLoader()
                       : CustomButton(
                         onTap: () {
                           if (formKey.currentState!.validate()) {

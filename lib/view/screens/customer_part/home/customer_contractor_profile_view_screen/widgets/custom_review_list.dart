@@ -110,7 +110,7 @@ class CustomReviewList extends StatelessWidget {
                   color: AppColors.black_03,
                 ),
                 // Optional: show "Verified" or helpful actions in future
-                SizedBox.shrink(),
+                const SizedBox.shrink(),
               ],
             ),
           ],

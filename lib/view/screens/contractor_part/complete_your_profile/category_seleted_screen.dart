@@ -30,7 +30,7 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CategorySelectionController controller =
+    final CategorySelectionController controller =
         Get.find<CategorySelectionController>();
 
     return Scaffold(
@@ -43,11 +43,11 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
           children: [
             Text(
               "Set up your personal information.".tr,
-              style: TextStyle(color: Colors.black87),
+              style: const TextStyle(color: Colors.black87),
             ),
             Text(
               "You can always change it later.".tr,
-              style: TextStyle(color: Colors.black54),
+              style: const TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
 
@@ -124,7 +124,7 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                                           ),
                                       placeholder:
                                           (context, url) =>
-                                              CircularProgressIndicator(
+                                              const CircularProgressIndicator(
                                                 color: AppColors.primary,
                                               ),
                                     ),
@@ -153,7 +153,7 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
             Obx(() {
               if (!controller.status.value.isLoading) {
                 return controller.updateStatus.value.isLoading
-                    ? CustomLoader()
+                    ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
                         if (selectedCategoryId != null) {
@@ -165,11 +165,11 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                       title: "Continue".tr,
                     );
               } else {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             }),
 
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),

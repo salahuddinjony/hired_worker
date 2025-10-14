@@ -13,6 +13,7 @@ class ContractorHomeController extends GetxController {
 
   Rx<BookingModel> bookingModel = BookingModel().obs;
   Rx<BookingModel> pendingBookingList = BookingModel().obs;
+  Rx<BookingModel> onGoingBookingList = BookingModel().obs;
   Rx<BookingModel> completeBookingList = BookingModel().obs;
   RxInt onGoingServices = 0.obs;
   RxInt requestedServices = 0.obs;
@@ -34,25 +35,25 @@ class ContractorHomeController extends GetxController {
     try {
       // get recent services
       final response = await ApiClient.getData(
-        '${ApiUrl.bookings}?page=1&limit=10',
+        '${ApiUrl.singleUserBookings}?page=1&limit=10',
       );
 
       bookingModel.value = BookingModel.fromJson(response.body);
 
       // get pending (request) services
       final pendingServiceResponse = await ApiClient.getData(
-        '${ApiUrl.bookings}?status=pending',
+        '${ApiUrl.singleUserBookings}?status=pending',
       );
 
       pendingBookingList.value = BookingModel.fromJson(
         pendingServiceResponse.body,
       );
 
-      requestedServices.value = pendingBookingList.value.data!.result!.length;
+      requestedServices.value = pendingBookingList.value.data!.length;
 
       // get completed services
       final completedServiceResponse = await ApiClient.getData(
-        '${ApiUrl.bookings}?status=completed',
+        '${ApiUrl.singleUserBookings}?status=completed',
       );
 
       completeBookingList.value = BookingModel.fromJson(
@@ -61,24 +62,24 @@ class ContractorHomeController extends GetxController {
 
       // get ongoing service number
       final ongoingResponse = await ApiClient.getData(
-        '${ApiUrl.bookings}?status=ongoing',
+        '${ApiUrl.singleUserBookings}?status=ongoing',
       );
 
-      if (ongoingResponse.body != null &&
-          ongoingResponse.body['data'] != null) {
-        final totalOngoing = ongoingResponse.body['data']['meta']['total'] ?? 0;
-        onGoingServices.value = totalOngoing;
-      }
+      onGoingBookingList.value = BookingModel.fromJson(
+        ongoingResponse.body,
+      );
+
+      onGoingServices.value = onGoingBookingList.value.data!.length;
 
       status.value = RxStatus.success();
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('xxx ${e.toString()}');
       status.value = RxStatus.error('Something went wrong. Please try again later.');
     }
   }
 
   Future<void> acceptOrder(String id) async {
-    Map<String, String> data = {"status": "ongoing"};
+    final Map<String, String> data = {"status": "accepted"};
 
     try {
       final response = await ApiClient.patchMultipartData(
@@ -106,7 +107,7 @@ class ContractorHomeController extends GetxController {
   }
 
   Future<void> cancelOrder(String id) async {
-    Map<String, String> data = {"status": "cancelled"};
+    final Map<String, String> data = {"status": "cancelled"};
 
     try {
       final response = await ApiClient.patchData(
@@ -127,7 +128,7 @@ class ContractorHomeController extends GetxController {
   }
 
   void removeBookingData(String id) {
-    pendingBookingList.value.data!.result!.removeWhere((element) {
+    pendingBookingList.value.data!.removeWhere((element) {
       return element.id == id;
     });
 

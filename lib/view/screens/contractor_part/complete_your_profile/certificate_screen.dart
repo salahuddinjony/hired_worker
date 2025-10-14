@@ -13,16 +13,16 @@ class CertificateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF2E6F3),
+      backgroundColor: const Color(0xFFF2E6F3),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Certificate".tr, style: TextStyle(color: Colors.black)),
-        leading: BackButton(color: Colors.black),
+        title: Text("Certificate".tr, style: const TextStyle(color: Colors.black)),
+        leading: const BackButton(color: Colors.black),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Obx(() {
           return Column(
             children: [
@@ -61,10 +61,10 @@ class CertificateScreen extends StatelessWidget {
                         ? ""
                         : controller.otherFile.value!.path.split("/").last,
               ),
-              Spacer(),
+              const Spacer(),
               Obx(() {
                 return controller.status.value.isLoading
-                    ? CustomLoader()
+                    ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
                         controller.uploadAllFiles();
@@ -72,7 +72,7 @@ class CertificateScreen extends StatelessWidget {
                       title: "Add Certificate".tr,
                     );
               }),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           );
         }),

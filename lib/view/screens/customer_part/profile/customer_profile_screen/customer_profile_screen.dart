@@ -115,7 +115,7 @@ class CustomerProfileScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 50.h),
-              CustomProfileMenuList(),
+              const CustomProfileMenuList(),
               CustomProfileMenuList(
                 image: AppIcons.history,
                 name: "History".tr,
@@ -201,7 +201,7 @@ class CustomerProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: CustomerNavbar(currentIndex: 3),
+      bottomNavigationBar: const CustomerNavbar(currentIndex: 3),
     );
   }
 }

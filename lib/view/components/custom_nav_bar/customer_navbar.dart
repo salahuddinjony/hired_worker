@@ -44,16 +44,16 @@ class _NavbarState extends State<CustomerNavbar> {
 
     switch (index) {
       case 0:
-        Get.offAll(() => CustomerHomeScreen());
+        Get.offAll(() => const CustomerHomeScreen());
         break;
       case 1:
-        Get.to(() => CustomerRequestHistoryScreen());
+        Get.to(() => const CustomerRequestHistoryScreen());
         break;
       case 2:
         Get.to(() => InboxScreen());
         break;
       case 3:
-        Get.to(() => CustomerProfileScreen());
+        Get.to(() => const CustomerProfileScreen());
         break;
     }
   }
@@ -62,7 +62,7 @@ class _NavbarState extends State<CustomerNavbar> {
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       animationCurve: Curves.easeInOut,
-      animationDuration: Duration(milliseconds: 500),
+      animationDuration: const Duration(milliseconds: 500),
       index: bottomNavIndex,
       backgroundColor: Colors.transparent,
       color: AppColors.primary,
@@ -90,12 +90,12 @@ class CustomNavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       height: isSelected ? 32.h : 26.h,
       width: isSelected ? 32.h : 26.h,
       child: SvgPicture.asset(
         assetName,
-        colorFilter: isSelected ? ColorFilter.mode(Colors.white, BlendMode.srcIn) : ColorFilter.mode(Colors.white70, BlendMode.srcIn),
+        colorFilter: isSelected ? const ColorFilter.mode(Colors.white, BlendMode.srcIn) : const ColorFilter.mode(Colors.white70, BlendMode.srcIn),
       ),
     );
   }

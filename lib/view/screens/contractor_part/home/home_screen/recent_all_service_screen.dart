@@ -14,18 +14,18 @@ class RecentAllServiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RecentAllServiceController controller =
+    final RecentAllServiceController controller =
         Get.find<RecentAllServiceController>();
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Recent Service".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isEmpty) {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         } else if (controller.status.value.isError) {
           return Center(child: Text(controller.status.value.errorMessage!));
         } else {
@@ -36,7 +36,7 @@ class RecentAllServiceScreen extends StatelessWidget {
               itemCount: controller.recentServiceList.length + 1,
               itemBuilder: (context, index) {
                 if (index < controller.recentServiceList.length) {
-                  BookingModelData data = controller.recentServiceList[index];
+                  final BookingModelData data = controller.recentServiceList[index];
 
                   return CustomServiceCard(
                     title: getSubCategoryName(data),
@@ -49,11 +49,11 @@ class RecentAllServiceScreen extends StatelessWidget {
                     image: data.contractorId?.img,
                   );
                 } else if (controller.status.value.isLoadingMore) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   );
                 } else {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
               },
             ),

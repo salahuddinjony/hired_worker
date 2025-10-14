@@ -28,9 +28,9 @@ class MaterialController extends GetxController {
     status.value = RxStatus.loading();
 
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-    String uri = '${ApiUrl.updateUser}/$userId';
+    final String uri = '${ApiUrl.updateUser}/$userId';
 
-    Map<String, String> body = {
+    final Map<String, String> body = {
       "data": jsonEncode({"materials": materials}),
     };
 
@@ -77,7 +77,7 @@ class MaterialController extends GetxController {
     );
 
     try {
-      Map<String, dynamic> data = {"name": name, "unit": unit, "price": price};
+      final Map<String, dynamic> data = {"name": name, "unit": unit, "price": price};
 
       final response = await ApiClient.postData(
         ApiUrl.createMaterial,
@@ -107,7 +107,7 @@ class MaterialController extends GetxController {
     );
 
     try {
-      Map<String, dynamic> data = {
+      final Map<String, dynamic> data = {
         "name": name,
         "unit": unit,
         "price": price,

@@ -27,7 +27,7 @@ class HelpSupportScreen extends StatelessWidget {
           key: formKey,
           child: Column(
             children: [
-              Center(child: CustomImage(imageSrc: AppImages.helpImage)),
+              const Center(child: CustomImage(imageSrc: AppImages.helpImage)),
               CustomText(
                 text: "Hello, how can we assist you?",
                 fontSize: 16.w,
@@ -61,7 +61,7 @@ class HelpSupportScreen extends StatelessWidget {
               SizedBox(height: 30.h),
               Obx(() {
                 return controller.status.value.isLoading
-                    ? CustomLoader()
+                    ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
                         if (formKey.currentState!.validate()) {

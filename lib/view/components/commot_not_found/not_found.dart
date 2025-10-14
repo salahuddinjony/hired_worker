@@ -12,11 +12,11 @@ class NotFound extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.grey, size: 40),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             message,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           ),
         ],
       ),

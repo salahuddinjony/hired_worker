@@ -22,7 +22,7 @@ class SkillsList extends StatelessWidget {
           child: Row(
             children: (skills.isNotEmpty
                 ? skills.map((e) => CustomSkillsContainer(text: e)).toList()
-                : [CustomSkillsContainer(text: "No skills listed")]),
+                : [const CustomSkillsContainer(text: "No skills listed")]),
           ),
         ),
       ],

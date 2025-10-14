@@ -9,11 +9,11 @@ import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booki
 import '../../../../components/custom_button/custom_button.dart';
 
 class CustomarServiceContractorDetailsScreen extends StatelessWidget {
-  CustomarServiceContractorDetailsScreen({super.key});
+  const CustomarServiceContractorDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> args = Get.arguments ?? {};
+    final Map<String, dynamic> args = Get.arguments ?? {};
     final ContractorBookingController controller = args['controller'];
     final String contractorId = args['contractorId']?.toString() ?? '';
     final String subcategoryId = args['subcategoryId']?.toString() ?? '';
@@ -35,7 +35,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
-              Divider(thickness: .4, color: AppColors.black_02),
+              const Divider(thickness: .4, color: AppColors.black_02),
 
               // (contractor details rendered below)
               Column(
@@ -77,7 +77,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
-              Divider(thickness: .4, color: AppColors.black_02),
+              const Divider(thickness: .4, color: AppColors.black_02),
 
               // Questions list (read-only answers)
               controller.questions.isEmpty
@@ -109,7 +109,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           CustomText(
                             text:
                                 "Answer  : ${answer.isNotEmpty ? answer : 'Yes'}",
@@ -137,7 +137,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
                       ),
-                      Divider(thickness: .4, color: AppColors.black_02),
+                      const Divider(thickness: .4, color: AppColors.black_02),
 
                       // Materials list (read-only)
                       Column(
@@ -148,7 +148,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             final countRaw = mat['count'] ?? '0';
                             final count =
                                 int.tryParse(countRaw.toString()) ?? 0;
-                            if (count <= 0) return SizedBox.shrink();
+                            if (count <= 0) return const SizedBox.shrink();
                             final rawPrice = mat['price'] ?? '0';
                             final priceDouble =
                                 double.tryParse(rawPrice.toString()) ?? 0.0;
@@ -174,7 +174,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                             color: AppColors.black,
                                           ),
                                         ),
-                                        SizedBox(width: 8),
+                                        const SizedBox(width: 8),
                                         CustomText(
                                           text:
                                               '- $count x \$${priceDouble.toStringAsFixed(2)}',
@@ -185,7 +185,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   CustomText(
                                     text: '\$${totalPrice.toStringAsFixed(2)}',
                                     fontSize: 14.w,
@@ -198,9 +198,9 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           },
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         thickness: .4,
-                        color: const Color.fromARGB(255, 146, 126, 126),
+                        color: Color.fromARGB(255, 146, 126, 126),
                       ),
                       Row(
                         children: [
@@ -210,7 +210,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
                           ),
-                          Expanded(child: SizedBox()),
+                          const Expanded(child: SizedBox()),
                           CustomText(
                             text:
                                 "\$${controller.materialsTotalAmount.toStringAsFixed(2)}",
@@ -222,7 +222,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
 
               CustomText(
                 top: 20,
@@ -231,12 +231,12 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
-              Divider(thickness: .5, color: AppColors.black_02),
+              const Divider(thickness: .5, color: AppColors.black_02),
               // Read-only booking type
               Row(
                 children: [
-                  Icon(Icons.book_online, size: 16, color: AppColors.black_08),
-                  SizedBox(width: 8),
+                  const Icon(Icons.book_online, size: 16, color: AppColors.black_08),
+                  const SizedBox(width: 8),
                   CustomText(
                     text:
                         controller.bookingType.value == 'oneTime'
@@ -248,7 +248,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (controller.bookingType.value == 'weekly') ...[
                 // show selected days for weekly booking
                 Row(
@@ -260,7 +260,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
                     ),
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     CustomText(
                       text: controller.weeklyTotalAmount.toString() + "\$",
                       fontSize: 14.w,
@@ -277,9 +277,9 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
-              Divider(thickness: .4, color: AppColors.black_02),
+              const Divider(thickness: .4, color: AppColors.black_02),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // durations display (read-only)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -291,7 +291,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   CustomText(
                     text: "\$${controller.totalDurationAmount.toString()}",
                     fontSize: 16.w,
@@ -301,14 +301,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
               // Duration/time display (read-only)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.access_time, size: 16, color: AppColors.black_08),
-                  SizedBox(width: 4),
+                  const Icon(Icons.access_time, size: 16, color: AppColors.black_08),
+                  const SizedBox(width: 4),
                   CustomText(
                     text:
                         'Start Time'.tr +
@@ -317,13 +317,13 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
-                  SizedBox(width: 20),
-                  Icon(
+                  const SizedBox(width: 20),
+                  const Icon(
                     Icons.access_time_filled,
                     size: 16,
                     color: AppColors.black_08,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   CustomText(
                     text:
                         'End Time'.tr +
@@ -335,20 +335,20 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Divider(thickness: .4, color: AppColors.black_02),
-                  SizedBox(height: 16),
+                  const Divider(thickness: .4, color: AppColors.black_02),
+                  const SizedBox(height: 16),
                   CustomText(
                     text: 'Total Amount',
                     fontSize: 16.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   RichText(
                     text: TextSpan(
                       children: [

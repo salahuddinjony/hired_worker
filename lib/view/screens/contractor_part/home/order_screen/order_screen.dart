@@ -29,7 +29,7 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Request".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.status.value.isError) {
@@ -56,10 +56,10 @@ class _OrderScreenState extends State<OrderScreen> {
               if (controller.currentIndex.value == 0)
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controller.pendingBookingList.value.data!.result!.length,
+                    itemCount: controller.pendingBookingList.value.data!.length,
                     itemBuilder: (context, index) {
-                      BookingModelData data =
-                          controller.pendingBookingList.value.data!.result![index];
+                      final BookingModelData data =
+                          controller.pendingBookingList.value.data![index];
                       return CustomServiceRequestCard(
                         title: getSubCategoryName(data),
                         rating:
@@ -74,21 +74,15 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                 ),
 
-              // if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 0)
-              //   SizedBox(
-              //     height: MediaQuery.of(context).size.height * 0.8,
-              //     child: Center(child: Text('No data found')),
-              //   ),
-
               if (controller.currentIndex.value == 1)
                 Expanded(
                   child: Expanded(
                     child: ListView.builder(
                       itemCount:
-                          controller.completeBookingList.value.data!.result!.length,
+                          controller.completeBookingList.value.data!.length,
                       itemBuilder: (context, index) {
-                        BookingModelData data =
-                            controller.completeBookingList.value.data!.result![index];
+                        final BookingModelData data =
+                            controller.completeBookingList.value.data![index];
 
                         return CustomDeliveredServiceCard(
                           title: getSubCategoryName(data),
@@ -97,24 +91,18 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ?.toString() ??
                               ' - ',
                           dateTime: data.updatedAt!,
-                          price: data.price.toString(),
+                          price: data.totalAmount.toString(),
                           image: data.contractorId?.img,
                         );
                       },
                     ),
                   ),
                 ),
-
-              // if (controller.pendingBookingList.value.data!.result!.isEmpty && controller.currentIndex.value == 1)
-              //   SizedBox(
-              //     height: MediaQuery.of(context).size.height * 0.8,
-              //     child: Center(child: Text('No data found')),
-              //   ),
             ],
           );
         }
       }),
-      bottomNavigationBar: Navbar(currentIndex: 1),
+      bottomNavigationBar: const Navbar(currentIndex: 1),
     );
   }
 }

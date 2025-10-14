@@ -54,7 +54,7 @@ class ScheduleScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 20.0),
             child: Obx(() {
               return controller.status.value.isLoading
-                  ? CustomLoader()
+                  ? const CustomLoader()
                   : CustomButton(
                 onTap: () => controller.updateContractorData(),
                 title: "Save".tr,

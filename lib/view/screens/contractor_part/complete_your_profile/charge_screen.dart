@@ -16,7 +16,7 @@ class ChargeScreen extends StatelessWidget {
     final TextEditingController textEditingController = TextEditingController();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Charge"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Charge"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
@@ -59,7 +59,7 @@ class ChargeScreen extends StatelessWidget {
             // Loader or Button
             Obx(() {
               return controller.status.value.isLoading
-                  ? CustomLoader()
+                  ? const CustomLoader()
                   : CustomButton(
                     onTap: () {
                       controller.updateContractorData(

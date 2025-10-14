@@ -24,7 +24,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   void initState() {
     super.initState();
-    initialPosition = CameraPosition(
+    initialPosition = const CameraPosition(
       target: LatLng(37.7749, -122.4194), // Default position (e.g., San Francisco)
       zoom: 13.0,
     );
@@ -48,7 +48,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
           // Add marker for the location
           markers.add(
             Marker(
-              markerId: MarkerId('locationMarker'),
+              markerId: const MarkerId('locationMarker'),
               position: LatLng(location.latitude, location.longitude),
               infoWindow: InfoWindow(
                 title: widget.location,

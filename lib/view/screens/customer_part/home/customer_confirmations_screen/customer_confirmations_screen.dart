@@ -29,7 +29,7 @@ class CustomerConfirmationsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
-              CustomStatusCard(),
+              const CustomStatusCard(),
             ],)),
             CustomButton(onTap: (){
               Get.toNamed(AppRoutes.customerHomeScreen);

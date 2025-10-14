@@ -8,28 +8,28 @@ class DateConverter {
   }
   ///======== time format string ========
   static String timeFormatString(String dateTime) {
-    DateTime parsedDate = DateTime.parse(dateTime);
+    final DateTime parsedDate = DateTime.parse(dateTime);
     return DateFormat.jm().format(parsedDate); // Returns time in AM/PM format
   }
 
   static String dateFormetString(String dateTimeStr) {
     // Parse the input string to a DateTime object
-    DateTime dateTime = DateTime.parse(dateTimeStr);
+    final DateTime dateTime = DateTime.parse(dateTimeStr);
 
     // Format the DateTime object
     return DateFormat('yyyy-MM-dd').format(dateTime);
   }
 
   static String formattedDate() {
-    DateTime now = DateTime.now();
-    String formatteDatas = DateFormat('EEE, dd, MMMM, yyyy').format(now);
+    final DateTime now = DateTime.now();
+    final String formatteDatas = DateFormat('EEE, dd, MMMM, yyyy').format(now);
     // Return the total minutes as a string
     return formatteDatas;
   }
 
   static String timeFormetString(String dateTimeStr) {
     // Parse the input string to a DateTime object
-    DateTime dateTime = DateTime.parse(dateTimeStr);
+    final DateTime dateTime = DateTime.parse(dateTimeStr);
 
     // Format the DateTime object
     return DateFormat('dd MMM yyyy').format(dateTime);
@@ -39,12 +39,12 @@ class DateConverter {
 
   static String getTimePeriod() {
     // Get the current hour of the day
-    int currentHour = DateTime.now().hour;
+    final int currentHour = DateTime.now().hour;
 
     // Define the boundaries for morning, noon, and evening
-    int morningBoundary = 6;
-    int noonBoundary = 12;
-    int eveningBoundary = 18;
+    const int morningBoundary = 6;
+    const int noonBoundary = 12;
+    const int eveningBoundary = 18;
 
     // Determine the time period based on the current hour
     if (currentHour >= morningBoundary && currentHour < noonBoundary) {
@@ -87,7 +87,7 @@ class DateConverter {
     }
 
     if (birthDate == null) return '';
-    DateTime currentDate = DateTime.now();
+    final DateTime currentDate = DateTime.now();
 
     // Calculate age
     int age = currentDate.year - birthDate.year;
@@ -108,7 +108,7 @@ class DateConverter {
 
     if(dateTimeString.isEmpty)return'';
     // Parse the string into a DateTime object
-    DateTime dateTime = DateTime.parse(dateTimeString);
+    final DateTime dateTime = DateTime.parse(dateTimeString);
 
     final now = DateTime.now();
     final difference = now.difference(dateTime);
@@ -152,12 +152,12 @@ class DateConverter {
 
   static List<String> calculateAgeAndLifeSpan(String dob, int targetAge) {
     // Parse the input date string
-    DateTime birthDate = DateTime.parse(dob);
-    DateTime currentDate = DateTime.now();
+    final DateTime birthDate = DateTime.parse(dob);
+    final DateTime currentDate = DateTime.now();
 
     // Calculate the total difference in days
-    Duration difference = currentDate.difference(birthDate);
-    int totalDaysLived = difference.inDays;
+    final Duration difference = currentDate.difference(birthDate);
+    final int totalDaysLived = difference.inDays;
 
     // Calculate years, months, and days
     int years = currentDate.year - birthDate.year;
@@ -176,15 +176,15 @@ class DateConverter {
     }
 
     // Calculate weeks and remaining days from total days lived
-    int weeks = days ~/ 7;
-    int remainingDays = days % 7;
+    final int weeks = days ~/ 7;
+    final int remainingDays = days % 7;
 
     // Calculate life span percentage
-    int targetAgeDays = targetAge * 365; // Approximation of target age in days
-    double lifeSpentPercent = (totalDaysLived / targetAgeDays) * 100;
+    final int targetAgeDays = targetAge * 365; // Approximation of target age in days
+    final double lifeSpentPercent = (totalDaysLived / targetAgeDays) * 100;
 
     // Prepare result list
-    List<String> result = [
+    final List<String> result = [
       "$years years",
       "$months months",
       "$weeks weeks",
@@ -197,25 +197,25 @@ class DateConverter {
 
   static List<String> calculateRemainingLife(String dob, int targetAge) {
     // Parse the input date string
-    DateTime birthDate = DateTime.parse(dob);
-    DateTime currentDate = DateTime.now();
+    final DateTime birthDate = DateTime.parse(dob);
+    final DateTime currentDate = DateTime.now();
 
     // Calculate the target date (when the user reaches the target age)
-    DateTime targetDate =
+    final DateTime targetDate =
         DateTime(birthDate.year + targetAge, birthDate.month, birthDate.day);
 
     // Calculate the difference between the current date and the target date
-    Duration remainingDuration = targetDate.difference(currentDate);
+    final Duration remainingDuration = targetDate.difference(currentDate);
 
     if (remainingDuration.isNegative) {
       return ["0 years", "0 months", "0 weeks", "0 days", "0%"];
     }
 
-    int totalDaysRemaining = remainingDuration.inDays;
+    final int totalDaysRemaining = remainingDuration.inDays;
 
     // Calculate the total number of days lived so far
-    Duration totalLivedDuration = currentDate.difference(birthDate);
-    int totalDaysLived = totalLivedDuration.inDays;
+    final Duration totalLivedDuration = currentDate.difference(birthDate);
+    final int totalDaysLived = totalLivedDuration.inDays;
 
     // Breakdown remaining years, months, weeks, and days
     int remainingYears = targetDate.year - currentDate.year;
@@ -233,16 +233,16 @@ class DateConverter {
     }
 
     // Calculate weeks and remaining days from total remaining days
-    int weeks = remainingDays ~/ 7;
-    int extraDays = remainingDays % 7;
+    final int weeks = remainingDays ~/ 7;
+    final int extraDays = remainingDays % 7;
 
     // Calculate remaining life percentage
-    int targetAgeDays = targetAge * 365; // Approximation of target age in days
-    double lifeRemainingPercent =
+    final int targetAgeDays = targetAge * 365; // Approximation of target age in days
+    final double lifeRemainingPercent =
         ((targetAgeDays - totalDaysLived) / targetAgeDays) * 100;
 
     // Prepare result list
-    List<String> result = [
+    final List<String> result = [
       "$remainingYears years",
       "$remainingMonths months",
       "$weeks weeks",
@@ -263,17 +263,17 @@ class DateConverter {
   }
 
   static List<int> calculateSpentAndTotalWeeks(String dob, int targetAge) {
-    int weeksInYear = 52;
+    const int weeksInYear = 52;
     // Parse the input date of birth string
-    DateTime birthDate = DateTime.parse(dob);
-    DateTime currentDate = DateTime.now();
+    final DateTime birthDate = DateTime.parse(dob);
+    final DateTime currentDate = DateTime.now();
 
     // Calculate the total weeks for the target age
-    int totalWeeks = targetAge * weeksInYear;
+    final int totalWeeks = targetAge * weeksInYear;
 
     // Calculate the number of days lived so far
-    Duration lifeLivedDuration = currentDate.difference(birthDate);
-    int spentWeeks = lifeLivedDuration.inDays ~/ 7;
+    final Duration lifeLivedDuration = currentDate.difference(birthDate);
+    final int spentWeeks = lifeLivedDuration.inDays ~/ 7;
 
     // Return spent weeks and total weeks as a list of two integers
     return [spentWeeks, totalWeeks];
@@ -283,8 +283,8 @@ class DateConverter {
 
 static String formatServerTime(String serverTime) {
   // Parse the server time
-  DateTime serverDateTime = DateTime.parse(serverTime).toLocal();
-  DateTime now = DateTime.now();
+  final DateTime serverDateTime = DateTime.parse(serverTime).toLocal();
+  final DateTime now = DateTime.now();
   
   // Determine if the date is today, yesterday, or another day
   if (DateFormat('yyyy-MM-dd').format(serverDateTime) == 
@@ -304,8 +304,8 @@ static String formatServerTime(String serverTime) {
 
  static String calculateAge(String dateOfBirth) {
     // Parse the dateOfBirth to a DateTime object
-    DateTime birthDate = DateTime.parse(dateOfBirth);
-    DateTime today = DateTime.now();
+    final DateTime birthDate = DateTime.parse(dateOfBirth);
+    final DateTime today = DateTime.now();
 
     // Calculate the difference between today and birthDate
     int age = today.year - birthDate.year;

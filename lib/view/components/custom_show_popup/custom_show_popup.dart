@@ -22,8 +22,8 @@ class CustomPopUp {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.navbarClr,
-        insetPadding: EdgeInsets.all(8),
-        contentPadding: EdgeInsets.all(8),
+        insetPadding: const EdgeInsets.all(8),
+        contentPadding: const EdgeInsets.all(8),
         content: SizedBox(
           width: MediaQuery.sizeOf(context).width,
           child: CustomShowDialog(
@@ -92,7 +92,7 @@ class CustomShowDialog extends StatelessWidget {
                       color: textColor ?? AppColors.black,
                     ))),
           )
-              : SizedBox(),
+              : const SizedBox(),
           CustomText(
             top: 10.h,
             text: "$title",
@@ -150,7 +150,7 @@ class CustomShowDialog extends StatelessWidget {
               ],
             ),
           )
-              : SizedBox(),
+              : const SizedBox(),
           showColumnButton == true
               ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -176,7 +176,7 @@ class CustomShowDialog extends StatelessWidget {
               ],
             ),
           )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
       padding: EdgeInsets.only(bottom: 10.0, top: 10.h),

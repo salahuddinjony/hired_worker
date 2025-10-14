@@ -21,7 +21,7 @@ class AuthController extends GetxController {
   // 12345678
 
   //contractor
-  // kipeno9207@mv6a.com
+  //yolorem734@arqsis.com
   // 12345678
 
   Rx<TextEditingController> nameController =
@@ -45,11 +45,15 @@ class AuthController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    bool? rememberMe = await SharePrefsHelper.getBool(AppStrings.rememberMe);
+    final bool? rememberMe = await SharePrefsHelper.getBool(
+      AppStrings.rememberMe,
+    );
 
     if (rememberMe != null && rememberMe) {
-      String email = await SharePrefsHelper.getString(AppStrings.email);
-      String password = await SharePrefsHelper.getString(AppStrings.password);
+      final String email = await SharePrefsHelper.getString(AppStrings.email);
+      final String password = await SharePrefsHelper.getString(
+        AppStrings.password,
+      );
 
       emailController.value.text = email;
       passController.value.text = password;
@@ -88,11 +92,11 @@ class AuthController extends GetxController {
 
         // Decode JWT token to extract role
         try {
-          Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+          final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
           debugPrint('Decoded JWT: $decodedToken');
-          String? roleFromToken = decodedToken['role'];
-          String? userEmailFromToken = decodedToken['userEmail'];
-          String? userIdFromToken = decodedToken['id'];
+          final String? roleFromToken = decodedToken['role'];
+          final String? userEmailFromToken = decodedToken['userEmail'];
+          final String? userIdFromToken = decodedToken['id'];
 
           //
           if (userIdFromToken != null) {
@@ -251,7 +255,7 @@ class AuthController extends GetxController {
     }
 
     signUpLoading.value = RxStatus.loading();
-    var body = {
+    final body = {
       "fullName": nameController.value.text,
       "email": emailController.value.text,
       "password": passController.value.text,
@@ -328,7 +332,7 @@ class AuthController extends GetxController {
 
   Future<void> forgetPassword() async {
     forgetPasswordLoading.value = RxStatus.loading();
-    var body = {"email": emailController.value.text};
+    final body = {"email": emailController.value.text};
 
     try {
       final response = await ApiClient.postData(
@@ -370,7 +374,7 @@ class AuthController extends GetxController {
 
   Future<void> resetPasswordOTP() async {
     veryfiOTPLoading.value = RxStatus.loading();
-    var body = {
+    final body = {
       "email": emailController.value.text,
       "otp": int.tryParse(otpController.value.text),
     };
@@ -418,7 +422,7 @@ class AuthController extends GetxController {
   Future<void> createAccountOTP() async {
     veryfiOTPLoading.value = RxStatus.loading();
     final role = await SharePrefsHelper.getString(AppConstants.role);
-    var body = {
+    final body = {
       "email": emailController.value.text,
       "otp": int.tryParse(otpController.value.text),
     };
@@ -470,7 +474,7 @@ class AuthController extends GetxController {
 
   Future<void> resendOTP() async {
     resendOTPLoading.value = RxStatus.loading();
-    var body = {"email": emailController.value.text};
+    final body = {"email": emailController.value.text};
 
     try {
       final response = await ApiClient.postData(
@@ -509,7 +513,7 @@ class AuthController extends GetxController {
 
   Future<void> setNewPassword() async {
     setNewPasswordLoading.value = RxStatus.loading();
-    var body = {
+    final body = {
       "email": emailController.value.text,
       "newPassword": passController.value.text,
     };

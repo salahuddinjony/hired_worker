@@ -22,7 +22,7 @@ class OnboardingScreenTwo extends StatelessWidget {
             top: 150.h,
               left: 0,
               right: 0,
-              child: Center(child: CustomImage(imageSrc: AppImages.girlTwo))),
+              child: const Center(child: CustomImage(imageSrc: AppImages.girlTwo))),
           Positioned(
             bottom: 0.h,
             right: 0,

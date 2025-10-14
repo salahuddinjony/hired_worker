@@ -17,7 +17,7 @@ class ScheduleSelectionController extends GetxController {
       return;
     }
 
-    Map<String, String> dayMap = {
+    final Map<String, String> dayMap = {
       'Sun': 'Sunday',
       'Mon': 'Monday',
       'Tue': 'Tuesday',
@@ -27,20 +27,20 @@ class ScheduleSelectionController extends GetxController {
       'Sat': 'Saturday',
     };
 
-    List<Map<String, dynamic>> schedules = days.map((day) {
+    final List<Map<String, dynamic>> schedules = days.map((day) {
       return {
         "days": dayMap[day] ?? day,
         "timeSlots": ["09:00-23:00"],
       };
     }).toList();
 
-    Map<String, dynamic> body = {
+    final Map<String, dynamic> body = {
       "schedules": schedules,
     };
 
     status.value = RxStatus.loading();
     try {
-      var response = await ApiClient.postData(
+      final response = await ApiClient.postData(
         ApiUrl.updateSchedule,
         jsonEncode(body),
       );

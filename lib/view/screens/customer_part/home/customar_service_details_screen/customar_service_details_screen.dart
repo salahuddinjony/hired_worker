@@ -16,7 +16,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> args = Get.arguments ?? {};
+    final Map<String, dynamic> args = Get.arguments ?? {};
     final ContractorBookingController controller = args['controller'];
     final String contractorId = args['contractorId']?.toString() ?? '';
     final String subcategoryId = args['subcategoryId']?.toString() ?? '';
@@ -89,7 +89,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomRoyelAppbar(leftIcon: true),
+                      const CustomRoyelAppbar(leftIcon: true),
                       CustomText(
                         left: 20.w,
                         text: "AC Regular\nService",
@@ -125,7 +125,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                   },
                                      
                               child: Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
@@ -163,7 +163,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                               onTap:
                                   () => controller.bookingType.value = 'weekly',
                               child: Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
@@ -277,11 +277,11 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                           controller.dayController.value.text.isEmpty
                               ? "mm/dd/yyyy"
                               : controller.dayController.value.text,
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.calendar_month,
                         color: AppColors.black_08,
                       ),
-                      suffixIcon: Icon(
+                      suffixIcon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: AppColors.black_08,
                       ),
@@ -314,7 +314,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                         .isEmpty
                                     ? "hh:mm"
                                     : controller.startTimeController.value.text,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.access_time,
                               color: AppColors.black_08,
                             ),
@@ -343,7 +343,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                 controller.endTimeController.value.text.isEmpty
                                     ? "hh:mm"
                                     : controller.endTimeController.value.text,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.access_time,
                               color: AppColors.black_08,
                             ),

@@ -16,9 +16,9 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args = Get.arguments;
-    String name = args?['name'] ?? 'All';
+    final String name = args?['name'] ?? 'All';
     // String id = args?['id'] ?? '';
-    List<allContractor> contractors = args?['contractors'] ?? [];
+    final List<allContractor> contractors = args?['contractors'] ?? [];
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
       body: SingleChildScrollView(
@@ -29,9 +29,9 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
             if (homeController.getAllServicesContractorStatus.value.isLoading) {
               return Container(
                 margin: EdgeInsets.only(top: 50.h),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Center(child: CircularProgressIndicator()),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
               );
             }
@@ -64,7 +64,7 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
               ),
               padding:
               EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: contractorsWithCategory.length,
               itemBuilder: (BuildContext context, int index) {

@@ -116,7 +116,7 @@ class SubscriptionCard extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(20.w),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [Color(0xFFCDB3CD), Color(0xFFD87DD8)],
