@@ -21,7 +21,7 @@ class AuthController extends GetxController {
   // 12345678
 
   //contractor
-  // kipeno9207@mv6a.com
+  //yolorem734@arqsis.com
   // 12345678
 
   Rx<TextEditingController> nameController =

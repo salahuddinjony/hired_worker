@@ -187,7 +187,7 @@ class BookingCard extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        if (booking.status?.toLowerCase() != 'pending') {
+                        if (booking.status?.toLowerCase() == 'pending') {
                           debugPrint('Navigate to message screen');
                           
                           // Set loading state for this specific card
