@@ -50,7 +50,7 @@ class _NavbarState extends State<CustomerNavbar> {
         Get.to(() => const CustomerRequestHistoryScreen());
         break;
       case 2:
-        Get.to(() => const MessageListScreen());
+        Get.to(() => InboxScreen());
         break;
       case 3:
         Get.to(() => const CustomerProfileScreen());
