@@ -45,11 +45,15 @@ class AuthController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    final bool? rememberMe = await SharePrefsHelper.getBool(AppStrings.rememberMe);
+    final bool? rememberMe = await SharePrefsHelper.getBool(
+      AppStrings.rememberMe,
+    );
 
     if (rememberMe != null && rememberMe) {
       final String email = await SharePrefsHelper.getString(AppStrings.email);
-      final String password = await SharePrefsHelper.getString(AppStrings.password);
+      final String password = await SharePrefsHelper.getString(
+        AppStrings.password,
+      );
 
       emailController.value.text = email;
       passController.value.text = password;
