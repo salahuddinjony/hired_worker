@@ -46,7 +46,7 @@ class OnGoingController extends GetxController {
     }
   }
 
-  Future<void> acceptOrder(String id) async {
+  Future<void> finishOrder(String id) async {
     final Map<String, String> data = {"status": "ongoing"};
 
     try {
@@ -79,6 +79,7 @@ class OnGoingController extends GetxController {
       );
 
       // update home screen data
+      getOnGoingBookings();
       Get.find<ContractorHomeController>().getAllBookings();
 
       showCustomSnackBar(response.body['message'], isError: false);

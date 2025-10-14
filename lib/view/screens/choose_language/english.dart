@@ -77,6 +77,7 @@ Map<String, String> english = {
   "Completed": "Completed",
   "On Going": "On Going",
   "Finish": "Finish",
+  "Back to Home": "Back to Home",
   "Welcome!": "Welcome!",
   "Recent Services": "Recent Services",
   "Current billing price": "Current billing price",
@@ -162,4 +163,5 @@ Map<String, String> english = {
   "Add your skills above to get started":
       "Add your skills above to get started",
   "Add at least one skill to continue": "Add at least one skill to continue",
+  "Photo Upload": "Photo Upload",
 };

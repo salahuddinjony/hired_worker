@@ -17,6 +17,7 @@ class CustomServiceRequestCard extends StatelessWidget {
   final DateTime dateTime;
   final String id;
   final String? image;
+  final String? status;
 
   const CustomServiceRequestCard({
     super.key,
@@ -25,6 +26,7 @@ class CustomServiceRequestCard extends StatelessWidget {
     required this.dateTime,
     required this.id,
     required this.image,
+    required this.status,
   });
 
   @override
@@ -32,9 +34,12 @@ class CustomServiceRequestCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0, right: 16, left: 16),
       child: Container(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: image != null && image!.isNotEmpty ? 0 : 15.w),
+        padding: EdgeInsetsGeometry.symmetric(
+          horizontal: image != null && image!.isNotEmpty ? 0 : 15.w,
+        ),
         width: MediaQuery.sizeOf(context).width,
-        height: 130.h, // Increased height slightly
+        height: 130.h,
+        // Increased height slightly
         decoration: BoxDecoration(
           color: AppColors.cardClr,
           borderRadius: BorderRadius.circular(13),
@@ -42,20 +47,24 @@ class CustomServiceRequestCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (image != null && image!.isNotEmpty) ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(13),
-                bottomLeft: Radius.circular(13),
+            if (image != null && image!.isNotEmpty)
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  bottomLeft: Radius.circular(13),
+                ),
+                child: CustomNetworkImage(
+                  imageUrl: image!,
+                  height: 130.h,
+                  width: 150.w,
+                ),
               ),
-              child: CustomNetworkImage(
-                imageUrl: image!,
-                height: 130.h,
-                width: 150.w,
-              ),
-            ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -112,49 +121,58 @@ class CustomServiceRequestCard extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomButton(
-                          onTap: () {
-                            Get.find<ContractorHomeController>().acceptOrder(
-                              id,
-                            );
-                          },
-                          title: "Accept".tr,
-                          height: 26.h,
-                          width: 70.w,
-                          fontSize: 10.w,
-                          borderRadius: 10,
-                        ),
-                        CustomButton(
-                          onTap: () {
-                            Get.find<ContractorHomeController>().cancelOrder(
-                              id,
-                            );
-                          },
-                          title: "Cancel".tr,
-                          height: 26.h,
-                          width: 50.w,
-                          fontSize: 10.w,
-                          fillColor: Colors.transparent,
-                          isBorder: true,
-                          textColor: AppColors.red,
-                          borderRadius: 10,
-                          borderWidth: .3,
-                        ),
-                        CustomButton(
-                          onTap: () {},
-                          title: "View".tr,
-                          height: 26.h,
-                          width: 50.w,
-                          fontSize: 10.w,
-                          fillColor: AppColors.cardClr,
-                          textColor: AppColors.black,
-                          borderRadius: 10,
-                        ),
-                      ],
-                    ),
+
+                    if (status == 'accepted')
+                      Text(
+                        textAlign: TextAlign.center,
+                        'Waiting for your payment confirmation from the user.',
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+
+                    if (status != 'accepted')
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomButton(
+                            onTap: () {
+                              Get.find<ContractorHomeController>().acceptOrder(
+                                id,
+                              );
+                            },
+                            title: "Accept".tr,
+                            height: 26.h,
+                            width: 70.w,
+                            fontSize: 10.w,
+                            borderRadius: 10,
+                          ),
+                          CustomButton(
+                            onTap: () {
+                              Get.find<ContractorHomeController>().cancelOrder(
+                                id,
+                              );
+                            },
+                            title: "Cancel".tr,
+                            height: 26.h,
+                            width: 50.w,
+                            fontSize: 10.w,
+                            fillColor: Colors.transparent,
+                            isBorder: true,
+                            textColor: AppColors.red,
+                            borderRadius: 10,
+                            borderWidth: .3,
+                          ),
+                          CustomButton(
+                            onTap: () {},
+                            title: "View".tr,
+                            height: 26.h,
+                            width: 50.w,
+                            fontSize: 10.w,
+                            fillColor: AppColors.cardClr,
+                            textColor: AppColors.black,
+                            borderRadius: 10,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

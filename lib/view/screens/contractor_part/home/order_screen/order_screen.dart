@@ -37,7 +37,6 @@ class _OrderScreenState extends State<OrderScreen> {
         } else {
           return Column(
             children: [
-              //========================================= TAB BAR ================================
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                 child: CustomTabBar(
@@ -69,6 +68,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         dateTime: data.updatedAt!,
                         id: data.id!,
                         image: data.contractorId?.img,
+                        status: data.status,
                       );
                     },
                   ),

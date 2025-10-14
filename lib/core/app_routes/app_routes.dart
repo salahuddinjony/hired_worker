@@ -22,8 +22,9 @@ import '../../view/screens/contractor_part/complete_your_profile/seleted_map_scr
 import '../../view/screens/contractor_part/complete_your_profile/skills_add_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/subscribe_screen/payment_method_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
-import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/upload_photo_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
 import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
@@ -123,6 +124,7 @@ class AppRoutes {
   static const String privacyPolicyScreen = "/PrivacyPolicyScreen";
   static const String termsConditionsScreen = "/TermsConditionsScreen";
   static const String recentAllServiceScreen = "/RecentAllServiceScreen";
+  static const String uploadPhotoScreen = "/UploadPhotoScreen";
 
 
 
@@ -189,6 +191,7 @@ class AppRoutes {
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
     GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
     GetPage(name: recentAllServiceScreen, page: () => RecentAllServiceScreen()),
+    GetPage(name: uploadPhotoScreen, page: () => UploadPhotoScreen()),
 
   ];
 }
