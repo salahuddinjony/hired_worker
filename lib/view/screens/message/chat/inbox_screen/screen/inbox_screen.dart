@@ -96,7 +96,7 @@ class InboxScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final convo = conversations[index];
                       final hasParticipants = convo.participants.isNotEmpty;
-                      final participant = hasParticipants ? convo.participants.first : null;
+                      final participant = hasParticipants ? (controller.thisRole.value ? convo.participants[0] : convo.participants[1]) : null;
 
                       final image =
                           participant?.img ??
