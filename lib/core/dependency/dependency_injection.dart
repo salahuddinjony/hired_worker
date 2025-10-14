@@ -9,7 +9,8 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/contr
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/sub_category_selection_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/subscription_plan_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
-import 'package:servana/view/screens/contractor_part/home/controller/on_going_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/photo_upload_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/support_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/schedule_screen/controller/schedule_controller.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
@@ -56,5 +57,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => ContractorBookingController(), fenix: true);
     Get.lazyPut(() => CustomerOrderController(), fenix: true);
     Get.lazyPut(() => OnGoingController(), fenix: true);
+    Get.lazyPut(() => PhotoUploadController(), fenix: true);
   }
 }

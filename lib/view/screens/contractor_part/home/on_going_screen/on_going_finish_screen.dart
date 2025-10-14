@@ -8,15 +8,34 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import '../../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../home_screen/home_screen.dart';
+import 'controller/on_going_controller.dart';
 
 class OnGoingFinishScreen extends StatelessWidget {
   const OnGoingFinishScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final int index = Get.arguments['id'];
+    final String name =
+        Get.find<OnGoingController>()
+            .onGoingBookingList[index]
+            .customerId
+            ?.fullName ??
+        " - ";
+    final String image =
+        Get.find<OnGoingController>()
+            .onGoingBookingList[index]
+            .customerId?.img ??
+        "";
+    final Object price = Get.find<OnGoingController>()
+            .onGoingBookingList[index]
+            .totalAmount ??
+        " - ";
+
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Finish".tr),
       body: Column(
         children: [
           const Center(child: CustomImage(imageSrc: AppIcons.group)),
@@ -29,14 +48,14 @@ class OnGoingFinishScreen extends StatelessWidget {
             bottom: 8,
           ),
           CustomNetworkImage(
-            imageUrl: AppConstants.profileImage,
+            imageUrl: image,
             height: 300.h,
             width: 300.w,
             borderRadius: BorderRadius.circular(10),
           ),
           CustomText(
             top: 10.h,
-            text: "You worked for\nMinnie for 3 hours\nand 44 minutes",
+            text: "You worked for $name",
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             color: AppColors.black_04,
@@ -50,26 +69,28 @@ class OnGoingFinishScreen extends StatelessWidget {
             color: AppColors.textCLr,
           ),
           CustomText(
-            text: "€122.5",
+            text: "€$price",
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             color: AppColors.black,
           ),
           CustomText(
             top: 10.h,
-            text: "Give Thomas a rating",
+            text: "Give $name a rating",
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             color: AppColors.textCLr,
             bottom: 10,
-
           ),
           CustomButton(
-            width: 120.w,
-            height: 35.h,
+            width: 180.w,
+            height: 40.h,
             isBorder: true,
-            onTap: (){}, title: "Confirm".tr,)
-
+            onTap: () {
+              Get.offAll(() => const HomeScreen());
+            },
+            title: "Back to Home".tr,
+          ),
         ],
       ),
     );
