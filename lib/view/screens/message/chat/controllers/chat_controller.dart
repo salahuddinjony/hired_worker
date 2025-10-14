@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/model/chat_message.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/controller/conversation_controller.dart';
 import 'package:servana/view/screens/message/chat/socket_io/repositories/chat_repository.dart';
@@ -61,11 +63,12 @@ class ChatController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    final userId= await SharePrefsHelper.getString(AppConstants.userId);
 
     // connect to socket and join room
-    repo.connect('http://10.10.20.11:5002');
+    repo.connect('http://10.10.20.11:5002?userId=$userId');
 
     // load history first (if available) so UI shows past messages
 
