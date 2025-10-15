@@ -33,20 +33,16 @@ class PhotoUploadController extends GetxController {
 
     if (pickedImages != null) {
       workImages.addAll(pickedImages);
-      debugPrint('Picked images: ${workImages.length}');
     }
   }
 
   Future<void> finishService() async {
-    debugPrint('xxFinish service called for booking ID: $bookingId');
-    debugPrint('xxindex: ${Get.arguments['id']}');
     if (status.value.isLoading) return;
 
     status.value = RxStatus.loading();
 
     // patch
     final String endPoint = '${ApiUrl.bookings}/$bookingId';
-
 
    final body= {
     "status": "completed"
@@ -63,7 +59,6 @@ class PhotoUploadController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        debugPrint('xxResponse: ${response.body}'); 
         Get.toNamed(
           AppRoutes.onGoingFinishScreen,
           arguments: {'id': Get.arguments['id']},

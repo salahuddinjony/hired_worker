@@ -51,11 +51,7 @@ class ContractorHomeController extends GetxController {
 
       requestedServices.value = 0;
 
-      pendingBookingList.value.data!.forEach((element) {
-        if (element.status! != 'accepted') requestedServices.value++;
-      });
-
-      // requestedServices.value = pendingBookingList.value.data!.length;
+      requestedServices.value = pendingBookingList.value.data!.length;
 
       // get completed services
       final completedServiceResponse = await ApiClient.getData(
