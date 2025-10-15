@@ -8,6 +8,7 @@ import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../utils/app_strings/app_strings.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,7 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
           if (userRole == "customer") {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
           } else if (userRole == "contractor") {
-            Get.offAllNamed(AppRoutes.homeScreen);
+            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
+                null) {
+              Get.offAllNamed(AppRoutes.seletedMapScreen);
+            } else {
+              Get.offAllNamed(AppRoutes.homeScreen);
+            }
           } else {
             Get.offAllNamed(AppRoutes.onboardingScreen);
           }
