@@ -4,6 +4,7 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
+import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 import 'widget/custom_ongoing_card.dart';
 
@@ -38,19 +39,23 @@ class OnGoingScreen extends StatelessWidget {
             ),
           );
         } else {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
-                  children: List.generate(
-                    controller.onGoingBookingList.length,
-                    (value) {
-                      return CustomOngoingCard(index: value);
-                    },
+          return ListView.builder(
+            controller: controller.scrollController,
+            itemCount: controller.onGoingBookingList.length + (controller.status.value.isLoadingMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index < controller.onGoingBookingList.length) {
+                return CustomOngoingCard(index: index);
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                );
+              }
+            },
           );
         }
       }),

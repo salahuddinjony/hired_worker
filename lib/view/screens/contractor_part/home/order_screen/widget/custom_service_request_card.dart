@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/order_screen/controller/order_controller.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -18,6 +20,9 @@ class CustomServiceRequestCard extends StatelessWidget {
   final String id;
   final String? image;
   final String? status;
+  final bool isButtonShow;
+  final double height;
+  final int? index;
 
   const CustomServiceRequestCard({
     super.key,
@@ -27,6 +32,9 @@ class CustomServiceRequestCard extends StatelessWidget {
     required this.id,
     required this.image,
     required this.status,
+    this.isButtonShow = true,
+    this.height = 130,
+    this.index,
   });
 
   @override
@@ -38,7 +46,7 @@ class CustomServiceRequestCard extends StatelessWidget {
           horizontal: image != null && image!.isNotEmpty ? 0 : 15.w,
         ),
         width: MediaQuery.sizeOf(context).width,
-        height: 130.h,
+        height: height.h,
         // Increased height slightly
         decoration: BoxDecoration(
           color: AppColors.cardClr,
@@ -81,13 +89,13 @@ class CustomServiceRequestCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(width: 4.w),
-                        CustomNetworkImage(
-                          imageUrl: AppConstants.profileImage,
-                          height: 20,
-                          width: 20,
-                          boxShape: BoxShape.circle,
-                        ),
+                        // SizedBox(width: 4.w),
+                        // CustomNetworkImage(
+                        //   imageUrl: AppConstants.profileImage,
+                        //   height: 20,
+                        //   width: 20,
+                        //   boxShape: BoxShape.circle,
+                        // ),
                       ],
                     ),
                     SizedBox(height: 4.h),
@@ -129,15 +137,13 @@ class CustomServiceRequestCard extends StatelessWidget {
                         style: TextStyle(fontSize: 12.sp),
                       ),
 
-                    if (status != 'accepted')
+                    if (status != 'accepted' && isButtonShow)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomButton(
                             onTap: () {
-                              Get.find<ContractorHomeController>().acceptOrder(
-                                id,
-                              );
+                              Get.find<OrderController>().acceptOrder(id);
                             },
                             title: "Accept".tr,
                             height: 26.h,
@@ -147,9 +153,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                           ),
                           CustomButton(
                             onTap: () {
-                              Get.find<ContractorHomeController>().cancelOrder(
-                                id,
-                              );
+                              Get.find<OrderController>().cancelOrder(id);
                             },
                             title: "Cancel".tr,
                             height: 26.h,
@@ -162,7 +166,12 @@ class CustomServiceRequestCard extends StatelessWidget {
                             borderWidth: .3,
                           ),
                           CustomButton(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.orderDetailsScreen1,
+                                arguments: {'index': index},
+                              );
+                            },
                             title: "View".tr,
                             height: 26.h,
                             width: 50.w,

@@ -12,12 +12,21 @@ class OnGoingController extends GetxController {
 
   RxList<BookingModelData> onGoingBookingList = <BookingModelData>[].obs;
 
+  ScrollController scrollController = ScrollController();
   int currentPage = 1;
+  bool isLock = false;
 
   @override
   void onInit() {
     super.onInit();
     getOnGoingBookings();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        getMoreOnGoingBookings();
+      }
+    });
   }
 
   Future<void> getOnGoingBookings() async {
@@ -44,6 +53,34 @@ class OnGoingController extends GetxController {
         'Something went wrong. Please try again later.',
       );
     }
+  }
+
+  Future<void> getMoreOnGoingBookings() async {
+    if (status.value.isLoading || status.value.isLoadingMore || isLock) return;
+
+    status.value = RxStatus.loadingMore();
+    currentPage++;
+
+    try {
+      final response = await ApiClient.getData(
+        '${ApiUrl.singleUserBookings}?status=ongoing&page=$currentPage&limit=10',
+      );
+
+      final BookingModel bookingModel = BookingModel.fromJson(response.body);
+
+      if (bookingModel.data == null || bookingModel.data!.isEmpty) {
+        showCustomSnackBar('No more data to load');
+        isLock = true;
+      } else {
+        onGoingBookingList.addAll(bookingModel.data!);
+      }
+    } catch (e) {
+      currentPage--;
+      debugPrint('xxx ${e.toString()}');
+      showCustomSnackBar(e.toString());
+    }
+
+    status.value = RxStatus.success();
   }
 
   Future<void> finishOrder(String id) async {
