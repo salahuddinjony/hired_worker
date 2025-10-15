@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/subscription_plan_model.dart';
 
@@ -31,6 +32,7 @@ class SubscriptionPlanController extends GetxController {
         status.value = RxStatus.success();
       }
     } catch (e) {
+      debugPrint('xxx' + e.toString());
       status.value = RxStatus.error();
     }
   }

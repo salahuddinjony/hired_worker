@@ -68,13 +68,10 @@ class SubscribeScreen extends StatelessWidget {
                             controller.subscriptionPlan.value.data![index];
 
                         return SubscriptionCard(
-                          planName: subscriptionPlan.subscriptionPlan ?? " - ",
+                          planName: subscriptionPlan.planType ?? " - ",
                           price: "${subscriptionPlan.price ?? " - "}",
                           duration: subscriptionPlan.duration ?? " - ",
-                          features: List.generate(
-                            6,
-                            (_) => "First Feature Here",
-                          ),
+                          features: subscriptionPlan.details!,
                           onSubscribe: () {
                             Get.toNamed(AppRoutes.thanksScreen);
                           },
