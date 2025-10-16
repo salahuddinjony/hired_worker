@@ -8,9 +8,12 @@ import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/customer_part/profile/controller/create_help_controller.dart';
 
 class CustomerHelpSupportScreen extends StatelessWidget {
-  const CustomerHelpSupportScreen({super.key});
+  CustomerHelpSupportScreen({super.key});
+
+  final CreateHelpController controller = Get.put(CreateHelpController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +33,23 @@ class CustomerHelpSupportScreen extends StatelessWidget {
             CustomFormCard(
                 title: "Title",
                 hintText: "Enter the title of your issue",
-                controller: TextEditingController()
+                controller: controller.titleController
             ),
             CustomFormCard(
-
                 title: "Write in bellow box",
-                hintText: "write here.....",maxLine: 5,
-                controller: TextEditingController()),
+                hintText: "write here.....",
+                maxLine: 5,
+                controller: controller.detailsController
+            ),
             SizedBox(height: 30.h,),
-            CustomButton(onTap: (){}, title: "Send".tr,)
-
+            Obx(() => CustomButton(
+              onTap: controller.isLoading.value 
+                  ? () {} 
+                  : controller.createSupportTicket,
+              title: controller.isLoading.value 
+                  ? "Sending...".tr 
+                  : "Send".tr,
+            ))
           ],
         ),
       ),

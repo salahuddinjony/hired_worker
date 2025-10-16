@@ -76,9 +76,14 @@ class ContractorBookingController extends GetxController {
               return Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: StatefulBuilder(
                   builder: (context, setState) {
                     return Column(
@@ -166,7 +171,9 @@ class ContractorBookingController extends GetxController {
                                 Row(
                                   children: [
                                     ElevatedButton.icon(
-                                      icon: const Icon(Icons.calendar_today_outlined),
+                                      icon: const Icon(
+                                        Icons.calendar_today_outlined,
+                                      ),
                                       label: const Text('Add Date'),
                                       style: ElevatedButton.styleFrom(
                                         elevation: 0,
@@ -711,8 +718,6 @@ class ContractorBookingController extends GetxController {
   }) async {
     isLoading.value = true;
 
-    final customerId = await SharePrefsHelper.getString(AppConstants.userId);
-
     if (contractorId.trim().isEmpty) {
       EasyLoading.showError("Invalid contractor id");
       isLoading.value = false;
@@ -768,33 +773,66 @@ class ContractorBookingController extends GetxController {
             ? startTimeController.value.text
             : selectedTime.value;
 
-    final bookingData = {
-      'customerId': customerId,
-      'contractorId': contractorId,
-      'subCategoryId': subcategoryId,
-      'questions': questionsPayload,
-      'material': materialsPayload,
-      'bookingType': bookingType.value,
-      'duration': durationInt,
-      'startTime': payloadStartTime,
-      'endTime': endTimeController.value.text,
-      'day': selectedDates.toList(),
-      'price':
-          bookingType.value == 'weekly' && selectedDates.length > 1
-              ? weeklyTotalAmount
-              : totalDurationAmount,
-      'totalAmount': calculateTotalPayableAmount(),
-      'rateHourly': hourlyRate,
-    };
+    // Build update payload with only the fields that can be updated
+    final Map<String, dynamic> bookingData = {};
+
+    // Only include fields that are being updated
+    if (questionsPayload.isNotEmpty) {
+      bookingData['questions'] = questionsPayload;
+    }
+
+    if (materialsPayload.isNotEmpty) {
+      bookingData['material'] = materialsPayload;
+    }
+
+    if (bookingType.value.isNotEmpty) {
+      bookingData['bookingType'] = bookingType.value;
+    }
+
+    if (durationInt > 0) {
+      bookingData['duration'] = durationInt;
+    }
+
+    if (payloadStartTime.isNotEmpty) {
+      bookingData['startTime'] = payloadStartTime;
+    }
+
+    if (endTimeController.value.text.isNotEmpty) {
+      bookingData['endTime'] = endTimeController.value.text;
+    }
+
+    if (selectedDates.isNotEmpty) {
+      bookingData['day'] = selectedDates.toList();
+    }
+
+    // Calculate and include price based on booking type
+    final calculatedPrice =
+        bookingType.value == 'weekly' && selectedDates.length > 1
+            ? weeklyTotalAmount
+            : totalDurationAmount;
+
+    if (calculatedPrice > 0) {
+      bookingData['price'] = calculatedPrice;
+    }
+
+    // Calculate and include total amount
+    final totalAmountCalc = calculateTotalPayableAmount();
+    if (totalAmountCalc > 0) {
+      bookingData['totalAmount'] = totalAmountCalc;
+    }
+
+    if (hourlyRate > 0) {
+      bookingData['rateHourly'] = hourlyRate;
+    }
 
     EasyLoading.show(status: 'Updating booking...');
     debugPrint('Updating booking with ID: $bookingId');
-    debugPrint('Update data: $bookingData');
+    debugPrint('Update data (only modified fields): $bookingData');
 
     try {
-      // Assuming the API endpoint for updating is a PUT request to /booking/{id}
-      final response = await ApiClient.putData(
-        '${ApiUrl.createBooking}/$bookingId', // Assuming createBooking base URL + /{id}
+      // Use PATCH request to update the booking
+      final response = await ApiClient.patchData(
+        '/bookings/$bookingId',
         jsonEncode(bookingData),
       );
 

@@ -285,7 +285,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 30),
-        booking.status?.toLowerCase() != 'completed'
+        booking.status?.toLowerCase() == 'completed' 
             ? CustomButton(
               onTap: () {
                 // Navigate to ReviewPage and pass the booking as argument
@@ -314,13 +314,12 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   AppRoutes.customarMaterialsScreen,
                   arguments: {
                     'contractorId': booking.contractorId?.id,
-                    'subcategoryId': booking.subCategoryId,
+                    'subcategoryId': booking.subCategoryId?.id ?? '',
                     'materials': booking.material,
                     'controller': controller,
                     'contractorName': booking.contractorId?.fullName,
                     'categoryName': "",
-                    'subCategoryName': booking.subCategoryId ?? '',
-                    // Pass booking schedule data for updates
+                    'subCategoryName': booking.subCategoryId?.name ?? '',
                     'bookingType': booking.bookingType ?? 'oneTime',
                     'duration': booking.duration?.toString() ?? '1',
                     'startTime': booking.startTime ?? '',
@@ -335,7 +334,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                             : [],
                     'hourlyRate': booking.rateHourly ?? 0,
                     'bookingId':
-                        booking.bookingId, // Pass booking ID for updates
+                        booking.bookingId,
+                    'isUpdate': true,
                   },
                 );
               },

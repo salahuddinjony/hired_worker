@@ -134,6 +134,7 @@ class CustomarQaScreen extends StatelessWidget {
                             'contractorName': contractorName,
                             'categoryName': categoryName,
                             'subCategoryName': subCategoryName,
+                            'hourlyRate': controller.hourlyRate,
                           },
                         );
                       }
