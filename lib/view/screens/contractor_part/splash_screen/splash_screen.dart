@@ -38,13 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
           if (userRole == "customer") {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
           } else if (userRole == "contractor") {
-            Get.offAllNamed(AppRoutes.subscribeScreen);
-            // if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
-            //     null) {
-            //   Get.offAllNamed(AppRoutes.seletedMapScreen);
-            // } else {
-            //   Get.offAllNamed(AppRoutes.homeScreen);
-            // }
+            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
+                null) {
+              Get.offAllNamed(AppRoutes.seletedMapScreen);
+            } else {
+              Get.offAllNamed(AppRoutes.homeScreen);
+            }
           } else {
             Get.offAllNamed(AppRoutes.onboardingScreen);
           }
