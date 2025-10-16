@@ -93,10 +93,10 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             status = 'accepted';
             break;
           case 2:
-            status = 'on-going';
+            status = 'ongoing';
             break;
           case 3:
-            status = ''; // For History tab, load all
+            status = ''; // History tab: load these statuses
             break;
           default:
             status = '';
@@ -111,10 +111,10 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         List<BookingResult> displayList;
         
         if (tabIndex == 3) {
-          // History tab - show cancelled and confirmed bookings
+          // History tab - show completed, rejected, and history bookings
           displayList = controller.bookingReportList.where((booking) {
             final status = (booking.status ?? '').toLowerCase();
-            return status == 'rejected' || status == 'confirmed';
+            return status == 'completed' || status == 'rejected' || status == 'history';
           }).toList();
         } else {
           // For other tabs, show all data from API call (already filtered by status)
@@ -152,7 +152,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                   ),
             );
           },
-          separatorBuilder: (_, index) => SizedBox(height: 8),
+          separatorBuilder: (_, index) => const SizedBox(height: 8),
           itemCount:
               displayList.length +
               (controller.isPaginating.value || !controller.hasMoreData.value

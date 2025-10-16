@@ -9,6 +9,7 @@ import 'package:servana/view/components/custom_image/custom_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/extension/extension.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import '../model/customer_order_model.dart';
 
 typedef BookingTapCallback = void Function(BookingResult booking);
@@ -152,9 +153,10 @@ class BookingCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                text: booking.contractorId != null
-                                    ? '${booking.contractorId?.fullName.safeCap() ?? ''}'
-                                    : 'Not Assigned',
+                                text:
+                                    booking.contractorId != null
+                                        ? '${booking.contractorId?.fullName.safeCap() ?? ''}'
+                                        : 'Not Assigned',
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.black,
@@ -188,19 +190,19 @@ class BookingCard extends StatelessWidget {
                       onTap: () async {
                         if (booking.status?.toLowerCase() != 'pending') {
                           debugPrint('Navigate to message screen');
-                          
+
                           // Set loading state for this specific card
                           isLoadingConversation.value = true;
-                          
+
                           try {
                             final loggedUserId =
                                 await SharePrefsHelper.getString(
-                              AppConstants.userId,
-                            );
+                                  AppConstants.userId,
+                                );
                             final loggedUserRole =
                                 await SharePrefsHelper.getString(
-                              AppConstants.role,
-                            );
+                                  AppConstants.role,
+                                );
 
                             final conversationId = await controller
                                 .createOrRetrieveConversation(
@@ -235,7 +237,38 @@ class BookingCard extends StatelessWidget {
                             isLoadingConversation.value = false;
                           }
                         } else {
-                          debugPrint('Navigate to update screen');
+                          final controller =
+                              Get.find<ContractorBookingController>();
+                          Get.toNamed(
+                            AppRoutes.customarMaterialsScreen,
+                            arguments: {
+                              'contractorId': booking.contractorId?.id,
+                              'subcategoryId': booking.subCategoryId?.id ?? '',
+                              'materials': booking.material,
+                              'controller': controller,
+                              'contractorName': booking.contractorId?.fullName,
+                              'categoryName': "",
+                              'subCategoryName': booking.subCategoryId?.name ?? '',
+                              // Pass booking schedule data for updates
+                              'bookingType': booking.bookingType ?? 'oneTime',
+                              'duration': booking.duration?.toString() ?? '1',
+                              'startTime': booking.startTime ?? '',
+                              'endTime': booking.endTime ?? '',
+                              'selectedDates':
+                                  booking.day is List
+                                      ? (booking.day as List)
+                                          .map((e) => e.toString())
+                                          .toList()
+                                      : booking.day is String
+                                      ? [booking.day as String]
+                                      : [],
+                              'hourlyRate': booking.rateHourly ?? 0,
+                              'bookingId':
+                                  booking
+                                      .bookingId, // Pass booking ID for updates
+                              'isUpdate': true, // Indicate this is an update
+                            },
+                          );
                         }
                       },
                       child: Obx(
@@ -244,32 +277,33 @@ class BookingCard extends StatelessWidget {
                           children: [
                             isLoadingConversation.value
                                 ? SizedBox(
-                                    width: 18.w,
-                                    height: 18.w,
-                                    child: const CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppColors.primary,
-                                    ),
-                                  )
-                                : Icon(
-                                    booking.status?.toLowerCase() == 'pending'
-                                        ? Icons.edit
-                                        : Icons.message,
+                                  width: 18.w,
+                                  height: 18.w,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
                                     color: AppColors.primary,
-                                    size: 18.w,
                                   ),
+                                )
+                                : Icon(
+                                  booking.status?.toLowerCase() == 'pending'
+                                      ? Icons.edit
+                                      : Icons.message,
+                                  color: AppColors.primary,
+                                  size: 18.w,
+                                ),
                             SizedBox(width: 6.w),
                             CustomText(
-                              text: booking.status?.toLowerCase() == 'pending'
-                                  ? 'Update'.tr
-                                  : 'Message'.tr,
+                              text:
+                                  booking.status?.toLowerCase() == 'pending'
+                                      ? 'Update'.tr
+                                      : 'Message'.tr,
                               fontSize: 14.w,
                               fontWeight: FontWeight.w600,
                               color: AppColors.primary,
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ),
                   ),
                 ],
