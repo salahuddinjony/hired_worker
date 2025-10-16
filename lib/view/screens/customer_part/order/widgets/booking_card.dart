@@ -29,7 +29,46 @@ class BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = isCompleted ? AppColors.green : const Color(0xffCDB3CD);
+    final status = (booking.status ?? '').toLowerCase();
+    
+    // Define colors based on status
+    Color borderColor;
+    Color statusBgColor;
+    Color statusTextColor;
+    
+    switch (status) {
+      case 'completed':
+        borderColor = Colors.green;
+        statusBgColor = Colors.green.withValues(alpha: .15);
+        statusTextColor = Colors.green.shade700;
+        break;
+      case 'accepted':
+        borderColor = Colors.blue;
+        statusBgColor = Colors.blue.withValues(alpha: .15);
+        statusTextColor = Colors.blue.shade700;
+        break;
+      case 'ongoing':
+      case 'on-going':
+        borderColor = Colors.purple;
+        statusBgColor = Colors.purple.withValues(alpha: .15);
+        statusTextColor = Colors.purple.shade700;
+        break;
+      case 'pending':
+        borderColor = Colors.amber;
+        statusBgColor = Colors.amber.withValues(alpha: .15);
+        statusTextColor = Colors.amber.shade800;
+        break;
+      case 'rejected':
+      case 'cancelled':
+        borderColor = Colors.red;
+        statusBgColor = Colors.red.withValues(alpha: .15);
+        statusTextColor = Colors.red.shade700;
+        break;
+      default:
+        borderColor = const Color(0xffCDB3CD);
+        statusBgColor = const Color(0xffCDB3CD).withValues(alpha: .25);
+        statusTextColor = AppColors.primary;
+    }
 
     return InkWell(
       borderRadius: BorderRadius.circular(10),
@@ -98,14 +137,14 @@ class BookingCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: borderColor.withValues(alpha: .25),
+                      color: statusBgColor,
                       borderRadius: BorderRadius.circular(7),
                     ),
                     child: CustomText(
                       text: booking.status ?? '',
                       fontSize: 14.w,
                       fontWeight: FontWeight.w600,
-                      color: isCompleted ? AppColors.green : AppColors.primary,
+                      color: statusTextColor,
                     ),
                   ),
                 ],
