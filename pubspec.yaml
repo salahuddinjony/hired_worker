@@ -65,7 +65,8 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_chat_ui: ^1.6.15
   dotted_border: ^3.1.0
-
+  webview_flutter: ^4.10.0
+  double_tap_to_exit: ^1.0.3
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1 

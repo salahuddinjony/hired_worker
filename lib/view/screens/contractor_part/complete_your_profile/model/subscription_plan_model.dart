@@ -25,7 +25,7 @@ class SubscriptionPlanModel {
 class SubscriptionPlan {
   String? id;
   String? planType;
-  int? price;
+  num? price;
   String? duration;
   List<String>? details;
   DateTime? createdAt;
