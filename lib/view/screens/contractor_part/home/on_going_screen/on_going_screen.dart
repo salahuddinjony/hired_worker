@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
-import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 import 'widget/custom_ongoing_card.dart';
 
