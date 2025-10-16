@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
+import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -160,18 +161,59 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: const Color(0xffCDB3CD),
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: CustomText(
-                text: booking.status ?? '',
-                fontSize: 14.w,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primary,
-              ),
+            Builder(
+              builder: (context) {
+                final status = (booking.status ?? '').toLowerCase();
+
+                // Define colors based on status
+                Color backgroundColor;
+                Color textColor;
+
+                switch (status) {
+                  case 'completed':
+                    backgroundColor = Colors.green.withValues(alpha: .15);
+                    textColor = Colors.green.shade700;
+                    break;
+                  case 'accepted':
+                    backgroundColor = Colors.blue.withValues(alpha: .15);
+                    textColor = Colors.blue.shade700;
+                    break;
+                  case 'ongoing':
+                  case 'on-going':
+                    backgroundColor = Colors.purple.withValues(alpha: .15);
+                    textColor = Colors.purple.shade700;
+                    break;
+                  case 'pending':
+                    backgroundColor = Colors.amber.withValues(alpha: .15);
+                    textColor = Colors.amber.shade800;
+                    break;
+                  case 'rejected':
+                  case 'cancelled':
+                    backgroundColor = Colors.red.withValues(alpha: .15);
+                    textColor = Colors.red.shade700;
+                    break;
+                  default:
+                    backgroundColor = const Color(0xffCDB3CD);
+                    textColor = AppColors.primary;
+                }
+
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: CustomText(
+                    text: booking.status ?? '',
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -203,7 +245,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 4,
-          text: "Category : ${booking.subCategoryId ?? ''}",
+          text: "Sub Category : ${booking.subCategoryId?.name ?? ''}",
           fontSize: 16.w,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
@@ -370,17 +412,120 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: AppColors.black,
             ),
-
-       
           ],
         ),
-           CustomText(
-            top: 20,
-            text: "Total Amount".tr + ": \$${booking.totalAmount ?? '0'}",
-            fontSize: 18.w,
-            fontWeight: FontWeight.w700,
-            color: AppColors.black,
+        Card(
+          margin: EdgeInsets.only(top: 20.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
           ),
+          elevation: 0,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+            child: Builder(
+              builder: (context) {
+                final status = (booking.paymentStatus ?? '').toLowerCase();
+                final bool isPaid = status == 'paid';
+                final bool isPending =
+                    status == 'pending' || status == 'awaiting';
+                final Color bgColor =
+                    isPaid
+                        ? Colors.green.withValues(alpha: .12)
+                        : isPending
+                        ? Colors.orange.withValues(alpha: .12)
+                        : Colors.red.withValues(alpha: .08);
+                final Color fgColor =
+                    isPaid
+                        ? Colors.green
+                        : isPending
+                        ? Colors.orange
+                        : Colors.red;
+                final IconData icon =
+                    isPaid
+                        ? Icons.check_circle_outline
+                        : isPending
+                        ? Icons.hourglass_top
+                        : Icons.cancel_outlined;
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Icon(icon, color: fgColor, size: 28.w),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: "Payment Status".tr,
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.black,
+                          ),
+                          SizedBox(height: 6.h),
+                          CustomText(
+                            text: booking.paymentStatus.safeCap(),
+                            fontSize: 16.w,
+                            fontWeight: FontWeight.w600,
+                            color: fgColor,
+                          ),
+                          if (booking.paymentStatus?.toLowerCase() == 'paid' &&
+                              booking.totalAmount != null) ...[
+                            SizedBox(height: 6.h),
+                            CustomText(
+                              text: "Amount Paid: \$${booking.totalAmount}",
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff6F767E),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 6.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(color: fgColor.withOpacity(0.18)),
+                      ),
+                      child: Text(
+                        (isPaid
+                            ? 'Paid'
+                            : isPending
+                            ? 'Pending'
+                            : 'Unpaid'),
+                        style: TextStyle(
+                          fontSize: 13.w,
+                          fontWeight: FontWeight.w600,
+                          color: fgColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+        CustomText(
+          top: 20,
+          text: "Total Amount".tr + ": \$${booking.totalAmount ?? '0'}",
+          fontSize: 18.w,
+          fontWeight: FontWeight.w700,
+          color: AppColors.black,
+        ),
         const SizedBox(height: 30),
         booking.status?.toLowerCase() == 'completed'
             ? CustomButton(
@@ -443,7 +588,6 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               },
               title: "Back".tr,
             ),
-        
       ],
     );
   }
