@@ -23,33 +23,37 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         leftIcon: false,
         titleName: "History Status".tr,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 12.h),
-            TabBar(
-              controller: customerOrderController.tabController,
-              dividerColor: Colors.grey,
-              labelColor: AppColors.black,
-              indicatorColor: AppColors.primary,
-              unselectedLabelColor: Color(0xff6F767E),
-              tabs: [
-                Tab(text: 'Pending'.tr),
-                Tab(text: 'Accepted'.tr),
-                Tab(text: 'On-Going'.tr),
-                Tab(text: 'History'.tr),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 12.h),
+          TabBar(
+            padding: EdgeInsets.zero,
+            indicatorSize: TabBarIndicatorSize.label,
+            isScrollable: true,
+            controller: customerOrderController.tabController,
+            dividerColor: Colors.grey,
+            labelColor: AppColors.black,
+            indicatorColor: AppColors.primary,
+            unselectedLabelColor: Color(0xff6F767E),
+            labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
+            tabs: [
+              Tab(text: 'Pending'.tr),
+              Tab(text: 'Accepted'.tr),
+              Tab(text: 'On-Going'.tr),
+              Tab(text: 'History'.tr),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Obx(() {
                 if (customerOrderController
                     .getBookingReportStatus
                     .value
                     .isLoading)
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
 
                 return TabBarView(
                   controller: customerOrderController.tabController,
@@ -66,9 +70,9 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(height: 80.h),
-          ],
-        ),
+          ),
+          SizedBox(height: 80.h),
+        ],
       ),
       bottomNavigationBar: CustomerNavbar(currentIndex: 1),
     );
