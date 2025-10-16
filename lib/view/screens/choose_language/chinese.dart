@@ -155,4 +155,5 @@ final Map<String, String> chinese = {
   "No skills added yet": "尚未添加技能",
   "Add your skills above to get started": "请在上方添加技能以开始",
   "Add at least one skill to continue": "请至少添加一个技能以继续",
+  "Photo Upload": "照片上传",
 };

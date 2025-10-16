@@ -23,37 +23,45 @@ class SubscriptionPlanModel {
 }
 
 class SubscriptionPlan {
-  int? slNo;
-  String? subscriptionPlan;
-  String? price;
+  String? id;
+  String? planType;
+  num? price;
   String? duration;
-  String? contractorFeePerMonth;
-  String? action;
+  List<String>? details;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   SubscriptionPlan({
-    this.slNo,
-    this.subscriptionPlan,
+    this.id,
+    this.planType,
     this.price,
     this.duration,
-    this.contractorFeePerMonth,
-    this.action,
+    this.details,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
   factory SubscriptionPlan.fromJson(Map<String, dynamic> json) => SubscriptionPlan(
-    slNo: json["slNo"],
-    subscriptionPlan: json["subscriptionPlan"],
+    id: json["_id"],
+    planType: json["planType"],
     price: json["price"],
     duration: json["duration"],
-    contractorFeePerMonth: json["contractorFeePerMonth"],
-    action: json["action"],
+    details: json["details"] == null ? [] : List<String>.from(json["details"]!.map((x) => x)),
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    v: json["__v"],
   );
 
   Map<String, dynamic> toJson() => {
-    "slNo": slNo,
-    "subscriptionPlan": subscriptionPlan,
+    "_id": id,
+    "planType": planType,
     "price": price,
     "duration": duration,
-    "contractorFeePerMonth": contractorFeePerMonth,
-    "action": action,
+    "details": details == null ? [] : List<dynamic>.from(details!.map((x) => x)),
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "__v": v,
   };
 }

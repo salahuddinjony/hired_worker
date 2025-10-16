@@ -4,6 +4,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
+import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
@@ -22,8 +23,10 @@ import '../../view/screens/contractor_part/complete_your_profile/seleted_map_scr
 import '../../view/screens/contractor_part/complete_your_profile/skills_add_screen.dart';
 import '../../view/screens/contractor_part/complete_your_profile/subscribe_screen/payment_method_screen.dart';
 import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
-import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen/on_going_finish_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
+import '../../view/screens/contractor_part/home/on_going_screen/upload_photo_screen.dart';
+import '../../view/screens/contractor_part/home/order_screen/order_details_screen_2.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
 import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
@@ -81,6 +84,8 @@ class AppRoutes {
   static const String skillsAddScreen = "/SkillsAddScreen";
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
+  static const String orderDetailsScreen1 = "/OrderDetailsScreen1";
+  static const String orderDetailsScreen2 = "/OrderDetailsScreen2";
   static const String messageListScreen = "/MessageListScreen";
   static const String chatScreen = "/ChatScreen";
   static const String profileScreen = "/ProfileScreen";
@@ -123,6 +128,7 @@ class AppRoutes {
   static const String privacyPolicyScreen = "/PrivacyPolicyScreen";
   static const String termsConditionsScreen = "/TermsConditionsScreen";
   static const String recentAllServiceScreen = "/RecentAllServiceScreen";
+  static const String uploadPhotoScreen = "/UploadPhotoScreen";
 
 
 
@@ -149,6 +155,8 @@ class AppRoutes {
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
+    GetPage(name: orderDetailsScreen1, page: () => OrderDetailsScreen1()),
+    GetPage(name: orderDetailsScreen2, page: () => OrderDetailsScreen2()),
     // GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
@@ -189,6 +197,7 @@ class AppRoutes {
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
     GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
     GetPage(name: recentAllServiceScreen, page: () => RecentAllServiceScreen()),
+    GetPage(name: uploadPhotoScreen, page: () => UploadPhotoScreen()),
 
   ];
 }

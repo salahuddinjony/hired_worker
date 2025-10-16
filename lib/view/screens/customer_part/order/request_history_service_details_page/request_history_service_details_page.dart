@@ -5,32 +5,120 @@ import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
-import 'package:servana/view/screens/customer_part/order/controller/customer_order_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
 
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../review_page/review_page.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
 
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
 
+  // Payment checkout method
+  Future<void> initiatePaymentCheckout(BookingResult booking) async {
+    try {
+      // Show loading indicator
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      // Prepare request body as JSON string
+      final Map<String, dynamic> requestBody = {
+        "bookingId": booking.bookingId ?? "",
+        "amount": booking.totalAmount ?? 0,
+      };
+
+      debugPrint('Payment checkout request: $requestBody');
+
+      // Call the payment checkout API with JSON encoded body
+      final response = await ApiClient.postData(
+        ApiUrl.createCheckoutSession,
+        jsonEncode(requestBody), // Convert to JSON string
+      );
+
+      // Close loading dialog
+      Get.back();
+
+      debugPrint('Payment checkout response: ${response.body}');
+
+      if (response.statusCode == 200 &&
+          response.body != null &&
+          response.body['success'] == true) {
+        final String checkoutUrl = response.body['data'];
+
+        debugPrint('Opening payment URL: $checkoutUrl');
+
+        // Launch the checkout URL in the default browser
+        final Uri url = Uri.parse(checkoutUrl);
+
+        // Try different launch modes
+        try {
+          final bool launched = await launchUrl(
+            url,
+            mode: LaunchMode.externalApplication,
+          );
+
+          if (!launched) {
+            // Try with platformDefault
+            await launchUrl(url, mode: LaunchMode.platformDefault);
+          }
+        } catch (e) {
+          debugPrint(
+            'Failed to launch with externalApplication, trying platformDefault: $e',
+          );
+          // Fallback to platform default
+          await launchUrl(url, mode: LaunchMode.platformDefault);
+        }
+      } else {
+        showCustomSnackBar(
+          response.body?['message'] ?? 'Failed to create payment checkout',
+          isError: true,
+        );
+      }
+    } catch (e) {
+      // Close loading dialog if still open
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+      debugPrint('Payment checkout error: $e');
+      showCustomSnackBar(
+        'An error occurred during payment checkout',
+        isError: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CustomerOrderController>();
-
     final passed = Get.arguments;
     final BookingResult? bookingArg = passed is BookingResult ? passed : null;
 
     // split bookings into completed and others
 
     return Scaffold(
-      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Service Details"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: buildDetailView(context, bookingArg!),
+      appBar: const CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: "Service Details",
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          // keep horizontal padding and ensure bottom padding so button isn't hidden
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            // add extra bottom padding to account for system insets (gesture nav / keyboard)
+            bottom: 24.h + MediaQuery.of(context).viewPadding.bottom,
+          ),
+          child: buildDetailView(context, bookingArg!),
+        ),
       ),
     );
   }
@@ -282,10 +370,19 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: AppColors.black,
             ),
+
+       
           ],
         ),
+           CustomText(
+            top: 20,
+            text: "Total Amount".tr + ": \$${booking.totalAmount ?? '0'}",
+            fontSize: 18.w,
+            fontWeight: FontWeight.w700,
+            color: AppColors.black,
+          ),
         const SizedBox(height: 30),
-        booking.status?.toLowerCase() != 'completed'
+        booking.status?.toLowerCase() == 'completed'
             ? CustomButton(
               onTap: () {
                 // Navigate to ReviewPage and pass the booking as argument
@@ -302,7 +399,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             : booking.status?.toLowerCase() == 'accepted'
             ? CustomButton(
               onTap: () {
-                Get.back();
+                initiatePaymentCheckout(booking);
               },
               title: "Payment".tr,
             )
@@ -314,13 +411,12 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   AppRoutes.customarMaterialsScreen,
                   arguments: {
                     'contractorId': booking.contractorId?.id,
-                    'subcategoryId': booking.subCategoryId,
+                    'subcategoryId': booking.subCategoryId?.id ?? '',
                     'materials': booking.material,
                     'controller': controller,
                     'contractorName': booking.contractorId?.fullName,
                     'categoryName': "",
-                    'subCategoryName': booking.subCategoryId ?? '',
-                    // Pass booking schedule data for updates
+                    'subCategoryName': booking.subCategoryId?.name ?? '',
                     'bookingType': booking.bookingType ?? 'oneTime',
                     'duration': booking.duration?.toString() ?? '1',
                     'startTime': booking.startTime ?? '',
@@ -334,8 +430,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                             ? [booking.day as String]
                             : [],
                     'hourlyRate': booking.rateHourly ?? 0,
-                    'bookingId':
-                        booking.bookingId, // Pass booking ID for updates
+                    'bookingId': booking.bookingId,
+                    'isUpdate': true,
                   },
                 );
               },
@@ -347,6 +443,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               },
               title: "Back".tr,
             ),
+        
       ],
     );
   }

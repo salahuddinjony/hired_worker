@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
-import 'package:servana/view/screens/contractor_part/home/controller/on_going_controller.dart';
+import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
@@ -12,8 +13,9 @@ import '../../../../../components/custom_text/custom_text.dart';
 
 class CustomOngoingCard extends StatelessWidget {
   final int index;
+  final bool isShowButton;
 
-  const CustomOngoingCard({super.key, required this.index});
+  const CustomOngoingCard({super.key, this.isShowButton = true, required this.index,});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,9 @@ class CustomOngoingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
-                imageUrl: AppConstants.electrician,
-                height: 170.h,
+                imageUrl: data.contractorId?.img ?? "",
+                // height: 170.h,
+                height: 160.h,
                 width: 126.w,
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -44,18 +47,18 @@ class CustomOngoingCard extends StatelessWidget {
                     color: AppColors.primary,
                     bottom: 10.h,
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on_outlined, size: 20),
-                      CustomText(
-                        text: "38 Chestnut Street Staunton",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
+                  // Row(
+                  //   children: [
+                  //     const Icon(Icons.location_on_outlined, size: 20),
+                  //     CustomText(
+                  //       text: "38 Chestnut Street Staunton",
+                  //       fontSize: 14.w,
+                  //       fontWeight: FontWeight.w400,
+                  //       color: AppColors.black,
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 8.h),
                   Row(
                     children: [
                       CustomNetworkImage(
@@ -106,9 +109,11 @@ class CustomOngoingCard extends StatelessWidget {
                       CustomText(
                         left: 8,
                         text:
-                            data.day == null || data.day!.length != 2
+                            data.day == null || data.day!.isEmpty
                                 ? " - "
-                                : "${data.day?[0] ?? ""} - ${data.day?[1] ?? ""}",
+                                : data.day!.length == 2
+                                ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                                : "${data.day?[0] ?? " - "}",
                         fontSize: 14.w,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
@@ -120,12 +125,14 @@ class CustomOngoingCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Row(
+          if (isShowButton) Row(
             children: [
               Flexible(
                 child: CustomButton(
                   height: 35,
-                  onTap: () {},
+                  onTap: () {
+                    Get.find<OnGoingController>().cancelOrder(data.id!);
+                  },
                   title: "Cancel".tr,
                   isBorder: true,
                   fillColor: Colors.transparent,
@@ -137,18 +144,19 @@ class CustomOngoingCard extends StatelessWidget {
               Flexible(
                 child: CustomButton(
                   height: 35,
-                  onTap: () => (),
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.uploadPhotoScreen,
+                      arguments: {'id': index},
+                    );
+                  },
                   title: "Finish".tr,
                   fillColor: AppColors.primary,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          Divider(
-            thickness: .5,
-            color: AppColors.primary.withValues(alpha: .5),
-          ),
+          if (isShowButton)  const SizedBox(height: 20),
         ],
       ),
     );

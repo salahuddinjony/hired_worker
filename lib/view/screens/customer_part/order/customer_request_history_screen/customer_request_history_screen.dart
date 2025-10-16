@@ -23,33 +23,37 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         leftIcon: false,
         titleName: "History Status".tr,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 12.h),
-            TabBar(
-              controller: customerOrderController.tabController,
-              dividerColor: Colors.grey,
-              labelColor: AppColors.black,
-              indicatorColor: AppColors.primary,
-              unselectedLabelColor: Color(0xff6F767E),
-              tabs: [
-                Tab(text: 'Pending'.tr),
-                Tab(text: 'Accepted'.tr),
-                Tab(text: 'On-Going'.tr),
-                Tab(text: 'History'.tr),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 12.h),
+          TabBar(
+            padding: EdgeInsets.zero,
+            indicatorSize: TabBarIndicatorSize.label,
+            isScrollable: true,
+            controller: customerOrderController.tabController,
+            dividerColor: Colors.grey,
+            labelColor: AppColors.black,
+            indicatorColor: AppColors.primary,
+            unselectedLabelColor: Color(0xff6F767E),
+            labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
+            tabs: [
+              Tab(text: 'Pending'.tr),
+              Tab(text: 'Accepted'.tr),
+              Tab(text: 'On-Going'.tr),
+              Tab(text: 'History'.tr),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Obx(() {
                 if (customerOrderController
                     .getBookingReportStatus
                     .value
                     .isLoading)
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
 
                 return TabBarView(
                   controller: customerOrderController.tabController,
@@ -66,9 +70,9 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(height: 80.h),
-          ],
-        ),
+          ),
+          SizedBox(height: 80.h),
+        ],
       ),
       bottomNavigationBar: CustomerNavbar(currentIndex: 1),
     );
@@ -89,10 +93,10 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             status = 'accepted';
             break;
           case 2:
-            status = 'on-going';
+            status = 'ongoing';
             break;
           case 3:
-            status = ''; // For History tab, load all
+            status = ''; // History tab: load these statuses
             break;
           default:
             status = '';
@@ -107,10 +111,10 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         List<BookingResult> displayList;
         
         if (tabIndex == 3) {
-          // History tab - show cancelled and confirmed bookings
+          // History tab - show completed, rejected, and history bookings
           displayList = controller.bookingReportList.where((booking) {
             final status = (booking.status ?? '').toLowerCase();
-            return status == 'rejected' || status == 'confirmed';
+            return status == 'completed' || status == 'rejected' || status == 'history';
           }).toList();
         } else {
           // For other tabs, show all data from API call (already filtered by status)
@@ -148,7 +152,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                   ),
             );
           },
-          separatorBuilder: (_, index) => SizedBox(height: 8),
+          separatorBuilder: (_, index) => const SizedBox(height: 8),
           itemCount:
               displayList.length +
               (controller.isPaginating.value || !controller.hasMoreData.value

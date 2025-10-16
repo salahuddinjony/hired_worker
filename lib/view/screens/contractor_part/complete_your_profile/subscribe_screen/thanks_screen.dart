@@ -1,3 +1,4 @@
+import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,57 +13,62 @@ class ThanksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomRoyelAppbar(leftIcon: false),
-      body: Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 12.0.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(),
-            const SizedBox(),
-            const SizedBox(),
-
-            Column(
-              children: [
-                Text(
-                  'Thanks of Subscriptions!',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+    return DoubleTapToExit(
+      snackBar: const SnackBar(
+        content: Text('Tap again to exit!'),
+      ),
+      child: Scaffold(
+        appBar: const CustomRoyelAppbar(leftIcon: false),
+        body: Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 12.0.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SizedBox(),
+              const SizedBox(),
+              const SizedBox(),
+      
+              Column(
+                children: [
+                  Text(
+                    'Thanks of Subscriptions!',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),
-
-                Center(child: Image.asset('assets/icons/credit-card.png')),
-
-                const SizedBox(height: 12),
-
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "You have successfully signed up for business user.",
-                    style: TextStyle(fontWeight: FontWeight.w600),
+      
+                  Center(child: Image.asset('assets/icons/credit-card.png')),
+      
+                  const SizedBox(height: 12),
+      
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "You have successfully signed up for business user.",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ),
-
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Let's setup your business now.",
-                    style: TextStyle(fontWeight: FontWeight.w600),
+      
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Let's setup your business now.",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ),
-              ],
-            ),
-
-            SizedBox(
-              width: context.width * 0.7,
-              child: CustomButton(onTap: () {
-                Get.toNamed(AppRoutes.loginScreen);
-              }, title: "Go to Login"),
-            ),
-          ],
+                ],
+              ),
+      
+              SizedBox(
+                width: context.width * 0.7,
+                child: CustomButton(onTap: () {
+                  Get.toNamed(AppRoutes.loginScreen);
+                }, title: "Go to Login"),
+              ),
+            ],
+          ),
         ),
       ),
     );

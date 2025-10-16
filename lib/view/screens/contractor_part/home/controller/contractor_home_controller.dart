@@ -49,6 +49,8 @@ class ContractorHomeController extends GetxController {
         pendingServiceResponse.body,
       );
 
+      requestedServices.value = 0;
+
       requestedServices.value = pendingBookingList.value.data!.length;
 
       // get completed services
@@ -65,16 +67,16 @@ class ContractorHomeController extends GetxController {
         '${ApiUrl.singleUserBookings}?status=ongoing',
       );
 
-      onGoingBookingList.value = BookingModel.fromJson(
-        ongoingResponse.body,
-      );
+      onGoingBookingList.value = BookingModel.fromJson(ongoingResponse.body);
 
       onGoingServices.value = onGoingBookingList.value.data!.length;
 
       status.value = RxStatus.success();
     } catch (e) {
       debugPrint('xxx ${e.toString()}');
-      status.value = RxStatus.error('Something went wrong. Please try again later.');
+      status.value = RxStatus.error(
+        'Something went wrong. Please try again later.',
+      );
     }
   }
 
@@ -89,13 +91,7 @@ class ContractorHomeController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        removeBookingData(id);
-
-        onGoingServices.value++;
-
-        if (requestedServices.value > 1) {
-          requestedServices.value--;
-        }
+        getAllBookings();
 
         showCustomSnackBar('Order accepted successfully', isError: false);
       } else {

@@ -53,222 +53,229 @@ class HomeScreen extends StatelessWidget {
             ),
           );
         } else {
-          return Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
-            child: Column(
-              children: [
-                // Header row with welcome message and profile picture
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Welcome text
-                            CustomText(
-                              text: "Welcome!".tr,
-                              // .tr for translation
-                              fontSize: 18.w,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black_02,
-                              bottom: 2,
-                            ),
-                            // Contractor's name
-                            CustomText(
-                              text:
-                                  profileController
-                                      .contractorModel
-                                      .value
-                                      .data
-                                      ?.fullName ??
-                                  " - ",
-                              // Fallback to " - " if null
-                              fontSize: 15.w,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.black,
-                            ),
+          return RefreshIndicator(
+            onRefresh: () async {
+              await controller.getAllBookings();
+              await profileController.getMe();
+            },
+            child: Padding(
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 70.h),
+              child: Column(
+                children: [
+                  // Header row with welcome message and profile picture
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Welcome text
+                              CustomText(
+                                text: "Welcome!".tr,
+                                // .tr for translation
+                                fontSize: 18.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black_02,
+                                bottom: 2,
+                              ),
+                              // Contractor's name
+                              CustomText(
+                                text:
+                                    profileController
+                                        .contractorModel
+                                        .value
+                                        .data
+                                        ?.fullName ??
+                                    " - ",
+                                // Fallback to " - " if null
+                                fontSize: 15.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black,
+                              ),
 
-                            // role
-                            CustomText(
+                              // role
+                              CustomText(
+                                text:
+                                    profileController
+                                        .contractorModel
+                                        .value
+                                        .data
+                                        ?.role ??
+                                    " - ",
+                                // Fallback to " - " if null
+                                fontSize: 14.w,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.black.withValues(alpha: 0.9),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      // Profile picture - reacts to changes with Obx
+                      Obx(() {
+                        final data = profileController.contractorModel.value.data;
+
+                        return (data?.img != null)
+                            ? CustomNetworkImage(
+                              imageUrl: ImageHandler.imagesHandle(data?.img),
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            )
+                            : CustomNetworkImage(
+                              imageUrl: AppConstants.profileImage,
+                              height: 55.h,
+                              width: 55.w,
+                              boxShape: BoxShape.circle,
+                            );
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 20.h), // Spacer
+                  // Main content area with scrollable list
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        // First row of stats cards
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomHomeCard(
                               text:
                                   profileController
                                       .contractorModel
                                       .value
                                       .data
-                                      ?.role ??
+                                      ?.contractor
+                                      ?.balance
+                                      .toString() ??
                                   " - ",
-                              // Fallback to " - " if null
-                              fontSize: 14.w,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.black.withValues(alpha: 0.9),
+                              title: "Total Earning this month".tr,
+                            ),
+                            CustomHomeCard(
+                              text:
+                                  controller.bookingModel.value.meta?.total
+                                      .toString() ??
+                                  " - ",
+                              title: "Total Service".tr,
+                              imageSrc: AppIcons.iconTwo,
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    // Profile picture - reacts to changes with Obx
-                    Obx(() {
-                      final data = profileController.contractorModel.value.data;
+                        SizedBox(height: 10.h),
 
-                      return (data?.img != null)
-                          ? CustomNetworkImage(
-                            imageUrl: ImageHandler.imagesHandle(data?.img),
-                            height: 55.h,
-                            width: 55.w,
-                            boxShape: BoxShape.circle,
-                          )
-                          : CustomNetworkImage(
-                            imageUrl: AppConstants.profileImage,
-                            height: 55.h,
-                            width: 55.w,
-                            boxShape: BoxShape.circle,
-                          );
-                    }),
-                  ],
-                ),
-                SizedBox(height: 20.h), // Spacer
-                // Main content area with scrollable list
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      // First row of stats cards
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomHomeCard(
-                            text:
-                                profileController
-                                    .contractorModel
-                                    .value
-                                    .data
-                                    ?.contractor
-                                    ?.balance
-                                    .toString() ??
-                                " - ",
-                            title: "Total Earning this month".tr,
-                          ),
-                          CustomHomeCard(
-                            text:
-                                controller.bookingModel.value.meta?.total
-                                    .toString() ??
-                                " - ",
-                            title: "Total Service".tr,
-                            imageSrc: AppIcons.iconTwo,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
+                        // second row of stats cards
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomHomeCard(
+                              text: controller.requestedServices.value.toString(),
+                              title: "Request Services".tr,
+                              imageSrc: AppIcons.iconTwo,
+                            ),
+                            CustomHomeCard(
+                              text:
+                                  controller
+                                      .bookingModel
+                                      .value
+                                      .data
+                                      ?.length
+                                      .toString() ??
+                                  " - ",
+                              title: "Recent Services".tr,
+                              imageSrc: AppIcons.iconTwo,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
 
-                      // second row of stats cards
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomHomeCard(
-                            text: controller.requestedServices.value.toString(),
-                            title: "Request Services".tr,
-                            imageSrc: AppIcons.iconTwo,
-                          ),
-                          CustomHomeCard(
-                            text:
-                                controller
-                                    .bookingModel
-                                    .value
-                                    .data
-                                    ?.length
-                                    .toString() ??
-                                " - ",
-                            title: "Recent Services".tr,
-                            imageSrc: AppIcons.iconTwo,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-
-                      // third row of stats cards
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomHomeCard(
-                            onTap: () => Get.toNamed(AppRoutes.onGoingScreen),
-                            // Navigate to ongoing screen
-                            text: controller.onGoingServices.value.toString(),
-                            title: "On Going".tr,
-                            imageSrc: AppIcons.iconTwo,
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 15.h),
-
-                      // Recent Services section header
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            text: "Recent Service".tr,
-                            fontSize: 14.w,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black,
-                          ),
-                          // "See all" link
-                          CustomText(
-                            text: "See all".tr,
-                            fontSize: 14.w,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
-                          ).onTap(() {
-                            Get.toNamed(AppRoutes.recentAllServiceScreen);
-                          }),
-                        ],
-                      ),
-
-                      if ((controller.bookingModel.value.data?.length ??
-                              0) ==
-                          0)
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          child: const Center(child: Text('No data found')),
+                        // third row of stats cards
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomHomeCard(
+                              onTap: () => Get.toNamed(AppRoutes.onGoingScreen),
+                              // Navigate to ongoing screen
+                              text: controller.onGoingServices.value.toString(),
+                              title: "On Going".tr,
+                              imageSrc: AppIcons.iconTwo,
+                            ),
+                          ],
                         ),
 
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount:
-                            controller
-                                .bookingModel
-                                .value
-                                .data
-                                ?.length ??
-                            0,
-                        itemBuilder: (context, index) {
-                          final BookingModelData data =
+                        SizedBox(height: 15.h),
+
+                        // Recent Services section header
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              text: "Recent Service".tr,
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                            ),
+                            // "See all" link
+                            CustomText(
+                              text: "See all".tr,
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ).onTap(() {
+                              Get.toNamed(AppRoutes.recentAllServiceScreen);
+                            }),
+                          ],
+                        ),
+
+                        if ((controller.bookingModel.value.data?.length ??
+                                0) ==
+                            0)
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            child: const Center(child: Text('No data found')),
+                          ),
+
+                        ListView.builder(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
                               controller
                                   .bookingModel
                                   .value
-                                  .data![index];
+                                  .data
+                                  ?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            final BookingModelData data =
+                                controller
+                                    .bookingModel
+                                    .value
+                                    .data![index];
 
-                          return CustomServiceCard(
-                            title: getSubCategoryName(data),
-                            updateDate: data.createdAt ?? DateTime.now(),
-                            hourlyRate: data.rateHourly?.toString() ?? ' - ',
-                            rating:
-                                data.contractorId?.contractor?.ratings
-                                    ?.toString() ??
-                                ' - ',
-                            status: data.status ?? 'Unknown',
-                            image: data.contractorId?.img,
-                          );
-                        },
-                      ),
-                      SizedBox(height: 10.h), // Bottom spacer
-                    ],
+                            return CustomServiceCard(
+                              title: getSubCategoryName(data),
+                              updateDate: data.createdAt ?? DateTime.now(),
+                              hourlyRate: data.rateHourly?.toString() ?? ' - ',
+                              rating:
+                                  data.contractorId?.contractor?.ratings
+                                      ?.toString() ??
+                                  ' - ',
+                              status: data.status ?? 'Unknown',
+                              image: data.contractorId?.img,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 10.h), // Bottom spacer
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }

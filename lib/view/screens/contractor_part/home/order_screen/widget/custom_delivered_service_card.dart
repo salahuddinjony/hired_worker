@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../core/app_routes/app_routes.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
@@ -16,6 +18,9 @@ class CustomDeliveredServiceCard extends StatelessWidget {
   final DateTime dateTime;
   final String price;
   final String? image;
+  final bool isButtonShow;
+  final double height;
+  final int? index;
 
   const CustomDeliveredServiceCard({
     super.key,
@@ -24,6 +29,9 @@ class CustomDeliveredServiceCard extends StatelessWidget {
     required this.dateTime,
     required this.price,
     required this.image,
+    this.isButtonShow = true,
+    this.height = 130,
+    this.index,
   });
 
   @override
@@ -33,7 +41,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsetsGeometry.symmetric(horizontal: image != null && image!.isNotEmpty ? 0 : 15.w),
         width: MediaQuery.sizeOf(context).width,
-        height: 130.h, // Increased height slightly
+        height: height.h, // Increased height slightly
         decoration: BoxDecoration(
           color: AppColors.cardClr,
           borderRadius: BorderRadius.circular(13),
@@ -47,7 +55,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                 bottomLeft: Radius.circular(13),
               ),
               child: CustomNetworkImage(
-                imageUrl: AppConstants.electrician,
+                imageUrl: image ?? "",
                 height: 130.h,
                 width: 150.w,
               ),
@@ -72,12 +80,12 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 4.w),
-                        CustomNetworkImage(
-                          imageUrl: AppConstants.profileImage,
-                          height: 20,
-                          width: 20,
-                          boxShape: BoxShape.circle,
-                        ),
+                        // CustomNetworkImage(
+                        //   imageUrl: AppConstants.profileImage,
+                        //   height: 20,
+                        //   width: 20,
+                        //   boxShape: BoxShape.circle,
+                        // ),
                       ],
                     ),
                     SizedBox(height: 4.h),
@@ -111,7 +119,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    Row(
+                    if (isButtonShow) Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomButton(
@@ -134,7 +142,12 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                           textColor: AppColors.red,
                         ),
                         CustomButton(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.orderDetailsScreen2,
+                              arguments: {'index': index},
+                            );
+                          },
                           title: "View".tr,
                           height: 26.h,
                           width: 50.w,
