@@ -18,6 +18,7 @@ class ApiUrl {
   static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";
+  static const String purchaseSubscriptionPlan = "/payments/create-checkout-subscriptions";
   static const String createMaterial = "/contractors/materials";
   static const String deleteMaterial = "/contractors/materials/"; // id
   static const String updateMaterial = '/contractors/materials';
