@@ -48,18 +48,36 @@ class CustomerSearchResultScreen extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: CustomImage(imageSrc: AppIcons.search),
                 ),
-                suffixIcon: Obx(() => controller.isLoading.value
-                    ? const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                suffixIcon: Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
                         ),
-                      )
-                    : const SizedBox.shrink()),
+                      ),
+                    );
+                  }
+                  
+                  if (controller.searchText.isNotEmpty) {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.clear,
+                        color: AppColors.black_08,
+                      ),
+                      onPressed: () {
+                        controller.searchController.clear();
+                        controller.searchText.value = '';
+                        controller.searchResults.clear();
+                      },
+                    );
+                  }
+                  
+                  return const SizedBox.shrink();
+                }),
               ),
 
               const SizedBox(height: 20),

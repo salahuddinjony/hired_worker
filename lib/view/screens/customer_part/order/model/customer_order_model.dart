@@ -12,14 +12,37 @@ class CustomerOrderModel {
   });
 
   factory CustomerOrderModel.fromJson(Map<String, dynamic> json) {
+    // Handle the new API structure where data contains result and meta
+    final dataObject = json['data'];
+    List<BookingResult> bookings = [];
+    Meta? metaInfo;
+
+    if (dataObject is Map<String, dynamic>) {
+      // New API structure: data.result contains the bookings array
+      bookings = (dataObject['result'] as List<dynamic>?)
+              ?.map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [];
+      // Extract meta from data.meta
+      metaInfo = dataObject['meta'] != null 
+          ? Meta.fromJson(dataObject['meta'] as Map<String, dynamic>) 
+          : null;
+    } else if (dataObject is List<dynamic>) {
+      // Old API structure: data is directly an array
+      bookings = dataObject
+          .map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
+          .toList();
+      // Meta might be at root level
+      metaInfo = json['meta'] != null 
+          ? Meta.fromJson(json['meta'] as Map<String, dynamic>) 
+          : null;
+    }
+
     return CustomerOrderModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      meta: json['meta'] != null ? Meta.fromJson(json['meta'] as Map<String, dynamic>) : null,
-      data: (json['data'] as List<dynamic>?)
-              ?.map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      meta: metaInfo,
+      data: bookings,
     );
   }
 }

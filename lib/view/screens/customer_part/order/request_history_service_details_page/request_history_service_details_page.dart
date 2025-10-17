@@ -7,8 +7,8 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../review_page/review_page.dart';
@@ -17,7 +17,7 @@ import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
-import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../payment_webview_screen/payment_webview_screen.dart';
 
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
@@ -25,10 +25,10 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
   // Payment checkout method
   Future<void> initiatePaymentCheckout(BookingResult booking) async {
     try {
-      // Show loading indicator
-      Get.dialog(
-        const Center(child: CircularProgressIndicator()),
-        barrierDismissible: false,
+      // Show EasyLoading indicator
+      EasyLoading.show(
+        status: 'Processing payment...'.tr,
+        maskType: EasyLoadingMaskType.black,
       );
 
       // Prepare request body as JSON string
@@ -39,14 +39,12 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
 
       debugPrint('Payment checkout request: $requestBody');
 
-      // Call the payment checkout API with JSON encoded body
       final response = await ApiClient.postData(
         ApiUrl.createCheckoutSession,
-        jsonEncode(requestBody), // Convert to JSON string
+        jsonEncode(requestBody),
       );
 
-      // Close loading dialog
-      Get.back();
+      EasyLoading.dismiss();
 
       debugPrint('Payment checkout response: ${response.body}');
 
@@ -57,42 +55,39 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
 
         debugPrint('Opening payment URL: $checkoutUrl');
 
-        // Launch the checkout URL in the default browser
-        final Uri url = Uri.parse(checkoutUrl);
+        // Navigate to custom WebView screen with back button
+        final result = await Get.to(
+          () => const PaymentWebViewScreen(),
+          arguments: checkoutUrl,
+        );
 
-        // Try different launch modes
-        try {
-          final bool launched = await launchUrl(
-            url,
-            mode: LaunchMode.externalApplication,
+        // Handle the result from WebView
+        if (result == 'success') {
+          EasyLoading.showSuccess(
+            'Payment completed successfully'.tr,
+            duration: const Duration(seconds: 2),
           );
-
-          if (!launched) {
-            // Try with platformDefault
-            await launchUrl(url, mode: LaunchMode.platformDefault);
-          }
-        } catch (e) {
-          debugPrint(
-            'Failed to launch with externalApplication, trying platformDefault: $e',
+          // Optionally refresh the booking data or navigate back
+          Get.back();
+        } else if (result == 'cancelled') {
+          EasyLoading.showInfo(
+            'Payment was cancelled'.tr,
+            duration: const Duration(seconds: 2),
           );
-          // Fallback to platform default
-          await launchUrl(url, mode: LaunchMode.platformDefault);
         }
       } else {
-        showCustomSnackBar(
+        EasyLoading.showError(
           response.body?['message'] ?? 'Failed to create payment checkout',
-          isError: true,
+          duration: const Duration(seconds: 2),
         );
       }
     } catch (e) {
-      // Close loading dialog if still open
-      if (Get.isDialogOpen ?? false) {
-        Get.back();
-      }
+      // Dismiss EasyLoading if still open
+      EasyLoading.dismiss();
       debugPrint('Payment checkout error: $e');
-      showCustomSnackBar(
-        'An error occurred during payment checkout',
-        isError: true,
+      EasyLoading.showError(
+        'An error occurred during payment checkout'.tr,
+        duration: const Duration(seconds: 2),
       );
     }
   }
