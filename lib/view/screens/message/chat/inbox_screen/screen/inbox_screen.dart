@@ -9,7 +9,7 @@ import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/components/custom_nav_bar/customer_navbar.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/components/message_card/message_card.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/widgets/message_card/message_card.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/controller/conversation_controller.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/widgets/empty_conversations.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/widgets/inbox_loader.dart';
@@ -51,7 +51,7 @@ class InboxScreen extends StatelessWidget {
             ? const CustomerNavbar(currentIndex: 2)
             : const Navbar(currentIndex: 2);
       }),
-      appBar: AppBar(title: Text(AppStrings.chatList)),
+      appBar: AppBar(title: const Text(AppStrings.chatList)),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
@@ -83,7 +83,7 @@ class InboxScreen extends StatelessWidget {
                   });
 
                   if (controller.isLoading.value) {
-                    return InboxLoader();
+                    return const InboxLoader();
                   }
 
                   if (conversations.isEmpty) {
