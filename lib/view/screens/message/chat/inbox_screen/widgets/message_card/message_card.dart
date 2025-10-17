@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/widgets/custom_avatar/custom_avatar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
 class MessageCard extends StatelessWidget {
@@ -41,11 +41,11 @@ class MessageCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomNetworkImage(
+            CustomAvatar(
               imageUrl: imageUrl,
-              height: 40,
-              boxShape: BoxShape.circle,
-              width: 40,
+              name: senderName,
+              size: 40,
+              fontSize: 16,
             ),
             SizedBox(width: 8.w),
             Column(
