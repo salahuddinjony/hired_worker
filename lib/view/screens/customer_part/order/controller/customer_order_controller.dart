@@ -84,14 +84,15 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
       }
 
       final Map<String, String> queryParams = {
+        "status": status ?? '',
         'page': page.toString(),
         'limit': '10',
       };
       
-      // Add status filter if provided
-      if (status != null && status.isNotEmpty) {
-        queryParams['status'] = status;
-      }
+      // // Add status filter if provided
+      // if (status != null && status.isNotEmpty) {
+      //   queryParams['status'] = status;
+      // }
 
       final response = await ApiClient.getData(
         ApiUrl.getAllBookings,

@@ -10,6 +10,8 @@ import 'package:servana/view/screens/message/chat/socket_io/repositories/chat_re
 
 import 'package:uuid/uuid.dart';
 
+import '../../../../../service/api_url.dart';
+
 class ChatController extends GetxController {
   final String conversationId;
   final String userId;
@@ -68,7 +70,7 @@ class ChatController extends GetxController {
     final userId= await SharePrefsHelper.getString(AppConstants.userId);
 
     // connect to socket and join room
-    repo.connect('http://10.10.20.11:5002?userId=$userId');
+    repo.connect('${ApiUrl.socketUrl}?userId=$userId');
 
     // load history first (if available) so UI shows past messages
 

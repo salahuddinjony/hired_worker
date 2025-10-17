@@ -1,8 +1,11 @@
 class ApiUrl {
   // static const String baseUrl = "http://13.237.45.213/api/v1";
-  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
-  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
-  static String socketUrl = "http://13.237.45.213";
+  // static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  static const String imageUrl = "http://3.27.248.133:5002/api/v1";
+  // static const String baseUrl = "http://10.10.20.11:5002/api/v1";
+  static const String baseUrl = "http://3.27.248.133:5002/api/v1";
+  // static String socketUrl = "http://13.237.45.213";
+  static String socketUrl = "http://3.27.248.133:5002";
 
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
@@ -25,7 +28,8 @@ class ApiUrl {
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
   static const String getNotificationList = '/notifications';
-  static const String getAllBookings = "/bookings/all-bookings-by-user";
+  static const String getAllBookings = "/bookings";
+    // static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
   static String singleSubCategory({required String categoryId}) =>
