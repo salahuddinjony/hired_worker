@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
+import 'package:servana/view/screens/message/chat/inbox_screen/widgets/custom_avatar/custom_avatar.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   final String receiverName;
@@ -31,12 +31,11 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
               onTap: () {},
               child: Stack(
                 children: [
-                  ClipOval(
-                    child: CustomNetworkImage(
-                      imageUrl: receiverImage,
-                      height: 48,
-                      width: 48,
-                    ),
+                  CustomAvatar(
+                    imageUrl: receiverImage,
+                    name: receiverName,
+                    size: 48,
+                    fontSize: 20,
                   ),
                   Positioned(
                     right: 0,

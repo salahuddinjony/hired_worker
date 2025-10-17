@@ -17,6 +17,8 @@ class ChatController extends GetxController {
   final String userId;
   final String userRole;
   final String? receiverId;
+  final String? receiverName;
+  final String? receiverImage;
   final ChatRepository repo;
   late final types.User user;
 
@@ -25,24 +27,29 @@ class ChatController extends GetxController {
     required this.userId,
     required this.userRole,
     this.receiverId,
+    this.receiverName,
+    this.receiverImage,
     ChatRepository? repository,
   }) : repo = repository ?? ChatRepository() {
     // Use role as the author.id so side/layout decisions can be made by role.
-    user = types.User(id: userRole, firstName: 'Me');
+    user = types.User(
+      id: userRole,
+      firstName: 'Me',
+      imageUrl: null, 
+    );
   }
   
 
   
   final messages = RxList<types.Message>(<types.Message>[]);
   final isTyping = false.obs;
-  // new loading flag to indicate initial history fetch
   final isLoading = true.obs;
 
   StreamSubscription<ChatMessage>? msgSub;
   StreamSubscription<Map<String, dynamic>>? typingSub;
 
   // Helper: determine role for a sender string ID
-  String _roleForSender(String senderId, {String fallbackRole = 'other'}) {
+  String roleForSender(String senderId, {String fallbackRole = 'other'}) {
     // Since sender is now just a string ID, we need to determine role differently
     // For now, we'll check if it matches current userId to determine if it's our message
     if (senderId == userId) {
@@ -85,13 +92,17 @@ class ChatController extends GetxController {
       
       for (final h in history) {
         // determine role for this history message
-        final senderRole = _roleForSender(h.sender, fallbackRole: 'other');
+        final senderRole = roleForSender(h.sender, fallbackRole: 'other');
 
+        // Determine if this message is from the receiver
+        final isReceiverMessage = senderRole != userRole;
+        
         // Since the new structure doesn't include attachments, create only text messages
         final msg = types.TextMessage(
           author: types.User(
             id: senderRole,
-            firstName: 'User', // Generic name since we don't have user details
+            firstName: isReceiverMessage ? (receiverName ?? 'User') : 'Me',
+            imageUrl: isReceiverMessage ? receiverImage : null,
           ),
           createdAt: h.createdAt.millisecondsSinceEpoch,
           id: h.id.isNotEmpty ? h.id : const Uuid().v4(),
@@ -131,7 +142,7 @@ class ChatController extends GetxController {
         }
       // chatMsg is ChatMessage from repository
       // determine incoming sender role
-      final incomingRole = _roleForSender(chatMsg.sender, fallbackRole: 'other');
+      final incomingRole = roleForSender(chatMsg.sender, fallbackRole: 'other');
 
       // Avoid duplicates
       if (chatMsg.id.isNotEmpty && messages.any((m) => m.id == chatMsg.id)) {
@@ -139,12 +150,16 @@ class ChatController extends GetxController {
         return;
       }
 
+      // Determine if this message is from the receiver
+      final isReceiverMessage = incomingRole != userRole;
+
       // Since the new structure doesn't include attachments, create only text messages
       final msg = types.TextMessage(
         // Use role as author id for consistent side calculation
         author: types.User(
           id: incomingRole,
-          firstName: 'User', // Generic name since we don't have user details
+          firstName: isReceiverMessage ? (receiverName ?? 'User') : 'Me',
+          imageUrl: isReceiverMessage ? receiverImage : null,
         ),
         createdAt: chatMsg.createdAt.millisecondsSinceEpoch,
         id: chatMsg.id.isNotEmpty ? chatMsg.id : const Uuid().v4(),

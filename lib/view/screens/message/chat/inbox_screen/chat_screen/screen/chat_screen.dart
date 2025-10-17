@@ -4,7 +4,6 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/screens/message/chat/controllers/chat_controller.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/widgets/chat_header.dart';
 import '../widgets/chat_body.dart';
-import '../widgets/typing_indicator.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -29,6 +28,8 @@ class ChatScreen extends StatelessWidget {
                 userRole: userRole,
                 userId: userId,
                 receiverId: receiverId,
+                receiverName: receiverName,
+                receiverImage: receiverImage,
               ),
               tag: conversationId,
             );
