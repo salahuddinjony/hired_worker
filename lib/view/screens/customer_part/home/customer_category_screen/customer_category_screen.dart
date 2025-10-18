@@ -15,7 +15,7 @@ class CustomerCategoryScreen extends StatelessWidget {
     final HomeController homeController = Get.find<HomeController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Categories".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Services".tr),
       body: Obx(() {
         final categorys = homeController.categoryModel.value.data ?? [];
         if (homeController.getCategoryStatus.value.isLoading) {

@@ -30,7 +30,8 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final String endTime = args['endTime']?.toString() ?? '';
     final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
     final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
-    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
+    final String bookingId = args['bookingId']?.toString() ?? ''; 
+    final bool isUpdate = args['isUpdate'] ?? false;
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -125,19 +126,19 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'contractorName': contractorName,
                 'categoryName': categoryName,
                 'subCategoryName': subCategoryName,
-                // Forward booking schedule data for updates
+              
                 'bookingType': bookingType,
                 'duration': duration,
                 'startTime': startTime,
                 'endTime': endTime,
                 'selectedDates': selectedDates,
                 'hourlyRate': hourlyRate,
-                'isUpdate': true, // Flag to indicate this is an update flow
-                'bookingId': bookingId, // Forward booking ID
+                'isUpdate': isUpdate, 
+                'bookingId': bookingId,
               },
             );
           },
-          title: "Continue".tr,
+          title: isUpdate ? "Update".tr : "Continue".tr,
         ),
       ),
     );

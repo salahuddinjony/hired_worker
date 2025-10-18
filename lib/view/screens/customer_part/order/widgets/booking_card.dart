@@ -302,9 +302,7 @@ class BookingCard extends StatelessWidget {
                                       ? [booking.day as String]
                                       : [],
                               'hourlyRate': booking.rateHourly ?? 0,
-                              'bookingId':
-                                  booking
-                                      .bookingId, // Pass booking ID for updates
+                              'bookingId':booking.id,
                               'isUpdate': true, // Indicate this is an update
                             },
                           );

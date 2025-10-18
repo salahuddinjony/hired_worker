@@ -29,6 +29,7 @@ class AuthController extends GetxController {
   Rx<TextEditingController> phoneController =
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
+  Rx<TextEditingController> addressController = TextEditingController().obs;
 
   Rx<TextEditingController> passController = TextEditingController().obs;
   Rx<TextEditingController> confirmController =

@@ -20,6 +20,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String contractorName = args['contractorName'] ?? '';
     final String categoryName = args['categoryName'] ?? '';
     final String subCategoryName = args['subCategoryName'] ?? '';
+    final String isUpdate = args['isUpdate']?.toString() ?? 'false';
+    final String bookingId = args['bookingId']?.toString() ?? '';
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details".tr),
@@ -53,7 +55,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       ),
                       CustomText(
                         top: 4,
-                        text: "${controller.hourlyRate}\$/h",
+                        text: "AUD ${controller.hourlyRate}/h",
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
@@ -72,7 +74,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               ),
 
               CustomText(
-                text: "Requirement Question".tr,
+                text: "Required Questions".tr,
                 fontSize: 18.w,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
@@ -177,7 +179,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         CustomText(
                                           text:
-                                              '- $count x \$${priceDouble.toStringAsFixed(2)}',
+                                              '- $count x AUD ${priceDouble.toStringAsFixed(2)}',
                                           fontSize: 14.w,
                                           fontWeight: FontWeight.w500,
                                           color: AppColors.black,
@@ -187,7 +189,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   CustomText(
-                                    text: '\$${totalPrice.toStringAsFixed(2)}',
+                                    text: 'AUD ${totalPrice.toStringAsFixed(2)}',
                                     fontSize: 14.w,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.black,
@@ -213,7 +215,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           const Expanded(child: SizedBox()),
                           CustomText(
                             text:
-                                "\$${controller.materialsTotalAmount.toStringAsFixed(2)}",
+                                "AUD ${controller.materialsTotalAmount.toStringAsFixed(2)}",
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -235,7 +237,11 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               // Read-only booking type
               Row(
                 children: [
-                  const Icon(Icons.book_online, size: 16, color: AppColors.black_08),
+                  const Icon(
+                    Icons.book_online,
+                    size: 16,
+                    color: AppColors.black_08,
+                  ),
                   const SizedBox(width: 8),
                   CustomText(
                     text:
@@ -255,14 +261,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   children: [
                     CustomText(
                       text:
-                          "Selected Days: ${controller.selectedDates.length} days -  \$${controller.selectedDates.length} x ${controller.totalDurationAmount}",
+                          "Selected Days: ${controller.selectedDates.length} days - AUD ${controller.selectedDates.length} x ${controller.totalDurationAmount}",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
                     ),
                     const Expanded(child: SizedBox()),
                     CustomText(
-                      text: controller.weeklyTotalAmount.toString() + "\$",
+                      text: "AUD ${controller.weeklyTotalAmount.toString()}",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
@@ -286,14 +292,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 children: [
                   CustomText(
                     text:
-                        "Duration : ( ${controller.durations.value} x ${controller.hourlyRate}\$ ) ",
+                        "Duration : ( ${controller.durations.value} x AUD ${controller.hourlyRate} ) ",
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
                   const SizedBox(width: 8),
                   CustomText(
-                    text: "\$${controller.totalDurationAmount.toString()}",
+                    text: "AUD ${controller.totalDurationAmount.toString()}",
                     fontSize: 16.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -307,7 +313,11 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.access_time, size: 16, color: AppColors.black_08),
+                  const Icon(
+                    Icons.access_time,
+                    size: 16,
+                    color: AppColors.black_08,
+                  ),
                   const SizedBox(width: 4),
                   CustomText(
                     text:
@@ -353,7 +363,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: '\$',
+                          text: 'AUD ',
                           style: TextStyle(
                             fontSize: 20.w,
                             fontWeight: FontWeight.bold,
@@ -390,10 +400,19 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       onTap: () async {
                         // collect answers and open checkout
                         controller.collectAllAnswers();
-                        final bookingSuccess = await controller.createBooking(
-                          contractorId: contractorId,
-                          subcategoryId: subcategoryId,
-                        );
+
+                        final bookingSuccess =
+                            isUpdate == 'true'
+                                ? await controller.updateBooking(
+                                  bookingId: bookingId,
+                                  contractorId: contractorId,
+                                  subcategoryId: subcategoryId,
+                                )
+                                : await controller.createBooking(
+                                  contractorId: contractorId,
+                                  subcategoryId: subcategoryId,
+                                );
+
                         if (bookingSuccess) {
                           Get.toNamed(AppRoutes.customerRequestHistoryScreen);
                         } else {
@@ -403,7 +422,10 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           'All questions Q and A : ${controller.questionsAndAnswers}',
                         );
                       },
-                      title: "Book Now".tr,
+                      title:
+                          isUpdate == 'true'
+                              ? "Confirm Booking".tr
+                              : "Book Now".tr,
                     ),
                   ),
                 ],

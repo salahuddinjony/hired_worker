@@ -93,7 +93,7 @@ final Map<String, String> chinese = {
   "Materials": "材料",
   "History": "历史",
   "Service Contractor": "服务承包商",
-  "Requirement Question": "需求问题",
+  "Required Questions": "需求问题",
   "Notification": "通知",
   "Profile": "个人资料",
   "Address": "地址",

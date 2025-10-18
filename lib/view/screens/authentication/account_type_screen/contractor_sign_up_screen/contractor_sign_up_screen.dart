@@ -58,7 +58,7 @@ class ContractorSignUpScreen extends StatelessWidget {
                 controller: authController.nameController.value,
               ),
               CustomFormCard(
-                title: "Enter your address".tr,
+                title: "Enter your Email".tr,
                 hintText: "Enter your email".tr,
                 controller: authController.emailController.value,
               ),
@@ -66,6 +66,11 @@ class ContractorSignUpScreen extends StatelessWidget {
                 title: "Enter your mobile number".tr,
                 hintText: "Enter your number".tr,
                 controller: authController.phoneController.value,
+              ),
+              CustomFormCard(
+                title: "Enter your address".tr,
+                hintText: "Enter your address".tr,
+                controller: authController.addressController.value,
               ),
               CustomFormCard(
                 isPassword: true,

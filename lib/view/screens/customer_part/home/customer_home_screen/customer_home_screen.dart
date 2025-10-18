@@ -96,7 +96,9 @@ class CustomerHomeScreen extends StatelessWidget {
                               size: 20,
                             ),
                             CustomText(
-                              text: "38 Chestnut StreetStaunton",
+                              text:
+                                  customerData.data?.customer?.city ??
+                                  "No address found".tr,
                               fontSize: 14.w,
                               fontWeight: FontWeight.w400,
                               color: const Color(0xff8891AA),
@@ -166,7 +168,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Category".tr,
+                      text: "Services".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black_08,
@@ -217,7 +219,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Sub Category".tr,
+                      text: "Tasks".tr,
                       fontSize: 18.w,
                       fontWeight: FontWeight.w700,
                       color: AppColors.black_08,
