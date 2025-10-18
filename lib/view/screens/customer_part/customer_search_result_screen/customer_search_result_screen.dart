@@ -24,7 +24,7 @@ class CustomerSearchResultScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          "Search Categories".tr,
+          "Search Services".tr,
           style: const TextStyle(
             color: AppColors.black_08,
             fontSize: 20,

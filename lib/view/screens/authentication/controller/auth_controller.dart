@@ -19,6 +19,7 @@ class AuthController extends GetxController {
   //   Customer
   //yeteho1407@erynka.com
   // 12345678
+  
 
   //contractor
   //yolorem734@arqsis.com

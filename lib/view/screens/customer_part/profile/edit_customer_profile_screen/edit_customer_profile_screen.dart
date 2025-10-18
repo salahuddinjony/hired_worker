@@ -164,6 +164,107 @@ class EditCustomerProfileScreen extends StatelessWidget {
                   }
                 },
               ),
+              SizedBox(height: 20.h),
+              
+              // Additional Address Section Title
+              CustomText(
+                text: 'Saved Addresses'.tr,
+                fontSize: 18.w,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+                bottom: 10.h,
+              ),
+              
+              // Additional Address Card
+              GestureDetector(
+                onTap: () {
+                  profileController.showAddressBottomSheet();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: Colors.grey[300]!,
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Obx(
+                    () {
+                      final hasAddress = profileController.additionalAddressController.value.text.isNotEmpty;
+                      
+                      return Row(
+                        children: [
+                          // Icon Container
+                          Container(
+                            padding: EdgeInsets.all(10.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Icon(
+                              hasAddress ? Icons.location_on : Icons.add_location_alt_outlined,
+                              color: AppColors.primary,
+                              size: 24.w,
+                            ),
+                          ),
+                          
+                          SizedBox(width: 12.w),
+                          
+                          // Text Content
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: hasAddress 
+                                      ? "Selected Address".tr 
+                                      : "Add Address".tr,
+                                  fontSize: 16.w,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.black,
+                                ),
+                                SizedBox(height: 4.h),
+                                CustomText(
+                                  text: hasAddress
+                                      ? profileController.additionalAddressController.value.text
+                                      : "Tap to manage your saved addresses".tr,
+                                  fontSize: 13.w,
+                                  fontWeight: FontWeight.w400,
+                                  color: hasAddress ? AppColors.black_05 : Colors.grey[500]!,
+                                  maxLines: 2,
+                                ),
+                              ],
+                            ),
+                          ),
+                          
+                          SizedBox(width: 8.w),
+                          
+                          // Arrow Icon
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.grey[400],
+                            size: 16.w,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // CustomFormCard(
+              //   title: "Additional Address".tr,
+              //   hintText: 'additional address',
+              //   controller: profileController.phoneController.value,
+              // ),
               SizedBox(height: 30.h),
               Obx(
 
@@ -177,6 +278,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                           title: "Update".tr,
                         ),
               ),
+              SizedBox(height: 30.h),
             ],
           ),
         ),

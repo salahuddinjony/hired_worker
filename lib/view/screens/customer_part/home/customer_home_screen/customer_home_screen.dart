@@ -45,13 +45,16 @@ class CustomerHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Obx(() {
-                      final data =
-                          customerProfileController.customerModel.value.data;
-                      // Check if an image is selected, if not use the default profile image
+                    Row(
+                      children: [
+                        Obx(() {
+                          final data =
+                              customerProfileController.customerModel.value.data;
+                          // Check if an image is selected, if not use the default profile image
 
-                      return (data?.img != null)
+                          return (data?.img != null)
                           ? GestureDetector(
                             onTap: () {
                               Get.toNamed(AppRoutes.editCustomerProfileScreen);
@@ -97,7 +100,13 @@ class CustomerHomeScreen extends StatelessWidget {
                             ),
                             CustomText(
                               text:
-                                  customerData.data?.customer?.city ??
+                                  (() {
+                                    final city = customerData.data?.customer?.city;
+                                    if (city == null || city.trim().isEmpty) return null;
+                                    final parts = city.split(',').map((s) => s.trim()).toList();
+                                    final start = parts.length > 2 ? parts.length - 2 : 0;
+                                    return parts.sublist(start).join(', ');
+                                  })() ??
                                   "No address found".tr,
                               fontSize: 14.w,
                               fontWeight: FontWeight.w400,
@@ -106,6 +115,61 @@ class CustomerHomeScreen extends StatelessWidget {
                           ],
                         ),
                       ],
+                    ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 16.w),
+                      child: Obx(() {
+                        final notificationCount = customerProfileController.notificationsList.length;
+                        return GestureDetector(
+                          onTap: () {
+                            customerProfileController.getNotifications();
+                            Get.toNamed(
+                              AppRoutes.customerNotificationScreen,
+                              arguments: {
+                                'controller': customerProfileController,
+                              },
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Icon(
+                                Icons.notifications_outlined,
+                                size: 28.w,
+                                color: AppColors.black,
+                              ),
+                              if (notificationCount > 0)
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: notificationCount > 99 ? 4.w : 5.w,
+                                      vertical: 2.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 18.w,
+                                      minHeight: 18.h,
+                                    ),
+                                    child: Center(
+                                      child: CustomText(
+                                        text: notificationCount > 99 ? '99+' : notificationCount.toString(),
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
                   ],
                 ),
