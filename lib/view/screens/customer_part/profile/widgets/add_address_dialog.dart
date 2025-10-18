@@ -162,27 +162,62 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               // Save Button
               CustomButton(
-                onTap: () {
+                onTap: () async {
+                  print('🔴 BUTTON CLICKED - START');
+                  debugPrint('=== Save Address Button Tapped ===');
+                  debugPrint('Address: ${addressController.text}');
+                  debugPrint('Flat: ${flatController.text}');
+                  debugPrint('Type: $selectedType');
+                  
                   if (addressController.text.isEmpty) {
+                    debugPrint('Error: Address is empty');
                     Get.snackbar(
                       'Error',
                       'Please enter an address',
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
+                      snackPosition: SnackPosition.BOTTOM,
+                      margin: EdgeInsets.all(16),
+                      borderRadius: 8,
                     );
                     return;
                   }
                   
-                  controller.addNewAddress(
-                    title: selectedType,
-                    address: addressController.text,
-                    flatNo: flatController.text,
-                    directions: directionsController.text,
-                    latitude: widget.latitude,
-                    longitude: widget.longitude,
-                  );
-                  
-                  Get.back();
+                  try {
+                    debugPrint('Calling addNewAddress...');
+                    controller.addNewAddress(
+                      title: selectedType,
+                      address: addressController.text,
+                      flatNo: flatController.text.isNotEmpty ? flatController.text : null,
+                      directions: directionsController.text.isNotEmpty ? directionsController.text : null,
+                      latitude: widget.latitude,
+                      longitude: widget.longitude,
+                    );
+                    
+                    debugPrint('Address saved successfully!');
+                    debugPrint('Closing add address bottom sheet...');
+                    
+                    // Close current bottom sheet using both methods
+                    Navigator.of(context).pop();
+                    debugPrint('✅ Navigator.pop() called');
+                    
+                    // Small delay for clean animation
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    
+                    debugPrint('Opening saved addresses bottom sheet...');
+                    // Open saved addresses list
+                    controller.showAddressBottomSheet();
+                    debugPrint('✅ showAddressBottomSheet() called');
+                    
+                  } catch (e) {
+                    debugPrint('❌ Error saving address: $e');
+                    Get.snackbar(
+                      'Error',
+                      'Failed to save address: $e',
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  }
                 },
                 title: "Save Address".tr,
               ),
