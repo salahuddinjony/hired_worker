@@ -35,8 +35,6 @@ class ChargeController extends GetxController {
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
 
-        await SharePrefsHelper.setBool(AppStrings.isProfileComplete, true);
-
         Get.toNamed(AppRoutes.subscribeScreen);
       } else {
         showCustomSnackBar(
