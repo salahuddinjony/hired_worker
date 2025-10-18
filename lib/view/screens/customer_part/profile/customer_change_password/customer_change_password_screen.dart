@@ -28,6 +28,7 @@ class CustomerChangePasswordScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomFormCard(
+              isPassword: true,
               title: "Old Password".tr,
               hintText: "Enter your old password".tr,
               controller: controller.oldPasswordController.value,
@@ -39,6 +40,7 @@ class CustomerChangePasswordScreen extends StatelessWidget {
               },
             ),
             CustomFormCard(
+              isPassword: true,
               title: "New Password".tr,
               hintText: "Enter your new password".tr,
               controller: controller.newPasswordController.value,
@@ -50,6 +52,7 @@ class CustomerChangePasswordScreen extends StatelessWidget {
               },
             ),
             CustomFormCard(
+              isPassword: true,
               title: "Confirm New Password".tr,
               hintText: "Confirm your new password".tr,
               controller: controller.confirmNewPasswordController.value,
