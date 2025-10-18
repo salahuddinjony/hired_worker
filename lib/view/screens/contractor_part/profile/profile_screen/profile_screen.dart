@@ -83,6 +83,7 @@ class ProfileScreen extends StatelessWidget {
                   }),
 
                   SizedBox(width: 10.w),
+
                   Obx(() {
                     final contractorData =
                         profileController.contractorModel.value;
