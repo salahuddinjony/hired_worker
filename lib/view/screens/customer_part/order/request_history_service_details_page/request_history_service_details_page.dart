@@ -240,7 +240,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 4,
-          text: "Sub Category : ${booking.subCategoryId?.name ?? ''}",
+          text: "Task : ${booking.subCategoryId?.name ?? ''}",
           fontSize: 16.w,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
@@ -317,7 +317,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Radio(value: true, groupValue: (true), onChanged: (value) {}),
             CustomText(
-              text: booking.bookingType ?? 'One Time',
+              text: booking.bookingType=='oneTime' ? 'One Time' : 'Weekly',
               fontSize: 16.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,

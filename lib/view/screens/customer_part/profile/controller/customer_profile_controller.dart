@@ -12,6 +12,10 @@ import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/notification_model.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
+import 'package:servana/view/screens/customer_part/profile/model/address_model.dart';
+import 'package:servana/view/screens/customer_part/profile/widgets/add_address_dialog.dart';
+import 'package:servana/view/screens/customer_part/profile/widgets/address_selection_bottom_sheet.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import '../../../../../utils/app_strings/app_strings.dart';
 
 class CustomerProfileController extends GetxController {
@@ -27,10 +31,18 @@ class CustomerProfileController extends GetxController {
   Rx<TextEditingController> phoneController = TextEditingController().obs;
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
+  Rx<TextEditingController> additionalAddressController = TextEditingController().obs;
 
   // Location data
   RxnDouble latitude = RxnDouble();
   RxnDouble longitude = RxnDouble();
+  
+  // Temporary location data for new address
+  RxnDouble tempLatitude = RxnDouble();
+  RxnDouble tempLongitude = RxnDouble();
+
+  // Saved addresses list
+  RxList<SavedAddress> savedAddresses = <SavedAddress>[].obs;
 
   //========= change password controllers ===========//
   Rx<TextEditingController> oldPasswordController = TextEditingController().obs;
@@ -237,4 +249,110 @@ class CustomerProfileController extends GetxController {
       EasyLoading.showError(AppStrings.checknetworkconnection);
     }
   }
+
+  //========= Address Management Methods ===========//
+  
+  // Show bottom sheet for address selection
+  void showAddressBottomSheet() {
+    Get.bottomSheet(
+      const AddressSelectionBottomSheet(),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
+  // Navigate to map and then show add address dialog
+  Future<void> showAddAddressDialog() async {
+    // First, navigate to map to pick location
+    if (!Get.isRegistered<MapController>()) {
+      Get.put(MapController());
+    }
+    
+    final result = await Get.toNamed(
+      '/SeletedMapScreen',
+      arguments: {'returnData': true},
+    );
+    
+    // If location is selected, show address details bottom sheet
+    if (result != null && result is Map<String, dynamic>) {
+      final address = result['address'] ?? '';
+      final latitude = result['latitude'];
+      final longitude = result['longitude'];
+      
+      // Show bottom sheet with address details
+      Get.bottomSheet(
+        AddAddressBottomSheet(
+          address: address,
+          latitude: latitude,
+          longitude: longitude,
+        ),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+      );
+    }
+  }
+
+  // Add new address to the list
+  void addNewAddress({
+    required String title,
+    required String address,
+    String? flatNo,
+    String? directions,
+    double? latitude,
+    double? longitude,
+  }) {
+    final newAddress = SavedAddress(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: title,
+      address: address,
+      flatNo: flatNo,
+      directions: directions,
+      city: cityController.value.text,
+      latitude: latitude,
+      longitude: longitude,
+      isSelected: false,
+    );
+
+    savedAddresses.add(newAddress);
+
+    Get.snackbar(
+      'Success',
+      'Address added successfully',
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+  }
+
+  // Select an address from the list
+  void selectAddress(int index) {
+    // Deselect all addresses
+    for (int i = 0; i < savedAddresses.length; i++) {
+      savedAddresses[i] = savedAddresses[i].copyWith(isSelected: false);
+    }
+
+    // Select the chosen address
+    savedAddresses[index] = savedAddresses[index].copyWith(isSelected: true);
+
+    final selectedAddress = savedAddresses[index];
+    
+    // Update additional address controller
+    String fullAddress = selectedAddress.address;
+    if (selectedAddress.flatNo != null && selectedAddress.flatNo!.isNotEmpty) {
+      fullAddress = '${selectedAddress.flatNo}, $fullAddress';
+    }
+    additionalAddressController.value.text = fullAddress;
+    
+    savedAddresses.refresh();
+  }
+
+  // Get selected address
+  SavedAddress? getSelectedAddress() {
+    try {
+      return savedAddresses.firstWhere((address) => address.isSelected);
+    } catch (e) {
+      return null;
+    }
+  }
 }
+
