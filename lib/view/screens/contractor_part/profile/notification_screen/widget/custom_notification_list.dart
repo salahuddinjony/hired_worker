@@ -27,27 +27,29 @@ class CustomNotificationList extends StatelessWidget {
               child: Icon(Icons.notifications_none, color: AppColors.white),
             ),
             SizedBox(width: 10.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  text: title,
-                  fontSize: 15.w,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                  bottom: 4,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                CustomText(
-                  text: message,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: 11.w,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textCLr,
-                ),
-              ],
+
+            /// Fix: Wrap Column in Expanded to avoid overflow
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: title,
+                    fontSize: 15.w,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                    bottom: 4,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    message,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
