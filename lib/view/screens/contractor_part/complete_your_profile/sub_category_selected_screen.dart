@@ -37,7 +37,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Category".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
