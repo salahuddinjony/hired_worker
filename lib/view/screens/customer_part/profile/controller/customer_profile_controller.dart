@@ -114,6 +114,7 @@ class CustomerProfileController extends GetxController {
       'fullName': nameController.value.text,
       'contactNo': phoneController.value.text,
       'city': cityController.value.text,
+      'location': '${latitude.value},${longitude.value}',
       'dob': dobController.value.text,
       'gender': customController.selectedGender.value,
     };
