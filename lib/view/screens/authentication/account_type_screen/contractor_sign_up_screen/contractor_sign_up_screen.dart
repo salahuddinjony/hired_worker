@@ -10,6 +10,7 @@ import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 
 class ContractorSignUpScreen extends StatelessWidget {
   const ContractorSignUpScreen({super.key});
@@ -67,11 +68,31 @@ class ContractorSignUpScreen extends StatelessWidget {
                 hintText: "Enter your number".tr,
                 controller: authController.phoneController.value,
               ),
-              CustomFormCard(
+              isContactor==false
+                  ? CustomFormCard(
                 title: "Enter your address".tr,
                 hintText: "Enter your address".tr,
                 controller: authController.addressController.value,
-              ),
+                readOnly: true,
+                onTap: () async {
+                  // Initialize MapController if not already registered (for reusable map screen)
+                  if (!Get.isRegistered<MapController>()) {
+                    Get.put(MapController());
+                  }
+                  
+                  // Navigate to map screen with argument to return data
+                  final result = await Get.toNamed(
+                    '/SeletedMapScreen',
+                    arguments: {'returnData': true},
+                  );
+                  
+                  // Update address field with selected location
+                  if (result != null && result is Map<String, dynamic>) {
+                    authController.updateAddressFromMap(result);
+                  }
+                },
+              )
+                  : const SizedBox.shrink(),
               CustomFormCard(
                 isPassword: true,
                 title: "Enter New Password".tr,

@@ -217,6 +217,13 @@ class ProfileScreen extends StatelessWidget {
                 image: AppIcons.call,
                 name: "Support".tr,
               ),
+               CustomProfileMenuList(
+                iconData: Icons.lock,
+                name: "Change Password".tr,
+                onTap: () {
+                  Get.toNamed(AppRoutes.customerChangePasswordScreen);
+                },
+              ),
               CustomProfileMenuList(
                 image: AppIcons.language,
                 name:

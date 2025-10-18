@@ -36,6 +36,10 @@ class AuthController extends GetxController {
       TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
 
+  // Location data for address
+  RxnDouble latitude = RxnDouble();
+  RxnDouble longitude = RxnDouble();
+
   Rx<bool> isAgree = false.obs;
 
   Rx<bool> rememberMe = true.obs;
@@ -59,6 +63,13 @@ class AuthController extends GetxController {
       emailController.value.text = email;
       passController.value.text = password;
     }
+  }
+
+  // Update address from map selection
+  void updateAddressFromMap(Map<String, dynamic> locationData) {
+    addressController.value.text = locationData['address'] ?? '';
+    latitude.value = locationData['latitude'];
+    longitude.value = locationData['longitude'];
   }
 
   ///=====================LOGIN METHOD=====================
