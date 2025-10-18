@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
@@ -131,12 +132,16 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
+                                    textAlign:  TextAlign.center,
+                                    maxLines: 2,
                                     item.name ?? " - ",
                                     style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 14.sp,
                                       color:
-                                          isSelected
-                                              ? Colors.white
-                                              : Colors.black,
+                                      isSelected
+                                          ? Colors.white
+                                          : Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),

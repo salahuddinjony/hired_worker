@@ -149,7 +149,7 @@ class AppRoutes {
     GetPage(name: subscribeScreen, page: () => SubscribeScreen()),
     GetPage(name: paymentMethodScreen, page: () => PaymentMethodScreen()),
     GetPage(name: thanksScreen, page: () => ThanksScreen()),
-    GetPage(name: seletedMapScreen, page: () => SeletedMapScreen()),
+    GetPage(name: seletedMapScreen, page: () => SelectedMapScreen()),
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
     GetPage(name: subCategorySelectedScreen, page: () => SubCategorySelectedScreen()),

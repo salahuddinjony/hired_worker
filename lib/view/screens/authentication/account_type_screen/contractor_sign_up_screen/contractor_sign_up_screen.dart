@@ -73,11 +73,13 @@ class ContractorSignUpScreen extends StatelessWidget {
                 controller: authController.addressController.value,
               ),
               CustomFormCard(
+                isPassword: true,
                 title: "Enter New Password".tr,
                 hintText: "Enter your password".tr,
                 controller: authController.passController.value,
               ),
               CustomFormCard(
+                isPassword: true,
                 title: "Enter Confirm Password".tr,
                 hintText: "Enter your password".tr,
                 controller: authController.confirmController.value,

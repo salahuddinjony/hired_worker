@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -34,7 +35,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
         Get.find<ScheduleSelectionController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Selecte Times".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Select Times".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -46,7 +47,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
               style: const TextStyle(color: Colors.black87),
             ),
             Text(
-              "You can always change it later.".tr,
+              "You can adjust specific times later.".tr,
               style: const TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 24),
@@ -92,8 +93,8 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
                             Expanded(
                               child: Text(
                                 '$day - 09 : 00 AM - 11 : 00 PM',
-                                style: const TextStyle(
-                                  fontSize: 16,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),

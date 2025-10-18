@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -49,16 +50,18 @@ class ScheduleScreen extends StatelessWidget {
             ),
           ),
 
-
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 60.0,
+              horizontal: 20.0,
+            ),
             child: Obx(() {
               return controller.status.value.isLoading
                   ? const CustomLoader()
                   : CustomButton(
-                onTap: () => controller.updateContractorData(),
-                title: "Save".tr,
-              );
+                    onTap: () => controller.updateContractorData(),
+                    title: "Save".tr,
+                  );
             }),
           ),
         ],
@@ -98,7 +101,7 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
   void _initializeSchedule() {
     // Find the schedule for this day
     final daySchedule = widget.schedule?.schedules?.firstWhere(
-          (schedule) => schedule.days == widget.fullDay,
+      (schedule) => schedule.days == widget.fullDay,
       orElse: () => Schedule(),
     );
 
@@ -147,9 +150,10 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
   Future<void> pickTime({required bool isStart}) async {
     final picked = await showTimePicker(
       context: context,
-      initialTime: isStart
-          ? (startTime ?? const TimeOfDay(hour: 9, minute: 0))
-          : (endTime ?? const TimeOfDay(hour: 18, minute: 0)),
+      initialTime:
+          isStart
+              ? (startTime ?? const TimeOfDay(hour: 9, minute: 0))
+              : (endTime ?? const TimeOfDay(hour: 18, minute: 0)),
     );
 
     if (picked != null) {
@@ -183,21 +187,22 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
         children: [
-          SizedBox(
-            width: 40,
-            child: Text(
-              widget.day,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black,
-              ),
+          // day
+          Text(
+            widget.day,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13.sp,
+              color: Colors.black,
             ),
           ),
-          const SizedBox(width: 20),
+
+          SizedBox(width: 10.w),
+
           Expanded(
             child: Row(
               children: [
+                // time slot
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(10),
@@ -213,20 +218,20 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
                           onTap: () => pickTime(isStart: true),
                           child: Text(
                             formatTime(startTime),
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: TextStyle(
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const Text("  -  "),
+                        const Text(" - "),
                         GestureDetector(
                           onTap: () => pickTime(isStart: false),
                           child: Text(
                             formatTime(endTime),
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: TextStyle(
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
@@ -236,36 +241,38 @@ class _AvailabilityTileState extends State<AvailabilityTile> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 20),
+
+                SizedBox(width: 10.w),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // available text
                     Text(
                       "Available".tr,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
+                      style: TextStyle(fontSize: 12.sp, color: Colors.black54),
                     ),
-                    const SizedBox(width: 10),
-                    Switch(
-                      value: isAvailable,
-                      activeColor: AppColors.primary,
-                      onChanged: (value) {
-                        setState(() {
-                          isAvailable = value;
-                          // Clear times when turning off availability
-                          if (!value) {
-                            startTime = null;
-                            endTime = null;
-                          } else {
-                            // Set default times when turning on availability
-                            startTime ??= const TimeOfDay(hour: 9, minute: 0);
-                            endTime ??= const TimeOfDay(hour: 18, minute: 0);
-                          }
-                          _notifyController(); // Notify controller of changes
-                        });
-                      },
+
+                    // switch button
+                    Transform.scale(
+                      scale: 0.75,
+                      child: Switch(
+                        value: isAvailable,
+                        activeColor: AppColors.primary,
+                        onChanged: (value) {
+                          setState(() {
+                            isAvailable = value;
+                            if (!value) {
+                              startTime = null;
+                              endTime = null;
+                            } else {
+                              startTime ??= const TimeOfDay(hour: 9, minute: 0);
+                              endTime ??= const TimeOfDay(hour: 18, minute: 0);
+                            }
+                            _notifyController();
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
