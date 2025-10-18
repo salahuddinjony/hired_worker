@@ -28,6 +28,10 @@ class CustomerProfileController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
 
+  // Location data
+  RxnDouble latitude = RxnDouble();
+  RxnDouble longitude = RxnDouble();
+
   //========= change password controllers ===========//
   Rx<TextEditingController> oldPasswordController = TextEditingController().obs;
   Rx<TextEditingController> newPasswordController = TextEditingController().obs;
@@ -40,6 +44,13 @@ class CustomerProfileController extends GetxController {
     dobController.value.text = data.customer?.dob ?? '';
     cityController.value.text = data.customer?.city ?? '';
     customController.selectedGender.value = data.customer?.gender ?? '';
+  }
+
+  // Update address from map selection
+  void updateAddressFromMap(Map<String, dynamic> locationData) {
+    cityController.value.text = locationData['address'] ?? '';
+    latitude.value = locationData['latitude'];
+    longitude.value = locationData['longitude'];
   }
 
   RxInt currentIndex = 0.obs;
