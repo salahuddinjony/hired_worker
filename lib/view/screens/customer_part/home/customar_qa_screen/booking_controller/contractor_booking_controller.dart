@@ -295,8 +295,102 @@ class ContractorBookingController extends GetxController {
           "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
       textController.text = formatted;
       debugPrint('ContractorBookingController.selectTime picked: $formatted');
+      
+      // Validate time range immediately after selecting end time
+      if (textController == endTimeController.value &&
+          startTimeController.value.text.isNotEmpty &&
+          endTimeController.value.text.isNotEmpty) {
+        
+        // Perform validation
+        if (!validateTimeRangeImmediate()) {
+          // Clear the end time if validation fails
+          textController.clear();
+        }
+      }
     }
     refresh();
+  }
+  
+  /// Immediate validation for time picker (shows dialog instead of toast)
+  bool validateTimeRangeImmediate() {
+    if (startTimeController.value.text.isEmpty ||
+        endTimeController.value.text.isEmpty) {
+      return true; // Skip validation if times not set yet
+    }
+
+    try {
+      // Parse start time
+      final startParts = startTimeController.value.text.split(':');
+      final startHour = int.parse(startParts[0]);
+      final startMinute = int.parse(startParts[1]);
+
+      // Parse end time
+      final endParts = endTimeController.value.text.split(':');
+      final endHour = int.parse(endParts[0]);
+      final endMinute = int.parse(endParts[1]);
+
+      // Create DateTime objects for calculation (using same date)
+      final now = DateTime.now();
+      final startTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+      var endTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
+
+      // Handle case where end time is before start time (crosses midnight)
+      if (endTime.isBefore(startTime)) {
+        endTime = endTime.add(const Duration(days: 1));
+      }
+
+      // Calculate actual duration in hours
+      final difference = endTime.difference(startTime);
+      final actualHours = difference.inMinutes / 60.0;
+      
+      // Get selected duration
+      final selectedHours = durationInt;
+
+      debugPrint('=== Time Range Validation (Immediate) ===');
+      debugPrint('Start Time: ${startTimeController.value.text}');
+      debugPrint('End Time: ${endTimeController.value.text}');
+      debugPrint('Actual Duration: $actualHours hours');
+      debugPrint('Selected Duration: $selectedHours hours');
+
+      // Check if actual duration matches selected duration (allow small tolerance for rounding)
+      if ((actualHours - selectedHours).abs() > 0.1) {
+        // Show dialog instead of toast for immediate feedback
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Invalid Time Range'),
+            content: Text(
+              'The selected time range is ${actualHours.toStringAsFixed(1)} hours, but you selected $selectedHours hour${selectedHours > 1 ? 's' : ''}.\n\nPlease select an end time that matches your selected duration.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+          barrierDismissible: false,
+        );
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error validating time range: $e');
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Invalid Time Format'),
+          content: const Text('Please select valid start and end times.'),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+        barrierDismissible: false,
+      );
+      return false;
+    }
   }
 
   void initializeMaterials(dynamic materials) {
@@ -539,6 +633,66 @@ class ContractorBookingController extends GetxController {
 
   int get totalAmount => calculateTotalPayableAmount();
 
+  /// Validates that the time range matches the selected duration
+  bool validateTimeRange() {
+    if (startTimeController.value.text.isEmpty ||
+        endTimeController.value.text.isEmpty) {
+      return true; // Skip validation if times not set yet
+    }
+
+    try {
+      // Parse start time
+      final startParts = startTimeController.value.text.split(':');
+      final startHour = int.parse(startParts[0]);
+      final startMinute = int.parse(startParts[1]);
+
+      // Parse end time
+      final endParts = endTimeController.value.text.split(':');
+      final endHour = int.parse(endParts[0]);
+      final endMinute = int.parse(endParts[1]);
+
+      // Create DateTime objects for calculation (using same date)
+      final now = DateTime.now();
+      final startTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+      var endTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
+
+      // Handle case where end time is before start time (crosses midnight)
+      if (endTime.isBefore(startTime)) {
+        endTime = endTime.add(const Duration(days: 1));
+      }
+
+      // Calculate actual duration in hours
+      final difference = endTime.difference(startTime);
+      final actualHours = difference.inMinutes / 60.0;
+      
+      // Get selected duration
+      final selectedHours = durationInt;
+
+      debugPrint('=== Time Range Validation ===');
+      debugPrint('Start Time: ${startTimeController.value.text}');
+      debugPrint('End Time: ${endTimeController.value.text}');
+      debugPrint('Actual Duration: $actualHours hours');
+      debugPrint('Selected Duration: $selectedHours hours');
+
+      // Check if actual duration matches selected duration (allow small tolerance for rounding)
+      if ((actualHours - selectedHours).abs() > 0.1) {
+        EasyLoading.showInfo(
+          "Time range (${actualHours.toStringAsFixed(1)} hours) doesn't match selected duration ($selectedHours hour${selectedHours > 1 ? 's' : ''})",
+          duration: const Duration(seconds: 4),
+        );
+        isLoading.value = false;
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error validating time range: $e');
+      EasyLoading.showInfo("Invalid time format");
+      isLoading.value = false;
+      return false;
+    }
+  }
+
   bool isNotEmptyField() {
     if (startTimeController.value.text.isEmpty ||
         endTimeController.value.text.isEmpty) {
@@ -556,6 +710,12 @@ class ContractorBookingController extends GetxController {
       isLoading.value = false;
       return false;
     }
+    
+    // Validate that time range matches selected duration
+    if (!validateTimeRange()) {
+      return false;
+    }
+    
     return true;
   }
 

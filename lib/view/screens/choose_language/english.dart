@@ -98,7 +98,7 @@ Map<String, String> english = {
   "Materials": "Materials",
   "History": "History",
   "Service Contractor": "Service Contractor",
-  "Requirement Question": "Requirement Question",
+  "Required Questions": "Required Questions",
   "Notification": "Notification",
   "Profile": "Profile",
   "Address": "Address",

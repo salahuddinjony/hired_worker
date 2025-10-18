@@ -20,7 +20,7 @@ class CustomerSubCategoryScreen extends StatelessWidget {
     final HomeController homeController = Get.find<HomeController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Categories".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Tasks".tr),
       body: Obx(() {
         final List<sub.Datum> data = homeController.subCategoryModel.value.data ?? [];
 

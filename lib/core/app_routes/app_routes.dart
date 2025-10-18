@@ -6,6 +6,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_c
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
+import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
 import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
@@ -95,6 +96,7 @@ class AppRoutes {
   static const String addMaterialsScreen = "/AddMaterialsScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String scheduleScreen = "/ScheduleScreen";
+  static const String customerChangePasswordScreen = "/CustomerChangePasswordScreen";
   static const String eranScreen = "/EranScreen";
   static const String onGoingScreen = "/OnGoingScreen";
   static const String onGoingFinishScreen = "/OnGoingFinishScreen";
@@ -195,6 +197,7 @@ class AppRoutes {
     GetPage(name: requestHistoryServiceDetailsPage, page: () => RequestHistoryServiceDetailsPage()),
     GetPage(name: aboutUsScreen, page: () => AboutUsScreen()),
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
+    GetPage(name: customerChangePasswordScreen, page: () => CustomerChangePasswordScreen()),
     GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
     GetPage(name: recentAllServiceScreen, page: () => RecentAllServiceScreen()),
     GetPage(name: uploadPhotoScreen, page: () => UploadPhotoScreen()),

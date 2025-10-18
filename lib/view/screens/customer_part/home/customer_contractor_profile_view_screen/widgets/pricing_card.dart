@@ -36,7 +36,7 @@ class PricingCard extends StatelessWidget {
                     color: AppColors.primary.withValues(alpha: .1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Icon(Icons.monetization_on, size: 20.w, color: AppColors.primary),
+                  child: Icon(Icons.currency_exchange, size: 20.w, color: AppColors.primary),
                 ),
                 SizedBox(width: 12.w),
                 CustomText(text: "Hourly Rate", fontSize: 14.w, fontWeight: FontWeight.w500, color: AppColors.black_08),
@@ -54,7 +54,7 @@ class PricingCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        CustomText(text: "\$", fontSize: 20.w, fontWeight: FontWeight.w600, color: AppColors.primary),
+                        CustomText(text: "AUD ", fontSize: 20.w, fontWeight: FontWeight.w600, color: AppColors.primary),
                         CustomText(text: hourlyRate, fontSize: 32.w, fontWeight: FontWeight.bold, color: AppColors.black),
                         CustomText(text: "/hr", fontSize: 16.w, fontWeight: FontWeight.w500, color: AppColors.black_08),
                       ],

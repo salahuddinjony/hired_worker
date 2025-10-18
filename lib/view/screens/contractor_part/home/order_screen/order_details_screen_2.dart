@@ -133,7 +133,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('• ${e.name} - ${e.count} ${e.unit}'),
-                                Text('${e.price}\$'),
+                                Text('AUD ${e.price}'),
                               ],
                             );
                           }).toList(),

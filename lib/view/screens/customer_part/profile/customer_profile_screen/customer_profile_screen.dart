@@ -152,7 +152,7 @@ class CustomerProfileScreen extends StatelessWidget {
                 name: "Support".tr,
               ),
               CustomProfileMenuList(
-                image: AppIcons.settingIcon,
+                iconData: Icons.info,
                 name: "About Us".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.aboutUsScreen);
@@ -166,10 +166,17 @@ class CustomerProfileScreen extends StatelessWidget {
                 },
               ),
               CustomProfileMenuList(
-                image: AppIcons.settingIcon,
+                iconData: Icons.article,
                 name: "Terms & Conditions".tr,
                 onTap: () {
                   Get.toNamed(AppRoutes.termsConditionsScreen);
+                },
+              ),
+              CustomProfileMenuList(
+                iconData: Icons.lock,
+                name: "Change Password".tr,
+                onTap: () {
+                  Get.toNamed(AppRoutes.customerChangePasswordScreen);
                 },
               ),
               CustomProfileMenuList(

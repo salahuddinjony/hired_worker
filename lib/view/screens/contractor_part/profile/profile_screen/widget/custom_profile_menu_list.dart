@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_icons/app_icons.dart';
 import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 
@@ -12,10 +11,12 @@ class CustomProfileMenuList extends StatelessWidget {
   final bool switchValue;
   final ValueChanged<bool>? onSwitchChanged;
   final String? image;
+  final IconData ? iconData;
   final Function()? onTap;
   const CustomProfileMenuList({
     super.key,
     this.name,
+    this.iconData,
     this.image,
     this.onTap,
     this.showSwitch = false,
@@ -37,7 +38,17 @@ class CustomProfileMenuList extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CustomImage(imageSrc: image ?? AppIcons.payment,  height: 24.h, width: 24.w,),
+                  image != null
+                      ? CustomImage(
+                          imageSrc: image!,
+                          height: 24.h,
+                          width: 24.w,
+                        )
+                      : Icon(
+                          (iconData) ?? Icons.settings,
+                          size: 24.w,
+                          color: const Color.fromARGB(221, 80, 78, 78),
+                        ),
                   CustomText(
                     text: name ?? "Payments Methods".tr,
                     fontSize: 18.w,

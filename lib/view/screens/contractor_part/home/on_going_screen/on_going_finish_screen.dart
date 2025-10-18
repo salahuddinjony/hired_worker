@@ -69,7 +69,7 @@ class OnGoingFinishScreen extends StatelessWidget {
             color: AppColors.textCLr,
           ),
           CustomText(
-            text: "€$price",
+            text: "AUD $price",
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             color: AppColors.black,

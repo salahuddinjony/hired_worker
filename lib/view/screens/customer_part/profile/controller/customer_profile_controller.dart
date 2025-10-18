@@ -28,6 +28,12 @@ class CustomerProfileController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
 
+  //========= change password controllers ===========//
+  Rx<TextEditingController> oldPasswordController = TextEditingController().obs;
+  Rx<TextEditingController> newPasswordController = TextEditingController().obs;
+  Rx<TextEditingController> confirmNewPasswordController =
+      TextEditingController().obs;
+
   initUserProfileInfoTextField(Data data) {
     nameController.value.text = data.fullName ?? '';
     phoneController.value.text = data.contactNo ?? '';
@@ -87,8 +93,7 @@ class CustomerProfileController extends GetxController {
     }
   }
 
-
-   //========= update profile ===========//
+  //========= update profile ===========//
   Rx<RxStatus> updateProfileStatus = Rx<RxStatus>(RxStatus.success());
   Future<void> updateProfile() async {
     dynamic response;
@@ -140,16 +145,18 @@ class CustomerProfileController extends GetxController {
     // EasyLoading.show();
     try {
       getNotificationStatus.value = RxStatus.loading();
-      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-      final Map<String, String> queryParams = {
-        'userId': userId,
-      };
+      final String userId = await SharePrefsHelper.getString(
+        AppConstants.userId,
+      );
+      final Map<String, String> queryParams = {'userId': userId};
       final response = await ApiClient.getData(
         ApiUrl.getNotificationList,
-        query: queryParams);
+        query: queryParams,
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        notificationsList.value =NotificationModel.fromJson(response.body).data ?? [];
+        notificationsList.value =
+            NotificationModel.fromJson(response.body).data ?? [];
         getNotificationStatus.value = RxStatus.success();
       } else {
         getNotificationStatus.value = RxStatus.error();
@@ -167,4 +174,55 @@ class CustomerProfileController extends GetxController {
     }
   }
 
+  //change password
+  Rx<RxStatus> changePasswordStatus = Rx<RxStatus>(RxStatus.success());
+  Future<void> changePassword() async {
+    changePasswordStatus.value = RxStatus.loading();
+
+    if (oldPasswordController.value.text.isEmpty ||
+        newPasswordController.value.text.isEmpty ||
+        confirmNewPasswordController.value.text.isEmpty) {
+      changePasswordStatus.value = RxStatus.success();
+      EasyLoading.showError("Please fill all the fields");
+      return;
+    }
+
+    if (newPasswordController.value.text !=
+        confirmNewPasswordController.value.text) {
+      changePasswordStatus.value = RxStatus.success();
+      EasyLoading.showError("New password and confirm password do not match");
+      return;
+    }
+    final Map<String, String> body = {
+      "oldPassword": oldPasswordController.value.text,
+      "newPassword": newPasswordController.value.text,
+    };
+
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.changePassword,
+        jsonEncode(body),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        changePasswordStatus.value = RxStatus.success();
+        EasyLoading.showSuccess(
+          response.body['message'] ?? "Password changed successfully",
+        );
+        oldPasswordController.value.clear();
+        newPasswordController.value.clear();
+        confirmNewPasswordController.value.clear();
+        Get.back();
+      } else {
+        changePasswordStatus.value = RxStatus.success();
+        EasyLoading.showError(
+          response.body['message'] ?? "Something went wrong",
+        );
+      }
+    } catch (e) {
+      changePasswordStatus.value = RxStatus.success();
+      debugPrint('Error in changePassword: $e');
+      EasyLoading.showError(AppStrings.checknetworkconnection);
+    }
+  }
 }

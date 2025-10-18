@@ -141,9 +141,9 @@ class EditCustomerProfileScreen extends StatelessWidget {
               ),
         
               CustomFormCard(
-                title: "City".tr,
+                title: "Address".tr,
                 controller: profileController.cityController.value,
-                hintText: 'City',
+                hintText: 'Address',
               ),
               Obx(
                 () =>
