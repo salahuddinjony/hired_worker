@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../utils/app_strings/app_strings.dart';
 
 class PurchaseScreen extends StatefulWidget {
   final String url;
@@ -26,6 +28,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         NavigationDelegate(
           onPageStarted: (String url) async {
             if (url.contains('success')) {
+              await SharePrefsHelper.setBool(AppStrings.isProfileComplete, true);
               Navigator.pop(context);
               _showSuccessDialog();
             }
