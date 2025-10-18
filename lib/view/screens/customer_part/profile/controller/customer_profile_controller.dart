@@ -256,8 +256,10 @@ class CustomerProfileController extends GetxController {
   void showAddressBottomSheet() {
     Get.bottomSheet(
       const AddressSelectionBottomSheet(),
-      isScrollControlled: true,
+      isScrollControlled: false, // ✅ Start at comfortable height, can drag to expand
       backgroundColor: Colors.transparent,
+      isDismissible: true,
+      enableDrag: true, // ✅ Allow dragging to expand/collapse
     );
   }
 
@@ -302,25 +304,57 @@ class CustomerProfileController extends GetxController {
     double? latitude,
     double? longitude,
   }) {
+    debugPrint('=== Adding New Address ===');
+    debugPrint('Title: $title');
+    debugPrint('Address: $address');
+    debugPrint('Flat: $flatNo');
+    debugPrint('Directions: $directions');
+    debugPrint('City: ${cityController.value.text}');
+    
+    // Deselect all existing addresses
+    for (int i = 0; i < savedAddresses.length; i++) {
+      savedAddresses[i] = savedAddresses[i].copyWith(isSelected: false);
+    }
+
+    // Create new address and mark it as selected
     final newAddress = SavedAddress(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: title,
       address: address,
       flatNo: flatNo,
       directions: directions,
-      city: cityController.value.text,
+      city: cityController.value.text.isNotEmpty 
+          ? cityController.value.text 
+          : 'Not specified',
       latitude: latitude,
       longitude: longitude,
-      isSelected: false,
+      isSelected: true, // Automatically select the new address
     );
 
     savedAddresses.add(newAddress);
+    debugPrint('Address added to list. Total addresses: ${savedAddresses.length}');
 
+    // Update the additional address controller to show the selected address
+    String fullAddress = newAddress.address;
+    if (flatNo != null && flatNo.isNotEmpty) {
+      fullAddress = '$flatNo, $fullAddress';
+    }
+    additionalAddressController.value.text = fullAddress;
+    debugPrint('Additional address controller updated: $fullAddress');
+
+    // Trigger UI update
+    savedAddresses.refresh();
+    
     Get.snackbar(
-      'Success',
-      'Address added successfully',
+      '✓ Success'.tr,
+      'Address added successfully'.tr,
       backgroundColor: Colors.green,
       colorText: Colors.white,
+      duration: const Duration(seconds: 2),
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      borderRadius: 8,
+      icon: const Icon(Icons.check_circle, color: Colors.white),
     );
   }
 

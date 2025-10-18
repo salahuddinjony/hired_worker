@@ -14,6 +14,9 @@ class AddressSelectionBottomSheet extends StatelessWidget {
     final CustomerProfileController controller = Get.find<CustomerProfileController>();
 
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.7, // ✅ Max 70% of screen
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -147,51 +150,53 @@ class AddressSelectionBottomSheet extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          // Address List
-          Obx(
-            () => controller.savedAddresses.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40.h),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.location_off_outlined,
-                          size: 64.sp,
-                          color: Colors.grey[300],
-                        ),
-                        SizedBox(height: 16.h),
-                        CustomText(
-                          text: "No saved addresses yet".tr,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[600]!,
-                        ),
-                        SizedBox(height: 8.h),
-                        CustomText(
-                          text: "Add your first address above".tr,
-                          fontSize: 13.sp,
-                          color: Colors.grey[400]!,
-                        ),
-                      ],
+          // Address List - SCROLLABLE SECTION
+          Flexible(
+            child: Obx(
+              () => controller.savedAddresses.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40.h),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.location_off_outlined,
+                            size: 64.sp,
+                            color: Colors.grey[300],
+                          ),
+                          SizedBox(height: 16.h),
+                          CustomText(
+                            text: "No saved addresses yet".tr,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[600]!,
+                          ),
+                          SizedBox(height: 8.h),
+                          CustomText(
+                            text: "Add your first address above".tr,
+                            fontSize: 13.sp,
+                            color: Colors.grey[400]!,
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(), // ✅ Made scrollable
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                      itemCount: controller.savedAddresses.length,
+                      separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                      itemBuilder: (context, index) {
+                        final address = controller.savedAddresses[index];
+                        return _AddressItem(
+                          address: address,
+                          onTap: () {
+                            controller.selectAddress(index);
+                            Get.back();
+                          },
+                        );
+                      },
                     ),
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                    itemCount: controller.savedAddresses.length,
-                    separatorBuilder: (context, index) => SizedBox(height: 12.h),
-                    itemBuilder: (context, index) {
-                      final address = controller.savedAddresses[index];
-                      return _AddressItem(
-                        address: address,
-                        onTap: () {
-                          controller.selectAddress(index);
-                          Get.back();
-                        },
-                      );
-                    },
-                  ),
+            ),
           ),
 
           SizedBox(height: 20.h),
