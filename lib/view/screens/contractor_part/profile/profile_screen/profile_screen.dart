@@ -237,7 +237,6 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 10.h),
               TextButton(
                 onPressed: () async {
-                  await SharePrefsHelper.remove(AppStrings.isProfileComplete);
                   await SharePrefsHelper.logOut();
                   debugPrint("Logged out successfully");
                   Get.offAllNamed(AppRoutes.loginScreen);
