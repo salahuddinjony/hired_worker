@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/skill_selection_controller.dart';
 import '../../../components/custom_button/custom_button.dart';
@@ -93,6 +94,9 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                   children: [
                     Expanded(
                       child: TextField(
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         controller: _skillController,
                         focusNode: _skillFocusNode,
                         decoration: InputDecoration(
@@ -138,8 +142,8 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "${"Your Skills".tr}(${selectedSkills.length})",
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
                 ),
@@ -186,7 +190,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
                             child: Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: const Color(0xFF3C003D).withValues(alpha: .1),
@@ -206,7 +210,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                                     padding: const EdgeInsets.all(6),
                                     child: const Icon(
                                       Icons.check,
-                                      size: 20,
+                                      size: 16,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -214,8 +218,8 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                                   Expanded(
                                     child: Text(
                                       skill,
-                                      style: const TextStyle(
-                                        fontSize: 16,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -225,7 +229,7 @@ class _SkillsAddScreenState extends State<SkillsAddScreen> {
                                     icon: Icon(
                                       Icons.close,
                                       color: Colors.red.shade600,
-                                      size: 20,
+                                      size: 16,
                                     ),
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
