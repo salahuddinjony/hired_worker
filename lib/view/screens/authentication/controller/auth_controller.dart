@@ -273,6 +273,10 @@ class AuthController extends GetxController {
       "password": passController.value.text,
       "contactNo": phoneController.value.text,
       "role": isContactor ? "contractor" : "customer",
+      if (!isContactor) ...{
+        "city": addressController.value.text,
+        "location": "${latitude.value},${longitude.value}",
+      }
     };
 
     debugPrint('Registration payload: $body');
