@@ -7,6 +7,7 @@ import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
+import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -206,7 +207,7 @@ class ProfileScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.recentAllServiceScreen);
                 },
                 image: AppIcons.mdiRecent,
-                name: "Recent Service".tr,
+                name: "Recent Services".tr,
               ),
 
               CustomProfileMenuList(
@@ -221,7 +222,7 @@ class ProfileScreen extends StatelessWidget {
                 name:
                     languageController.isChinese.value
                         ? "启用英文"
-                        : "Enable Chinese",
+                        : "Enable Mandarin",
                 showSwitch: true,
                 switchValue: languageController.isChinese.value,
                 onSwitchChanged: languageController.toggleLanguage,
@@ -229,6 +230,7 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 10.h),
               TextButton(
                 onPressed: () async {
+                  await SharePrefsHelper.remove(AppStrings.isProfileComplete);
                   await SharePrefsHelper.logOut();
                   debugPrint("Logged out successfully");
                   Get.offAllNamed(AppRoutes.loginScreen);

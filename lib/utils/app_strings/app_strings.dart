@@ -95,11 +95,11 @@ static const String chatList = "Inbox";
   static const String profile = "Profile";
   static const String received = "Received";
   static const String receivedText = "Received";
-  static const String requestedText = "Requested";
+  static const String requestedText = "Requests";
   static const String rejectedText = "Rejected";
   ///===================================================
-  static const String serviceReuest = "Service Request";
-  static const String deliveredService = "Delivered Service";
+  static const String serviceReuest = "Service Requests";
+  static const String deliveredService = "Delivered Services";
   static const String createAccount = "Create a account";
   static const String alreadyHaveAccount = "Already have an account?";
   static const String orSignUpWith = "or sign up with";

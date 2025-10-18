@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_colors/app_colors.dart';
 
-
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
@@ -74,6 +73,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       onTap: widget.onTap,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: widget.inputFormatters,
@@ -85,11 +87,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       cursorColor: widget.cursorColor,
-      style: widget.inputTextStyle ??
+      style:
+          widget.inputTextStyle ??
           GoogleFonts.roboto(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.black_03),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: AppColors.black_03,
+          ),
       onChanged: widget.onChanged,
       maxLines: widget.maxLines,
       obscureText: widget.isPassword ? obscureText : false,
@@ -100,30 +104,36 @@ class _CustomTextFieldState extends State<CustomTextField> {
         isDense: widget.isDens,
         errorMaxLines: 2,
         hintText: widget.hintText,
-        hintStyle: widget.hintStyle ??
+        hintStyle:
+            widget.hintStyle ??
             GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.white),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColors.white,
+            ),
         fillColor: widget.fillColor,
         filled: true,
         prefixIcon: widget.prefixIcon,
-        suffixIcon: widget.isPassword
-            ? GestureDetector(
-                onTap: toggle,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey,),
+        suffixIcon:
+            widget.isPassword
+                ? GestureDetector(
+                  onTap: toggle,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Icon(
+                      obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
 
-                  /*SvgPicture.asset(
+                    /*SvgPicture.asset(
                     obscureText ? AppIcons.eyeOff : AppIcons.eye,
                     height: 22,
                     width: 22,
                     color: AppColors.black,
                   ),*/
-                ),
-              )
-            : widget.suffixIcon,
+                  ),
+                )
+                : widget.suffixIcon,
         suffixIconColor: widget.suffixIconColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.fieldBorderRadius),

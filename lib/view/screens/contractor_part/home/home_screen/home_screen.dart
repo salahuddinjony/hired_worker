@@ -9,6 +9,7 @@ import 'package:servana/utils/app_icons/app_icons.dart'; // App icons
 import 'package:servana/utils/extensions/widget_extension.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/widget/custom_service_card.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
@@ -97,13 +98,7 @@ class HomeScreen extends StatelessWidget {
 
                               // role
                               CustomText(
-                                text:
-                                    profileController
-                                        .contractorModel
-                                        .value
-                                        .data
-                                        ?.role ??
-                                    " - ",
+                                text: 'Contractor',
                                 // Fallback to " - " if null
                                 fontSize: 14.w,
                                 fontWeight: FontWeight.w400,
