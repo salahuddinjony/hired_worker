@@ -15,7 +15,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.7, // ✅ Max 70% of screen
+        maxHeight: MediaQuery.of(context).size.height * 1, 
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -49,7 +49,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(8.w),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: AppColors.primary.withValues(alpha: .1),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Icon(
@@ -106,7 +106,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       AppColors.primary,
-                      AppColors.primary.withOpacity(0.8),
+                      AppColors.primary.withValues(alpha: .8),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -114,7 +114,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.3),
+                      color: AppColors.primary.withValues(alpha: .3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -126,7 +126,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: .2),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Icon(
@@ -252,7 +252,7 @@ class _AddressItem extends StatelessWidget {
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
           color: address.isSelected 
-              ? AppColors.primary.withOpacity(0.05) 
+              ? AppColors.primary.withValues(alpha: 0.05) 
               : Colors.grey[50],
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
@@ -268,7 +268,7 @@ class _AddressItem extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
-                color: typeColor.withOpacity(0.1),
+                color: typeColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
@@ -291,7 +291,7 @@ class _AddressItem extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                         decoration: BoxDecoration(
-                          color: typeColor.withOpacity(0.1),
+                          color: typeColor.withValues(alpha: .1),
                           borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: CustomText(
@@ -341,28 +341,28 @@ class _AddressItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (address.directions != null && address.directions!.isNotEmpty) ...[
-                    SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          size: 14.sp,
-                          color: Colors.grey[400],
-                        ),
-                        SizedBox(width: 4.w),
-                        Expanded(
-                          child: CustomText(
-                            text: address.directions!,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey[500]!,
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  // if (address.directions != null && address.directions!.isNotEmpty) ...[
+                  //   SizedBox(height: 4.h),
+                  //   Row(
+                  //     children: [
+                  //       Icon(
+                  //         Icons.info_outline,
+                  //         size: 14.sp,
+                  //         color: Colors.grey[400],
+                  //       ),
+                  //       SizedBox(width: 4.w),
+                  //       Expanded(
+                  //         child: CustomText(
+                  //           text: address.directions!,
+                  //           fontSize: 11.sp,
+                  //           fontWeight: FontWeight.w400,
+                  //           color: Colors.grey[500]!,
+                  //           maxLines: 1,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ],
                 ],
               ),
             ),

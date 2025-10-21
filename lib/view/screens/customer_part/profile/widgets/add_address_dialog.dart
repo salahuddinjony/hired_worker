@@ -261,7 +261,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.1) : Colors.grey[100],
+          color: isSelected ? color.withValues(alpha: 0.1) : Colors.grey[100],
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: isSelected ? color : Colors.grey[300]!,

@@ -1,11 +1,12 @@
 class ApiUrl {
   // static const String baseUrl = "http://13.237.45.213/api/v1";
-  // static const String imageUrl = "http://10.10.20.11:5002/api/v1";
-  static const String imageUrl = "http://3.27.248.133:5002/api/v1";
-  // static const String baseUrl = "http://10.10.20.11:5002/api/v1";
-  static const String baseUrl = "http://3.27.248.133:5002/api/v1";
-  // static String socketUrl = "http://13.237.45.213";
-  static String socketUrl = "http://3.27.248.133:5002";
+  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  // static const String imageUrl = "http://3.27.248.133:5002/api/v1";
+  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
+
+  // static const String baseUrl = "http://3.27.248.133:5002/api/v1";
+  static String socketUrl = "http://13.237.45.213";
+  // static String socketUrl = "http://3.27.248.133:5002";
 
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";

@@ -19,7 +19,6 @@ class AuthController extends GetxController {
   //   Customer
   //yeteho1407@erynka.com
   // 12345678
-  
 
   //contractor
   //yolorem734@arqsis.com
@@ -276,8 +275,18 @@ class AuthController extends GetxController {
       "role": isContactor ? "contractor" : "customer",
       if (!isContactor) ...{
         "city": addressController.value.text,
-        "location": "${latitude.value},${longitude.value}",
-      }
+        "location": [
+          {
+            "coordinates": [
+              longitude.value ?? -84.090724,
+              latitude.value ?? 9.928069,
+            ],
+            "address": addressController.value.text,
+            "name": "Default",
+            "isSelect": true, 
+          },
+        ],
+      },
     };
 
     debugPrint('Registration payload: $body');

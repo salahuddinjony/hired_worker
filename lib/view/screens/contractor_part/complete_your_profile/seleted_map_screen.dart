@@ -149,9 +149,12 @@ class SelectedMapScreen extends StatelessWidget {
                         onTap: () {
                           if (mapController.selectedLocation.value != null) {
                             // Check if there's a callback to return data (for reusable purpose)
-                            if (Get.arguments != null && Get.arguments['returnData'] == true) {
+                            if (Get.arguments != null &&
+                                Get.arguments['returnData'] == true) {
                               // Return the selected location data back to the previous screen
-                              Get.back(result: mapController.selectedLocation.value);
+                              Get.back(
+                                result: mapController.selectedLocation.value,
+                              );
                             } else {
                               // Original contractor flow - update contractor data
                               mapController.updateContractorData();

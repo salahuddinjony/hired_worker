@@ -136,6 +136,10 @@ class ProfileController extends GetxController {
       'city': cityController.value.text,
       'dob': dobController.value.text,
       'gender': customController.selectedGender.value,
+      
+
+
+
     };
 
     if (selectedImage.value != null) {
