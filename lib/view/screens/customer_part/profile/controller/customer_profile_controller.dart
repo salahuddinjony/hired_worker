@@ -31,12 +31,13 @@ class CustomerProfileController extends GetxController {
   Rx<TextEditingController> phoneController = TextEditingController().obs;
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
-  Rx<TextEditingController> additionalAddressController = TextEditingController().obs;
+  Rx<TextEditingController> additionalAddressController =
+      TextEditingController().obs;
 
   // Location data
   RxnDouble latitude = RxnDouble();
   RxnDouble longitude = RxnDouble();
-  
+
   // Temporary location data for new address
   RxnDouble tempLatitude = RxnDouble();
   RxnDouble tempLongitude = RxnDouble();
@@ -105,6 +106,42 @@ class CustomerProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         customerModel.value = CustomerModel.fromJson(response.body);
         initUserProfileInfoTextField(customerModel.value.data!);
+        // Load saved addresses from backend
+        final locations = customerModel.value.data?.customer?.location;
+        if (locations != null && locations.isNotEmpty) {
+          savedAddresses.value =
+              locations.map((loc) {
+                double? latitude;
+                double? longitude;
+                if (loc.coordinates != null && loc.coordinates!.isNotEmpty) {
+                  // Defensive: coordinates should be [longitude, latitude]
+                  longitude =
+                      loc.coordinates!.length > 0 ? loc.coordinates![0] : null;
+                  latitude =
+                      loc.coordinates!.length > 1 ? loc.coordinates![1] : null;
+                }
+                return SavedAddress(
+                  id:
+                      loc.id ??
+                      DateTime.now().millisecondsSinceEpoch.toString(),
+                  title: loc.name ?? '',
+                  address: loc.address ?? '',
+                  city: cityController.value.text,
+                  latitude: latitude,
+                  longitude: longitude,
+                  isSelected: loc.isSelect ?? false,
+                );
+              }).toList();
+          // Set additionalAddressController to selected address
+          final selected = getSelectedAddress();
+          if (selected != null) {
+            String fullAddress = selected.address;
+            if (selected.flatNo != null && selected.flatNo!.isNotEmpty) {
+              fullAddress = '${selected.flatNo}, $fullAddress';
+            }
+            additionalAddressController.value.text = fullAddress;
+          }
+        }
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "Something went wrong",
@@ -118,17 +155,42 @@ class CustomerProfileController extends GetxController {
 
   //========= update profile ===========//
   Rx<RxStatus> updateProfileStatus = Rx<RxStatus>(RxStatus.success());
+  RxString savedLocationType = ''.obs;
+
+  // Map<String, dynamic> get locationsData => {
+  //   "type": "Point",
+  //   "coordinates": [longitude.value, latitude.value],
+  //   "address": cityController.value.text,
+  //   "name": savedLocationType.value,
+  //   "isSelect": false,
+  // };
   Future<void> updateProfile() async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
-    final Map<String, String> body = {
+
+    // Prepare location list from savedAddresses
+    final List<Map<String, dynamic>> locationList =
+        savedAddresses
+            .map(
+              (addr) => {
+                "type": "Point",
+                "coordinates": [addr.longitude, addr.latitude],
+                "address": addr.address,
+                "name": addr.title,
+                "isSelect": addr.isSelected,
+              },
+            )
+            .toList();
+
+    // For multipart, use Map<String, dynamic> so location can be a List
+    final Map<String, dynamic> body = {
       'fullName': nameController.value.text,
       'contactNo': phoneController.value.text,
       'city': cityController.value.text,
-      'location': '${latitude.value},${longitude.value}',
       'dob': dobController.value.text,
       'gender': customController.selectedGender.value,
+      'location': locationList,
     };
 
     if (selectedImage.value != null) {
@@ -158,6 +220,23 @@ class CustomerProfileController extends GetxController {
     } else {
       updateProfileStatus.value = RxStatus.success();
       showCustomSnackBar("Something went wrong", isError: false);
+    }
+  }
+
+  // Update an existing address
+  void updateAddress(int index, SavedAddress updatedAddress) {
+    if (index >= 0 && index < savedAddresses.length) {
+      savedAddresses[index] = updatedAddress;
+      savedAddresses.refresh();
+      // Optionally update additionalAddressController if selected
+      if (updatedAddress.isSelected) {
+        String fullAddress = updatedAddress.address;
+        if (updatedAddress.flatNo != null &&
+            updatedAddress.flatNo!.isNotEmpty) {
+          fullAddress = '${updatedAddress.flatNo}, $fullAddress';
+        }
+        additionalAddressController.value.text = fullAddress;
+      }
     }
   }
 
@@ -251,15 +330,16 @@ class CustomerProfileController extends GetxController {
   }
 
   //========= Address Management Methods ===========//
-  
+
   // Show bottom sheet for address selection
   void showAddressBottomSheet() {
     Get.bottomSheet(
       const AddressSelectionBottomSheet(),
-      isScrollControlled: false, // ✅ Start at comfortable height, can drag to expand
+      isScrollControlled:
+          true, 
       backgroundColor: Colors.transparent,
       isDismissible: true,
-      enableDrag: true, // ✅ Allow dragging to expand/collapse
+      enableDrag: true,
     );
   }
 
@@ -269,18 +349,18 @@ class CustomerProfileController extends GetxController {
     if (!Get.isRegistered<MapController>()) {
       Get.put(MapController());
     }
-    
+
     final result = await Get.toNamed(
       '/SeletedMapScreen',
       arguments: {'returnData': true},
     );
-    
+
     // If location is selected, show address details bottom sheet
     if (result != null && result is Map<String, dynamic>) {
       final address = result['address'] ?? '';
       final latitude = result['latitude'];
       final longitude = result['longitude'];
-      
+
       // Show bottom sheet with address details
       Get.bottomSheet(
         AddAddressBottomSheet(
@@ -310,7 +390,7 @@ class CustomerProfileController extends GetxController {
     debugPrint('Flat: $flatNo');
     debugPrint('Directions: $directions');
     debugPrint('City: ${cityController.value.text}');
-    
+
     // Deselect all existing addresses
     for (int i = 0; i < savedAddresses.length; i++) {
       savedAddresses[i] = savedAddresses[i].copyWith(isSelected: false);
@@ -323,16 +403,19 @@ class CustomerProfileController extends GetxController {
       address: address,
       flatNo: flatNo,
       directions: directions,
-      city: cityController.value.text.isNotEmpty 
-          ? cityController.value.text 
-          : 'Not specified',
+      city:
+          cityController.value.text.isNotEmpty
+              ? cityController.value.text
+              : 'Not specified',
       latitude: latitude,
       longitude: longitude,
       isSelected: true, // Automatically select the new address
     );
 
     savedAddresses.add(newAddress);
-    debugPrint('Address added to list. Total addresses: ${savedAddresses.length}');
+    debugPrint(
+      'Address added to list. Total addresses: ${savedAddresses.length}',
+    );
 
     // Update the additional address controller to show the selected address
     String fullAddress = newAddress.address;
@@ -344,18 +427,18 @@ class CustomerProfileController extends GetxController {
 
     // Trigger UI update
     savedAddresses.refresh();
-    
-    Get.snackbar(
-      '✓ Success'.tr,
-      'Address added successfully'.tr,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-      duration: const Duration(seconds: 2),
-      snackPosition: SnackPosition.BOTTOM,
-      margin: EdgeInsets.all(16),
-      borderRadius: 8,
-      icon: const Icon(Icons.check_circle, color: Colors.white),
-    );
+
+    // Get.snackbar(
+    //   '✓ Success'.tr,
+    //   'Address added successfully'.tr,
+    //   backgroundColor: Colors.green,
+    //   colorText: Colors.white,
+    //   duration: const Duration(seconds: 2),
+    //   snackPosition: SnackPosition.BOTTOM,
+    //   margin: EdgeInsets.all(16),
+    //   borderRadius: 8,
+    //   icon: const Icon(Icons.check_circle, color: Colors.white),
+    // );
   }
 
   // Select an address from the list
@@ -369,14 +452,14 @@ class CustomerProfileController extends GetxController {
     savedAddresses[index] = savedAddresses[index].copyWith(isSelected: true);
 
     final selectedAddress = savedAddresses[index];
-    
+
     // Update additional address controller
     String fullAddress = selectedAddress.address;
     if (selectedAddress.flatNo != null && selectedAddress.flatNo!.isNotEmpty) {
       fullAddress = '${selectedAddress.flatNo}, $fullAddress';
     }
     additionalAddressController.value.text = fullAddress;
-    
+
     savedAddresses.refresh();
   }
 
@@ -389,4 +472,3 @@ class CustomerProfileController extends GetxController {
     }
   }
 }
-

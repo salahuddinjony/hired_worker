@@ -38,7 +38,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                     Obx(() {
                       final data = profileController.customerModel.value.data;
                       // Check if an image is selected, if not use the default profile image
-        
+
                       return profileController.selectedImage.value == null
                           ? (data?.img != null)
                               ? CustomNetworkImage(
@@ -101,7 +101,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
               CustomFormCard(
                 title: "Phone Number".tr,
                 hintText: 'phone number',
-        
+
                 controller: profileController.phoneController.value,
               ),
               CustomText(
@@ -120,7 +120,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                 textColor: AppColors.black,
               ),
               SizedBox(height: 10.h),
-        
+
               CustomFormCard(
                 title: "Date of Birth".tr,
                 hintText: 'yyyy/mm/dd',
@@ -133,31 +133,30 @@ class EditCustomerProfileScreen extends StatelessWidget {
                     firstDate: DateTime(1900),
                     lastDate: DateTime.now(),
                   );
-        
+
                   if (pickedDate != null) {
                     profileController.dobController.value.text =
                         "${pickedDate.toLocal()}".split(' ')[0];
                   }
                 },
               ),
-        
+
               CustomFormCard(
                 title: "Address".tr,
                 controller: profileController.cityController.value,
                 hintText: 'Address',
                 readOnly: true,
                 onTap: () async {
-               
                   if (!Get.isRegistered<MapController>()) {
                     Get.put(MapController());
                   }
-                  
+
                   // Navigate to map screen with argument to return data instead of updating contractor data
                   final result = await Get.toNamed(
                     '/SeletedMapScreen',
                     arguments: {'returnData': true},
                   );
-                  
+
                   // Update address field with selected location
                   if (result != null && result is Map<String, dynamic>) {
                     profileController.updateAddressFromMap(result);
@@ -165,7 +164,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 20.h),
-              
+
               // Additional Address Section Title
               CustomText(
                 text: 'Saved Addresses'.tr,
@@ -174,7 +173,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                 color: AppColors.black,
                 bottom: 10.h,
               ),
-              
+
               // Additional Address Card
               GestureDetector(
                 onTap: () {
@@ -185,89 +184,94 @@ class EditCustomerProfileScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(
-                      color: Colors.grey[300]!,
-                      width: 1,
-                    ),
+                    border: Border.all(color: Colors.grey[300]!, width: 1),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: .05), 
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
                     ],
                   ),
-                  child: Obx(
-                    () {
-                      final hasAddress = profileController.additionalAddressController.value.text.isNotEmpty;
-                      
-                      return Row(
-                        children: [
-                          // Icon Container
-                          Container(
-                            padding: EdgeInsets.all(10.w),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Icon(
-                              hasAddress ? Icons.location_on : Icons.add_location_alt_outlined,
-                              color: AppColors.primary,
-                              size: 24.w,
-                            ),
+                  child: Obx(() {
+                    final hasAddress =
+                        profileController
+                            .additionalAddressController
+                            .value
+                            .text
+                            .isNotEmpty;
+                    final selectedAddress =
+                        profileController.getSelectedAddress();
+                    final addressName = selectedAddress?.title ?? '';
+                    return Row(
+                      children: [
+                        // Icon Container
+                        Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: .1),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
-                          
-                          SizedBox(width: 12.w),
-                          
-                          // Text Content
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  text: hasAddress 
-                                      ? "Selected Address".tr 
-                                      : "Add Address".tr,
-                                  fontSize: 16.w,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.black,
-                                ),
-                                SizedBox(height: 4.h),
-                                CustomText(
-                                  text: hasAddress
-                                      ? profileController.additionalAddressController.value.text
-                                      : "Tap to manage your saved addresses".tr,
-                                  fontSize: 13.w,
-                                  fontWeight: FontWeight.w400,
-                                  color: hasAddress ? AppColors.black_05 : Colors.grey[500]!,
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
+                          child: Icon(
+                            hasAddress
+                                ? Icons.location_on
+                                : Icons.add_location_alt_outlined,
+                            color: AppColors.primary,
+                            size: 24.w,
                           ),
-                          
-                          SizedBox(width: 8.w),
-                          
-                          // Arrow Icon
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey[400],
-                            size: 16.w,
+                        ),
+                        SizedBox(width: 12.w),
+                        // Text Content
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text:
+                                    hasAddress
+                                        ? (addressName.isNotEmpty
+                                            ? addressName
+                                            : "Selected Address".tr)
+                                        : "Add Address".tr,
+                                fontSize: 16.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
+                              ),
+                              SizedBox(height: 4.h),
+                              CustomText(
+                                text:
+                                    hasAddress
+                                        ? profileController
+                                            .additionalAddressController
+                                            .value
+                                            .text
+                                        : "Tap to manage your saved addresses"
+                                            .tr,
+                                fontSize: 13.w,
+                                fontWeight: FontWeight.w400,
+                                color:
+                                    hasAddress
+                                        ? AppColors.black_05
+                                        : Colors.grey[500]!,
+                                maxLines: 2,
+                              ),
+                            ],
                           ),
-                        ],
-                      );
-                    },
-                  ),
+                        ),
+                        SizedBox(width: 8.w),
+                        // Arrow Icon
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey[400],
+                          size: 16.w,
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               ),
-              // CustomFormCard(
-              //   title: "Additional Address".tr,
-              //   hintText: 'additional address',
-              //   controller: profileController.phoneController.value,
-              // ),
               SizedBox(height: 30.h),
               Obx(
-
                 () =>
                     profileController.updateProfileStatus.value.isLoading
                         ? const CustomLoader()

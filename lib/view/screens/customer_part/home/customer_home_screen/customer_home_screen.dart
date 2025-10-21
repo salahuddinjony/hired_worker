@@ -98,20 +98,48 @@ class CustomerHomeScreen extends StatelessWidget {
                               color: Color(0xff8891AA),
                               size: 20,
                             ),
-                            CustomText(
-                              text:
-                                  (() {
-                                    final city = customerData.data?.customer?.city;
-                                    if (city == null || city.trim().isEmpty) return null;
-                                    final parts = city.split(',').map((s) => s.trim()).toList();
-                                    final start = parts.length > 2 ? parts.length - 2 : 0;
-                                    return parts.sublist(start).join(', ');
-                                  })() ??
-                                  "No address found".tr,
-                              fontSize: 14.w,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xff8891AA),
-                            ),
+                            Obx(() {
+                              final savedAddresses = customerProfileController.savedAddresses;
+                              final selectedAddress = customerProfileController.getSelectedAddress();
+                              return DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: selectedAddress?.id,
+                                  items: savedAddresses.map((address) {
+                                    
+                                    String shortAddress = address.address;
+                                    if (shortAddress.isNotEmpty) {
+                                      final parts = shortAddress.split(',').map((s) => s.trim()).toList();
+                                      final start = parts.length > 3 ? parts.length - 3 : 0;
+                                        shortAddress = "${parts.sublist(start).join(', ')} • ${address.title}";
+                                    }
+                                    return DropdownMenuItem<String>(
+                                      value: address.id,
+                                      child: Text(
+                                        shortAddress.isNotEmpty ? shortAddress : (address.title.isNotEmpty ? address.title : "Other"),
+                                        style: TextStyle(
+                                          fontSize: 14.w,
+                                          color: const Color(0xff8891AA),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  hint: Text(
+                                    "Loading...".tr,
+                                    style: TextStyle(
+                                      fontSize: 14.w,
+                                      color: const Color(0xff8891AA),
+                                    ),
+                                  ),
+                                  onChanged: (selectedId) async {
+                                    final index = savedAddresses.indexWhere((a) => a.id == selectedId);
+                                    if (index != -1) {
+                                      customerProfileController.selectAddress(index);
+                                      await customerProfileController.updateProfile();
+                                    }
+                                  },
+                                ),
+                              );
+                            }),
                           ],
                         ),
                       ],
