@@ -17,7 +17,7 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   //   Customer
-  //yeteho1407@erynka.com
+  //cexob88976@elygifts.com
   // 12345678
 
   //contractor

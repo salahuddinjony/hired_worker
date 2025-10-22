@@ -343,4 +343,6 @@ class ApiUrl {
       "/chat-rooms/create-chat-room";
 // upload image
   static const String uploadImage = "/upload";
+  static const String getBanners = "/dashboards/banners";
 }
+
