@@ -10,7 +10,8 @@ class CustomServiceContractorCard extends StatelessWidget {
   final String? name;
   final String? title;
   final String? rating;
-  const CustomServiceContractorCard({super.key, this.onTap, this.image, this.name, this.title, this.rating});
+  final String? hourlyPrice;
+  const CustomServiceContractorCard({super.key, this.onTap, this.image, this.name, this.title, this.rating, required this.hourlyPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +60,52 @@ class CustomServiceContractorCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: AppColors.blue,
                       ),
+                      SizedBox(width: 8.w),
+                      // Hourly rate badge
+                      if ((hourlyPrice ?? '').isNotEmpty)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: .08),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: AppColors.primary.withValues(alpha: .2)),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5.w),
+                              CustomText(
+                                text: (() {
+                                  final dp = (hourlyPrice ?? '').trim();
+                                  if (dp.isEmpty) return '';
+                                  return 'AUD $dp';
+                                })(),
+                                fontSize: 12.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.circular(8),
-                    ),child: CustomText(text: "Details",fontSize: 10.w,fontWeight: FontWeight.w500,color: AppColors.white,),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.blue,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: CustomText(
+                          text: "Details",
+                          fontSize: 10.w,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),

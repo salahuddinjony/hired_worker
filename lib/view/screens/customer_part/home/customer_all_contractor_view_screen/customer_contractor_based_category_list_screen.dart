@@ -70,6 +70,7 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                // var data = popularDoctorController.popularList[index];
                 return CustomServiceContractorCard(
+                  hourlyPrice: contractorsWithCategory[index].rateHourly.toString(),
                   image: ImageHandler.imagesHandle(contractorsWithCategory[index].userId.img),
                   name: contractorsWithCategory[index].userId.fullName,
                   title: contractorsWithCategory[index].skillsCategory,

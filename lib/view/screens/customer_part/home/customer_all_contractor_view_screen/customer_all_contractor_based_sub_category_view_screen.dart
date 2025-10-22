@@ -69,6 +69,7 @@ class CustomerAllContractorBasedSubCategoryViewScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                // var data = popularDoctorController.popularList[index];
                 return CustomServiceContractorCard(
+                  hourlyPrice: contractorsWithSubCategory[index].rateHourly.toString(),
                   image: ImageHandler.imagesHandle(contractorsWithSubCategory[index].userId.img),
                   name: contractorsWithSubCategory[index].userId.fullName,
                   title: contractorsWithSubCategory[index].skillsCategory.toString(),
