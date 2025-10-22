@@ -25,6 +25,7 @@ class AddAddressBottomSheet extends StatefulWidget {
 class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   final CustomerProfileController controller = Get.find<CustomerProfileController>();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController streetController = TextEditingController();
   final TextEditingController flatController = TextEditingController();
   final TextEditingController directionsController = TextEditingController();
   String selectedType = 'Home';
@@ -38,6 +39,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   @override
   void dispose() {
     addressController.dispose();
+    streetController.dispose();
     flatController.dispose();
     directionsController.dispose();
     super.dispose();
@@ -142,11 +144,27 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               SizedBox(height: 16.h),
 
-              // Flat / Villa No
+              // Street Name
+              CustomText(
+                text: "Street Name".tr,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700]!,
+              ),
+              SizedBox(height: 12.h),
+              _buildTextField(
+                controller: streetController,
+                hint: 'Street Name',
+                icon: Icons.edit_road,
+              ),
+
+              SizedBox(height: 16.h),
+
+              // Unit / House No
               _buildTextField(
                 controller: flatController,
-                hint: 'Flat / Villa No.',
-                icon: Icons.apartment_outlined,
+                hint: 'Unit / House No.',
+                icon: Icons.home_work_outlined,
               ),
 
               SizedBox(height: 16.h),
@@ -166,7 +184,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   print('🔴 BUTTON CLICKED - START');
                   debugPrint('=== Save Address Button Tapped ===');
                   debugPrint('Address: ${addressController.text}');
-                  debugPrint('Flat: ${flatController.text}');
+                  debugPrint('Street: ${streetController.text}');
+                  debugPrint('Unit/House: ${flatController.text}');
                   debugPrint('Type: $selectedType');
                   
                   if (addressController.text.isEmpty) {
@@ -187,7 +206,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     debugPrint('Calling addNewAddress...');
                     controller.addNewAddress(
                       title: selectedType,
-                      address: addressController.text,
+                      address: (streetController.text.isNotEmpty ? '${streetController.text}, ' : '') + addressController.text,
                       flatNo: flatController.text.isNotEmpty ? flatController.text : null,
                       directions: directionsController.text.isNotEmpty ? directionsController.text : null,
                       latitude: widget.latitude,
