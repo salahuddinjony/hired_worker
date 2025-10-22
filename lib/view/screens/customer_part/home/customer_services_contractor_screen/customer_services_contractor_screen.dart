@@ -133,6 +133,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                           },
                         );
                       },
+                      hourlyPrice: contractor.rateHourly.toString(),
                       image: ImageHandler.imagesHandle(contractor.userId.img),
                       name: contractor.userId.fullName,
                       title: contractor.skillsCategory,

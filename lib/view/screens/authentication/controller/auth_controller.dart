@@ -17,7 +17,7 @@ import 'package:servana/view/screens/customer_part/profile/model/user_model.dart
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   //   Customer
-  //yeteho1407@erynka.com
+  //cexob88976@elygifts.com
   // 12345678
 
   //contractor
@@ -29,11 +29,16 @@ class AuthController extends GetxController {
   Rx<TextEditingController> phoneController =
       TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
+  Rx<TextEditingController> addressController = TextEditingController().obs;
 
   Rx<TextEditingController> passController = TextEditingController().obs;
   Rx<TextEditingController> confirmController =
       TextEditingController(text: kDebugMode ? "12345" : "").obs;
   Rx<TextEditingController> otpController = TextEditingController().obs;
+
+  // Location data for address
+  RxnDouble latitude = RxnDouble();
+  RxnDouble longitude = RxnDouble();
 
   Rx<bool> isAgree = false.obs;
 
@@ -58,6 +63,13 @@ class AuthController extends GetxController {
       emailController.value.text = email;
       passController.value.text = password;
     }
+  }
+
+  // Update address from map selection
+  void updateAddressFromMap(Map<String, dynamic> locationData) {
+    addressController.value.text = locationData['address'] ?? '';
+    latitude.value = locationData['latitude'];
+    longitude.value = locationData['longitude'];
   }
 
   ///=====================LOGIN METHOD=====================
@@ -261,6 +273,20 @@ class AuthController extends GetxController {
       "password": passController.value.text,
       "contactNo": phoneController.value.text,
       "role": isContactor ? "contractor" : "customer",
+      if (!isContactor) ...{
+        "city": addressController.value.text,
+        "location": [
+          {
+            "coordinates": [
+              longitude.value ?? -84.090724,
+              latitude.value ?? 9.928069,
+            ],
+            "address": addressController.value.text,
+            "name": "Default",
+            "isSelect": true, 
+          },
+        ],
+      },
     };
 
     debugPrint('Registration payload: $body');

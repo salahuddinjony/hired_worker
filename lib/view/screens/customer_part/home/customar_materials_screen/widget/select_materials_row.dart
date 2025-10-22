@@ -58,7 +58,7 @@ class SelectMaterialsRow extends StatelessWidget {
                     color: AppColors.black,
                   ),
                   CustomText(
-                      text: "Unit price: \$${price}", 
+                      text: "Unit price: AUD ${price}", 
                       fontSize: 12.w,
                       fontWeight: FontWeight.w400,
                       color: AppColors.black_08,

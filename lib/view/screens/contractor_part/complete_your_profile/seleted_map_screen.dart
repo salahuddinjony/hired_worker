@@ -9,8 +9,8 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/contr
 
 import '../../../components/custom_loader/custom_loader.dart';
 
-class SeletedMapScreen extends StatelessWidget {
-  const SeletedMapScreen({super.key});
+class SelectedMapScreen extends StatelessWidget {
+  const SelectedMapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,17 @@ class SeletedMapScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomRoyelAppbar(
         leftIcon: true,
-        titleName: "Selecte Location".tr,
+        titleName: "Select Location".tr,
       ),
       body: Stack(
         children: [
-          Obx(
-            () => GoogleMap(
+          Obx(() {
+            mapController.cameraPosition.value = const CameraPosition(
+              target: LatLng(37.7749, -122.4194),
+              zoom: 12,
+            );
+
+            return GoogleMap(
               initialCameraPosition: mapController.cameraPosition.value,
               onMapCreated: mapController.onMapCreated,
               markers: mapController.markers.toSet(),
@@ -35,11 +40,12 @@ class SeletedMapScreen extends StatelessWidget {
               onTap: (LatLng position) {
                 mapController.onMapTap(position);
                 searchController.text =
-                    mapController.selectedLocation.value?['address'] ?? '';
+                    mapController.selectedLocation.value?['address'] ??
+                    'San Francisco';
                 mapController.setIsClean(true);
               },
-            ),
-          ),
+            );
+          }),
           Positioned(
             top: 30,
             right: 30,
@@ -48,7 +54,10 @@ class SeletedMapScreen extends StatelessWidget {
               children: [
                 CustomTextField(
                   textEditingController: searchController,
-                  prefixIcon: const Icon(Icons.search, color: AppColors.textCLr),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: AppColors.textCLr,
+                  ),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
                       mapController.setIsClean(true);
@@ -61,7 +70,10 @@ class SeletedMapScreen extends StatelessWidget {
                   suffixIcon:
                       mapController.isClean.value
                           ? IconButton(
-                            icon: const Icon(Icons.clear, color: AppColors.textCLr),
+                            icon: const Icon(
+                              Icons.clear,
+                              color: AppColors.textCLr,
+                            ),
                             onPressed: () {
                               searchController.clear();
                               mapController.clearSelectedLocation();
@@ -104,7 +116,9 @@ class SeletedMapScreen extends StatelessWidget {
                                 return ListTile(
                                   title: Text(
                                     suggestion,
-                                    style: const TextStyle(color: AppColors.textCLr),
+                                    style: const TextStyle(
+                                      color: AppColors.textCLr,
+                                    ),
                                   ),
                                   onTap: () {
                                     searchController.text = suggestion;
@@ -134,7 +148,17 @@ class SeletedMapScreen extends StatelessWidget {
                       : CustomButton(
                         onTap: () {
                           if (mapController.selectedLocation.value != null) {
-                            mapController.updateContractorData();
+                            // Check if there's a callback to return data (for reusable purpose)
+                            if (Get.arguments != null &&
+                                Get.arguments['returnData'] == true) {
+                              // Return the selected location data back to the previous screen
+                              Get.back(
+                                result: mapController.selectedLocation.value,
+                              );
+                            } else {
+                              // Original contractor flow - update contractor data
+                              mapController.updateContractorData();
+                            }
                           } else {
                             Get.snackbar(
                               'Error',

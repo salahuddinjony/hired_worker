@@ -21,7 +21,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
       extendBody: true,
       appBar: CustomRoyelAppbar(
         leftIcon: false,
-        titleName: "Booking History".tr,
+        titleName: "Booking Status".tr,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

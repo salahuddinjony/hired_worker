@@ -106,9 +106,11 @@ class Customer {
     String? gender;
     String? city;
     String? language;
-    String? location;
+    num? balance;
+    List<Location>? location;
     bool? isDeleted;
     int? v;
+    String? userId;
 
     Customer({
         this.id,
@@ -116,9 +118,11 @@ class Customer {
         this.gender,
         this.city,
         this.language,
+        this.balance,
         this.location,
         this.isDeleted,
         this.v,
+        this.userId,
     });
 
     factory Customer.fromJson(Map<String, dynamic> json) => Customer(
@@ -127,9 +131,14 @@ class Customer {
         gender: json["gender"],
         city: json["city"],
         language: json["language"],
-        location: json["location"],
+        balance: json["balance"],
+        location: json["location"] == null
+                ? null
+                : List<Location>.from(
+                        (json["location"] as List).map((x) => Location.fromJson(x))),
         isDeleted: json["isDeleted"],
         v: json["__v"],
+        userId: json["userId"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -138,8 +147,50 @@ class Customer {
         "gender": gender,
         "city": city,
         "language": language,
-        "location": location,
+        "balance": balance,
+        "location": location == null
+                ? null
+                : List<dynamic>.from(location!.map((x) => x.toJson())),
         "isDeleted": isDeleted,
         "__v": v,
+        "userId": userId,
+    };
+}
+
+class Location {
+    String? type;
+    List<double>? coordinates;
+    String? address;
+    String? name;
+    bool? isSelect;
+    String? id;
+
+    Location({
+        this.type,
+        this.coordinates,
+        this.address,
+        this.name,
+        this.isSelect,
+        this.id,
+    });
+
+    factory Location.fromJson(Map<String, dynamic> json) => Location(
+        type: json["type"],
+        coordinates: json["coordinates"] == null
+                ? null
+                : List<double>.from((json["coordinates"] as List).map((x) => x.toDouble())),
+        address: json["address"],
+        name: json["name"],
+        isSelect: json["isSelect"],
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "type": type,
+        "coordinates": coordinates,
+        "address": address,
+        "name": name,
+        "isSelect": isSelect,
+        "_id": id,
     };
 }

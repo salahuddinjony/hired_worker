@@ -44,7 +44,7 @@ class CustomMaterialCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: CustomText(
-                  text: "\$$price",
+                  text: "AUD $price",
                   fontSize: 12.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,

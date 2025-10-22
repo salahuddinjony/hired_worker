@@ -74,6 +74,7 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         CustomFormCard(
+                          isPassword: true,
                           title: "Password".tr,
                           hintText: "Enter your password".tr,
                           controller: authController.passController.value,

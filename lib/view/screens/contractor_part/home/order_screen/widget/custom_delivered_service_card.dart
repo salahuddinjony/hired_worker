@@ -134,7 +134,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                         CustomButton(
                           onTap: () {},
-                          title: "$price \$",
+                          title: "AUD $price",
                           height: 26.h,
                           width: 50.w,
                           fontSize: 10.w,

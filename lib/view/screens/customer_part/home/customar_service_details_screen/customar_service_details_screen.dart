@@ -355,7 +355,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20.h),
                   CustomText(
-                    text: 'Charge /Hour \$${controller.hourlyRate}',
+                    text: 'Charge /Hour AUD ${controller.hourlyRate}',
                     fontSize: 18.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -365,7 +365,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     final total = controller.calculateTotalPayableAmount();
                     final hours = controller.durations.value;
                     return CustomText(
-                      text: "Total:  USD $total ($hours Hours)",
+                      text: "Total: AUD $total ($hours Hours)",
                       fontSize: 18.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
@@ -377,24 +377,6 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                       if (!controller.isNotEmptyField()) {
                         return;
                       }
-                      
-                      // Check if this is an update operation
-                      // if (isUpdate && bookingId.isNotEmpty) {
-                      //   // Update existing booking
-                      //   final success = await controller.updateBooking(
-                      //     bookingId: bookingId,
-                      //     contractorId: contractorId,
-                      //     subcategoryId: subcategoryId,
-                      //   );
-                        
-                      //   if (success) {
-                      //     // Navigate back to history or show success
-                      //     Get.back(); // Go back to previous screen
-                      //     Get.back(); // Go back to materials screen
-                      //     Get.back(); // Go back to history page
-                      //   }
-                      // } else {
-                        // Create new booking (original flow)
                         Get.toNamed(
                           AppRoutes.customarServiceContractorDetailsScreen,
                           arguments: {

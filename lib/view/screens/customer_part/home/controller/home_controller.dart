@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'dart:async';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:servana/service/api_client.dart';
@@ -11,15 +12,22 @@ import 'package:servana/view/screens/customer_part/home/model/contactor_details_
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/single_sub_category_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/sub_category_model.dart';
+import 'package:servana/view/screens/customer_part/home/slider/model/banners_model.dart';
 
 class HomeController extends GetxController {
   @override
   void onInit() {
+    super.onInit();
     getCategory();
     getSubCategory();
     getAllContactor();
-    super.onInit();
+    getBanners();
   }
+
+  // PageController for banners and current index observable (used by UI)
+  PageController bannerPageController = PageController();
+  RxInt currentBannerIndex = 0.obs;
+  Timer? bannerTimer;
 
   //======= get Category =======//
   Rx<RxStatus> getCategoryStatus = Rx<RxStatus>(RxStatus.loading());
@@ -124,21 +132,23 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.body;
         debugPrint('Raw API response: $data');
-        
+
         // Parse the response
         final contractorResponse = ContractorResponse.fromJson(data);
         getAllContactorList.value = contractorResponse.data;
-        
+
         debugPrint(
           'contractor data length: ${getAllContactorList.length} contractors',
         );
-        
+
         // Debug: Print each contractor's basic info
         for (int i = 0; i < getAllContactorList.length; i++) {
           final contractor = getAllContactorList[i];
-          debugPrint('Contractor $i: ${contractor.userId.fullName}, Skills: ${contractor.skillsCategory}');
+          debugPrint(
+            'Contractor $i: ${contractor.userId.fullName}, Skills: ${contractor.skillsCategory}',
+          );
         }
-        
+
         getAllServicesContractorStatus.value = RxStatus.success();
         refresh();
         // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
@@ -216,13 +226,70 @@ class HomeController extends GetxController {
         refresh();
       }
     } catch (e) {
-
       print("====> Error in getContractorReviews: $e");
       getContractorReviewsStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-    }finally {
+    } finally {
       refresh();
     }
+  }
+
+  // get banner for top and bottom
+  RxList<BannerItem> bannerList = <BannerItem>[].obs;
+  Rx<RxStatus> bannerStatus = Rx<RxStatus>(RxStatus.loading());
+  Future<void> getBanners() async {
+    try {
+      final response = await ApiClient.getData(ApiUrl.getBanners);
+      if (response.statusCode == 200) {
+        final data = BannersResponse.fromJson(response.body);
+        bannerList.value = data.data;
+        debugPrint("====> Banners loaded: ${bannerList.length} banners");
+        bannerStatus.value = RxStatus.success();
+        // start auto sliding from banners when loaded
+        startBannerAutoSlide();
+      } else {
+        bannerStatus.value = RxStatus.error('Failed to load banners');
+      }
+
+      debugPrint('Banner Response: ${response.body}');
+    } catch (e) {
+      bannerStatus.value = RxStatus.error('Error: ${e.toString()}');
+      debugPrint('Banner Error: ${e.toString()}');
+    } finally {
+      bannerStatus.refresh();
+    }
+  }
+
+
+// Start the auto sliding of banners
+  void startBannerAutoSlide() {
+   
+    bannerTimer?.cancel();
+    if (bannerList.isEmpty) return;
+
+    bannerTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (bannerList.isEmpty) return;
+      final next = (currentBannerIndex.value + 1) % bannerList.where((banner) => banner.type.toLowerCase() == 'top').length;
+      try {
+        bannerPageController.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        currentBannerIndex.value = next;
+      } catch (e) {
+        
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    bannerTimer?.cancel();
+    try {
+      bannerPageController.dispose();
+    } catch (_) {}
+    super.onClose();
   }
 }

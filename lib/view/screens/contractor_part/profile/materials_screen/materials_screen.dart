@@ -84,7 +84,7 @@ class MaterialsScreenState extends State<MaterialsScreen> {
                                       color: AppColors.primary.withValues(alpha: .3),
                                     ),
                                     child: Text(
-                                      "\$$price",
+                                      "AUD $price",
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         color: Colors.black54,
@@ -248,7 +248,7 @@ class MaterialsScreenState extends State<MaterialsScreen> {
                 SizedBox(height: 12.h),
 
                 Text(
-                  'Price \$',
+                  'Price (AUD)',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 15.sp,

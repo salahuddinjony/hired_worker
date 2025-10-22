@@ -231,7 +231,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
             CustomText(
               text:
-                  "${booking.rateHourly != null ? '\$${booking.rateHourly}/hr' : ''}",
+                  "${booking.rateHourly != null ? 'AUD ${booking.rateHourly}/hr' : ''}",
               fontSize: 16.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -240,14 +240,14 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 4,
-          text: "Sub Category : ${booking.subCategoryId?.name ?? ''}",
+          text: "Task : ${booking.subCategoryId?.name ?? ''}",
           fontSize: 16.w,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
           bottom: 20,
         ),
         CustomText(
-          text: "Requirement Question".tr,
+          text: "Required Questions".tr,
           fontSize: 18.w,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
@@ -283,13 +283,13 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               children: [
                 CustomText(
                   text:
-                      "${m.name ?? ''} - ${m.count ?? ''} x \$${m.price ?? ''}",
+                      "${m.name ?? ''} - ${m.count ?? ''} x AUD ${m.price ?? ''}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
                 ),
                 CustomText(
-                  text: "\$${(m.price ?? 0) * (m.count ?? 0)}",
+                  text: "AUD ${(m.price ?? 0) * (m.count ?? 0)}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -317,7 +317,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Radio(value: true, groupValue: (true), onChanged: (value) {}),
             CustomText(
-              text: booking.bookingType ?? 'One Time',
+              text: booking.bookingType=='oneTime' ? 'One Time' : 'Weekly',
               fontSize: 16.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -475,7 +475,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                               booking.totalAmount != null) ...[
                             SizedBox(height: 6.h),
                             CustomText(
-                              text: "Amount Paid: \$${booking.totalAmount}",
+                              text: "Amount Paid: AUD ${booking.totalAmount}",
                               fontSize: 14.w,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff6F767E),
@@ -516,7 +516,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 20,
-          text: "Total Amount".tr + ": \$${booking.totalAmount ?? '0'}",
+          text: "Total Amount".tr + ": AUD ${booking.totalAmount ?? '0'}",
           fontSize: 18.w,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
@@ -570,7 +570,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                             ? [booking.day as String]
                             : [],
                     'hourlyRate': booking.rateHourly ?? 0,
-                    'bookingId': booking.bookingId,
+                    'bookingId': booking.id,
                     'isUpdate': true,
                   },
                 );

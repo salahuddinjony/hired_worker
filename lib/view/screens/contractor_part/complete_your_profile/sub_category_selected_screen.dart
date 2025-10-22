@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 
@@ -36,7 +37,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Category".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -135,8 +136,12 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
+                                    textAlign:  TextAlign.center,
+                                    maxLines: 2,
                                     item.name ?? " - ",
                                     style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 14.sp,
                                       color:
                                           isSelected
                                               ? Colors.white

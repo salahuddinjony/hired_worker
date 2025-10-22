@@ -121,7 +121,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                 SizedBox(height: 12.h),
 
                 Text(
-                  'Price \$',
+                  'Price (AUD)',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 15.sp,
