@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
@@ -13,6 +14,7 @@ import 'package:servana/view/components/custom_netwrok_image/custom_network_imag
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import 'package:servana/view/screens/customer_part/home/customer_home_screen/widget/sub_category_item.dart';
+import 'widget/banner_carousel.dart';
 import 'package:servana/view/screens/customer_part/profile/controller/customer_profile_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_nav_bar/customer_navbar.dart';
@@ -32,6 +34,7 @@ class CustomerHomeScreen extends StatelessWidget {
       body: Obx(() {
         final categorys = homeController.categoryModel.value.data ?? [];
         final customerData = customerProfileController.customerModel.value;
+        final banners = homeController.bannerList;
 
         return SingleChildScrollView(
           child: Padding(
@@ -51,105 +54,135 @@ class CustomerHomeScreen extends StatelessWidget {
                       children: [
                         Obx(() {
                           final data =
-                              customerProfileController.customerModel.value.data;
+                              customerProfileController
+                                  .customerModel
+                                  .value
+                                  .data;
                           // Check if an image is selected, if not use the default profile image
 
                           return (data?.img != null)
-                          ? GestureDetector(
-                            onTap: () {
-                              Get.toNamed(AppRoutes.editCustomerProfileScreen);
-                            },
-                            child: CustomNetworkImage(
-                              imageUrl: ImageHandler.imagesHandle(data?.img),
-                              height: 55.h,
-                              width: 55.w,
-                              boxShape: BoxShape.circle,
-                            ),
-                          )
-                          : CustomNetworkImage(
-                            imageUrl: AppConstants.profileImage,
-                            height: 55.h,
-                            width: 55.w,
-                            boxShape: BoxShape.circle,
-                          );
-                    }),
+                              ? GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    AppRoutes.editCustomerProfileScreen,
+                                  );
+                                },
+                                child: CustomNetworkImage(
+                                  imageUrl: ImageHandler.imagesHandle(
+                                    data?.img,
+                                  ),
+                                  height: 55.h,
+                                  width: 55.w,
+                                  boxShape: BoxShape.circle,
+                                ),
+                              )
+                              : CustomNetworkImage(
+                                imageUrl: AppConstants.profileImage,
+                                height: 55.h,
+                                width: 55.w,
+                                boxShape: BoxShape.circle,
+                              );
+                        }),
 
-                    SizedBox(width: 10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: "Welcome!".tr,
-                          fontSize: 20.w,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                        ),
-                        CustomText(
-                          text: customerData.data?.fullName ?? "",
-                          fontSize: 14.w,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              color: Color(0xff8891AA),
-                              size: 20,
+                            CustomText(
+                              text: "Welcome!".tr,
+                              fontSize: 20.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
                             ),
-                            Obx(() {
-                              final savedAddresses = customerProfileController.savedAddresses;
-                              final selectedAddress = customerProfileController.getSelectedAddress();
-                              return DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: selectedAddress?.id,
-                                  items: savedAddresses.map((address) {
-                                    
-                                    String shortAddress = address.address;
-                                    if (shortAddress.isNotEmpty) {
-                                      final parts = shortAddress.split(',').map((s) => s.trim()).toList();
-                                      final start = parts.length > 3 ? parts.length - 3 : 0;
-                                        shortAddress = "${parts.sublist(start).join(', ')} • ${address.title}";
-                                    }
-                                    return DropdownMenuItem<String>(
-                                      value: address.id,
-                                      child: Text(
-                                        shortAddress.isNotEmpty ? shortAddress : (address.title.isNotEmpty ? address.title : "Other"),
+                            CustomText(
+                              text: customerData.data?.fullName ?? "",
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  color: Color(0xff8891AA),
+                                  size: 20,
+                                ),
+                                Obx(() {
+                                  final savedAddresses =
+                                      customerProfileController.savedAddresses;
+                                  final selectedAddress =
+                                      customerProfileController
+                                          .getSelectedAddress();
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: selectedAddress?.id,
+                                      items:
+                                          savedAddresses.map((address) {
+                                            String shortAddress =
+                                                address.address;
+                                            if (shortAddress.isNotEmpty) {
+                                              final parts =
+                                                  shortAddress
+                                                      .split(',')
+                                                      .map((s) => s.trim())
+                                                      .toList();
+                                              final start =
+                                                  parts.length > 3
+                                                      ? parts.length - 3
+                                                      : 0;
+                                              shortAddress =
+                                                  "${parts.sublist(start).join(', ')} • ${address.title}";
+                                            }
+                                            return DropdownMenuItem<String>(
+                                              value: address.id,
+                                              child: Text(
+                                                shortAddress.isNotEmpty
+                                                    ? shortAddress
+                                                    : (address.title.isNotEmpty
+                                                        ? address.title
+                                                        : "Other"),
+                                                style: TextStyle(
+                                                  fontSize: 14.w,
+                                                  color: const Color(
+                                                    0xff8891AA,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                      hint: Text(
+                                        "Loading...".tr,
                                         style: TextStyle(
                                           fontSize: 14.w,
                                           color: const Color(0xff8891AA),
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Loading...".tr,
-                                    style: TextStyle(
-                                      fontSize: 14.w,
-                                      color: const Color(0xff8891AA),
+                                      onChanged: (selectedId) async {
+                                        final index = savedAddresses.indexWhere(
+                                          (a) => a.id == selectedId,
+                                        );
+                                        if (index != -1) {
+                                          customerProfileController
+                                              .selectAddress(index);
+                                          await customerProfileController
+                                              .updateProfile();
+                                        }
+                                      },
                                     ),
-                                  ),
-                                  onChanged: (selectedId) async {
-                                    final index = savedAddresses.indexWhere((a) => a.id == selectedId);
-                                    if (index != -1) {
-                                      customerProfileController.selectAddress(index);
-                                      await customerProfileController.updateProfile();
-                                    }
-                                  },
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
                       ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 16.w),
                       child: Obx(() {
-                        final notificationCount = customerProfileController.notificationsList.length;
+                        final notificationCount =
+                            customerProfileController.notificationsList.length;
                         return GestureDetector(
                           onTap: () {
                             customerProfileController.getNotifications();
@@ -173,7 +206,8 @@ class CustomerHomeScreen extends StatelessWidget {
                                   top: 0,
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: notificationCount > 99 ? 4.w : 5.w,
+                                      horizontal:
+                                          notificationCount > 99 ? 4.w : 5.w,
                                       vertical: 2.h,
                                     ),
                                     decoration: BoxDecoration(
@@ -186,7 +220,10 @@ class CustomerHomeScreen extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: CustomText(
-                                        text: notificationCount > 99 ? '99+' : notificationCount.toString(),
+                                        text:
+                                            notificationCount > 99
+                                                ? '99+'
+                                                : notificationCount.toString(),
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -202,18 +239,21 @@ class CustomerHomeScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.h),
+
+                // Banner carousel for 'top' type banners
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0),
-                  child: CustomNetworkImage(
-                    imageUrl: AppConstants.electrician,
-                    height: 135,
-                    width: MediaQuery.sizeOf(context).width,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
+                  child: BannerCarousel(
+                    controller: homeController,
+                    banners:
+                        banners
+                            .where(
+                              (banner) => banner.type.toLowerCase() == 'top',
+                            )
+                            .toList(),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: GestureDetector(
@@ -386,10 +426,93 @@ class CustomerHomeScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 16.h),
-                const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Center(child: CustomImage(imageSrc: AppImages.banner)),
+                Builder(
+                  builder: (context) {
+                    final bottomBanner = banners.where((banner) => banner.type.toLowerCase() == 'bottom').firstOrNull;
+                    final String labelName = bottomBanner?.category?.name ?? bottomBanner?.subCategory?.name ?? '';
+                    return GestureDetector(
+                      onTap: () {
+                        if (bottomBanner != null) {
+                          Get.toNamed(
+                            AppRoutes.customerParSubCategoryItem,
+                            arguments: {
+                              'name': bottomBanner.category?.name ?? bottomBanner.subCategory?.name ?? '',
+                              'id': bottomBanner.category?.id ?? bottomBanner.subCategory?.id ?? '',
+                            },
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Center(
+                          child: bottomBanner == null
+                              ? CustomImage(imageSrc: AppImages.banner)
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Stack(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: ImageHandler.imagesHandle(bottomBanner.image),
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          height: 135,
+                                          width: MediaQuery.sizeOf(context).width,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) => Container(
+                                          height: 135,
+                                          width: MediaQuery.sizeOf(context).width,
+                                          color: Colors.grey.withOpacity(0.2),
+                                        ),
+                                        errorWidget: (context, url, error) => Container(
+                                          height: 135,
+                                          width: MediaQuery.sizeOf(context).width,
+                                          color: Colors.grey.withOpacity(0.2),
+                                          child: const Icon(Icons.error),
+                                        ),
+                                      ),
+                                      if (labelName.isNotEmpty)
+                                        Positioned(
+                                          left: 8,
+                                          bottom: 8,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(0.45),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              labelName,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.only(right: 16.0),
+                //   child: Center(child: CustomImage(imageSrc: AppImages.banner)),
+                // ),
+
+                // Banner carousel for 'bottom' type banners
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 16.0),
+                //   child: BannerCarousel(controller: homeController, banners: banners.where((banner) => banner.type.toLowerCase() == 'bottom').toList()),
+                // ),
                 SizedBox(height: 50.h),
               ],
             ),
