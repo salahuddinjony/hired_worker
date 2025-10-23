@@ -28,9 +28,9 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
   // Current tab status for API filtering
   RxString currentStatus = ''.obs;
   
-  // TabController for managing tabs
+  // TabController for managing tabs 
   late TabController tabController;
-  final List<String> tabStatuses = ['pending', 'accepted', 'ongoing', 'rejected']; // Last one for "History" tab (all statuses)
+  final List<String> tabStatuses = ['pending', 'accepted', 'ongoing', '']; // Last one for "History" tab (all statuses)
 
   @override
   void onInit() {
