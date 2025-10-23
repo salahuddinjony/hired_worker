@@ -183,7 +183,7 @@ class OrderController extends GetxController {
   }
 
   Future<void> acceptOrder(String id) async {
-    final Map<String, String> data = {"status": "accepted"};
+    final Map<String, String> data = {"status": "ongoing"};
 
     try {
       final response = await ApiClient.patchMultipartData(
