@@ -125,7 +125,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             !controller.getBookingReportStatus.value.isLoading) {
           return ListView(
             children: [
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Center(child: Text('No data available'.tr)),
             ],
           );
@@ -133,7 +133,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
 
         return ListView.separated(
           controller: controller.scrollController,
-          padding: EdgeInsets.only(top: 8, bottom: 16),
+          padding: const EdgeInsets.only(top: 8, bottom: 16),
           itemBuilder: (context, index) {
             // Show loading indicator or no more data message at the bottom
             if (index == displayList.length) {

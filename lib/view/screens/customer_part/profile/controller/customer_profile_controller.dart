@@ -136,8 +136,11 @@ class CustomerProfileController extends GetxController {
           final selected = getSelectedAddress();
           if (selected != null) {
             String fullAddress = selected.address;
-            if (selected.flatNo != null && selected.flatNo!.isNotEmpty) {
-              fullAddress = '${selected.flatNo}, $fullAddress';
+            if (selected.unit != null && selected.unit!.isNotEmpty) {
+              fullAddress = '${selected.unit}, $fullAddress';
+            }
+            if (selected.street != null && selected.street!.isNotEmpty) {
+              fullAddress = '${selected.street}, $fullAddress';
             }
             additionalAddressController.value.text = fullAddress;
           }
@@ -178,6 +181,9 @@ class CustomerProfileController extends GetxController {
                 "coordinates": [addr.longitude, addr.latitude],
                 "address": addr.address,
                 "name": addr.title,
+                "street": addr.street ?? '',
+                "unit": addr.unit ?? '',
+                "directions": addr.directions ?? '',
                 "isSelect": addr.isSelected,
               },
             )
@@ -194,9 +200,46 @@ class CustomerProfileController extends GetxController {
     };
 
     if (selectedImage.value != null) {
+      final Map<String, String> multipartFields = {
+        'fullName': body['fullName']?.toString() ?? '',
+        'contactNo': body['contactNo']?.toString() ?? '',
+        'city': body['city']?.toString() ?? '',
+        'dob': body['dob']?.toString() ?? '',
+        'gender': body['gender']?.toString() ?? '',
+      };
+
+      final List<Map<String, dynamic>> locations =
+          List<Map<String, dynamic>>.from(body['location'] ?? []);
+      for (var i = 0; i < locations.length; i++) {
+        final loc = locations[i];
+        final prefix = 'location[$i]';
+        if (loc['type'] != null)
+          multipartFields['$prefix[type]'] = loc['type'].toString();
+        if (loc['address'] != null)
+          multipartFields['$prefix[address]'] = loc['address'].toString();
+        if (loc['name'] != null)
+          multipartFields['$prefix[name]'] = loc['name'].toString();
+        if (loc['street'] != null)
+          multipartFields['$prefix[street]'] = loc['street'].toString();
+        if (loc['unit'] != null)
+          multipartFields['$prefix[unit]'] = loc['unit'].toString();
+        if (loc['directions'] != null)
+          multipartFields['$prefix[directions]'] = loc['directions'].toString();
+        if (loc['isSelect'] != null)
+          multipartFields['$prefix[isSelect]'] = loc['isSelect'].toString();
+
+        if (loc['coordinates'] != null && loc['coordinates'] is List) {
+          final coords = List.from(loc['coordinates']);
+          for (var j = 0; j < coords.length; j++) {
+            multipartFields['$prefix[coordinates][$j]'] =
+                coords[j]?.toString() ?? '';
+          }
+        }
+      }
+
       response = await ApiClient.patchMultipartData(
         ApiUrl.updateProfile(userId: userId),
-        body,
+        multipartFields,
         multipartBody: [MultipartBody("file", selectedImage.value!)],
       );
     } else {
@@ -223,17 +266,18 @@ class CustomerProfileController extends GetxController {
     }
   }
 
-  // Update an existing address
   void updateAddress(int index, SavedAddress updatedAddress) {
     if (index >= 0 && index < savedAddresses.length) {
       savedAddresses[index] = updatedAddress;
       savedAddresses.refresh();
-      // Optionally update additionalAddressController if selected
       if (updatedAddress.isSelected) {
         String fullAddress = updatedAddress.address;
-        if (updatedAddress.flatNo != null &&
-            updatedAddress.flatNo!.isNotEmpty) {
-          fullAddress = '${updatedAddress.flatNo}, $fullAddress';
+        if (updatedAddress.unit != null && updatedAddress.unit!.isNotEmpty) {
+          fullAddress = '${updatedAddress.unit}, $fullAddress';
+        }
+        if (updatedAddress.street != null &&
+            updatedAddress.street!.isNotEmpty) {
+          fullAddress = '${updatedAddress.street}, $fullAddress';
         }
         additionalAddressController.value.text = fullAddress;
       }
@@ -335,8 +379,7 @@ class CustomerProfileController extends GetxController {
   void showAddressBottomSheet() {
     Get.bottomSheet(
       const AddressSelectionBottomSheet(),
-      isScrollControlled:
-          true, 
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
       enableDrag: true,
@@ -379,7 +422,8 @@ class CustomerProfileController extends GetxController {
   void addNewAddress({
     required String title,
     required String address,
-    String? flatNo,
+    String? unit,
+    String? street,
     String? directions,
     double? latitude,
     double? longitude,
@@ -387,7 +431,8 @@ class CustomerProfileController extends GetxController {
     debugPrint('=== Adding New Address ===');
     debugPrint('Title: $title');
     debugPrint('Address: $address');
-    debugPrint('Flat: $flatNo');
+    debugPrint('Unit: $unit');
+    debugPrint('Street: $street');
     debugPrint('Directions: $directions');
     debugPrint('City: ${cityController.value.text}');
 
@@ -401,7 +446,8 @@ class CustomerProfileController extends GetxController {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: title,
       address: address,
-      flatNo: flatNo,
+      unit: unit,
+      street: street,
       directions: directions,
       city:
           cityController.value.text.isNotEmpty
@@ -419,8 +465,11 @@ class CustomerProfileController extends GetxController {
 
     // Update the additional address controller to show the selected address
     String fullAddress = newAddress.address;
-    if (flatNo != null && flatNo.isNotEmpty) {
-      fullAddress = '$flatNo, $fullAddress';
+    if (unit != null && unit.isNotEmpty) {
+      fullAddress = '$unit, $fullAddress';
+    }
+    if (street != null && street.isNotEmpty) {
+      fullAddress = '$street, $fullAddress';
     }
     additionalAddressController.value.text = fullAddress;
     debugPrint('Additional address controller updated: $fullAddress');
@@ -455,8 +504,11 @@ class CustomerProfileController extends GetxController {
 
     // Update additional address controller
     String fullAddress = selectedAddress.address;
-    if (selectedAddress.flatNo != null && selectedAddress.flatNo!.isNotEmpty) {
-      fullAddress = '${selectedAddress.flatNo}, $fullAddress';
+    if (selectedAddress.unit != null && selectedAddress.unit!.isNotEmpty) {
+      fullAddress = '${selectedAddress.unit}, $fullAddress';
+    }
+    if (selectedAddress.street != null && selectedAddress.street!.isNotEmpty) {
+      fullAddress = '${selectedAddress.street}, $fullAddress';
     }
     additionalAddressController.value.text = fullAddress;
 

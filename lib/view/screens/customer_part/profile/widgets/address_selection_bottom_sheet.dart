@@ -313,8 +313,8 @@ class _AddressItem extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
                   CustomText(
-                    text: address.flatNo != null && address.flatNo!.isNotEmpty
-                        ? '${address.flatNo}, ${address.address}'
+                    text: address.unit != null && address.unit!.isNotEmpty
+                        ? '${address.unit}, ${address.address}'
                         : address.address,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -322,6 +322,7 @@ class _AddressItem extends StatelessWidget {
                     maxLines: 2,
                   ),
                   SizedBox(height: 4.h),
+                  // City row
                   Row(
                     children: [
                       Icon(
@@ -341,6 +342,55 @@ class _AddressItem extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  // Optional: Street
+                  if (address.street != null && address.street!.isNotEmpty) ...[
+                    SizedBox(height: 6.h),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.streetview,
+                          size: 14.sp,
+                          color: Colors.grey[500],
+                        ),
+                        SizedBox(width: 6.w),
+                        Expanded(
+                          child: CustomText(
+                            text: address.street!,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[600]!,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+
+                  // Optional: Directions
+                  if (address.directions != null && address.directions!.isNotEmpty) ...[
+                    SizedBox(height: 6.h),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          size: 14.sp,
+                          color: Colors.grey[500],
+                        ),
+                        SizedBox(width: 6.w),
+                        Expanded(
+                          child: CustomText(
+                            text: address.directions!,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[500]!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                   // if (address.directions != null && address.directions!.isNotEmpty) ...[
                   //   SizedBox(height: 4.h),
                   //   Row(

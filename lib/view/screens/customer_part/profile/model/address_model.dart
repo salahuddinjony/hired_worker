@@ -2,7 +2,8 @@ class SavedAddress {
   final String? id;
   final String title;
   final String address;
-  final String? flatNo;
+  final String? unit;
+  final String? street;
   final String? directions;
   final String city;
   final double? latitude;
@@ -13,7 +14,8 @@ class SavedAddress {
     this.id,
     required this.title,
     required this.address,
-    this.flatNo,
+    this.unit,
+    this.street,
     this.directions,
     required this.city,
     this.latitude,
@@ -25,7 +27,8 @@ class SavedAddress {
     String? id,
     String? title,
     String? address,
-    String? flatNo,
+    String? street,
+    String? unit,
     String? directions,
     String? city,
     double? latitude,
@@ -36,7 +39,8 @@ class SavedAddress {
       id: id ?? this.id,
       title: title ?? this.title,
       address: address ?? this.address,
-      flatNo: flatNo ?? this.flatNo,
+      unit: unit ?? this.unit,
+      street: street ?? this.street,
       directions: directions ?? this.directions,
       city: city ?? this.city,
       latitude: latitude ?? this.latitude,
@@ -50,7 +54,8 @@ class SavedAddress {
       'id': id,
       'title': title,
       'address': address,
-      'flatNo': flatNo,
+      'unit': unit,
+      'street': street,
       'directions': directions,
       'city': city,
       'latitude': latitude,
@@ -64,7 +69,8 @@ class SavedAddress {
       id: json['id'],
       title: json['title'] ?? '',
       address: json['address'] ?? '',
-      flatNo: json['flatNo'],
+      unit: json['unit'],
+      street: json['street'],
       directions: json['directions'],
       city: json['city'] ?? '',
       latitude: json['latitude'],
