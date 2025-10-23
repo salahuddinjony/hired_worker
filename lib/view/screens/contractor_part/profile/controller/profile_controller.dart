@@ -84,6 +84,8 @@ class ProfileController extends GetxController {
         debugPrint('xxx - inside get me ${contractorModel.value.data!.contractor!.materials!.length}');
 
         initUserProfileInfoTextField(contractorModel.value.data!);
+
+        contractorModel.refresh();
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "Something went wrong",
