@@ -12,6 +12,7 @@ import 'package:servana/view/screens/contractor_part/home/controller/contractor_
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/on_going_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/controller/photo_upload_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/support_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/withdraw_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/schedule_screen/controller/schedule_controller.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/payment_webview_screen/payment_webview_controller.dart';
@@ -60,5 +61,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => OnGoingController(), fenix: true);
     Get.lazyPut(() => PhotoUploadController(), fenix: true);
     Get.lazyPut(() => PaymentWebViewController(), fenix: true);
+    Get.lazyPut(() => WithdrawController(), fenix: true);
   }
 }
