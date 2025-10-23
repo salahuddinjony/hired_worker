@@ -32,6 +32,8 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
     final String bookingId = args['bookingId']?.toString() ?? ''; 
     final bool isUpdate = args['isUpdate'] ?? false;
+    final PaymentedTotalAmount= args['PaymentedTotalAmount'] ?? 0;
+    final String updateBookingId = args['updateBookingId']?.toString() ?? '';
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,22 +84,21 @@ class CustomarMaterialsScreen extends StatelessWidget {
                                 itemCount:
                                     controller.materialsAndQuantity.length,
                                 itemBuilder: (context, index) {
-                                  final material =
-                                      controller.materialsAndQuantity[index];
+                                  final material = controller.materialsAndQuantity[index];
+                                  int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
+                                  int minCount = 0;
+                                  if (isUpdate && index < controller.originalMaterialCounts.length) {
+                                    minCount = controller.originalMaterialCounts[index];
+                                  }
                                   return SelectMaterialsRow(
                                     name: material['name'],
                                     unit: material['unit'] ?? 'pcs',
                                     price: material['price'] ?? '0',
                                     count: material['count'] ?? '0',
-                                    isSelected: controller.isMaterialSelected(
-                                      index,
-                                    ),
-                                    onIncrement:
-                                        () =>
-                                            controller.incrementMaterial(index),
-                                    onDecrement:
-                                        () =>
-                                            controller.decrementMaterial(index),
+                                    isSelected: controller.isMaterialSelected(index),
+                                    onIncrement: () => controller.incrementMaterial(index),
+                                    onDecrement: () => controller.decrementMaterial(index),
+                                    disableDecrement: currentCount <= minCount,
                                   );
                                 },
                               ),
@@ -126,14 +127,15 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'contractorName': contractorName,
                 'categoryName': categoryName,
                 'subCategoryName': subCategoryName,
-              
                 'bookingType': bookingType,
                 'duration': duration,
                 'startTime': startTime,
                 'endTime': endTime,
                 'selectedDates': selectedDates,
                 'hourlyRate': hourlyRate,
-                'isUpdate': isUpdate, 
+                'isUpdate': isUpdate,
+                'updateBookingId':updateBookingId,
+                'PaymentedTotalAmount': PaymentedTotalAmount,
                 'bookingId': bookingId,
               },
             );

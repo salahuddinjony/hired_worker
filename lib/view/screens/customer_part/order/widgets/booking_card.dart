@@ -30,12 +30,12 @@ class BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = (booking.status ?? '').toLowerCase();
-    
+
     // Define colors based on status
     Color borderColor;
     Color statusBgColor;
     Color statusTextColor;
-    
+
     switch (status) {
       case 'completed':
         borderColor = Colors.green;
@@ -216,23 +216,70 @@ class BookingCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8.w),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xffCDB3CD),
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (booking.status?.toLowerCase() != 'pending') {
+
+                  // Action chips for update and message
+                  Row(
+                    children: [
+                      // Update chip
+                      InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          // optional: handle update tap
+                          final controller =
+                              Get.find<ContractorBookingController>();
+                          Get.toNamed(
+                            AppRoutes.customarMaterialsScreen,
+                            arguments: {
+                              'contractorId': booking.contractorId?.id,
+                              'subcategoryId': booking.subCategoryId?.id ?? '',
+                              'materials': booking.material,
+                              'controller': controller,
+                              'contractorName': booking.contractorId?.fullName,
+                              'categoryName': "",
+                              'subCategoryName':
+                                  booking.subCategoryId?.name ?? '',
+                              // Pass booking schedule data for updates
+                              'bookingType': booking.bookingType ?? 'oneTime',
+                              'duration': booking.duration?.toString() ?? '1',
+                              'startTime': booking.startTime ?? '',
+                              'endTime': booking.endTime ?? '',
+                              'selectedDates':
+                                  booking.day is List
+                                      ? (booking.day as List)
+                                          .map((e) => e.toString())
+                                          .toList()
+                                      : booking.day is String
+                                      ? [booking.day as String]
+                                      : [],
+                              'hourlyRate': booking.rateHourly ?? 0,
+                              'bookingId': booking.id,
+                              'updateBookingId': booking.bookingId,
+                              'isUpdate': true, // Indicate this is an update
+                              'PaymentedTotalAmount': booking.totalAmount ?? 0,
+                            },
+                          );
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 8.h,
+                          ),
+                          backgroundColor: const Color(0xffCDB3CD),
+                          label: Icon(
+                            Icons.edit,
+                            size: 16.w,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+
+                      // Message chip
+                      InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () async {
                           debugPrint('Navigate to message screen');
-
-                          // Set loading state for this specific card
                           isLoadingConversation.value = true;
-
                           try {
                             final loggedUserId =
                                 await SharePrefsHelper.getString(
@@ -272,77 +319,166 @@ class BookingCard extends StatelessWidget {
                               );
                             }
                           } finally {
-                            // Reset loading state
                             isLoadingConversation.value = false;
                           }
-                        } else {
-                          final controller =
-                              Get.find<ContractorBookingController>();
-                          Get.toNamed(
-                            AppRoutes.customarMaterialsScreen,
-                            arguments: {
-                              'contractorId': booking.contractorId?.id,
-                              'subcategoryId': booking.subCategoryId?.id ?? '',
-                              'materials': booking.material,
-                              'controller': controller,
-                              'contractorName': booking.contractorId?.fullName,
-                              'categoryName': "",
-                              'subCategoryName': booking.subCategoryId?.name ?? '',
-                              // Pass booking schedule data for updates
-                              'bookingType': booking.bookingType ?? 'oneTime',
-                              'duration': booking.duration?.toString() ?? '1',
-                              'startTime': booking.startTime ?? '',
-                              'endTime': booking.endTime ?? '',
-                              'selectedDates':
-                                  booking.day is List
-                                      ? (booking.day as List)
-                                          .map((e) => e.toString())
-                                          .toList()
-                                      : booking.day is String
-                                      ? [booking.day as String]
-                                      : [],
-                              'hourlyRate': booking.rateHourly ?? 0,
-                              'bookingId':booking.id,
-                              'isUpdate': true, // Indicate this is an update
-                            },
-                          );
-                        }
-                      },
-                      child: Obx(
-                        () => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            isLoadingConversation.value
-                                ? SizedBox(
-                                  width: 18.w,
-                                  height: 18.w,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.primary,
-                                  ),
-                                )
-                                : Icon(
-                                  booking.status?.toLowerCase() == 'pending'
-                                      ? Icons.edit
-                                      : Icons.message,
-                                  color: AppColors.primary,
-                                  size: 18.w,
-                                ),
-                            SizedBox(width: 6.w),
-                            CustomText(
-                              text:
-                                  booking.status?.toLowerCase() == 'pending'
-                                      ? 'Update'.tr
-                                      : 'Message'.tr,
-                              fontSize: 14.w,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primary,
-                            ),
-                          ],
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 8.h,
+                          ),
+                          backgroundColor: AppColors.primary.withValues(
+                            alpha: .15,
+                          ),
+                          label: Obx(
+                            () =>
+                                isLoadingConversation.value
+                                    ? SizedBox(
+                                      width: 10.w,
+                                      height: 10.w,
+                                      child: const CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppColors.primary,
+                                      ),
+                                    )
+                                    : Icon(
+                                      Icons.message,
+                                      size: 16.w,
+                                      color: AppColors.primary,
+                                    ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 12,
+                  //     vertical: 4,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     color: const Color(0xffCDB3CD),
+                  //     borderRadius: BorderRadius.circular(7),
+                  //   ),
+                  //   child: GestureDetector(
+                  //     onTap: () async {
+                  //       if (booking.status?.toLowerCase() != 'pending') {
+                  //         debugPrint('Navigate to message screen');
+
+                  //         // Set loading state for this specific card
+                  //         isLoadingConversation.value = true;
+
+                  //         try {
+                  //           final loggedUserId =
+                  //               await SharePrefsHelper.getString(
+                  //                 AppConstants.userId,
+                  //               );
+                  //           final loggedUserRole =
+                  //               await SharePrefsHelper.getString(
+                  //                 AppConstants.role,
+                  //               );
+
+                  //           final conversationId = await controller
+                  //               .createOrRetrieveConversation(
+                  //                 senderId: loggedUserId,
+                  //                 receiverId: booking.contractorId?.id ?? '',
+                  //               );
+
+                  //           if (conversationId != null &&
+                  //               conversationId.isNotEmpty) {
+                  //             Get.toNamed(
+                  //               AppRoutes.chatScreen,
+                  //               arguments: {
+                  //                 'receiverName':
+                  //                     booking.contractorId?.fullName ??
+                  //                     'Service Provider',
+                  //                 'receiverImage':
+                  //                     booking.contractorId?.img ?? '',
+                  //                 'conversationId': conversationId,
+                  //                 'userId': loggedUserId,
+                  //                 'receiverId': booking.contractorId?.id,
+                  //                 'userRole': loggedUserRole,
+                  //                 'isCustomer': loggedUserRole == 'customer',
+                  //               },
+                  //             );
+                  //           } else {
+                  //             debugPrint(
+                  //               'Error: Conversation ID is null or empty',
+                  //             );
+                  //           }
+                  //         } finally {
+                  //           // Reset loading state
+                  //           isLoadingConversation.value = false;
+                  //         }
+                  //       } else {
+                  //         final controller =
+                  //             Get.find<ContractorBookingController>();
+                  //         Get.toNamed(
+                  //           AppRoutes.customarMaterialsScreen,
+                  //           arguments: {
+                  //             'contractorId': booking.contractorId?.id,
+                  //             'subcategoryId': booking.subCategoryId?.id ?? '',
+                  //             'materials': booking.material,
+                  //             'controller': controller,
+                  //             'contractorName': booking.contractorId?.fullName,
+                  //             'categoryName': "",
+                  //             'subCategoryName':
+                  //                 booking.subCategoryId?.name ?? '',
+                  //             // Pass booking schedule data for updates
+                  //             'bookingType': booking.bookingType ?? 'oneTime',
+                  //             'duration': booking.duration?.toString() ?? '1',
+                  //             'startTime': booking.startTime ?? '',
+                  //             'endTime': booking.endTime ?? '',
+                  //             'selectedDates':
+                  //                 booking.day is List
+                  //                     ? (booking.day as List)
+                  //                         .map((e) => e.toString())
+                  //                         .toList()
+                  //                     : booking.day is String
+                  //                     ? [booking.day as String]
+                  //                     : [],
+                  //             'hourlyRate': booking.rateHourly ?? 0,
+                  //             'bookingId': booking.id,
+                  //             'isUpdate': true, // Indicate this is an update
+                  //           },
+                  //         );
+                  //       }
+                  //     },
+                  //     child: Obx(
+                  //       () => Row(
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         children: [
+                  //           isLoadingConversation.value
+                  //               ? SizedBox(
+                  //                 width: 18.w,
+                  //                 height: 18.w,
+                  //                 child: const CircularProgressIndicator(
+                  //                   strokeWidth: 2,
+                  //                   color: AppColors.primary,
+                  //                 ),
+                  //               )
+                  //               : Icon(
+                  //                 booking.status?.toLowerCase() == 'pending'
+                  //                     ? Icons.edit
+                  //                     : Icons.message,
+                  //                 color: AppColors.primary,
+                  //                 size: 18.w,
+                  //               ),
+                  //           SizedBox(width: 6.w),
+                  //           CustomText(
+                  //             text:
+                  //                 booking.status?.toLowerCase() == 'pending'
+                  //                     ? 'Update'.tr
+                  //                     : 'Message'.tr,
+                  //             fontSize: 14.w,
+                  //             fontWeight: FontWeight.w600,
+                  //             color: AppColors.primary,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 10.h),
