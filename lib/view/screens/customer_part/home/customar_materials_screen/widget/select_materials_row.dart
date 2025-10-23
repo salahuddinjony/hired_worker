@@ -10,9 +10,10 @@ class SelectMaterialsRow extends StatelessWidget {
   final bool isSelected;
   final VoidCallback? onIncrement;
   final VoidCallback? onDecrement;
-  
+  final bool disableDecrement;
+
   const SelectMaterialsRow({
-    super.key, 
+    super.key,
     this.name,
     this.unit,
     this.count = '0',
@@ -20,6 +21,7 @@ class SelectMaterialsRow extends StatelessWidget {
     required this.isSelected,
     this.onIncrement,
     this.onDecrement,
+    this.disableDecrement = false,
   });
 
   @override
@@ -71,10 +73,10 @@ class SelectMaterialsRow extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: onDecrement,
-                icon: const Icon(
+                onPressed: disableDecrement ? null : onDecrement,
+                icon: Icon(
                   Icons.remove,
-                  color: AppColors.black,
+                  color: disableDecrement ? Colors.grey : AppColors.black,
                   size: 18,
                 ),
               ),

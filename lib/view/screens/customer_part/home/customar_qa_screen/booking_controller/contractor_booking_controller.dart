@@ -11,6 +11,8 @@ import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 class ContractorBookingController extends GetxController {
+  // Store original material counts for update mode
+  List<int> originalMaterialCounts = [];
   int hourlyRate = 0;
 
   // Optional contractor metadata to display on the details page
@@ -395,68 +397,70 @@ class ContractorBookingController extends GetxController {
 
   void initializeMaterials(dynamic materials) {
     materialsAndQuantity.clear();
+      originalMaterialCounts.clear();
 
-    for (final material in materials) {
-      String name = 'Unknown';
-      String unit = 'pcs';
-      String price = '0';
-      String count = '0'; // Default count
+      for (final material in materials) {
+        String name = 'Unknown';
+        String unit = 'pcs';
+        String price = '0';
+        String count = '0'; // Default count
 
-      try {
-        // Handle MaterialsModel type
-        if (material.runtimeType.toString().contains('MaterialsModel')) {
-          name = material.name ?? 'Unknown';
-          unit = material.unit ?? 'pcs';
-          price = material.price?.toString() ?? '0';
-          // MaterialsModel doesn't have count, keep default '0'
-        }
-        // Handle MaterialItem type (from booking data)
-        else if (material.runtimeType.toString().contains('MaterialItem')) {
-          name = material.name ?? 'Unknown';
-          unit = material.unit ?? 'pcs';
-          price = material.price?.toString() ?? '0';
-          count = material.count?.toString() ?? '0'; // Preserve existing count
-        }
-        // Handle Map/JSON data
-        else if (material is Map<String, dynamic>) {
-          name = material['name']?.toString() ?? 'Unknown';
-          unit = material['unit']?.toString() ?? 'pcs';
-          price = material['price']?.toString() ?? '0';
-          count =
-              material['count']?.toString() ?? '0'; // Preserve existing count
-        }
-        // Handle dynamic objects with properties
-        else {
-          try {
-            name = material.name?.toString() ?? 'Unknown';
-            unit = material.unit?.toString() ?? 'pcs';
+        try {
+          // Handle MaterialsModel type
+          if (material.runtimeType.toString().contains('MaterialsModel')) {
+            name = material.name ?? 'Unknown';
+            unit = material.unit ?? 'pcs';
             price = material.price?.toString() ?? '0';
-            // Try to get count if it exists
-            try {
-              count = material.count?.toString() ?? '0';
-            } catch (e) {
-              count = '0'; // Fallback if count doesn't exist
-            }
-          } catch (e) {
-            debugPrint('Error accessing material properties: $e');
+            // MaterialsModel doesn't have count, keep default '0'
           }
+          // Handle MaterialItem type (from booking data)
+          else if (material.runtimeType.toString().contains('MaterialItem')) {
+            name = material.name ?? 'Unknown';
+            unit = material.unit ?? 'pcs';
+            price = material.price?.toString() ?? '0';
+            count = material.count?.toString() ?? '0'; // Preserve existing count
+          }
+          // Handle Map/JSON data
+          else if (material is Map<String, dynamic>) {
+            name = material['name']?.toString() ?? 'Unknown';
+            unit = material['unit']?.toString() ?? 'pcs';
+            price = material['price']?.toString() ?? '0';
+            count =
+                material['count']?.toString() ?? '0'; // Preserve existing count
+          }
+          // Handle dynamic objects with properties
+          else {
+            try {
+              name = material.name?.toString() ?? 'Unknown';
+              unit = material.unit?.toString() ?? 'pcs';
+              price = material.price?.toString() ?? '0';
+              // Try to get count if it exists
+              try {
+                count = material.count?.toString() ?? '0';
+              } catch (e) {
+                count = '0'; // Fallback if count doesn't exist
+              }
+            } catch (e) {
+              debugPrint('Error accessing material properties: $e');
+            }
+          }
+
+          debugPrint(
+            'Parsed material: $name, unit: $unit, price: $price, count: $count',
+          );
+        } catch (e) {
+          debugPrint('initializeMaterials: error parsing material: $e');
         }
 
-        debugPrint(
-          'Parsed material: $name, unit: $unit, price: $price, count: $count',
-        );
-      } catch (e) {
-        debugPrint('initializeMaterials: error parsing material: $e');
+        materialsAndQuantity.add({
+          'name': name,
+          'unit': unit,
+          'price': price,
+          'count': count, // Use the extracted count value
+        });
+        originalMaterialCounts.add(int.tryParse(count) ?? 0);
       }
-
-      materialsAndQuantity.add({
-        'name': name,
-        'unit': unit,
-        'price': price,
-        'count': count, // Use the extracted count value
-      });
-    }
-    refresh();
+      refresh();
   }
 
   void incrementMaterial(int index) {
@@ -472,10 +476,14 @@ class ContractorBookingController extends GetxController {
     if (index < materialsAndQuantity.length) {
       final currentQuantity =
           int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
-      if (currentQuantity > 0) {
-        materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
-        refresh();
-      }
+        int minCount = 0;
+        if (Get.arguments != null && Get.arguments['isUpdate'] == true && index < originalMaterialCounts.length) {
+          minCount = originalMaterialCounts[index];
+        }
+        if (currentQuantity > minCount) {
+          materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
+          refresh();
+        }
     }
   }
 
@@ -722,6 +730,7 @@ class ContractorBookingController extends GetxController {
   Future<bool> createBooking({
     required String contractorId,
     required String subcategoryId,
+    required String paymentedBookingId,
   }) async {
     isLoading.value = true;
 
@@ -775,6 +784,7 @@ class ContractorBookingController extends GetxController {
 
     final bookingData = {
       'customerId': customerId,
+      'bookingId': paymentedBookingId,
       'contractorId': contractorId,
       'subCategoryId': subcategoryId,
       'questions': questionsPayload,
@@ -875,6 +885,8 @@ class ContractorBookingController extends GetxController {
     required String bookingId,
     required String contractorId,
     required String subcategoryId,
+    required String id,
+    required bool booking_update,
   }) async {
     isLoading.value = true;
 
@@ -947,6 +959,14 @@ class ContractorBookingController extends GetxController {
 
     if (bookingType.value.isNotEmpty) {
       bookingData['bookingType'] = bookingType.value;
+    }
+
+    if (id.trim().isNotEmpty) {
+      bookingData['bookingId'] = id;
+    }
+
+    if (booking_update) {
+      bookingData['booking_update'] = booking_update;
     }
 
     if (durationInt > 0) {
@@ -1064,6 +1084,91 @@ class ContractorBookingController extends GetxController {
       refresh();
     }
   }
+
+  //for looup available slots
+
+  Future<dynamic> lookupAvailableSlots({required String contractorId}) async {
+    isLoading.value = true;
+    debugPrint('Looking up available slots for contractor $contractorId ');
+    final body={
+      'contractorId': contractorId,
+      'date': dayController.value.text,
+      'startTime': startTimeController.value.text,
+      'duration':durations.value,
+    };
+    EasyLoading.show(status: 'Looking up available slots...');
+
+    try {
+      final response = await ApiClient.postData(
+        '${ApiUrl.lookupAvailableSlots}',
+        jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.body;
+        debugPrint('Available slots response: $data');
+        // Expecting: {success: true, message: ..., data: {success: false, message: ..., unavailableDays: [...]}}
+        if (data is Map && data.containsKey('data')) {
+          final slotData = data['data'];
+          if (slotData is Map && slotData['success'] == false) {
+            return {
+              'success': false,
+              'message': slotData['message'] ?? 'Some requested slots are unavailable.',
+              'unavailableDays': slotData['unavailableDays'] ?? [],
+            };
+          }
+        }
+        return true;
+      } else {
+        debugPrint('Failed to lookup available slots: ${response.body}');
+        String errorMsg = "Failed to lookup available slots";
+        try {
+          final body = response.body;
+          dynamic decoded;
+          if (body is String && body.isNotEmpty) {
+            decoded = jsonDecode(body);
+          } else if (body is Map) {
+            decoded = body;
+          }
+
+          if (decoded is Map<String, dynamic>) {
+            if (decoded['message'] is String && (decoded['message'] as String).isNotEmpty) {
+              errorMsg = decoded['message'];
+            }
+            if (errorMsg.isEmpty &&
+          decoded['errorSources'] is List &&
+          decoded['errorSources'].isNotEmpty) {
+              final firstError = decoded['errorSources'][0];
+              if (firstError is Map &&
+            firstError['message'] is String &&
+            (firstError['message'] as String).isNotEmpty) {
+          errorMsg = firstError['message'];
+              }
+            }
+            if (errorMsg.isEmpty &&
+          decoded['err'] is Map &&
+          decoded['err']['message'] is String) {
+              errorMsg = decoded['err']['message'];
+            }
+          }
+          return {'success': false, 'message': errorMsg, 'unavailableDays': []};
+        } catch (e) {
+          debugPrint('Error parsing error body: $e');
+        }
+        EasyLoading.showError(errorMsg);
+        return {'success': false, 'message': errorMsg, 'unavailableDays': []};
+      }
+    } catch (e) {
+      debugPrint('Error looking up available slots: $e');
+      EasyLoading.showError('Error looking up available slots');
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+      isLoading.value = false;
+      refresh();
+    }
+  }
+
 
   @override
   void onInit() {

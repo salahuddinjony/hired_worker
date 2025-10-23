@@ -33,10 +33,33 @@ class PaymentWebViewController extends GetxController {
                 debugPrint('Page finished loading: $url');
 
                 // Check if payment is completed (customize based on your payment provider)
-                if (url.contains('success') ||
-                    url.contains('payment-complete')) {
+                // Robust bookingId extraction: handle multiple '?'
+                String? bookingId;
+                try {
+                  final uri = Uri.tryParse(url);
+                  if (uri != null && uri.queryParameters['bookingId'] != null) {
+                    bookingId = uri.queryParameters['bookingId'];
+                  } else {
+                    // Fallback: manually extract bookingId from URL
+                    final match = RegExp(r"[?&]bookingId=([^&]*)").firstMatch(url);
+                    if (match != null && match.groupCount > 0) {
+                      bookingId = match.group(1);
+                    }
+                  }
+                  // Sanitize bookingId: remove trailing non-digit characters
+                  if (bookingId != null) {
+                    bookingId = bookingId.replaceAll(RegExp(r'[^0-9]+$'), '');
+                  }
+                } catch (e) {
+                  debugPrint('Error extracting bookingId: $e');
+                }
+                debugPrint('Extracted bookingId: $bookingId');
+                if (url.contains('success') || url.contains('payment-complete')) {
                   // Payment successful
-                  Get.back(result: 'success');
+                  Get.back(result: {
+                    'status': 'success',
+                    'bookingId': bookingId,
+                  });
                 } else if (url.contains('cancel') || url.contains('failed')) {
                   // Payment cancelled or failed
                   Get.back(result: 'cancelled');

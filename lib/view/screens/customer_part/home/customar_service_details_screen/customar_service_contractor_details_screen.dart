@@ -6,9 +6,68 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
+import 'package:servana/view/screens/customer_part/order/payment_webview_screen/payment_webview_screen.dart';
 import '../../../../components/custom_button/custom_button.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:servana/service/api_client.dart';
+import 'package:servana/service/api_url.dart';
+import 'dart:convert';
 
 class CustomarServiceContractorDetailsScreen extends StatelessWidget {
+  // Payment checkout method
+  Future<void> initiatePaymentCheckout(BuildContext context, ContractorBookingController controller, String bookingId) async {
+    try {
+      EasyLoading.show(
+        status: 'Processing payment...'.tr,
+        maskType: EasyLoadingMaskType.black,
+      );
+      final Map<String, dynamic> requestBody = {
+        "bookingId": bookingId,
+        "amount": controller.totalAmount,
+      };
+      debugPrint('Payment checkout request: $requestBody');
+      final response = await ApiClient.postData(
+        ApiUrl.createCheckoutSession,
+        jsonEncode(requestBody),
+      );
+      EasyLoading.dismiss();
+      debugPrint('Payment checkout response: ${response.body}');
+      if (response.statusCode == 200 &&
+          response.body != null &&
+          response.body['success'] == true) {
+        final String checkoutUrl = response.body['data'];
+        debugPrint('Opening payment URL: $checkoutUrl');
+        final result = await Get.to(
+          () => const PaymentWebViewScreen(),
+          arguments: checkoutUrl,
+        );
+        if (result == 'success') {
+          EasyLoading.showSuccess(
+            'Payment completed successfully'.tr,
+            duration: const Duration(seconds: 2),
+          );
+          Get.back();
+        } else if (result == 'cancelled') {
+          EasyLoading.showInfo(
+            'Payment was cancelled'.tr,
+            duration: const Duration(seconds: 2),
+          );
+        }
+      } else {
+        EasyLoading.showError(
+          response.body?['message'] ?? 'Failed to create payment checkout',
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('Payment checkout error: $e');
+      EasyLoading.showError(
+        'An error occurred during payment checkout'.tr,
+        duration: const Duration(seconds: 2),
+      );
+    }
+  }
   const CustomarServiceContractorDetailsScreen({super.key});
 
   @override
@@ -22,6 +81,15 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String subCategoryName = args['subCategoryName'] ?? '';
     final String isUpdate = args['isUpdate']?.toString() ?? 'false';
     final String bookingId = args['bookingId']?.toString() ?? '';
+    final String updateBookingId = args['updateBookingId']?.toString() ?? '';
+    final String PaymentedTotalAmount= args['PaymentedTotalAmount']?.toString() ?? '0';
+
+       final int paymentedTotalAmount = int.tryParse(PaymentedTotalAmount) ?? 0;
+              final int totalAmount = controller.totalAmount;
+              final bool isUpdateMode = isUpdate == 'true';
+              final int paymentAmount = isUpdateMode
+                  ? (totalAmount - paymentedTotalAmount)
+                  : totalAmount;
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details".tr),
@@ -350,37 +418,127 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Divider(thickness: .4, color: AppColors.black_02),
-                  const SizedBox(height: 16),
-                  CustomText(
-                    text: 'Total Amount',
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
-                  ),
-                  const SizedBox(height: 4),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'AUD ',
-                          style: TextStyle(
-                            fontSize: 20.w,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: controller.totalAmount.toString(),
-                          style: TextStyle(
-                            fontSize: 33.w,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black,
-                          ),
+                  const Divider(thickness: .6, color: AppColors.black_02),
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+                    decoration: BoxDecoration(
+                      color: AppColors.black_02.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black_02.withOpacity(0.08),
+                          blurRadius: 8,
+                          offset: Offset(0, 2),
                         ),
                       ],
                     ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: 'Total Amount',
+                          fontSize: 18.w,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.black,
+                        ),
+                        const SizedBox(height: 10),
+                        if (isUpdateMode) ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: 'Paid:',
+                                fontSize: 15.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black_08,
+                              ),
+                              const SizedBox(width: 8),
+                              CustomText(
+                                text: 'AUD ${paymentedTotalAmount.toStringAsFixed(2)}',
+                                fontSize: 18.w,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.green,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: 'Payable:',
+                                fontSize: 15.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black_08,
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: AppColors.black_09.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'AUD ',
+                                        style: TextStyle(
+                                          fontSize: 18.w,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${paymentAmount.toStringAsFixed(2)}',
+                                        style: TextStyle(
+                                          fontSize: 28.w,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.black_09,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ] else ...[
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.black_09.withOpacity(0.08),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'AUD ',
+                                    style: TextStyle(
+                                      fontSize: 22.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '${paymentAmount.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 36.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.black_09,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 20.h),
                 ],
               ),
               SizedBox(height: 20.h),
@@ -393,42 +551,92 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
         child: SafeArea(
           child: GetBuilder<ContractorBookingController>(
             builder: (_) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      onTap: () async {
-                        // collect answers and open checkout
-                        controller.collectAllAnswers();
-
-                        final bookingSuccess =
-                            isUpdate == 'true'
-                                ? await controller.updateBooking(
-                                  bookingId: bookingId,
-                                  contractorId: contractorId,
-                                  subcategoryId: subcategoryId,
-                                )
-                                : await controller.createBooking(
-                                  contractorId: contractorId,
-                                  subcategoryId: subcategoryId,
-                                );
-
-                        if (bookingSuccess) {
-                          Get.toNamed(AppRoutes.customerRequestHistoryScreen);
-                        } else {
-                          debugPrint('Booking creation failed');
-                        }
-                        debugPrint(
-                          'All questions Q and A : ${controller.questionsAndAnswers}',
-                        );
-                      },
-                      title:
-                          isUpdate == 'true'
-                              ? "Confirm Booking".tr
-                              : "Book Now".tr,
-                    ),
-                  ),
-                ],
+           
+              // If already paid, skip payment and place booking directly
+              if (paymentAmount <= 0) {
+                return CustomButton(
+                  onTap: () async {
+                    controller.collectAllAnswers();
+                    final bookingSuccess = isUpdateMode
+                        ? await controller.updateBooking(
+                              id:updateBookingId ,
+                              booking_update: true,
+                            bookingId: bookingId,
+                            contractorId: contractorId,
+                            subcategoryId: subcategoryId,
+                          )
+                        : await controller.createBooking(
+                            paymentedBookingId: '',
+                            contractorId: contractorId,
+                            subcategoryId: subcategoryId,
+                          );
+                    if (bookingSuccess) {
+                      Get.toNamed(AppRoutes.customerRequestHistoryScreen);
+                    } else {
+                      debugPrint('Booking creation failed');
+                    }
+                  },
+                  title: isUpdateMode ? "Confirm Booking".tr : "Book Now".tr,
+                );
+              }
+              // Otherwise, show payment button and process payment for remaining amount
+              return CustomButton(
+                onTap: () async {
+                  controller.collectAllAnswers();
+                  // Step 1: Call payment API to get payment URL for remaining amount
+                  EasyLoading.show(status: 'Processing payment...');
+                  final Map<String, dynamic> requestBody = {
+                    "contractorId": contractorId,
+                    "amount": paymentAmount,
+                  };
+                  final response = await ApiClient.postData(
+                    ApiUrl.createCheckoutSession,
+                    jsonEncode(requestBody),
+                  );
+                  EasyLoading.dismiss();
+                  if (response.statusCode == 200 &&
+                      response.body != null &&
+                      response.body['success'] == true) {
+                    final String checkoutUrl = response.body['data'];
+                    // Step 2: Navigate to payment webview with URL
+                    final paymentResult = await Get.to(
+                      () => const PaymentWebViewScreen(),
+                      arguments: checkoutUrl,
+                    );
+                    if (paymentResult is Map && paymentResult['status'] == 'success') {
+                      // Step 3: Place booking
+                      final bookingIdResult = paymentResult['bookingId'] ?? '';
+                      final bookingSuccess = isUpdateMode
+                          ? await controller.updateBooking(
+                              id: updateBookingId,
+                              booking_update: true,
+                              bookingId: bookingId, 
+                              contractorId: contractorId,
+                              subcategoryId: subcategoryId,
+                            )
+                          : await controller.createBooking(
+                              paymentedBookingId: bookingIdResult,
+                              contractorId: contractorId,
+                              subcategoryId: subcategoryId,
+                            );
+                      if (bookingSuccess) {
+                        Get.toNamed(AppRoutes.customerRequestHistoryScreen);
+                      } else {
+                        debugPrint('Booking creation failed');
+                      }
+                    } else {
+                      EasyLoading.showInfo('Payment was not completed or was cancelled.');
+                    }
+                  } else {
+                    EasyLoading.showError(
+                      response.body?['message'] ?? 'Failed to create payment checkout',
+                      duration: const Duration(seconds: 2),
+                    );
+                  }
+                },
+                title: isUpdateMode
+                    ? "Pay & Confirm Booking".tr
+                    : "Pay & Book Now".tr,
               );
             },
           ),

@@ -30,14 +30,14 @@ class CustomerOrderController extends GetxController with GetSingleTickerProvide
   
   // TabController for managing tabs 
   late TabController tabController;
-  final List<String> tabStatuses = ['pending', 'accepted', 'ongoing', '']; // Last one for "History" tab (all statuses)
+  final List<String> tabStatuses = ['pending', 'ongoing', '']; // Last one for "History" tab (all statuses)
 
   @override
   void onInit() {
     super.onInit();
     
     // Initialize TabController
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     
     // Add tab change listener
     tabController.addListener(() {

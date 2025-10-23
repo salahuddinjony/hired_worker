@@ -7,90 +7,84 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
-import 'dart:convert';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../review_page/review_page.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
-import '../../../../../service/api_client.dart';
-import '../../../../../service/api_url.dart';
-import '../payment_webview_screen/payment_webview_screen.dart';
 
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
 
-  // Payment checkout method
-  Future<void> initiatePaymentCheckout(BookingResult booking) async {
-    try {
-      // Show EasyLoading indicator
-      EasyLoading.show(
-        status: 'Processing payment...'.tr,
-        maskType: EasyLoadingMaskType.black,
-      );
+  // // Payment checkout method
+  // Future<void> initiatePaymentCheckout(BookingResult booking) async {
+  //   try {
+  //     // Show EasyLoading indicator
+  //     EasyLoading.show(
+  //       status: 'Processing payment...'.tr,
+  //       maskType: EasyLoadingMaskType.black,
+  //     );
 
-      // Prepare request body as JSON string
-      final Map<String, dynamic> requestBody = {
-        "bookingId": booking.bookingId ?? "",
-        "amount": booking.totalAmount ?? 0,
-      };
+  //     // Prepare request body as JSON string
+  //     final Map<String, dynamic> requestBody = {
+  //       "bookingId": booking.bookingId ?? "",
+  //       "amount": booking.totalAmount ?? 0,
+  //     };
 
-      debugPrint('Payment checkout request: $requestBody');
+  //     debugPrint('Payment checkout request: $requestBody');
 
-      final response = await ApiClient.postData(
-        ApiUrl.createCheckoutSession,
-        jsonEncode(requestBody),
-      );
+  //     final response = await ApiClient.postData(
+  //       ApiUrl.createCheckoutSession,
+  //       jsonEncode(requestBody),
+  //     );
 
-      EasyLoading.dismiss();
+  //     EasyLoading.dismiss();
 
-      debugPrint('Payment checkout response: ${response.body}');
+  //     debugPrint('Payment checkout response: ${response.body}');
 
-      if (response.statusCode == 200 &&
-          response.body != null &&
-          response.body['success'] == true) {
-        final String checkoutUrl = response.body['data'];
+  //     if (response.statusCode == 200 &&
+  //         response.body != null &&
+  //         response.body['success'] == true) {
+  //       final String checkoutUrl = response.body['data'];
 
-        debugPrint('Opening payment URL: $checkoutUrl');
+  //       debugPrint('Opening payment URL: $checkoutUrl');
 
-        // Navigate to custom WebView screen with back button
-        final result = await Get.to(
-          () => const PaymentWebViewScreen(),
-          arguments: checkoutUrl,
-        );
+  //       // Navigate to custom WebView screen with back button
+  //       final result = await Get.to(
+  //         () => const PaymentWebViewScreen(),
+  //         arguments: checkoutUrl,
+  //       );
 
-        // Handle the result from WebView
-        if (result == 'success') {
-          EasyLoading.showSuccess(
-            'Payment completed successfully'.tr,
-            duration: const Duration(seconds: 2),
-          );
-          // Optionally refresh the booking data or navigate back
-          Get.back();
-        } else if (result == 'cancelled') {
-          EasyLoading.showInfo(
-            'Payment was cancelled'.tr,
-            duration: const Duration(seconds: 2),
-          );
-        }
-      } else {
-        EasyLoading.showError(
-          response.body?['message'] ?? 'Failed to create payment checkout',
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } catch (e) {
-      // Dismiss EasyLoading if still open
-      EasyLoading.dismiss();
-      debugPrint('Payment checkout error: $e');
-      EasyLoading.showError(
-        'An error occurred during payment checkout'.tr,
-        duration: const Duration(seconds: 2),
-      );
-    }
-  }
+  //       // Handle the result from WebView
+  //       if (result == 'success') {
+  //         EasyLoading.showSuccess(
+  //           'Payment completed successfully'.tr,
+  //           duration: const Duration(seconds: 2),
+  //         );
+  //         // Optionally refresh the booking data or navigate back
+  //         Get.back();
+  //       } else if (result == 'cancelled') {
+  //         EasyLoading.showInfo(
+  //           'Payment was cancelled'.tr,
+  //           duration: const Duration(seconds: 2),
+  //         );
+  //       }
+  //     } else {
+  //       EasyLoading.showError(
+  //         response.body?['message'] ?? 'Failed to create payment checkout',
+  //         duration: const Duration(seconds: 2),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     // Dismiss EasyLoading if still open
+  //     EasyLoading.dismiss();
+  //     debugPrint('Payment checkout error: $e');
+  //     EasyLoading.showError(
+  //       'An error occurred during payment checkout'.tr,
+  //       duration: const Duration(seconds: 2),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +311,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Radio(value: true, groupValue: (true), onChanged: (value) {}),
             CustomText(
-              text: booking.bookingType=='oneTime' ? 'One Time' : 'Weekly',
+              text: booking.bookingType == 'oneTime' ? 'One Time' : 'Weekly',
               fontSize: 16.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -535,13 +529,6 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                 );
               },
               title: "Review".tr,
-            )
-            : booking.status?.toLowerCase() == 'accepted'
-            ? CustomButton(
-              onTap: () {
-                initiatePaymentCheckout(booking);
-              },
-              title: "Payment".tr,
             )
             : booking.status?.toLowerCase() == 'pending'
             ? CustomButton(
