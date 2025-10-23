@@ -269,7 +269,7 @@ class HomeScreen extends StatelessWidget {
                               hourlyRate: data.rateHourly?.toString() ?? ' - ',
                               rating:
                                   data.contractorId?.contractor?.ratings
-                                      ?.toString() ??
+                                      ?.toString() ?? // 123
                                   ' - ',
                               status: data.status ?? 'Unknown',
                               image: data.contractorId?.img,
