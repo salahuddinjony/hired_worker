@@ -17,7 +17,6 @@ import '../../../../components/custom_text/custom_text.dart';
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     final passed = Get.arguments;
@@ -56,31 +55,31 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                   CircleAvatar(
-                        radius: 26,
-                        backgroundColor: AppColors.primary.withValues(alpha: .15),
-                        child: ClipOval(
-                          child:
-                              booking.subCategoryId?.img != null &&
-                                      booking.subCategoryId!.img!.isNotEmpty
-                                  ? CachedNetworkImage(
-                                    imageUrl: booking.subCategoryId!.img!,
-                                    width: 52,
-                                    height: 52,
-                                    fit: BoxFit.cover,
-                                    errorWidget:
-                                        (context, url, error) => const Icon(
-                                          Icons.person,
-                                          color: AppColors.primary,
-                                        ),
-                                  )
-                                  : const Icon(
+                CircleAvatar(
+                  radius: 26,
+                  backgroundColor: AppColors.primary.withValues(alpha: .15),
+                  child: ClipOval(
+                    child:
+                        booking.subCategoryId?.img != null &&
+                                booking.subCategoryId!.img!.isNotEmpty
+                            ? CachedNetworkImage(
+                              imageUrl: booking.subCategoryId!.img!,
+                              width: 52,
+                              height: 52,
+                              fit: BoxFit.cover,
+                              errorWidget:
+                                  (context, url, error) => const Icon(
                                     Icons.person,
                                     color: AppColors.primary,
-                                    size: 32,
                                   ),
-                        ),
-                      ),
+                            )
+                            : const Icon(
+                              Icons.person,
+                              color: AppColors.primary,
+                              size: 32,
+                            ),
+                  ),
+                ),
                 SizedBox(width: 12.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,7 +513,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     'bookingId': booking.id,
                     'isUpdate': true,
                     'PaymentedTotalAmount': booking.totalAmount ?? 0,
-                    'subCategoryImage': booking.subCategoryId?.img ?? ''
+                    'subCategoryImage': booking.subCategoryId?.img ?? '',
                   },
                 );
               },
