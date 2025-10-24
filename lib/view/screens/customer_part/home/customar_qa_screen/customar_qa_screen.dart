@@ -29,6 +29,7 @@ class CustomarQaScreen extends StatelessWidget {
    final String contractorName = args['contractorName'] ?? '';
    final String categoryName= args['categoryName'] ?? '';
    final String subCategoryName= args['subCategoryName'] ?? '';
+   final String contractorIdForTimeSlot = args['contractorIdForTimeSlot'] ?? '';
    
 
     // hourlyRate may come as String, int, or double - parse defensively
@@ -128,6 +129,7 @@ class CustomarQaScreen extends StatelessWidget {
                           AppRoutes.customarMaterialsScreen,
                           arguments: {
                             'contractorId': contractorId,
+                            'contractorIdForTimeSlot': contractorIdForTimeSlot,
                             'subcategoryId': subcategoryId,
                             'materials': materials,
                             'controller': controller,

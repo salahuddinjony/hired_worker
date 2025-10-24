@@ -83,6 +83,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String bookingId = args['bookingId']?.toString() ?? '';
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
     final String PaymentedTotalAmount= args['PaymentedTotalAmount']?.toString() ?? '0';
+    final String contractorIdForTimeSlot = args['contractorIdForTimeSlot']?.toString() ?? '';
 
        final int paymentedTotalAmount = int.tryParse(PaymentedTotalAmount) ?? 0;
               final int totalAmount = controller.totalAmount;
@@ -421,15 +422,15 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   const Divider(thickness: .6, color: AppColors.black_02),
                   const SizedBox(height: 18),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
                     decoration: BoxDecoration(
-                      color: AppColors.black_02.withOpacity(0.06),
+                      color: AppColors.black_02.withValues(alpha: .06),
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.black_02.withOpacity(0.08),
+                          color: AppColors.black_02.withValues(alpha: .08),
                           blurRadius: 8,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -474,9 +475,9 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                 decoration: BoxDecoration(
-                                  color: AppColors.black_09.withOpacity(0.08),
+                                  color: AppColors.black_09.withValues(alpha: .08),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: RichText(
@@ -506,9 +507,9 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           ),
                         ] else ...[
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             decoration: BoxDecoration(
-                              color: AppColors.black_09.withOpacity(0.08),
+                              color: AppColors.black_09.withValues(alpha: .08),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: RichText(

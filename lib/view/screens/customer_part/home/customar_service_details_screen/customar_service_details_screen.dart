@@ -10,6 +10,7 @@ import 'package:servana/view/components/custom_netwrok_image/custom_network_imag
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../customar_qa_screen/booking_controller/contractor_booking_controller.dart';
+import 'package:servana/view/components/extension/extension.dart';
 
 class CustomarServiceDetailsScreen extends StatelessWidget {
   const CustomarServiceDetailsScreen({super.key});
@@ -29,41 +30,60 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
     final String duration = args['duration']?.toString() ?? '1';
     final String startTime = args['startTime']?.toString() ?? '';
     final String endTime = args['endTime']?.toString() ?? '';
-    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
-    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final List<String> selectedDates =
+        (args['selectedDates'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
+    final int hourlyRate =
+        (args['hourlyRate'] is int)
+            ? args['hourlyRate']
+            : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
     final bool isUpdate = args['isUpdate'] ?? false;
-  final int totalAmount = args['totalAmount'] is int ? args['totalAmount'] : int.tryParse(args['totalAmount']?.toString() ?? '0') ?? 0;
-  final int paymentedTotalAmount = args['PaymentedTotalAmount'] is int ? args['PaymentedTotalAmount'] : int.tryParse(args['PaymentedTotalAmount']?.toString() ?? '0') ?? 0;
-    final String bookingId = args['bookingId']?.toString() ?? ''; // Extract booking ID with proper conversion
+    final int totalAmount =
+        args['totalAmount'] is int
+            ? args['totalAmount']
+            : int.tryParse(args['totalAmount']?.toString() ?? '0') ?? 0;
+    final int paymentedTotalAmount =
+        args['PaymentedTotalAmount'] is int
+            ? args['PaymentedTotalAmount']
+            : int.tryParse(args['PaymentedTotalAmount']?.toString() ?? '0') ??
+                0;
+    final String bookingId =
+        args['bookingId']?.toString() ??
+        ''; // Extract booking ID with proper conversion
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
+    final String contractorIdForTimeSlot =
+        args['contractorIdForTimeSlot']?.toString() ?? '';
 
     // Initialize controller with existing booking data if this is an update
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (isUpdate) {
         // Set booking type
         controller.bookingType.value = bookingType;
-        
+
         // Set duration
         controller.durations.value = duration;
-        
+
         // Set hourly rate
         controller.hourlyRate = hourlyRate;
-        
+
         // Set start and end times
         controller.startTimeController.value.text = startTime;
         controller.endTimeController.value.text = endTime;
-        
+
         // Set selected dates
         controller.selectedDates.clear();
         controller.selectedDates.addAll(selectedDates);
-        
+
         // Set day controller text based on booking type
         if (bookingType == 'oneTime' && selectedDates.isNotEmpty) {
           controller.dayController.value.text = selectedDates.first;
         } else if (bookingType == 'weekly' && selectedDates.isNotEmpty) {
-          controller.dayController.value.text = '${selectedDates.length} dates selected';
+          controller.dayController.value.text =
+              '${selectedDates.length} dates selected';
         }
-        
+
         debugPrint('Initialized controller with existing booking data:');
         debugPrint('BookingType: $bookingType');
         debugPrint('Duration: $duration');
@@ -117,7 +137,10 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                         return Opacity(
                           opacity: isUpdate ? 0.6 : 1.0,
                           child: MouseRegion(
-                            cursor: isUpdate ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+                            cursor:
+                                isUpdate
+                                    ? SystemMouseCursors.forbidden
+                                    : SystemMouseCursors.click,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -125,28 +148,45 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                   absorbing: isUpdate,
                                   child: GestureDetector(
                                     onTap: () {
-                                      debugPrint('CustomarServiceDetailsScreen: One Time selected');
-                                      controller.selectedDates.length > 1 ? controller.dayController.value.clear() : null;
+                                      debugPrint(
+                                        'CustomarServiceDetailsScreen: One Time selected',
+                                      );
+                                      controller.selectedDates.length > 1
+                                          ? controller.dayController.value
+                                              .clear()
+                                          : null;
                                       controller.bookingType.value = 'oneTime';
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 10,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: isOneTime ? AppColors.primary : AppColors.white,
+                                        color:
+                                            isOneTime
+                                                ? AppColors.primary
+                                                : AppColors.white,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Row(
                                         children: [
                                           Icon(
                                             Icons.timer,
-                                            color: isOneTime ? AppColors.white : AppColors.black,
+                                            color:
+                                                isOneTime
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                           ),
                                           CustomText(
                                             left: 8.w,
                                             text: "One Time".tr,
                                             fontSize: 16.w,
                                             fontWeight: FontWeight.w500,
-                                            color: isOneTime ? AppColors.white : AppColors.black,
+                                            color:
+                                                isOneTime
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                           ),
                                         ],
                                       ),
@@ -156,25 +196,40 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                 AbsorbPointer(
                                   absorbing: isUpdate,
                                   child: GestureDetector(
-                                    onTap: () => controller.bookingType.value = 'weekly',
+                                    onTap:
+                                        () =>
+                                            controller.bookingType.value =
+                                                'weekly',
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 10,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: !isOneTime ? AppColors.primary : AppColors.white,
+                                        color:
+                                            !isOneTime
+                                                ? AppColors.primary
+                                                : AppColors.white,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Row(
                                         children: [
                                           Icon(
                                             Icons.calendar_month,
-                                            color: !isOneTime ? AppColors.white : AppColors.black,
+                                            color:
+                                                !isOneTime
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                           ),
                                           CustomText(
                                             left: 8.w,
                                             text: "Weekly".tr,
                                             fontSize: 16.w,
                                             fontWeight: FontWeight.w500,
-                                            color: !isOneTime ? AppColors.white : AppColors.black,
+                                            color:
+                                                !isOneTime
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                           ),
                                         ],
                                       ),
@@ -208,7 +263,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Obx(() {
-                        final selected = int.tryParse(controller.durations.value) ?? 1;
+                        final selected =
+                            int.tryParse(controller.durations.value) ?? 1;
                         int minDuration = 1;
                         // If update mode, set minDuration to original value
                         if (isUpdate) {
@@ -219,29 +275,40 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                           children: List.generate(5, (index) {
                             final hourValue = index + 1;
                             final isSelected = selected == hourValue;
-                            final canSelect = !isUpdate || hourValue >= minDuration;
+                            final canSelect =
+                                !isUpdate || hourValue >= minDuration;
                             final disabledBg = Colors.grey.shade300;
                             final disabledText = Colors.grey.shade600;
                             return GestureDetector(
-                              onTap: canSelect
-                                  ? () {
-                                      controller.durations.value = '$hourValue';
-                                    }
-                                  : null,
+                              onTap:
+                                  canSelect
+                                      ? () {
+                                        controller.durations.value =
+                                            '$hourValue';
+                                      }
+                                      : null,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
                                 child: CircleAvatar(
                                   radius: 15,
-                                  backgroundColor: canSelect
-                                      ? (isSelected ? AppColors.primary : AppColors.white)
-                                      : disabledBg,
+                                  backgroundColor:
+                                      canSelect
+                                          ? (isSelected
+                                              ? AppColors.primary
+                                              : AppColors.white)
+                                          : disabledBg,
                                   child: CustomText(
                                     text: "$hourValue",
                                     fontSize: 16.w,
                                     fontWeight: FontWeight.w500,
-                                    color: canSelect
-                                        ? (isSelected ? AppColors.white : AppColors.black)
-                                        : disabledText,
+                                    color:
+                                        canSelect
+                                            ? (isSelected
+                                                ? AppColors.white
+                                                : AppColors.black)
+                                            : disabledText,
                                   ),
                                 ),
                               ),
@@ -252,37 +319,87 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 30.h),
-                    Obx(
-                      () => AbsorbPointer(
-                        absorbing: isUpdate,
-                        child: Opacity(
-                          opacity: isUpdate ? 0.6 : 1.0,
-                          child: CustomFormCard(
-                            readOnly: true,
-                            onTap: () {
-                              if (!isUpdate) {
-                                controller.selectDate(context, controller.bookingType.value == 'oneTime');
+                  Obx(
+                    () => AbsorbPointer(
+                      absorbing: isUpdate,
+                      child: Opacity(
+                        opacity: isUpdate ? 0.6 : 1.0,
+                        child: CustomFormCard(
+                          readOnly: true,
+                          onTap: () async {
+                            if (!isUpdate) {
+                              await controller.selectDate(
+                                context,
+                                controller.bookingType.value == 'oneTime',
+                              );
+                              // Call API after selecting date(s)
+                              if (controller.selectedDates.isNotEmpty) {
+                                await controller.lookupAvailableSlots(
+                                  contractorIdForTimeSlot:
+                                      contractorIdForTimeSlot,
+                                );
                               }
-                            },
-                            title: controller.bookingType.value == 'oneTime'
-                                ? "Select Date".tr
-                                : "Select Multiple Dates ".tr,
-                            hintText: controller.dayController.value.text.isEmpty
-                                ? "mm/dd/yyyy"
-                                : controller.dayController.value.text,
-                            prefixIcon: const Icon(
-                              Icons.calendar_month,
-                              color: AppColors.black_08,
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: AppColors.black_08,
-                            ),
-                            controller: controller.dayController.value,
+                            }
+                          },
+                          title:
+                              controller.bookingType.value == 'oneTime'
+                                  ? "Select Date".tr
+                                  : "Select Multiple Dates ".tr,
+                          hintText:
+                              controller.dayController.value.text.isEmpty
+                                  ? "mm/dd/yyyy"
+                                  : controller.dayController.value.text,
+                          prefixIcon: const Icon(
+                            Icons.calendar_month,
+                            color: AppColors.black_08,
                           ),
+                          suffixIcon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: AppColors.black_08,
+                          ),
+                          controller: controller.dayController.value,
                         ),
                       ),
                     ),
+                  ),
+                  // Show available slots/message above start/end time fields
+                  Obx(() {
+                    if (controller.availableSlots.isNotEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Available Slots:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.w,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children:
+                                  controller.availableSlots
+                                      .map<Widget>(
+                                        (slot) => Chip(
+                                          label: Text(slot),
+                                          backgroundColor: Colors.green.shade50,
+                                          labelStyle: const TextStyle(
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
                   SizedBox(height: 12.h),
                   Row(
                     children: [
@@ -292,12 +409,22 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                             readOnly: false,
                             title: "Start time".tr,
                             onTap: () {
-                              debugPrint('CustomarServiceDetailsScreen: From field tapped');
-                              controller.selectTime(context, controller.startTimeController.value);
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.startTimeController.value,
+                              );
                             },
-                            hintText: controller.startTimeController.value.text.isEmpty
-                                ? "hh:mm"
-                                : controller.startTimeController.value.text,
+                            hintText:
+                                controller
+                                        .startTimeController
+                                        .value
+                                        .text
+                                        .isEmpty
+                                    ? "hh:mm"
+                                    : controller.startTimeController.value.text,
                             prefixIcon: const Icon(
                               Icons.access_time,
                               color: AppColors.black_08,
@@ -313,12 +440,18 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                             readOnly: false,
                             title: "End time".tr,
                             onTap: () {
-                              debugPrint('CustomarServiceDetailsScreen: From field tapped');
-                              controller.selectTime(context, controller.endTimeController.value);
+                              debugPrint(
+                                'CustomarServiceDetailsScreen: From field tapped',
+                              );
+                              controller.selectTime(
+                                context,
+                                controller.endTimeController.value,
+                              );
                             },
-                            hintText: controller.endTimeController.value.text.isEmpty
-                                ? "hh:mm"
-                                : controller.endTimeController.value.text,
+                            hintText:
+                                controller.endTimeController.value.text.isEmpty
+                                    ? "hh:mm"
+                                    : controller.endTimeController.value.text,
                             prefixIcon: const Icon(
                               Icons.access_time,
                               color: AppColors.black_08,
@@ -353,49 +486,241 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                       if (!controller.isNotEmptyField()) {
                         return;
                       }
-                      final slotResult = await controller.lookupAvailableSlots(contractorId: contractorId);
-                      // slotResult can be bool or Map depending on controller implementation
-                      if (slotResult is Map && slotResult['success'] == false) {
-                        final unavailableDays = slotResult['unavailableDays'] ?? [];
-                        final message = slotResult['message'] ?? 'Some requested slots are unavailable.';
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Unavailable Slots'),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(message),
-                                if (unavailableDays is List && unavailableDays.isNotEmpty)
-                                  ...unavailableDays.map((d) => Text('- $d')).toList(),
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                        return;
+                      bool shouldCheckSlots = false;
+                      if (isUpdate) {
+                        // Compare original and current values
+                        final originalDay =
+                            (selectedDates.isNotEmpty)
+                                ? selectedDates.join(',')
+                                : '';
+                        final currentDay =
+                            (controller.selectedDates.isNotEmpty)
+                                ? controller.selectedDates.join(',')
+                                : '';
+                        final originalStart = startTime;
+                        final currentStart =
+                            controller.startTimeController.value.text;
+                        final originalEnd = endTime;
+                        final currentEnd =
+                            controller.endTimeController.value.text;
+                        if (originalDay != currentDay ||
+                            originalStart != currentStart ||
+                            originalEnd != currentEnd) {
+                          shouldCheckSlots = true;
+                        }
                       }
-                      if (slotResult == false) {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Unavailable Slots'),
-                            content: const Text('Some requested slots are unavailable.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                        return;
+                      if (isUpdate && shouldCheckSlots) {
+                        final slotResult = await controller
+                            .lookupAvailableSlots(
+                              contractorIdForTimeSlot: contractorIdForTimeSlot,
+                            );
+                        // slotResult can be bool or Map depending on controller implementation
+                        if (slotResult is Map &&
+                            slotResult['success'] == false) {
+                          final unavailableDays =
+                              slotResult['unavailableDays'] ?? [];
+                          final message =
+                              slotResult['message'] ??
+                              'Some requested slots are unavailable.';
+                          showDialog(
+                            context: context,
+                            builder:
+                                (ctx) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  title: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.warning_amber_rounded,
+                                        color: Colors.redAccent,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Unavailable Slots',
+                                        style: TextStyle(
+                                          color: Colors.redAccent,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                        ),
+                                        child: Text(
+                                          message,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black87,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      if (unavailableDays is List &&
+                                          unavailableDays.isNotEmpty)
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                'Unavailable Dates:',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                              Wrap(
+                                                spacing: 6,
+                                                children:
+                                                    unavailableDays
+                                                        .map<Widget>(
+                                                          (d) => Chip(
+                                                            label: Text(
+                                                              d,
+                                                              style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .red
+                                                                    .shade50,
+                                                            labelStyle:
+                                                                const TextStyle(
+                                                                  color:
+                                                                      Colors
+                                                                          .redAccent,
+                                                                ),
+                                                          ),
+                                                        )
+                                                        .toList(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Chip(
+                                              label: Text(
+                                                controller
+                                                    .startTimeController
+                                                    .value
+                                                    .text,
+                                              ),
+                                              backgroundColor:
+                                                  Colors.blue.shade50,
+                                              labelStyle: const TextStyle(
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'to'.tr,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Chip(
+                                              label: Text(
+                                                controller
+                                                    .endTimeController
+                                                    .value
+                                                    .text,
+                                              ),
+                                              backgroundColor:
+                                                  Colors.blue.shade50,
+                                              labelStyle: const TextStyle(
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Text(
+                                        "At " +
+                                            controller.selectedDates
+                                                .map((d) {
+                                                  final dt = DateTime.tryParse(
+                                                    d,
+                                                  );
+                                                  return dt != null
+                                                      ? dt.formatDate()
+                                                      : d;
+                                                })
+                                                .join(', '),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        'Please choose different times or dates.',
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: AppColors.primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.of(ctx).pop(),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                          );
+                          return;
+                        }
+                        // if (slotResult == false) {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (ctx) => AlertDialog(
+                        //       title: const Text('Unavailable Slots'),
+                        //       content: Column(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //            const Text('Some requested slots are unavailable.'),
+                        //            Chip(label: Text(controller.startTimeController.value.text)),
+                        //            const Text('Please choose different times or dates.'),
+                        //         ],
+                        //       ),
+                        //       actions: [
+                        //         TextButton(
+                        //           onPressed: () => Navigator.of(ctx).pop(),
+                        //           child: const Text('OK'),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   );
+                        //   return;
+                        // }
                       }
                       // If available, proceed
                       Get.toNamed(
@@ -404,6 +729,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                           'isUpdate': isUpdate,
                           'bookingId': bookingId,
                           'contractorId': contractorId,
+                          'contractorIdForTimeSlot': contractorIdForTimeSlot,
                           'subcategoryId': subcategoryId,
                           'controller': controller,
                           'contractorName': contractorName,
