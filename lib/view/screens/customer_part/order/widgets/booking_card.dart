@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
@@ -91,11 +92,23 @@ class BookingCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 26,
-                        backgroundColor: borderColor.withValues(alpha: .15),
-                        child: const CustomImage(imageSrc: AppIcons.cleaner),
-                      ),
+                     CircleAvatar(
+                          radius: 26,
+                          backgroundColor: borderColor.withValues(alpha: .15),
+                          child: ClipOval(
+                          child: booking.subCategoryId?.img != null &&
+                              booking.subCategoryId!.img!.isNotEmpty
+                            ? CachedNetworkImage(
+                              imageUrl: booking.subCategoryId!.img!,
+                              width: 52,
+                              height: 52,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                const Icon(Icons.person, color: AppColors.primary),
+                              )
+                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
+                          ),
+                        ),
                       SizedBox(width: 12.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,9 +195,22 @@ class BookingCard extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 26,
-                          child: CustomImage(imageSrc: AppIcons.girlVactor),
+                          backgroundColor: borderColor.withValues(alpha: .15),
+                          child: ClipOval(
+                          child: booking.contractorId?.img != null &&
+                              booking.contractorId!.img!.isNotEmpty
+                            ? CachedNetworkImage(
+                              imageUrl: booking.contractorId!.img!,
+                              width: 52,
+                              height: 52,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                const Icon(Icons.person, color: AppColors.primary),
+                              )
+                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
+                          ),
                         ),
                         SizedBox(width: 12.w),
                         Expanded(
