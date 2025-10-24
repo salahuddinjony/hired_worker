@@ -538,7 +538,8 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   AppRoutes.customarMaterialsScreen,
                   arguments: {
                     'contractorId': booking.contractorId?.id,
-                    'contractorIdForTimeSlot': booking.contractorId?.contractor?.id,
+                    'contractorIdForTimeSlot':
+                        booking.contractorId?.contractor?.id,
                     'subcategoryId': booking.subCategoryId?.id ?? '',
                     'materials': booking.material,
                     'controller': controller,

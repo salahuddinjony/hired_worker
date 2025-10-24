@@ -19,23 +19,27 @@ class CustomerOrderModel {
 
     if (dataObject is Map<String, dynamic>) {
       // New API structure: data.result contains the bookings array
-      bookings = (dataObject['result'] as List<dynamic>?)
+      bookings =
+          (dataObject['result'] as List<dynamic>?)
               ?.map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [];
       // Extract meta from data.meta
-      metaInfo = dataObject['meta'] != null 
-          ? Meta.fromJson(dataObject['meta'] as Map<String, dynamic>) 
-          : null;
+      metaInfo =
+          dataObject['meta'] != null
+              ? Meta.fromJson(dataObject['meta'] as Map<String, dynamic>)
+              : null;
     } else if (dataObject is List<dynamic>) {
       // Old API structure: data is directly an array
-      bookings = dataObject
-          .map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
-          .toList();
+      bookings =
+          dataObject
+              .map((e) => BookingResult.fromJson(e as Map<String, dynamic>))
+              .toList();
       // Meta might be at root level
-      metaInfo = json['meta'] != null 
-          ? Meta.fromJson(json['meta'] as Map<String, dynamic>) 
-          : null;
+      metaInfo =
+          json['meta'] != null
+              ? Meta.fromJson(json['meta'] as Map<String, dynamic>)
+              : null;
     }
 
     return CustomerOrderModel(
@@ -46,7 +50,6 @@ class CustomerOrderModel {
     );
   }
 }
-
 
 class BookingResult {
   final String? id;
@@ -102,27 +105,32 @@ class BookingResult {
   factory BookingResult.fromJson(Map<String, dynamic> json) {
     return BookingResult(
       id: json['_id'] ?? '',
-      customerId: json['customerId'] != null &&
-              json['customerId'] is Map<String, dynamic>
-          ? Customer.fromJson(json['customerId'])
-          : null,
-      contractorId: json['contractorId'] != null &&
-              json['contractorId'] is Map<String, dynamic>
-          ? Contractor.fromJson(json['contractorId'])
-          : null,
-      subCategoryId: json['subCategoryId'] != null &&
-              json['subCategoryId'] is Map<String, dynamic>
-          ? SubCategory.fromJson(json['subCategoryId'])
-          : null,
+      customerId:
+          json['customerId'] != null &&
+                  json['customerId'] is Map<String, dynamic>
+              ? Customer.fromJson(json['customerId'])
+              : null,
+      contractorId:
+          json['contractorId'] != null &&
+                  json['contractorId'] is Map<String, dynamic>
+              ? Contractor.fromJson(json['contractorId'])
+              : null,
+      subCategoryId:
+          json['subCategoryId'] != null &&
+                  json['subCategoryId'] is Map<String, dynamic>
+              ? SubCategory.fromJson(json['subCategoryId'])
+              : null,
       bookingId: json['bookingId'] ?? 0,
       bookingType: json['bookingType'] ?? '',
       status: json['status'] ?? '',
       paymentStatus: json['paymentStatus'] ?? '',
-      questions: (json['questions'] as List?)
+      questions:
+          (json['questions'] as List?)
               ?.map((e) => Question.fromJson(e))
               .toList() ??
           [],
-      material: (json['material'] as List?)
+      material:
+          (json['material'] as List?)
               ?.map((e) => MaterialItem.fromJson(e))
               .toList() ??
           [],
@@ -149,11 +157,7 @@ class Question {
   final String? answer;
   final String? id;
 
-  Question({
-    this.question,
-    this.answer,
-    this.id,
-  });
+  Question({this.question, this.answer, this.id});
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
@@ -171,13 +175,7 @@ class MaterialItem {
   final num? price;
   final String? id;
 
-  MaterialItem({
-    this.name,
-    this.unit,
-    this.count,
-    this.price,
-    this.id,
-  });
+  MaterialItem({this.name, this.unit, this.count, this.price, this.id});
 
   factory MaterialItem.fromJson(Map<String, dynamic> json) {
     return MaterialItem(
@@ -190,20 +188,13 @@ class MaterialItem {
   }
 }
 
-
-
 class Meta {
   final int? page;
   final int? limit;
   final int? total;
   final int? totalPage;
 
-  Meta({
-    this.page,
-    this.limit,
-    this.total,
-    this.totalPage,
-  });
+  Meta({this.page, this.limit, this.total, this.totalPage});
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
@@ -221,12 +212,7 @@ class Customer {
   final String? email;
   final String? img;
 
-  Customer({
-    this.id,
-    this.fullName,
-    this.email,
-    this.img,
-  });
+  Customer({this.id, this.fullName, this.email, this.img});
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
@@ -279,9 +265,10 @@ class Contractor {
       img: json['img'] ?? '',
       role: json['role'] ?? '',
       status: json['status'] ?? '',
-      contractor: json['contractor'] != null
-          ? ContractorDetails.fromJson(json['contractor'])
-          : null,
+      contractor:
+          json['contractor'] != null
+              ? ContractorDetails.fromJson(json['contractor'])
+              : null,
       isDeleted: json['isDeleted'] ?? false,
       passwordChangedAt: json['passwordChangedAt'] ?? '',
       createdAt: json['createdAt'] ?? '',
@@ -295,11 +282,7 @@ class ContractorDetails {
   final num? rateHourly;
   final num? ratings;
 
-  ContractorDetails({
-    this.id,
-    this.rateHourly,
-    this.ratings,
-  });
+  ContractorDetails({this.id, this.rateHourly, this.ratings});
 
   factory ContractorDetails.fromJson(Map<String, dynamic> json) {
     return ContractorDetails(

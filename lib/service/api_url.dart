@@ -22,16 +22,18 @@ class ApiUrl {
   static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";
-  static const String purchaseSubscriptionPlan = "/payments/create-checkout-subscriptions";
+  static const String purchaseSubscriptionPlan =
+      "/payments/create-checkout-subscriptions";
   static const String withdraw = "/payments/withdraw";
-  static const String createCheckoutSession = "/payments/create-checkout-session";
+  static const String createCheckoutSession =
+      "/payments/create-checkout-session";
   static const String createMaterial = "/contractors/materials";
   static const String deleteMaterial = "/contractors/materials/"; // id
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
   static const String getNotificationList = '/notifications';
   static const String getAllBookings = "/bookings/all-bookings-by-user";
-    // static const String getAllBookings = "/bookings/all-bookings-by-user";
+  // static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
   static String singleSubCategory({required String categoryId}) =>
@@ -331,20 +333,19 @@ class ApiUrl {
   static String getContractorQuestions({required String subCategoryId}) =>
       "/questions/$subCategoryId";
 
-//get all message rooms for user
+  //get all message rooms for user
   static String getAllMessages({required String conversationId}) =>
       "/chats/$conversationId/messages";
 
-//get conversation list for user
+  //get conversation list for user
   static String getConversationList({required String userId}) =>
       "/chat-rooms/my-chat-list/$userId";
 
-// create or retrieve conversation
+  // create or retrieve conversation
   static const String createOrRetrieveConversation =
       "/chat-rooms/create-chat-room";
-// upload image
+  // upload image
   static const String uploadImage = "/upload";
   static const String getBanners = "/dashboards/banners";
   static String lookupAvailableSlots = "/bookings/booking-availability";
 }
-
