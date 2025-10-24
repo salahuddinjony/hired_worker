@@ -5,6 +5,8 @@ class AppIcons {
   static const String eyeOff = "$basePath/eyeOff.svg";
 
   ///=========================Nab bar Icon ======================
+  ///
+  static const String animatedLogo = "$basePath/animated_logo.gif";
   static const String logo = "$basePath/logo.png";
   static const String home = "$basePath/Home.svg";
   static const String order = "$basePath/Order.svg";

@@ -79,7 +79,22 @@ class _SplashScreenState extends State<SplashScreen> {
               bottom: 20.h,
             ),
           ),
-          CustomImage(imageSrc: AppIcons.logo, height: 300.h, width: 300.w),
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeOutBack,
+            builder: (context, value, child) {
+              return Transform.scale(
+          scale: value,
+          child: CustomImage(
+            imageSrc: AppIcons.logo,
+            height: 300.h * value,
+            width: 300.w * value,
+          ),
+              );
+            },
+          ),
+        
         ],
       ),
     );
