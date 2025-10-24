@@ -8,11 +8,14 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
-import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/models/avalable_slot.dart';
 
 class ContractorBookingController extends GetxController {
   // Store original material counts for update mode
   List<int> originalMaterialCounts = [];
+
+  // Store available slots from API
+  RxList<String> availableSlots = <String>[].obs;
   int hourlyRate = 0;
 
   // Optional contractor metadata to display on the details page
@@ -1086,30 +1089,47 @@ class ContractorBookingController extends GetxController {
   }
 
   //for looup available slots
+    //for looup available slots
 
-  Future<dynamic> lookupAvailableSlots({required String contractorId}) async {
+  Future<dynamic> lookupAvailableSlots({required String contractorIdForTimeSlot}) async {
     isLoading.value = true;
-    debugPrint('Looking up available slots for contractor $contractorId ');
-    final body={
-      'contractorId': contractorId,
-      'date': dayController.value.text,
-      'startTime': startTimeController.value.text,
-      'duration':durations.value,
+    debugPrint('Looking up available slots for contractor $contractorIdForTimeSlot');
+    final queryParameter = {
+      'contractorId': contractorIdForTimeSlot,
+      'day': selectedDates.length > 1 ? selectedDates.first : dayController.value.text,
     };
     EasyLoading.show(status: 'Looking up available slots...');
 
     try {
-      final response = await ApiClient.postData(
-        '${ApiUrl.lookupAvailableSlots}',
-        jsonEncode(body),
+      final response = await ApiClient.getData(
+        ApiUrl.lookupAvailableSlots,
+        query: queryParameter,
+        
       );
 
       if (response.statusCode == 200) {
-        final data = response.body;
+        final data = AvailableSlotResponse.fromJson(response.body);
         debugPrint('Available slots response: $data');
+        availableSlots.value = data.data?.availableSlots ?? <String>[];
         // Expecting: {success: true, message: ..., data: {success: false, message: ..., unavailableDays: [...]}}
-        if (data is Map && data.containsKey('data')) {
-          final slotData = data['data'];
+        if (data.data is Map && data.data!.success == false) {
+          return {
+            'success': false,
+            'message': data.data!.message,
+            'unavailableDays': data.data!.availableSlots,
+          };
+        }
+        return true;
+      } else {
+        // Handle error response
+        try {
+          final body = response.body;
+          dynamic slotData;
+          if (body is String && body.isNotEmpty) {
+            slotData = jsonDecode(body);
+          } else if (body is Map) {
+            slotData = body;
+          }
           if (slotData is Map && slotData['success'] == false) {
             return {
               'success': false,
@@ -1117,46 +1137,10 @@ class ContractorBookingController extends GetxController {
               'unavailableDays': slotData['unavailableDays'] ?? [],
             };
           }
-        }
-        return true;
-      } else {
-        debugPrint('Failed to lookup available slots: ${response.body}');
-        String errorMsg = "Failed to lookup available slots";
-        try {
-          final body = response.body;
-          dynamic decoded;
-          if (body is String && body.isNotEmpty) {
-            decoded = jsonDecode(body);
-          } else if (body is Map) {
-            decoded = body;
-          }
-
-          if (decoded is Map<String, dynamic>) {
-            if (decoded['message'] is String && (decoded['message'] as String).isNotEmpty) {
-              errorMsg = decoded['message'];
-            }
-            if (errorMsg.isEmpty &&
-          decoded['errorSources'] is List &&
-          decoded['errorSources'].isNotEmpty) {
-              final firstError = decoded['errorSources'][0];
-              if (firstError is Map &&
-            firstError['message'] is String &&
-            (firstError['message'] as String).isNotEmpty) {
-          errorMsg = firstError['message'];
-              }
-            }
-            if (errorMsg.isEmpty &&
-          decoded['err'] is Map &&
-          decoded['err']['message'] is String) {
-              errorMsg = decoded['err']['message'];
-            }
-          }
-          return {'success': false, 'message': errorMsg, 'unavailableDays': []};
         } catch (e) {
           debugPrint('Error parsing error body: $e');
         }
-        EasyLoading.showError(errorMsg);
-        return {'success': false, 'message': errorMsg, 'unavailableDays': []};
+        return true;
       }
     } catch (e) {
       debugPrint('Error looking up available slots: $e');
@@ -1168,6 +1152,89 @@ class ContractorBookingController extends GetxController {
       refresh();
     }
   }
+
+
+  // Future<dynamic> lookupAvailableSlots({required String contractorId}) async {
+  //   isLoading.value = true;
+  //   debugPrint('Looking up available slots for contractor $contractorId ');
+  //   final body={
+  //     'contractorId': contractorId,
+  //     'date': dayController.value.text,
+  //     'startTime': startTimeController.value.text,
+  //     'duration':durations.value,
+  //   };
+  //   EasyLoading.show(status: 'Looking up available slots...');
+
+  //   try {
+  //     final response = await ApiClient.postData(
+  //       '${ApiUrl.lookupAvailableSlots}',
+  //       jsonEncode(body),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final data = response.body;
+  //       debugPrint('Available slots response: $data');
+  //       // Expecting: {success: true, message: ..., data: {success: false, message: ..., unavailableDays: [...]}}
+  //       if (data is Map && data.containsKey('data')) {
+  //         final slotData = data['data'];
+  //         if (slotData is Map && slotData['success'] == false) {
+  //           return {
+  //             'success': false,
+  //             'message': slotData['message'] ?? 'Some requested slots are unavailable.',
+  //             'unavailableDays': slotData['unavailableDays'] ?? [],
+  //           };
+  //         }
+  //       }
+  //       return true;
+  //     } else {
+  //       debugPrint('Failed to lookup available slots: ${response.body}');
+  //       String errorMsg = "Failed to lookup available slots";
+  //       try {
+  //         final body = response.body;
+  //         dynamic decoded;
+  //         if (body is String && body.isNotEmpty) {
+  //           decoded = jsonDecode(body);
+  //         } else if (body is Map) {
+  //           decoded = body;
+  //         }
+
+  //         if (decoded is Map<String, dynamic>) {
+  //           if (decoded['message'] is String && (decoded['message'] as String).isNotEmpty) {
+  //             errorMsg = decoded['message'];
+  //           }
+  //           if (errorMsg.isEmpty &&
+  //         decoded['errorSources'] is List &&
+  //         decoded['errorSources'].isNotEmpty) {
+  //             final firstError = decoded['errorSources'][0];
+  //             if (firstError is Map &&
+  //           firstError['message'] is String &&
+  //           (firstError['message'] as String).isNotEmpty) {
+  //         errorMsg = firstError['message'];
+  //             }
+  //           }
+  //           if (errorMsg.isEmpty &&
+  //         decoded['err'] is Map &&
+  //         decoded['err']['message'] is String) {
+  //             errorMsg = decoded['err']['message'];
+  //           }
+  //         }
+  //         return {'success': false, 'message': errorMsg, 'unavailableDays': []};
+  //       } catch (e) {
+  //         debugPrint('Error parsing error body: $e');
+  //       }
+  //       EasyLoading.showError(errorMsg);
+  //       return {'success': false, 'message': errorMsg, 'unavailableDays': []};
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error looking up available slots: $e');
+  //     EasyLoading.showError('Error looking up available slots');
+  //     return false;
+  //   } finally {
+  //     EasyLoading.dismiss();
+  //     isLoading.value = false;
+  //     refresh();
+  //   }
+  // }
 
 
   @override

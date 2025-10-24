@@ -538,6 +538,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                   AppRoutes.customarMaterialsScreen,
                   arguments: {
                     'contractorId': booking.contractorId?.id,
+                    'contractorIdForTimeSlot': booking.contractorId?.contractor?.id,
                     'subcategoryId': booking.subCategoryId?.id ?? '',
                     'materials': booking.material,
                     'controller': controller,
@@ -559,6 +560,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     'hourlyRate': booking.rateHourly ?? 0,
                     'bookingId': booking.id,
                     'isUpdate': true,
+                    'PaymentedTotalAmount': booking.totalAmount ?? 0,
                   },
                 );
               },

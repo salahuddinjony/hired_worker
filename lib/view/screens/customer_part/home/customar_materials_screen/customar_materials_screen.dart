@@ -34,6 +34,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final bool isUpdate = args['isUpdate'] ?? false;
     final PaymentedTotalAmount= args['PaymentedTotalAmount'] ?? 0;
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
+    final String contractorIdForTimeSlot = args['contractorIdForTimeSlot']?.toString() ?? '';
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -123,6 +124,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
               arguments: {
                 'controller': controller,
                 'contractorId': contractorId,
+                'contractorIdForTimeSlot': contractorIdForTimeSlot,
                 'subcategoryId': subcategoryId,
                 'contractorName': contractorName,
                 'categoryName': categoryName,
