@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/widget/custom_service_request_card.dart';
+import 'package:servana/view/screens/customer_part/order/controller/customer_order_controller.dart';
 
 import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_button/custom_button.dart';
@@ -20,6 +24,8 @@ class OrderDetailsScreen1 extends StatefulWidget {
 class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
   @override
   Widget build(BuildContext context) {
+    // Create a unique loading state for this booking
+    final RxBool isLoadingConversation = false.obs;
     final BookingModelData data =
         Get.find<OrderController>().pendingBookingList[Get.arguments['index']];
 
@@ -196,6 +202,97 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                 ),
               ],
             ),
+
+            const SizedBox(height: 20.0),
+            // Message chip
+           Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 80.0.h, vertical: 15.0.w),
+              child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.primary,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 14.h),
+                ),
+                icon: Obx(
+                () => isLoadingConversation.value
+                  ? SizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.white,
+                    ),
+                    )
+                  : Icon(
+                    Icons.message_rounded,
+                    size: 22.w,
+                    color: AppColors.white,
+                    ),
+                ),
+                label: Text(
+                "Message",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.white,
+                ),
+                ),
+                onPressed: isLoadingConversation.value
+                  ? null
+                  : () async {
+                    debugPrint('Navigate to message screen');
+                    isLoadingConversation.value = true;
+                    try {
+                    final loggedUserId = await SharePrefsHelper.getString(
+                      AppConstants.userId,
+                    );
+                    final loggedUserRole = await SharePrefsHelper.getString(
+                      AppConstants.role,
+                    );
+                    final CustomerOrderController controller =
+                      Get.find<CustomerOrderController>();
+
+                    final conversationId = await controller
+                      .createOrRetrieveConversation(
+                        senderId: loggedUserId,
+                        receiverId: data.contractorId?.id ?? '',
+                      );
+
+                    if (conversationId != null && conversationId.isNotEmpty) {
+                      Get.toNamed(
+                      AppRoutes.chatScreen,
+                      arguments: {
+                        'receiverName':
+                          data.contractorId?.fullName ?? 'Service Provider',
+                        'receiverImage': data.contractorId?.img ?? '',
+                        'conversationId': conversationId,
+                        'userId': loggedUserId,
+                        'receiverId': data.contractorId?.id,
+                        'userRole': loggedUserRole,
+                        'isCustomer': loggedUserRole == 'customer',
+                      },
+                      );
+                    } else {
+                      debugPrint('Error: Conversation ID is null or empty');
+                    }
+                    } finally {
+                    isLoadingConversation.value = false;
+                    }
+                  },
+              ),
+              ),
+            ),
+           
+           ),
+            const SizedBox(height: 30.0),
           ],
         ),
       ),
