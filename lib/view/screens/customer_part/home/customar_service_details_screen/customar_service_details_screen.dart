@@ -55,6 +55,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
     final String contractorIdForTimeSlot =
         args['contractorIdForTimeSlot']?.toString() ?? '';
+    final String subCategoryImage = args['subCategoryImage']?.toString() ?? '';
 
     // Initialize controller with existing booking data if this is an update
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -102,7 +103,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 CustomNetworkImage(
-                  imageUrl: AppConstants.electrician,
+                  imageUrl: subCategoryImage,
                   height: MediaQuery.sizeOf(context).height / 3.5,
                   width: MediaQuery.sizeOf(context).width,
                   borderRadius: BorderRadius.only(
@@ -113,12 +114,22 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CustomRoyelAppbar(leftIcon: true),
-                      CustomText(
-                        left: 20.w,
-                        text: "AC Regular\nService",
-                        fontSize: 28.w,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
+                      Container(
+                        margin: EdgeInsets.only(left: 20.w, top: 8.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.blue.withValues(alpha: .2),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: CustomText(
+                          text: subCategoryName,
+                          fontSize: 20.w,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
                       ),
                     ],
                   ),
@@ -512,12 +523,13 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                       if (isUpdate && shouldCheckSlots) {
                         await controller.lookupAvailableSlots(
                           contractorIdForTimeSlot: contractorIdForTimeSlot,
-
                         );
                       }
 
-
-                      if ((!isUpdate && !controller.isSlotAvailable())  || (isUpdate && shouldCheckSlots && !controller.isSlotAvailable())) {
+                      if ((!isUpdate && !controller.isSlotAvailable()) ||
+                          (isUpdate &&
+                              shouldCheckSlots &&
+                              !controller.isSlotAvailable())) {
                         final unavailableDays =
                             controller.apiResponse['unavailableDays'] ?? [];
 

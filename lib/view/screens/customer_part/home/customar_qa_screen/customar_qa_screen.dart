@@ -29,6 +29,8 @@ class CustomarQaScreen extends StatelessWidget {
     final String subCategoryName = args['subCategoryName'] ?? '';
     final String contractorIdForTimeSlot =
         args['contractorIdForTimeSlot'] ?? '';
+    final String subCategoryImage =
+        args['subCategoryImage']?.toString() ?? '';
 
     // hourlyRate may come as String, int, or double - parse defensively
     final dynamic rawHourly = args['hourlyRate'];
@@ -135,6 +137,7 @@ class CustomarQaScreen extends StatelessWidget {
                             'categoryName': categoryName,
                             'subCategoryName': subCategoryName,
                             'hourlyRate': controller.hourlyRate,
+                            'subCategoryImage': subCategoryImage,
                           },
                         );
                       }
