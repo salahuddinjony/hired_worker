@@ -283,7 +283,7 @@ class AuthController extends GetxController {
             ],
             "address": addressController.value.text,
             "name": "Default",
-            "isSelect": true, 
+            "isSelect": true,
           },
         ],
       },

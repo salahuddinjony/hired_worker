@@ -15,7 +15,11 @@ import 'dart:convert';
 
 class CustomarServiceContractorDetailsScreen extends StatelessWidget {
   // Payment checkout method
-  Future<void> initiatePaymentCheckout(BuildContext context, ContractorBookingController controller, String bookingId) async {
+  Future<void> initiatePaymentCheckout(
+    BuildContext context,
+    ContractorBookingController controller,
+    String bookingId,
+  ) async {
     try {
       EasyLoading.show(
         status: 'Processing payment...'.tr,
@@ -68,6 +72,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
       );
     }
   }
+
   const CustomarServiceContractorDetailsScreen({super.key});
 
   @override
@@ -82,15 +87,16 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String isUpdate = args['isUpdate']?.toString() ?? 'false';
     final String bookingId = args['bookingId']?.toString() ?? '';
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
-    final String PaymentedTotalAmount= args['PaymentedTotalAmount']?.toString() ?? '0';
-    final String contractorIdForTimeSlot = args['contractorIdForTimeSlot']?.toString() ?? '';
+    final String PaymentedTotalAmount =
+        args['PaymentedTotalAmount']?.toString() ?? '0';
+    final String contractorIdForTimeSlot =
+        args['contractorIdForTimeSlot']?.toString() ?? '';
 
-       final int paymentedTotalAmount = int.tryParse(PaymentedTotalAmount) ?? 0;
-              final int totalAmount = controller.totalAmount;
-              final bool isUpdateMode = isUpdate == 'true';
-              final int paymentAmount = isUpdateMode
-                  ? (totalAmount - paymentedTotalAmount)
-                  : totalAmount;
+    final int paymentedTotalAmount = int.tryParse(PaymentedTotalAmount) ?? 0;
+    final int totalAmount = controller.totalAmount;
+    final bool isUpdateMode = isUpdate == 'true';
+    final int paymentAmount =
+        isUpdateMode ? (totalAmount - paymentedTotalAmount) : totalAmount;
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details".tr),
@@ -258,7 +264,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   CustomText(
-                                    text: 'AUD ${totalPrice.toStringAsFixed(2)}',
+                                    text:
+                                        'AUD ${totalPrice.toStringAsFixed(2)}',
                                     fontSize: 14.w,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.black,
@@ -422,7 +429,10 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   const Divider(thickness: .6, color: AppColors.black_02),
                   const SizedBox(height: 18),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 18,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.black_02.withValues(alpha: .06),
                       borderRadius: BorderRadius.circular(16),
@@ -456,7 +466,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               CustomText(
-                                text: 'AUD ${paymentedTotalAmount.toStringAsFixed(2)}',
+                                text:
+                                    'AUD ${paymentedTotalAmount.toStringAsFixed(2)}',
                                 fontSize: 18.w,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.green,
@@ -475,9 +486,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.black_09.withValues(alpha: .08),
+                                  color: AppColors.black_09.withValues(
+                                    alpha: .08,
+                                  ),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: RichText(
@@ -492,7 +508,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: '${paymentAmount.toStringAsFixed(2)}',
+                                        text:
+                                            '${paymentAmount.toStringAsFixed(2)}',
                                         style: TextStyle(
                                           fontSize: 28.w,
                                           fontWeight: FontWeight.bold,
@@ -507,7 +524,10 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           ),
                         ] else ...[
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.black_09.withValues(alpha: .08),
                               borderRadius: BorderRadius.circular(10),
@@ -552,25 +572,25 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
         child: SafeArea(
           child: GetBuilder<ContractorBookingController>(
             builder: (_) {
-           
               // If already paid, skip payment and place booking directly
               if (paymentAmount <= 0) {
                 return CustomButton(
                   onTap: () async {
                     controller.collectAllAnswers();
-                    final bookingSuccess = isUpdateMode
-                        ? await controller.updateBooking(
-                              id:updateBookingId ,
+                    final bookingSuccess =
+                        isUpdateMode
+                            ? await controller.updateBooking(
+                              id: updateBookingId,
                               booking_update: true,
-                            bookingId: bookingId,
-                            contractorId: contractorId,
-                            subcategoryId: subcategoryId,
-                          )
-                        : await controller.createBooking(
-                            paymentedBookingId: '',
-                            contractorId: contractorId,
-                            subcategoryId: subcategoryId,
-                          );
+                              bookingId: bookingId,
+                              contractorId: contractorId,
+                              subcategoryId: subcategoryId,
+                            )
+                            : await controller.createBooking(
+                              paymentedBookingId: '',
+                              contractorId: contractorId,
+                              subcategoryId: subcategoryId,
+                            );
                     if (bookingSuccess) {
                       Get.toNamed(AppRoutes.customerRequestHistoryScreen);
                     } else {
@@ -604,40 +624,46 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       () => const PaymentWebViewScreen(),
                       arguments: checkoutUrl,
                     );
-                    if (paymentResult is Map && paymentResult['status'] == 'success') {
+                    if (paymentResult is Map &&
+                        paymentResult['status'] == 'success') {
                       // Step 3: Place booking
                       final bookingIdResult = paymentResult['bookingId'] ?? '';
-                      final bookingSuccess = isUpdateMode
-                          ? await controller.updateBooking(
-                              id: updateBookingId,
-                              booking_update: true,
-                              bookingId: bookingId, 
-                              contractorId: contractorId,
-                              subcategoryId: subcategoryId,
-                            )
-                          : await controller.createBooking(
-                              paymentedBookingId: bookingIdResult,
-                              contractorId: contractorId,
-                              subcategoryId: subcategoryId,
-                            );
+                      final bookingSuccess =
+                          isUpdateMode
+                              ? await controller.updateBooking(
+                                id: updateBookingId,
+                                booking_update: true,
+                                bookingId: bookingId,
+                                contractorId: contractorId,
+                                subcategoryId: subcategoryId,
+                              )
+                              : await controller.createBooking(
+                                paymentedBookingId: bookingIdResult,
+                                contractorId: contractorId,
+                                subcategoryId: subcategoryId,
+                              );
                       if (bookingSuccess) {
                         Get.toNamed(AppRoutes.customerRequestHistoryScreen);
                       } else {
                         debugPrint('Booking creation failed');
                       }
                     } else {
-                      EasyLoading.showInfo('Payment was not completed or was cancelled.');
+                      EasyLoading.showInfo(
+                        'Payment was not completed or was cancelled.',
+                      );
                     }
                   } else {
                     EasyLoading.showError(
-                      response.body?['message'] ?? 'Failed to create payment checkout',
+                      response.body?['message'] ??
+                          'Failed to create payment checkout',
                       duration: const Duration(seconds: 2),
                     );
                   }
                 },
-                title: isUpdateMode
-                    ? "Pay & Confirm Booking".tr
-                    : "Pay & Book Now".tr,
+                title:
+                    isUpdateMode
+                        ? "Pay & Confirm Booking".tr
+                        : "Pay & Book Now".tr,
               );
             },
           ),

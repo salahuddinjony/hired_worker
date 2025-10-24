@@ -92,23 +92,31 @@ class BookingCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                     CircleAvatar(
-                          radius: 26,
-                          backgroundColor: borderColor.withValues(alpha: .15),
-                          child: ClipOval(
-                          child: booking.subCategoryId?.img != null &&
-                              booking.subCategoryId!.img!.isNotEmpty
-                            ? CachedNetworkImage(
-                              imageUrl: booking.subCategoryId!.img!,
-                              width: 52,
-                              height: 52,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                const Icon(Icons.person, color: AppColors.primary),
-                              )
-                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
-                          ),
+                      CircleAvatar(
+                        radius: 26,
+                        backgroundColor: borderColor.withValues(alpha: .15),
+                        child: ClipOval(
+                          child:
+                              booking.subCategoryId?.img != null &&
+                                      booking.subCategoryId!.img!.isNotEmpty
+                                  ? CachedNetworkImage(
+                                    imageUrl: booking.subCategoryId!.img!,
+                                    width: 52,
+                                    height: 52,
+                                    fit: BoxFit.cover,
+                                    errorWidget:
+                                        (context, url, error) => const Icon(
+                                          Icons.person,
+                                          color: AppColors.primary,
+                                        ),
+                                  )
+                                  : const Icon(
+                                    Icons.person,
+                                    color: AppColors.primary,
+                                    size: 32,
+                                  ),
                         ),
+                      ),
                       SizedBox(width: 12.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,17 +207,25 @@ class BookingCard extends StatelessWidget {
                           radius: 26,
                           backgroundColor: borderColor.withValues(alpha: .15),
                           child: ClipOval(
-                          child: booking.contractorId?.img != null &&
-                              booking.contractorId!.img!.isNotEmpty
-                            ? CachedNetworkImage(
-                              imageUrl: booking.contractorId!.img!,
-                              width: 52,
-                              height: 52,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                const Icon(Icons.person, color: AppColors.primary),
-                              )
-                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
+                            child:
+                                booking.contractorId?.img != null &&
+                                        booking.contractorId!.img!.isNotEmpty
+                                    ? CachedNetworkImage(
+                                      imageUrl: booking.contractorId!.img!,
+                                      width: 52,
+                                      height: 52,
+                                      fit: BoxFit.cover,
+                                      errorWidget:
+                                          (context, url, error) => const Icon(
+                                            Icons.person,
+                                            color: AppColors.primary,
+                                          ),
+                                    )
+                                    : const Icon(
+                                      Icons.person,
+                                      color: AppColors.primary,
+                                      size: 32,
+                                    ),
                           ),
                         ),
                         SizedBox(width: 12.w),
@@ -257,7 +273,8 @@ class BookingCard extends StatelessWidget {
                             AppRoutes.customarMaterialsScreen,
                             arguments: {
                               'contractorId': booking.contractorId?.id,
-                              'contractorIdForTimeSlot': booking.contractorId?.contractor?.id,
+                              'contractorIdForTimeSlot':
+                                  booking.contractorId?.contractor?.id,
                               'subcategoryId': booking.subCategoryId?.id ?? '',
                               'materials': booking.material,
                               'controller': controller,

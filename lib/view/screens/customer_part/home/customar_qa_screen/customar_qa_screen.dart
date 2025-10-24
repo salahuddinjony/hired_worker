@@ -9,7 +9,6 @@ import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.
 // Model type conflicts (different MaterialModel classes in different folders).
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 
-
 class CustomarQaScreen extends StatelessWidget {
   CustomarQaScreen({super.key});
 
@@ -17,7 +16,6 @@ class CustomarQaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final Map<String, dynamic> args = Get.arguments ?? {};
 
     // Ensure IDs are strings even if passed as numbers
@@ -25,12 +23,12 @@ class CustomarQaScreen extends StatelessWidget {
     final dynamic rawSubcategoryId = args['subcategoryId'];
     final String contractorId = rawContractorId?.toString() ?? '';
     final String subcategoryId = rawSubcategoryId?.toString() ?? '';
-  final List<dynamic> materials = args['materials'] ?? [];
-   final String contractorName = args['contractorName'] ?? '';
-   final String categoryName= args['categoryName'] ?? '';
-   final String subCategoryName= args['subCategoryName'] ?? '';
-   final String contractorIdForTimeSlot = args['contractorIdForTimeSlot'] ?? '';
-   
+    final List<dynamic> materials = args['materials'] ?? [];
+    final String contractorName = args['contractorName'] ?? '';
+    final String categoryName = args['categoryName'] ?? '';
+    final String subCategoryName = args['subCategoryName'] ?? '';
+    final String contractorIdForTimeSlot =
+        args['contractorIdForTimeSlot'] ?? '';
 
     // hourlyRate may come as String, int, or double - parse defensively
     final dynamic rawHourly = args['hourlyRate'];
@@ -61,12 +59,14 @@ class CustomarQaScreen extends StatelessWidget {
       questions = [rawQuestions];
     }
 
-
-        // If no questions are provided, use demo questions immediately
-        if (questions.isEmpty) {
+    // If no questions are provided, use demo questions immediately
+    if (questions.isEmpty) {
       questions = [
         {'id': '1', 'question': 'How many dimmers do you need installed?'},
-        {'id': '2', 'question': 'What type of lighting fixtures do you prefer?'},
+        {
+          'id': '2',
+          'question': 'What type of lighting fixtures do you prefer?',
+        },
       ];
     }
 
@@ -79,9 +79,6 @@ class CustomarQaScreen extends StatelessWidget {
       }
     });
 
-
-
-
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Q&A".tr),
       body: GetBuilder<ContractorBookingController>(
@@ -92,39 +89,40 @@ class CustomarQaScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Dynamic questions list - render based on controller.questions
-                  ...List.generate(
-                    controller.questions.length,
-                    (index) {
-                      final q = controller.questions[index];
-                      final questionText = q['question']?.toString() ?? 'Question ${index + 1}';
+                  ...List.generate(controller.questions.length, (index) {
+                    final q = controller.questions[index];
+                    final questionText =
+                        q['question']?.toString() ?? 'Question ${index + 1}';
 
-                      return GetBuilder<ContractorBookingController>(
-                        builder: (ctrl) {
-                          return CustomFormCard(
-                            title: "${index + 1}. $questionText",
-                            hintText: "Answer here...",
-                            controller: index < ctrl.answerControllers.length 
-                              ? ctrl.answerControllers[index]
-                              : TextEditingController(),
-                            onChanged: (value) {
-                              ctrl.updateAnswer(index, value);
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  
+                    return GetBuilder<ContractorBookingController>(
+                      builder: (ctrl) {
+                        return CustomFormCard(
+                          title: "${index + 1}. $questionText",
+                          hintText: "Answer here...",
+                          controller:
+                              index < ctrl.answerControllers.length
+                                  ? ctrl.answerControllers[index]
+                                  : TextEditingController(),
+                          onChanged: (value) {
+                            ctrl.updateAnswer(index, value);
+                          },
+                        );
+                      },
+                    );
+                  }),
+
                   SizedBox(height: 30.h),
-                  
+
                   CustomButton(
                     onTap: () {
                       // Collect all answers before proceeding
                       controller.collectAllAnswers();
-                      
+
                       // Validate that all questions are answered
                       if (controller.validateAnswers()) {
-                        debugPrint('All questions Q and A : ${controller.questionsAndAnswers}');
+                        debugPrint(
+                          'All questions Q and A : ${controller.questionsAndAnswers}',
+                        );
                         Get.toNamed(
                           AppRoutes.customarMaterialsScreen,
                           arguments: {
@@ -142,7 +140,7 @@ class CustomarQaScreen extends StatelessWidget {
                       }
                     },
                     title: "Submit".tr,
-                  )
+                  ),
                 ],
               ),
             ),
