@@ -422,6 +422,8 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   contractorData?.skillsCategory ?? "N/A",
                               'subCategoryName':
                                   contractorData?.subCategory.name ?? 'N/A',
+                              'subCategoryImage':
+                                  contractorData?.subCategory.img ?? '',
                             },
                           );
                         } else {

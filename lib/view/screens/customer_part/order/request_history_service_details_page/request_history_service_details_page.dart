@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,75 +17,6 @@ import '../../../../components/custom_text/custom_text.dart';
 class RequestHistoryServiceDetailsPage extends StatelessWidget {
   const RequestHistoryServiceDetailsPage({super.key});
 
-  // // Payment checkout method
-  // Future<void> initiatePaymentCheckout(BookingResult booking) async {
-  //   try {
-  //     // Show EasyLoading indicator
-  //     EasyLoading.show(
-  //       status: 'Processing payment...'.tr,
-  //       maskType: EasyLoadingMaskType.black,
-  //     );
-
-  //     // Prepare request body as JSON string
-  //     final Map<String, dynamic> requestBody = {
-  //       "bookingId": booking.bookingId ?? "",
-  //       "amount": booking.totalAmount ?? 0,
-  //     };
-
-  //     debugPrint('Payment checkout request: $requestBody');
-
-  //     final response = await ApiClient.postData(
-  //       ApiUrl.createCheckoutSession,
-  //       jsonEncode(requestBody),
-  //     );
-
-  //     EasyLoading.dismiss();
-
-  //     debugPrint('Payment checkout response: ${response.body}');
-
-  //     if (response.statusCode == 200 &&
-  //         response.body != null &&
-  //         response.body['success'] == true) {
-  //       final String checkoutUrl = response.body['data'];
-
-  //       debugPrint('Opening payment URL: $checkoutUrl');
-
-  //       // Navigate to custom WebView screen with back button
-  //       final result = await Get.to(
-  //         () => const PaymentWebViewScreen(),
-  //         arguments: checkoutUrl,
-  //       );
-
-  //       // Handle the result from WebView
-  //       if (result == 'success') {
-  //         EasyLoading.showSuccess(
-  //           'Payment completed successfully'.tr,
-  //           duration: const Duration(seconds: 2),
-  //         );
-  //         // Optionally refresh the booking data or navigate back
-  //         Get.back();
-  //       } else if (result == 'cancelled') {
-  //         EasyLoading.showInfo(
-  //           'Payment was cancelled'.tr,
-  //           duration: const Duration(seconds: 2),
-  //         );
-  //       }
-  //     } else {
-  //       EasyLoading.showError(
-  //         response.body?['message'] ?? 'Failed to create payment checkout',
-  //         duration: const Duration(seconds: 2),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     // Dismiss EasyLoading if still open
-  //     EasyLoading.dismiss();
-  //     debugPrint('Payment checkout error: $e');
-  //     EasyLoading.showError(
-  //       'An error occurred during payment checkout'.tr,
-  //       duration: const Duration(seconds: 2),
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +56,31 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 26,
-                  backgroundColor: Color(0xffCDB3CD),
-                  child: CustomImage(imageSrc: AppIcons.cleaner),
-                ),
+                   CircleAvatar(
+                        radius: 26,
+                        backgroundColor: AppColors.primary.withValues(alpha: .15),
+                        child: ClipOval(
+                          child:
+                              booking.subCategoryId?.img != null &&
+                                      booking.subCategoryId!.img!.isNotEmpty
+                                  ? CachedNetworkImage(
+                                    imageUrl: booking.subCategoryId!.img!,
+                                    width: 52,
+                                    height: 52,
+                                    fit: BoxFit.cover,
+                                    errorWidget:
+                                        (context, url, error) => const Icon(
+                                          Icons.person,
+                                          color: AppColors.primary,
+                                        ),
+                                  )
+                                  : const Icon(
+                                    Icons.person,
+                                    color: AppColors.primary,
+                                    size: 32,
+                                  ),
+                        ),
+                      ),
                 SizedBox(width: 12.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -562,6 +514,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     'bookingId': booking.id,
                     'isUpdate': true,
                     'PaymentedTotalAmount': booking.totalAmount ?? 0,
+                    'subCategoryImage': booking.subCategoryId?.img ?? ''
                   },
                 );
               },
