@@ -262,61 +262,66 @@ class BookingCard extends StatelessWidget {
                   // Action chips for update and message
                   Row(
                     children: [
-                      // Update chip
-                      InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          // optional: handle update tap
-                          final controller =
-                              Get.find<ContractorBookingController>();
-                          Get.toNamed(
-                            AppRoutes.customarMaterialsScreen,
-                            arguments: {
-                              'contractorId': booking.contractorId?.id,
-                              'contractorIdForTimeSlot':
-                                  booking.contractorId?.contractor?.id,
-                              'subcategoryId': booking.subCategoryId?.id ?? '',
-                              'materials': booking.material,
-                              'controller': controller,
-                              'contractorName': booking.contractorId?.fullName,
-                              'categoryName': "",
-                              'subCategoryName':
-                                  booking.subCategoryId?.name ?? '',
-                              // Pass booking schedule data for updates
-                              'bookingType': booking.bookingType ?? 'oneTime',
-                              'duration': booking.duration?.toString() ?? '1',
-                              'startTime': booking.startTime ?? '',
-                              'endTime': booking.endTime ?? '',
-                              'selectedDates':
-                                  booking.day is List
-                                      ? (booking.day as List)
-                                          .map((e) => e.toString())
-                                          .toList()
-                                      : booking.day is String
-                                      ? [booking.day as String]
-                                      : [],
-                              'hourlyRate': booking.rateHourly ?? 0,
-                              'bookingId': booking.id,
-                              'updateBookingId': booking.bookingId,
-                              'isUpdate': true, // Indicate this is an update
-                              'PaymentedTotalAmount': booking.totalAmount ?? 0,
-                            },
-                          );
-                        },
-                        child: Chip(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 8.h,
-                          ),
-                          backgroundColor: const Color(0xffCDB3CD),
-                          label: Icon(
-                            Icons.edit,
-                            size: 16.w,
-                            color: AppColors.primary,
+                      if (booking.status?.toLowerCase() == 'pending') ...[
+                        // Update chip
+                        InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {
+                            // optional: handle update tap
+                            final controller =
+                                Get.find<ContractorBookingController>();
+                            Get.toNamed(
+                              AppRoutes.customarMaterialsScreen,
+                              arguments: {
+                                'contractorId': booking.contractorId?.id,
+                                'contractorIdForTimeSlot':
+                                    booking.contractorId?.contractor?.id,
+                                'subcategoryId':
+                                    booking.subCategoryId?.id ?? '',
+                                'materials': booking.material,
+                                'controller': controller,
+                                'contractorName':
+                                    booking.contractorId?.fullName,
+                                'categoryName': "",
+                                'subCategoryName':
+                                    booking.subCategoryId?.name ?? '',
+                                // Pass booking schedule data for updates
+                                'bookingType': booking.bookingType ?? 'oneTime',
+                                'duration': booking.duration?.toString() ?? '1',
+                                'startTime': booking.startTime ?? '',
+                                'endTime': booking.endTime ?? '',
+                                'selectedDates':
+                                    booking.day is List
+                                        ? (booking.day as List)
+                                            .map((e) => e.toString())
+                                            .toList()
+                                        : booking.day is String
+                                        ? [booking.day as String]
+                                        : [],
+                                'hourlyRate': booking.rateHourly ?? 0,
+                                'bookingId': booking.id,
+                                'updateBookingId': booking.bookingId,
+                                'isUpdate': true, // Indicate this is an update
+                                'PaymentedTotalAmount':
+                                    booking.totalAmount ?? 0,
+                              },
+                            );
+                          },
+                          child: Chip(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 8.h,
+                            ),
+                            backgroundColor: const Color(0xffCDB3CD),
+                            label: Icon(
+                              Icons.edit,
+                              size: 16.w,
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 8.w),
+                        SizedBox(width: 8.w),
+                      ],
 
                       // Message chip
                       InkWell(
@@ -368,7 +373,10 @@ class BookingCard extends StatelessWidget {
                         },
                         child: Chip(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
+                            horizontal:
+                                booking.status?.toLowerCase() != 'pending'
+                                    ? 18.w
+                                    : 10.w,
                             vertical: 8.h,
                           ),
                           backgroundColor: AppColors.primary.withValues(
@@ -387,7 +395,11 @@ class BookingCard extends StatelessWidget {
                                     )
                                     : Icon(
                                       Icons.message,
-                                      size: 16.w,
+                                      size:
+                                          booking.status?.toLowerCase() !=
+                                                  'pending'
+                                              ? 20.w
+                                              : 16.w,
                                       color: AppColors.primary,
                                     ),
                           ),
