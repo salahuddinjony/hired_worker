@@ -6,7 +6,7 @@ import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
-import 'package:servana/view/screens/customer_part/home/customar_qa_screen/model.dart/contractor_question.dart';
+import 'package:servana/view/screens/customer_part/home/customar_qa_screen/models/contractor_question.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/contactor_details_model.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';

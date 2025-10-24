@@ -1090,7 +1090,7 @@ class ContractorBookingController extends GetxController {
 
   //for looup available slots
     //for looup available slots
-
+final Map<String, dynamic> apiResponse = {};
   Future<dynamic> lookupAvailableSlots({required String contractorIdForTimeSlot}) async {
     isLoading.value = true;
     debugPrint('Looking up available slots for contractor $contractorIdForTimeSlot');
@@ -1111,12 +1111,16 @@ class ContractorBookingController extends GetxController {
         final data = AvailableSlotResponse.fromJson(response.body);
         debugPrint('Available slots response: $data');
         availableSlots.value = data.data?.availableSlots ?? <String>[];
+        // isSlotAvailable();
+
         // Expecting: {success: true, message: ..., data: {success: false, message: ..., unavailableDays: [...]}}
         if (data.data is Map && data.data!.success == false) {
           return {
-            'success': false,
-            'message': data.data!.message,
-            'unavailableDays': data.data!.availableSlots,
+            apiResponse: {
+              'success': false,
+              'message': data.data!.message,
+              'unavailableDays': data.data!.availableSlots,
+            }
           };
         }
         return true;
@@ -1151,6 +1155,59 @@ class ContractorBookingController extends GetxController {
       isLoading.value = false;
       refresh();
     }
+  }
+
+  bool isSlotAvailable() {
+    debugPrint('Validating selected time slot against available slots...');
+
+    for (final slot in availableSlots) {
+      debugPrint('Checking slot: $slot');
+      final slotParts = slot.split('-');
+      if (slotParts.length == 2) {
+        final slotStart = slotParts[0].trim();
+        final slotEnd = slotParts[1].trim();
+
+        // Parse slot start and end times
+        final slotStartParts = slotStart.split(':');
+        final slotEndParts = slotEnd.split(':');
+        final startParts = startTimeController.value.text.split(':');
+        final endParts = endTimeController.value.text.split(':');
+
+        if (slotStartParts.length == 2 && slotEndParts.length == 2 &&
+            startParts.length == 2 && endParts.length == 2) {
+          final slotStartTime = TimeOfDay(
+            hour: int.parse(slotStartParts[0]),
+            minute: int.parse(slotStartParts[1]),
+          );
+          final slotEndTime = TimeOfDay(
+            hour: int.parse(slotEndParts[0]),
+            minute: int.parse(slotEndParts[1]),
+          );
+          final bookingStartTime = TimeOfDay(
+            hour: int.parse(startParts[0]),
+            minute: int.parse(startParts[1]),
+          );
+          final bookingEndTime = TimeOfDay(
+            hour: int.parse(endParts[0]),
+            minute: int.parse(endParts[1]),
+          );
+
+        final bool isStartInRange = (bookingStartTime.hour > slotStartTime.hour ||
+              (bookingStartTime.hour == slotStartTime.hour &&
+            bookingStartTime.minute >= slotStartTime.minute));
+          final bool isEndInRange = (bookingEndTime.hour < slotEndTime.hour ||
+              (bookingEndTime.hour == slotEndTime.hour &&
+            bookingEndTime.minute <= slotEndTime.minute));
+
+          if (isStartInRange && isEndInRange) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+    
+    
   }
 
 

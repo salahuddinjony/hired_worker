@@ -510,218 +510,192 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                         }
                       }
                       if (isUpdate && shouldCheckSlots) {
-                        final slotResult = await controller
-                            .lookupAvailableSlots(
-                              contractorIdForTimeSlot: contractorIdForTimeSlot,
-                            );
-                        // slotResult can be bool or Map depending on controller implementation
-                        if (slotResult is Map &&
-                            slotResult['success'] == false) {
-                          final unavailableDays =
-                              slotResult['unavailableDays'] ?? [];
-                          final message =
-                              slotResult['message'] ??
-                              'Some requested slots are unavailable.';
-                          showDialog(
-                            context: context,
-                            builder:
-                                (ctx) => AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  title: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.warning_amber_rounded,
+                        await controller.lookupAvailableSlots(
+                          contractorIdForTimeSlot: contractorIdForTimeSlot,
+
+                        );
+                      }
+
+
+                      if ((!isUpdate && !controller.isSlotAvailable())  || (isUpdate && shouldCheckSlots && !controller.isSlotAvailable())) {
+                        final unavailableDays =
+                            controller.apiResponse['unavailableDays'] ?? [];
+
+                        final message =
+                            controller.apiResponse['message'] ??
+                            'Some requested slots are unavailable.';
+
+                        return showDialog(
+                          context: context,
+                          builder:
+                              (ctx) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.warning_amber_rounded,
+                                      color: Colors.redAccent,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Unavailable Slots',
+                                      style: TextStyle(
                                         color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'Unavailable Slots',
-                                        style: TextStyle(
-                                          color: Colors.redAccent,
-                                          fontWeight: FontWeight.bold,
+                                    ),
+                                  ],
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: Text(
+                                        message,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black87,
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                    ],
-                                  ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
+                                    ),
+                                    if (unavailableDays is List &&
+                                        unavailableDays.isNotEmpty)
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 8.0,
                                         ),
-                                        child: Text(
-                                          message,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black87,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      if (unavailableDays is List &&
-                                          unavailableDays.isNotEmpty)
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              const Text(
-                                                'Unavailable Dates:',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black54,
-                                                ),
+                                        child: Column(
+                                          children: [
+                                            const Text(
+                                              'Unavailable Dates:',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black54,
                                               ),
-                                              Wrap(
-                                                spacing: 6,
-                                                children:
-                                                    unavailableDays
-                                                        .map<Widget>(
-                                                          (d) => Chip(
-                                                            label: Text(
-                                                              d,
-                                                              style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .red
-                                                                    .shade50,
-                                                            labelStyle:
+                                            ),
+                                            Wrap(
+                                              spacing: 6,
+                                              children:
+                                                  unavailableDays
+                                                      .map<Widget>(
+                                                        (d) => Chip(
+                                                          label: Text(
+                                                            d,
+                                                            style:
                                                                 const TextStyle(
-                                                                  color:
-                                                                      Colors
-                                                                          .redAccent,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
                                                                 ),
                                                           ),
-                                                        )
-                                                        .toList(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Chip(
-                                              label: Text(
-                                                controller
-                                                    .startTimeController
-                                                    .value
-                                                    .text,
-                                              ),
-                                              backgroundColor:
-                                                  Colors.blue.shade50,
-                                              labelStyle: const TextStyle(
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'to'.tr,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Chip(
-                                              label: Text(
-                                                controller
-                                                    .endTimeController
-                                                    .value
-                                                    .text,
-                                              ),
-                                              backgroundColor:
-                                                  Colors.blue.shade50,
-                                              labelStyle: const TextStyle(
-                                                color: Colors.blue,
-                                              ),
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .red
+                                                                  .shade50,
+                                                          labelStyle:
+                                                              const TextStyle(
+                                                                color:
+                                                                    Colors
+                                                                        .redAccent,
+                                                              ),
+                                                        ),
+                                                      )
+                                                      .toList(),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Text(
-                                        "At " +
-                                            controller.selectedDates
-                                                .map((d) {
-                                                  final dt = DateTime.tryParse(
-                                                    d,
-                                                  );
-                                                  return dt != null
-                                                      ? dt.formatDate()
-                                                      : d;
-                                                })
-                                                .join(', '),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
                                       ),
-                                      const SizedBox(height: 8),
-                                      const Text(
-                                        'Please choose different times or dates.',
-                                        style: TextStyle(color: Colors.black54),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: AppColors.primary,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Chip(
+                                            label: Text(
+                                              controller
+                                                  .startTimeController
+                                                  .value
+                                                  .text,
+                                            ),
+                                            backgroundColor:
+                                                Colors.blue.shade50,
+                                            labelStyle: const TextStyle(
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'to'.tr,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Chip(
+                                            label: Text(
+                                              controller
+                                                  .endTimeController
+                                                  .value
+                                                  .text,
+                                            ),
+                                            backgroundColor:
+                                                Colors.blue.shade50,
+                                            labelStyle: const TextStyle(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      onPressed: () => Navigator.of(ctx).pop(),
-                                      child: const Text('OK'),
+                                    ),
+                                    Text(
+                                      "At " +
+                                          controller.selectedDates
+                                              .map((d) {
+                                                final dt = DateTime.tryParse(d);
+                                                return dt != null
+                                                    ? dt.formatDate()
+                                                    : d;
+                                              })
+                                              .join(', '),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      'Please choose different times or dates.',
+                                      style: TextStyle(color: Colors.black54),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
-                          );
-                          return;
-                        }
-                        // if (slotResult == false) {
-                        //   showDialog(
-                        //     context: context,
-                        //     builder: (ctx) => AlertDialog(
-                        //       title: const Text('Unavailable Slots'),
-                        //       content: Column(
-                        //         mainAxisSize: MainAxisSize.min,
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         children: [
-                        //            const Text('Some requested slots are unavailable.'),
-                        //            Chip(label: Text(controller.startTimeController.value.text)),
-                        //            const Text('Please choose different times or dates.'),
-                        //         ],
-                        //       ),
-                        //       actions: [
-                        //         TextButton(
-                        //           onPressed: () => Navigator.of(ctx).pop(),
-                        //           child: const Text('OK'),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   );
-                        //   return;
-                        // }
+                                actions: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: AppColors.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    onPressed: () => Navigator.of(ctx).pop(),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                        );
                       }
+
                       // If available, proceed
                       Get.toNamed(
                         AppRoutes.customarServiceContractorDetailsScreen,
