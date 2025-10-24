@@ -1,15 +1,8 @@
-
-
-
-
-
 extension StringCapitalization on String {
-  
   String capitalizeFirstWord() {
     if (isEmpty) return this;
-  return this[0].toUpperCase() + substring(1).toLowerCase();
+    return this[0].toUpperCase() + substring(1).toLowerCase();
   }
- 
 }
 
 extension DateTimeConverter on String {
@@ -40,17 +33,25 @@ extension DateTimeConverter on String {
 }
 
 extension DateFormat on DateTime {
-
   String formatDate() {
     final local = toLocal();
     const months = [
-      'Jan','Feb','Mar','Apr','May','Jun',
-      'Jul','Aug','Sep','Oct','Nov','Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${local.day} ${months[local.month - 1]} ${local.year}';
   }
 }
-
 
 // Safe capitalize
 extension SafeCap on String? {

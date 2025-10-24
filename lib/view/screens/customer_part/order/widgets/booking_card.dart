@@ -92,23 +92,31 @@ class BookingCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                     CircleAvatar(
-                          radius: 26,
-                          backgroundColor: borderColor.withValues(alpha: .15),
-                          child: ClipOval(
-                          child: booking.subCategoryId?.img != null &&
-                              booking.subCategoryId!.img!.isNotEmpty
-                            ? CachedNetworkImage(
-                              imageUrl: booking.subCategoryId!.img!,
-                              width: 52,
-                              height: 52,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                const Icon(Icons.person, color: AppColors.primary),
-                              )
-                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
-                          ),
+                      CircleAvatar(
+                        radius: 26,
+                        backgroundColor: borderColor.withValues(alpha: .15),
+                        child: ClipOval(
+                          child:
+                              booking.subCategoryId?.img != null &&
+                                      booking.subCategoryId!.img!.isNotEmpty
+                                  ? CachedNetworkImage(
+                                    imageUrl: booking.subCategoryId!.img!,
+                                    width: 52,
+                                    height: 52,
+                                    fit: BoxFit.cover,
+                                    errorWidget:
+                                        (context, url, error) => const Icon(
+                                          Icons.person,
+                                          color: AppColors.primary,
+                                        ),
+                                  )
+                                  : const Icon(
+                                    Icons.person,
+                                    color: AppColors.primary,
+                                    size: 32,
+                                  ),
                         ),
+                      ),
                       SizedBox(width: 12.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,17 +207,25 @@ class BookingCard extends StatelessWidget {
                           radius: 26,
                           backgroundColor: borderColor.withValues(alpha: .15),
                           child: ClipOval(
-                          child: booking.contractorId?.img != null &&
-                              booking.contractorId!.img!.isNotEmpty
-                            ? CachedNetworkImage(
-                              imageUrl: booking.contractorId!.img!,
-                              width: 52,
-                              height: 52,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                const Icon(Icons.person, color: AppColors.primary),
-                              )
-                            : const Icon(Icons.person, color: AppColors.primary, size: 32),
+                            child:
+                                booking.contractorId?.img != null &&
+                                        booking.contractorId!.img!.isNotEmpty
+                                    ? CachedNetworkImage(
+                                      imageUrl: booking.contractorId!.img!,
+                                      width: 52,
+                                      height: 52,
+                                      fit: BoxFit.cover,
+                                      errorWidget:
+                                          (context, url, error) => const Icon(
+                                            Icons.person,
+                                            color: AppColors.primary,
+                                          ),
+                                    )
+                                    : const Icon(
+                                      Icons.person,
+                                      color: AppColors.primary,
+                                      size: 32,
+                                    ),
                           ),
                         ),
                         SizedBox(width: 12.w),
@@ -246,60 +262,66 @@ class BookingCard extends StatelessWidget {
                   // Action chips for update and message
                   Row(
                     children: [
-                      // Update chip
-                      InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          // optional: handle update tap
-                          final controller =
-                              Get.find<ContractorBookingController>();
-                          Get.toNamed(
-                            AppRoutes.customarMaterialsScreen,
-                            arguments: {
-                              'contractorId': booking.contractorId?.id,
-                              'contractorIdForTimeSlot': booking.contractorId?.contractor?.id,
-                              'subcategoryId': booking.subCategoryId?.id ?? '',
-                              'materials': booking.material,
-                              'controller': controller,
-                              'contractorName': booking.contractorId?.fullName,
-                              'categoryName': "",
-                              'subCategoryName':
-                                  booking.subCategoryId?.name ?? '',
-                              // Pass booking schedule data for updates
-                              'bookingType': booking.bookingType ?? 'oneTime',
-                              'duration': booking.duration?.toString() ?? '1',
-                              'startTime': booking.startTime ?? '',
-                              'endTime': booking.endTime ?? '',
-                              'selectedDates':
-                                  booking.day is List
-                                      ? (booking.day as List)
-                                          .map((e) => e.toString())
-                                          .toList()
-                                      : booking.day is String
-                                      ? [booking.day as String]
-                                      : [],
-                              'hourlyRate': booking.rateHourly ?? 0,
-                              'bookingId': booking.id,
-                              'updateBookingId': booking.bookingId,
-                              'isUpdate': true, // Indicate this is an update
-                              'PaymentedTotalAmount': booking.totalAmount ?? 0,
-                            },
-                          );
-                        },
-                        child: Chip(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 8.h,
-                          ),
-                          backgroundColor: const Color(0xffCDB3CD),
-                          label: Icon(
-                            Icons.edit,
-                            size: 16.w,
-                            color: AppColors.primary,
+                      if (booking.status?.toLowerCase() == 'pending') ...[
+                        // Update chip
+                        InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {
+                            // optional: handle update tap
+                            final controller =
+                                Get.find<ContractorBookingController>();
+                            Get.toNamed(
+                              AppRoutes.customarMaterialsScreen,
+                              arguments: {
+                                'contractorId': booking.contractorId?.id,
+                                'contractorIdForTimeSlot':
+                                    booking.contractorId?.contractor?.id,
+                                'subcategoryId':
+                                    booking.subCategoryId?.id ?? '',
+                                'materials': booking.material,
+                                'controller': controller,
+                                'contractorName':
+                                    booking.contractorId?.fullName,
+                                'categoryName': "",
+                                'subCategoryName':
+                                    booking.subCategoryId?.name ?? '',
+                                // Pass booking schedule data for updates
+                                'bookingType': booking.bookingType ?? 'oneTime',
+                                'duration': booking.duration?.toString() ?? '1',
+                                'startTime': booking.startTime ?? '',
+                                'endTime': booking.endTime ?? '',
+                                'selectedDates':
+                                    booking.day is List
+                                        ? (booking.day as List)
+                                            .map((e) => e.toString())
+                                            .toList()
+                                        : booking.day is String
+                                        ? [booking.day as String]
+                                        : [],
+                                'hourlyRate': booking.rateHourly ?? 0,
+                                'bookingId': booking.id,
+                                'updateBookingId': booking.bookingId,
+                                'isUpdate': true, // Indicate this is an update
+                                'PaymentedTotalAmount':
+                                    booking.totalAmount ?? 0,
+                              },
+                            );
+                          },
+                          child: Chip(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 8.h,
+                            ),
+                            backgroundColor: const Color(0xffCDB3CD),
+                            label: Icon(
+                              Icons.edit,
+                              size: 16.w,
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 8.w),
+                        SizedBox(width: 8.w),
+                      ],
 
                       // Message chip
                       InkWell(
@@ -351,7 +373,10 @@ class BookingCard extends StatelessWidget {
                         },
                         child: Chip(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
+                            horizontal:
+                                booking.status?.toLowerCase() != 'pending'
+                                    ? 18.w
+                                    : 10.w,
                             vertical: 8.h,
                           ),
                           backgroundColor: AppColors.primary.withValues(
@@ -370,7 +395,11 @@ class BookingCard extends StatelessWidget {
                                     )
                                     : Icon(
                                       Icons.message,
-                                      size: 16.w,
+                                      size:
+                                          booking.status?.toLowerCase() !=
+                                                  'pending'
+                                              ? 20.w
+                                              : 16.w,
                                       color: AppColors.primary,
                                     ),
                           ),

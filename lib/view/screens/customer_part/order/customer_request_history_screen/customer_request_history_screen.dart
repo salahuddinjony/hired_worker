@@ -60,7 +60,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                   children: [
                     // Pending Tab
                     buildTabContent(customerOrderController, 0),
-                    // Accepted Tab  
+                    // Accepted Tab
                     // buildTabContent(customerOrderController, 1),
                     // On-Going Tab
                     buildTabContent(customerOrderController, 1),
@@ -78,10 +78,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget buildTabContent(
-    CustomerOrderController controller,
-    int tabIndex,
-  ) {
+  Widget buildTabContent(CustomerOrderController controller, int tabIndex) {
     return RefreshIndicator(
       onRefresh: () {
         String status;
@@ -89,7 +86,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
           case 0:
             status = 'pending';
             break;
-          case 1: 
+          case 1:
             status = 'ongoing';
             break;
           case 2:
@@ -106,13 +103,16 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
       },
       child: Obx(() {
         List<BookingResult> displayList;
-        
+
         if (tabIndex == 2) {
           // History tab - show completed, rejected, and history bookings
-          displayList = controller.bookingReportList.where((booking) {
-            final status = (booking.status ?? '').toLowerCase();
-            return status == 'completed' || status == 'rejected' || status == 'history';
-          }).toList();
+          displayList =
+              controller.bookingReportList.where((booking) {
+                final status = (booking.status ?? '').toLowerCase();
+                return status == 'completed' ||
+                    status == 'rejected' ||
+                    status == 'history';
+              }).toList();
         } else {
           // For other tabs, show all data from API call (already filtered by status)
           displayList = controller.bookingReportList.toList();

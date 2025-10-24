@@ -300,12 +300,11 @@ class ContractorBookingController extends GetxController {
           "${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}";
       textController.text = formatted;
       debugPrint('ContractorBookingController.selectTime picked: $formatted');
-      
+
       // Validate time range immediately after selecting end time
       if (textController == endTimeController.value &&
           startTimeController.value.text.isNotEmpty &&
           endTimeController.value.text.isNotEmpty) {
-        
         // Perform validation
         if (!validateTimeRangeImmediate()) {
           // Clear the end time if validation fails
@@ -315,7 +314,7 @@ class ContractorBookingController extends GetxController {
     }
     refresh();
   }
-  
+
   /// Immediate validation for time picker (shows dialog instead of toast)
   bool validateTimeRangeImmediate() {
     if (startTimeController.value.text.isEmpty ||
@@ -336,7 +335,13 @@ class ContractorBookingController extends GetxController {
 
       // Create DateTime objects for calculation (using same date)
       final now = DateTime.now();
-      final startTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+      final startTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        startHour,
+        startMinute,
+      );
       var endTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
 
       // Handle case where end time is before start time (crosses midnight)
@@ -347,7 +352,7 @@ class ContractorBookingController extends GetxController {
       // Calculate actual duration in hours
       final difference = endTime.difference(startTime);
       final actualHours = difference.inMinutes / 60.0;
-      
+
       // Get selected duration
       final selectedHours = durationInt;
 
@@ -367,10 +372,7 @@ class ContractorBookingController extends GetxController {
               'The selected time range is ${actualHours.toStringAsFixed(1)} hours, but you selected $selectedHours hour${selectedHours > 1 ? 's' : ''}.\n\nPlease select an end time that matches your selected duration.',
             ),
             actions: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: const Text('OK'),
-              ),
+              TextButton(onPressed: () => Get.back(), child: const Text('OK')),
             ],
           ),
           barrierDismissible: false,
@@ -386,10 +388,7 @@ class ContractorBookingController extends GetxController {
           title: const Text('Invalid Time Format'),
           content: const Text('Please select valid start and end times.'),
           actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('OK'),
-            ),
+            TextButton(onPressed: () => Get.back(), child: const Text('OK')),
           ],
         ),
         barrierDismissible: false,
@@ -400,70 +399,70 @@ class ContractorBookingController extends GetxController {
 
   void initializeMaterials(dynamic materials) {
     materialsAndQuantity.clear();
-      originalMaterialCounts.clear();
+    originalMaterialCounts.clear();
 
-      for (final material in materials) {
-        String name = 'Unknown';
-        String unit = 'pcs';
-        String price = '0';
-        String count = '0'; // Default count
+    for (final material in materials) {
+      String name = 'Unknown';
+      String unit = 'pcs';
+      String price = '0';
+      String count = '0'; // Default count
 
-        try {
-          // Handle MaterialsModel type
-          if (material.runtimeType.toString().contains('MaterialsModel')) {
-            name = material.name ?? 'Unknown';
-            unit = material.unit ?? 'pcs';
+      try {
+        // Handle MaterialsModel type
+        if (material.runtimeType.toString().contains('MaterialsModel')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          // MaterialsModel doesn't have count, keep default '0'
+        }
+        // Handle MaterialItem type (from booking data)
+        else if (material.runtimeType.toString().contains('MaterialItem')) {
+          name = material.name ?? 'Unknown';
+          unit = material.unit ?? 'pcs';
+          price = material.price?.toString() ?? '0';
+          count = material.count?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle Map/JSON data
+        else if (material is Map<String, dynamic>) {
+          name = material['name']?.toString() ?? 'Unknown';
+          unit = material['unit']?.toString() ?? 'pcs';
+          price = material['price']?.toString() ?? '0';
+          count =
+              material['count']?.toString() ?? '0'; // Preserve existing count
+        }
+        // Handle dynamic objects with properties
+        else {
+          try {
+            name = material.name?.toString() ?? 'Unknown';
+            unit = material.unit?.toString() ?? 'pcs';
             price = material.price?.toString() ?? '0';
-            // MaterialsModel doesn't have count, keep default '0'
-          }
-          // Handle MaterialItem type (from booking data)
-          else if (material.runtimeType.toString().contains('MaterialItem')) {
-            name = material.name ?? 'Unknown';
-            unit = material.unit ?? 'pcs';
-            price = material.price?.toString() ?? '0';
-            count = material.count?.toString() ?? '0'; // Preserve existing count
-          }
-          // Handle Map/JSON data
-          else if (material is Map<String, dynamic>) {
-            name = material['name']?.toString() ?? 'Unknown';
-            unit = material['unit']?.toString() ?? 'pcs';
-            price = material['price']?.toString() ?? '0';
-            count =
-                material['count']?.toString() ?? '0'; // Preserve existing count
-          }
-          // Handle dynamic objects with properties
-          else {
+            // Try to get count if it exists
             try {
-              name = material.name?.toString() ?? 'Unknown';
-              unit = material.unit?.toString() ?? 'pcs';
-              price = material.price?.toString() ?? '0';
-              // Try to get count if it exists
-              try {
-                count = material.count?.toString() ?? '0';
-              } catch (e) {
-                count = '0'; // Fallback if count doesn't exist
-              }
+              count = material.count?.toString() ?? '0';
             } catch (e) {
-              debugPrint('Error accessing material properties: $e');
+              count = '0'; // Fallback if count doesn't exist
             }
+          } catch (e) {
+            debugPrint('Error accessing material properties: $e');
           }
-
-          debugPrint(
-            'Parsed material: $name, unit: $unit, price: $price, count: $count',
-          );
-        } catch (e) {
-          debugPrint('initializeMaterials: error parsing material: $e');
         }
 
-        materialsAndQuantity.add({
-          'name': name,
-          'unit': unit,
-          'price': price,
-          'count': count, // Use the extracted count value
-        });
-        originalMaterialCounts.add(int.tryParse(count) ?? 0);
+        debugPrint(
+          'Parsed material: $name, unit: $unit, price: $price, count: $count',
+        );
+      } catch (e) {
+        debugPrint('initializeMaterials: error parsing material: $e');
       }
-      refresh();
+
+      materialsAndQuantity.add({
+        'name': name,
+        'unit': unit,
+        'price': price,
+        'count': count, // Use the extracted count value
+      });
+      originalMaterialCounts.add(int.tryParse(count) ?? 0);
+    }
+    refresh();
   }
 
   void incrementMaterial(int index) {
@@ -479,14 +478,16 @@ class ContractorBookingController extends GetxController {
     if (index < materialsAndQuantity.length) {
       final currentQuantity =
           int.tryParse(materialsAndQuantity[index]['count'] ?? '0') ?? 0;
-        int minCount = 0;
-        if (Get.arguments != null && Get.arguments['isUpdate'] == true && index < originalMaterialCounts.length) {
-          minCount = originalMaterialCounts[index];
-        }
-        if (currentQuantity > minCount) {
-          materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
-          refresh();
-        }
+      int minCount = 0;
+      if (Get.arguments != null &&
+          Get.arguments['isUpdate'] == true &&
+          index < originalMaterialCounts.length) {
+        minCount = originalMaterialCounts[index];
+      }
+      if (currentQuantity > minCount) {
+        materialsAndQuantity[index]['count'] = (currentQuantity - 1).toString();
+        refresh();
+      }
     }
   }
 
@@ -664,7 +665,13 @@ class ContractorBookingController extends GetxController {
 
       // Create DateTime objects for calculation (using same date)
       final now = DateTime.now();
-      final startTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+      final startTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        startHour,
+        startMinute,
+      );
       var endTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
 
       // Handle case where end time is before start time (crosses midnight)
@@ -675,7 +682,7 @@ class ContractorBookingController extends GetxController {
       // Calculate actual duration in hours
       final difference = endTime.difference(startTime);
       final actualHours = difference.inMinutes / 60.0;
-      
+
       // Get selected duration
       final selectedHours = durationInt;
 
@@ -721,12 +728,12 @@ class ContractorBookingController extends GetxController {
       isLoading.value = false;
       return false;
     }
-    
+
     // Validate that time range matches selected duration
     if (!validateTimeRange()) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -1089,14 +1096,21 @@ class ContractorBookingController extends GetxController {
   }
 
   //for looup available slots
-    //for looup available slots
-final Map<String, dynamic> apiResponse = {};
-  Future<dynamic> lookupAvailableSlots({required String contractorIdForTimeSlot}) async {
+  //for looup available slots
+  final Map<String, dynamic> apiResponse = {};
+  Future<dynamic> lookupAvailableSlots({
+    required String contractorIdForTimeSlot,
+  }) async {
     isLoading.value = true;
-    debugPrint('Looking up available slots for contractor $contractorIdForTimeSlot');
+    debugPrint(
+      'Looking up available slots for contractor $contractorIdForTimeSlot',
+    );
     final queryParameter = {
       'contractorId': contractorIdForTimeSlot,
-      'day': selectedDates.length > 1 ? selectedDates.first : dayController.value.text,
+      'day':
+          selectedDates.length > 1
+              ? selectedDates.first
+              : dayController.value.text,
     };
     EasyLoading.show(status: 'Looking up available slots...');
 
@@ -1104,7 +1118,6 @@ final Map<String, dynamic> apiResponse = {};
       final response = await ApiClient.getData(
         ApiUrl.lookupAvailableSlots,
         query: queryParameter,
-        
       );
 
       if (response.statusCode == 200) {
@@ -1120,7 +1133,7 @@ final Map<String, dynamic> apiResponse = {};
               'success': false,
               'message': data.data!.message,
               'unavailableDays': data.data!.availableSlots,
-            }
+            },
           };
         }
         return true;
@@ -1137,7 +1150,9 @@ final Map<String, dynamic> apiResponse = {};
           if (slotData is Map && slotData['success'] == false) {
             return {
               'success': false,
-              'message': slotData['message'] ?? 'Some requested slots are unavailable.',
+              'message':
+                  slotData['message'] ??
+                  'Some requested slots are unavailable.',
               'unavailableDays': slotData['unavailableDays'] ?? [],
             };
           }
@@ -1173,8 +1188,10 @@ final Map<String, dynamic> apiResponse = {};
         final startParts = startTimeController.value.text.split(':');
         final endParts = endTimeController.value.text.split(':');
 
-        if (slotStartParts.length == 2 && slotEndParts.length == 2 &&
-            startParts.length == 2 && endParts.length == 2) {
+        if (slotStartParts.length == 2 &&
+            slotEndParts.length == 2 &&
+            startParts.length == 2 &&
+            endParts.length == 2) {
           final slotStartTime = TimeOfDay(
             hour: int.parse(slotStartParts[0]),
             minute: int.parse(slotStartParts[1]),
@@ -1192,12 +1209,14 @@ final Map<String, dynamic> apiResponse = {};
             minute: int.parse(endParts[1]),
           );
 
-        final bool isStartInRange = (bookingStartTime.hour > slotStartTime.hour ||
-              (bookingStartTime.hour == slotStartTime.hour &&
-            bookingStartTime.minute >= slotStartTime.minute));
-          final bool isEndInRange = (bookingEndTime.hour < slotEndTime.hour ||
-              (bookingEndTime.hour == slotEndTime.hour &&
-            bookingEndTime.minute <= slotEndTime.minute));
+          final bool isStartInRange =
+              (bookingStartTime.hour > slotStartTime.hour ||
+                  (bookingStartTime.hour == slotStartTime.hour &&
+                      bookingStartTime.minute >= slotStartTime.minute));
+          final bool isEndInRange =
+              (bookingEndTime.hour < slotEndTime.hour ||
+                  (bookingEndTime.hour == slotEndTime.hour &&
+                      bookingEndTime.minute <= slotEndTime.minute));
 
           if (isStartInRange && isEndInRange) {
             return true;
@@ -1206,10 +1225,7 @@ final Map<String, dynamic> apiResponse = {};
       }
     }
     return false;
-    
-    
   }
-
 
   // Future<dynamic> lookupAvailableSlots({required String contractorId}) async {
   //   isLoading.value = true;
@@ -1292,7 +1308,6 @@ final Map<String, dynamic> apiResponse = {};
   //     refresh();
   //   }
   // }
-
 
   @override
   void onInit() {
