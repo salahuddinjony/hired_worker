@@ -348,4 +348,5 @@ class ApiUrl {
   static const String uploadImage = "/upload";
   static const String getBanners = "/dashboards/banners";
   static String lookupAvailableSlots = "/bookings/booking-availability";
+  static String getParcentage = "/auth/getPercent";
 }

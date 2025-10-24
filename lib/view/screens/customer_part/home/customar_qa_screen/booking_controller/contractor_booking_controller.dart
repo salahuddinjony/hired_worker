@@ -1308,6 +1308,25 @@ class ContractorBookingController extends GetxController {
   //     refresh();
   //   }
   // }
+  RxInt parcentage = 0.obs;
+  Future<void> getParcentage () async {
+    isLoading.value = true;
+    try {
+      final response = await ApiClient.getData(ApiUrl.getParcentage);
+      if (response.statusCode == 200) {
+        final data = response.body;
+        parcentage.value = data['data']['cost'] ?? 0;
+        debugPrint('Percentage fetched: ${parcentage.value}');
+      } else {
+        debugPrint('Failed to fetch percentage: ${response.body}');
+      }
+    } catch (e) {
+      debugPrint('Error fetching percentage: $e');
+    } finally {
+      isLoading.value = false;
+      refresh();
+    }
+  }
 
   @override
   void onInit() {

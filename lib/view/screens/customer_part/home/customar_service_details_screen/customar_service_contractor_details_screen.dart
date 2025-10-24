@@ -98,6 +98,10 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final int paymentAmount =
         isUpdateMode ? (totalAmount - paymentedTotalAmount) : totalAmount;
 
+
+    //get parcentegae, its used to calculate payment amount
+    controller.getParcentage();
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Details".tr),
       body: Padding(
@@ -465,6 +469,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                 color: AppColors.black_08,
                               ),
                               const SizedBox(width: 8),
+                            
                               CustomText(
                                 text:
                                     'AUD ${paymentedTotalAmount.toStringAsFixed(2)}',
@@ -472,6 +477,33 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.green,
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          // parcentage amount for per transaction fee
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                             Obx(() {
+                                return CustomText(
+                                  text: 'App Fee (${controller.parcentage.value.toStringAsFixed(0)}% of AUD  ${paymentAmount.toStringAsFixed(0)}):',
+                                  fontSize: 15.w,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black_08,
+                                );
+                              }),
+                              const SizedBox(width: 8),
+                            
+                             Obx(() {
+                                final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
+                                return CustomText(
+                                  text:
+                                      'AUD ${parcentageAmount.toStringAsFixed(2)}',
+                                  fontSize: 18.w,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.red,
+                                );
+                              })
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -507,14 +539,21 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                           color: AppColors.black,
                                         ),
                                       ),
-                                      TextSpan(
-                                        text:
-                                            '${paymentAmount.toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          fontSize: 28.w,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.black_09,
-                                        ),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.baseline,
+                                        baseline: TextBaseline.alphabetic,
+                                        child: Obx(() {
+                                          final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
+                                          final payableAmount = paymentAmount + parcentageAmount;
+                                          return Text(
+                                            '${payableAmount.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              fontSize: 30.w,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.black_09,
+                                            ),
+                                          );
+                                        }),
                                       ),
                                     ],
                                   ),
@@ -605,10 +644,12 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 onTap: () async {
                   controller.collectAllAnswers();
                   // Step 1: Call payment API to get payment URL for remaining amount
+                  final int finalPaymentAmount =
+                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toInt();
                   EasyLoading.show(status: 'Processing payment...');
                   final Map<String, dynamic> requestBody = {
                     "contractorId": contractorId,
-                    "amount": paymentAmount,
+                    "amount": finalPaymentAmount,
                   };
                   final response = await ApiClient.postData(
                     ApiUrl.createCheckoutSession,
