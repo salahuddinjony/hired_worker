@@ -108,51 +108,55 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomHomeCard(
-                    text:
-                        profileController
-                            .contractorModel
-                            .value
-                            .data
-                            ?.contractor
-                            ?.balance
-                            .toString() ??
-                        " - ",
-                    title: "Total Earning this month".tr,
-                  ),
-                  CustomHomeCard(
-                    text:
-                        homeController.bookingModel.value.meta?.total
-                            .toString() ??
-                        " - ",
-                    title: "Total Service".tr,
-                    imageSrc: AppIcons.iconTwo,
-                  ),
-                ],
-              ),
+              Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomHomeCard(
+                      text:
+                      profileController
+                          .contractorModel
+                          .value
+                          .data
+                          ?.contractor
+                          ?.balance
+                          .toString() ??
+                          " - ",
+                      title: "Total Earning this month".tr,
+                    ),
+                    CustomHomeCard(
+                      text:
+                      homeController.bookingModel.value.meta?.total
+                          .toString() ??
+                          " - ",
+                      title: "Total Service".tr,
+                      imageSrc: AppIcons.iconTwo,
+                    ),
+                  ],
+                );
+              }),
               SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomHomeCard(
-                    text:
-                        homeController.bookingModel.value.data?.length
-                            .toString() ??
-                        " - ",
-                    title: "Recent Services".tr,
-                    imageSrc: AppIcons.iconFour,
-                  ),
-                  CustomHomeCard(
-                    text:
-                        "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
-                    title: "Current billing price".tr,
-                    imageSrc: AppIcons.iconThree,
-                  ),
-                ],
-              ),
+              Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomHomeCard(
+                      text:
+                      homeController.bookingModel.value.data?.length
+                          .toString() ??
+                          " - ",
+                      title: "Recent Services".tr,
+                      imageSrc: AppIcons.iconFour,
+                    ),
+                    CustomHomeCard(
+                      text:
+                      "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
+                      title: "Current billing price".tr,
+                      imageSrc: AppIcons.iconThree,
+                    ),
+                  ],
+                );
+              }),
               SizedBox(height: 20.h),
               // CustomProfileMenuList(),
               GestureDetector(

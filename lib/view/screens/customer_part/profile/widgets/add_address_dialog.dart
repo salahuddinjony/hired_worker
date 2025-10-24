@@ -26,7 +26,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   final CustomerProfileController controller = Get.find<CustomerProfileController>();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
-  final TextEditingController flatController = TextEditingController();
+  final TextEditingController unitController = TextEditingController();
   final TextEditingController directionsController = TextEditingController();
   String selectedType = 'Home';
 
@@ -40,7 +40,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   void dispose() {
     addressController.dispose();
     streetController.dispose();
-    flatController.dispose();
+    unitController.dispose();
     directionsController.dispose();
     super.dispose();
   }
@@ -162,7 +162,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               // Unit / House No
               _buildTextField(
-                controller: flatController,
+                controller: unitController,
                 hint: 'Unit / House No.',
                 icon: Icons.home_work_outlined,
               ),
@@ -185,7 +185,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   debugPrint('=== Save Address Button Tapped ===');
                   debugPrint('Address: ${addressController.text}');
                   debugPrint('Street: ${streetController.text}');
-                  debugPrint('Unit/House: ${flatController.text}');
+                  debugPrint('Unit/House: ${unitController.text}');
                   debugPrint('Type: $selectedType');
                   
                   if (addressController.text.isEmpty) {
@@ -207,7 +207,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     controller.addNewAddress(
                       title: selectedType,
                       address: (streetController.text.isNotEmpty ? '${streetController.text}, ' : '') + addressController.text,
-                      flatNo: flatController.text.isNotEmpty ? flatController.text : null,
+                      unit: unitController.text.isNotEmpty ? unitController.text : null,
+                      street: streetController.text.isNotEmpty ? streetController.text : null,
                       directions: directionsController.text.isNotEmpty ? directionsController.text : null,
                       latitude: widget.latitude,
                       longitude: widget.longitude,

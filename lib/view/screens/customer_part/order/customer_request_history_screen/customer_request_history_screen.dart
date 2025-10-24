@@ -28,9 +28,9 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
         children: [
           SizedBox(height: 12.h),
           TabBar(
-            padding: EdgeInsets.zero,
-            indicatorSize: TabBarIndicatorSize.label,
-            isScrollable: true,
+            // padding: EdgeInsets.zero,
+            // indicatorSize: TabBarIndicatorSize.label,
+            // isScrollable: true,
             controller: customerOrderController.tabController,
             dividerColor: Colors.grey,
             labelColor: AppColors.black,
@@ -39,7 +39,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
             tabs: [
               Tab(text: 'Pending'.tr),
-              Tab(text: 'Accepted'.tr),
+              // Tab(text: 'Accepted'.tr),
               Tab(text: 'On-Going'.tr),
               Tab(text: 'History'.tr),
             ],
@@ -61,11 +61,11 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
                     // Pending Tab
                     buildTabContent(customerOrderController, 0),
                     // Accepted Tab  
-                    buildTabContent(customerOrderController, 1),
+                    // buildTabContent(customerOrderController, 1),
                     // On-Going Tab
-                    buildTabContent(customerOrderController, 2),
+                    buildTabContent(customerOrderController, 1),
                     // History Tab (cancelled or confirmed)
-                    buildTabContent(customerOrderController, 3),
+                    buildTabContent(customerOrderController, 2),
                   ],
                 );
               }),
@@ -89,13 +89,10 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
           case 0:
             status = 'pending';
             break;
-          case 1:
-            status = 'accepted';
-            break;
-          case 2:
+          case 1: 
             status = 'ongoing';
             break;
-          case 3:
+          case 2:
             status = ''; // History tab: load these statuses
             break;
           default:
@@ -110,7 +107,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
       child: Obx(() {
         List<BookingResult> displayList;
         
-        if (tabIndex == 3) {
+        if (tabIndex == 2) {
           // History tab - show completed, rejected, and history bookings
           displayList = controller.bookingReportList.where((booking) {
             final status = (booking.status ?? '').toLowerCase();
@@ -125,7 +122,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             !controller.getBookingReportStatus.value.isLoading) {
           return ListView(
             children: [
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Center(child: Text('No data available'.tr)),
             ],
           );
@@ -133,7 +130,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
 
         return ListView.separated(
           controller: controller.scrollController,
-          padding: EdgeInsets.only(top: 8, bottom: 16),
+          padding: const EdgeInsets.only(top: 8, bottom: 16),
           itemBuilder: (context, index) {
             // Show loading indicator or no more data message at the bottom
             if (index == displayList.length) {

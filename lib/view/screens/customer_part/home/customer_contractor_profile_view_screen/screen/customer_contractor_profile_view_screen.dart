@@ -412,6 +412,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             AppRoutes.customarQaScreen,
                             arguments: {
                               'contractorId': contractorData?.userId.id,
+                              'contractorIdForTimeSlot': contractorData?.userId.contractor,
                               'subcategoryId': subCategoryId,
                               'materials': itemsMaterials,
                               'questions': homeController.contractorQuestions,

@@ -23,13 +23,14 @@ class ApiUrl {
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";
   static const String purchaseSubscriptionPlan = "/payments/create-checkout-subscriptions";
+  static const String withdraw = "/payments/withdraw";
   static const String createCheckoutSession = "/payments/create-checkout-session";
   static const String createMaterial = "/contractors/materials";
   static const String deleteMaterial = "/contractors/materials/"; // id
   static const String updateMaterial = '/contractors/materials';
   static const String createSupport = '/contractors/create_support';
   static const String getNotificationList = '/notifications';
-  static const String getAllBookings = "/bookings";
+  static const String getAllBookings = "/bookings/all-bookings-by-user";
     // static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
@@ -344,5 +345,6 @@ class ApiUrl {
 // upload image
   static const String uploadImage = "/upload";
   static const String getBanners = "/dashboards/banners";
+  static String lookupAvailableSlots = "/bookings/booking-availability";
 }
 
