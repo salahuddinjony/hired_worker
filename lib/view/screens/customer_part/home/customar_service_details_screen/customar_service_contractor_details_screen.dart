@@ -480,6 +480,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 10),
+                        ],
                           // parcentage amount for per transaction fee
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -506,6 +507,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                               })
                             ],
                           ),
+                       if(isUpdateMode) ...[
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -582,13 +584,21 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
-                                    text: '${paymentAmount.toStringAsFixed(2)}',
-                                    style: TextStyle(
-                                      fontSize: 36.w,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.black_09,
-                                    ),
+                                  WidgetSpan(
+                                    alignment: PlaceholderAlignment.baseline,
+                                    baseline: TextBaseline.alphabetic,
+                                    child: Obx(() {
+                                      final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
+                                      final payableAmount = paymentAmount + parcentageAmount;
+                                      return Text(
+                                        '${payableAmount.toStringAsFixed(2)}',
+                                        style: TextStyle(
+                                          fontSize: 36.w,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.black_09,
+                                        ),
+                                      );
+                                    }),
                                   ),
                                 ],
                               ),
@@ -703,7 +713,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 },
                 title:
                     isUpdateMode
-                        ? "Pay & Confirm Booking".tr
+                        ?  "Pay & Update Booking".tr
                         : "Pay & Book Now".tr,
               );
             },
