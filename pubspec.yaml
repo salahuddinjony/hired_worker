@@ -58,8 +58,8 @@ dependencies:
   google_maps_flutter: ^2.12.3
   geolocator: ^14.0.1
   shape_of_view_null_safe: ^3.0.0
-  zego_uikit_prebuilt_call: ^4.16.28
-  zego_uikit_signaling_plugin: ^2.8.15
+  # zego_uikit_prebuilt_call: ^4.16.28
+  # zego_uikit_signaling_plugin: ^2.8.15
   geocoding: ^4.0.0
   jwt_decoder: ^2.0.1
   flutter_easyloading: ^3.0.5
