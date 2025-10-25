@@ -32,14 +32,7 @@ class ProfileController extends GetxController {
     customController.selectedGender.value = data.contractor?.gender ?? '';
   }
 
-  RxInt currentIndex = 0.obs;
   RxInt activityTypeindex = 0.obs;
-  RxList<String> nameList =
-      [
-        AppStrings.receivedText,
-        AppStrings.requestedText,
-        AppStrings.rejectedText,
-      ].obs;
 
   //========= Image Picker GetX Controller Code ===========//
 
