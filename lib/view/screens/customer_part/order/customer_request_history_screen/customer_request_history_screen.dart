@@ -35,7 +35,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
             dividerColor: Colors.grey,
             labelColor: AppColors.black,
             indicatorColor: AppColors.primary,
-            unselectedLabelColor: Color(0xff6F767E),
+            unselectedLabelColor: const Color(0xff6F767E),
             labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
             tabs: [
               Tab(text: 'Pending'.tr),
@@ -74,7 +74,7 @@ class CustomerRequestHistoryScreen extends StatelessWidget {
           SizedBox(height: 80.h),
         ],
       ),
-      bottomNavigationBar: CustomerNavbar(currentIndex: 1),
+      bottomNavigationBar: const CustomerNavbar(currentIndex: 1),
     );
   }
 
