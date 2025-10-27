@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:async';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
@@ -17,6 +18,13 @@ import 'package:servana/view/screens/customer_part/home/slider/model/banners_mod
 class HomeController extends GetxController {
 
   ScrollController scrollCategoryController = ScrollController();
+  int categoryCurrentPage = 1;
+  RxBool categoryHasMoreData = true.obs;
+  RxBool categoryIsPaginating = false.obs;
+
+
+
+
   @override
   void onInit() {
     super.onInit();
@@ -29,15 +37,12 @@ class HomeController extends GetxController {
 
   // PageController for banners and current index observable (used by UI)
   PageController bannerPageController = PageController();
-  int currentPage = 1;
-  RxBool hasMoreData = true.obs;
-  RxBool isPaginating = false.obs;
 
   void _onScroll() {
     if (scrollCategoryController.position.pixels >=
         scrollCategoryController.position.maxScrollExtent - 100 &&
-        !isPaginating.value &&
-        hasMoreData.value) {
+        !categoryIsPaginating.value &&
+        categoryHasMoreData.value) {
       getMoreCategory();
     }
   }
@@ -50,26 +55,50 @@ class HomeController extends GetxController {
   Rx<CustomerCategoryModel> categoryModel = CustomerCategoryModel().obs;
 
 
-  Future<void> getCategory({int page = 1}) async {
+  Future<void> getCategory({int page = 1,  bool isRefresh = false}) async {
     getCategoryStatus.value = RxStatus.loading();
     try {
+      if (isRefresh) {
+        categoryCurrentPage = 1;
+        categoryHasMoreData.value = true;
+        categoryIsPaginating.value = false;
+        categoryModel.value.data?.clear();
+      }
+      if (page == 1) {
+        getCategoryStatus.value = RxStatus.loading();
+      }
       final Map<String, dynamic> queryParameters = {
         'limit': '18',
         'page': page.toString(),
       };
-      final response = await ApiClient.getData(ApiUrl.categories, query: queryParameters); 
-
-      categoryModel.value = CustomerCategoryModel.fromJson(response.body);
-
-      getCategoryStatus.value = RxStatus.success();
-      refresh();
+      final response = await ApiClient.getData(ApiUrl.categories, query: queryParameters);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('category data: ${categoryModel.value}');
-        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        final newFetchedData = CustomerCategoryModel.fromJson(response.body).data ?? [];
+        if (page == 1) {
+          categoryModel.value = CustomerCategoryModel.fromJson(response.body);
+        } else {
+          // Append new data to existing list
+          if (categoryModel.value.data == null) {
+            categoryModel.value.data = newFetchedData;
+          } else {
+            categoryModel.value.data?.addAll(newFetchedData);
+          }
+        }
+        if (newFetchedData.length < 18) {
+          categoryHasMoreData.value = false;
+        } else {
+          categoryHasMoreData.value = true;
+        }
+        categoryCurrentPage = page;
+        getCategoryStatus.value = RxStatus.success();
       } else {
-        showCustomSnackBar(response.body['message'] ?? " ", isError: false);
+        getCategoryStatus.value = RxStatus.error();
+        ApiChecker.checkApi(response);
       }
+      refresh();
+      debugPrint('category data: ${categoryModel.value}');
+      // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
     } catch (e) {
       getCategoryStatus.value = RxStatus.success();
       refresh();
@@ -79,15 +108,24 @@ class HomeController extends GetxController {
 
     // Load more data when scrolling reaches the bottom
   Future<void> getMoreCategory() async {
-    if (!hasMoreData.value || 
-        isPaginating.value || 
+    if (!categoryHasMoreData.value ||
+        categoryIsPaginating.value ||
         getCategoryStatus.value.isLoading) {
       return;
     }
-
-    isPaginating.value = true;
-    await getCategory(page: currentPage + 1);
+    debugPrint('Loading more category data. for page: ${categoryCurrentPage + 1}');
+    categoryIsPaginating.value = true;
+    await getCategory(page: categoryCurrentPage + 1);
   }
+  // Refresh data from the beginning
+  Future<void> refreshCategory() async {
+    await getCategory(
+      page: 1,
+      isRefresh: true,
+    );
+  }
+
+  
 
   //======= get Sub Category =======//
   Rx<RxStatus> getSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
@@ -120,11 +158,20 @@ class HomeController extends GetxController {
   Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SingleSubCategorysModel> singleSubCategoryModel =
       SingleSubCategorysModel().obs;
+    // Pagination for single subcategory
+    ScrollController singleSubCategoryScrollController = ScrollController();
+    int singleSubCategoryCurrentPage = 1;
+    RxBool singleSubCategoryHasMoreData = true.obs;
+    RxBool singleSubCategoryIsPaginating = false.obs;
   Future<void> getSingleSubCategory({required String categoryId}) async {
     getSingleSubCategoryStatus.value = RxStatus.loading();
+    singleSubCategoryCurrentPage = 1;
+    singleSubCategoryHasMoreData.value = true;
+    singleSubCategoryIsPaginating.value = false;
     try {
       final response = await ApiClient.getData(
         ApiUrl.singleSubCategory(categoryId: categoryId),
+        query: {'page': singleSubCategoryCurrentPage.toString(), 'limit': '18'},
       );
 
       singleSubCategoryModel.value = SingleSubCategorysModel.fromJson(
@@ -135,8 +182,13 @@ class HomeController extends GetxController {
       refresh();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final newFetchedData = SingleSubCategorysModel.fromJson(response.body).data ?? [];
+        if (newFetchedData.length < 18) {
+          singleSubCategoryHasMoreData.value = false;
+        } else {
+          singleSubCategoryHasMoreData.value = true;
+        }
         debugPrint('category data: ${singleSubCategoryModel.value}');
-        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -144,6 +196,39 @@ class HomeController extends GetxController {
       getSingleSubCategoryStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
+
+  Future<void> getMoreSingleSubCategory({required String categoryId}) async {
+    if (!singleSubCategoryHasMoreData.value ||
+        singleSubCategoryIsPaginating.value ||
+        getSingleSubCategoryStatus.value.isLoading) {
+      return;
+    }
+    singleSubCategoryIsPaginating.value = true;
+    final nextPage = singleSubCategoryCurrentPage + 1;
+    try {
+      final response = await ApiClient.getData(
+        ApiUrl.singleSubCategory(categoryId: categoryId),
+        query: {'page': nextPage.toString(), 'limit': '18'},
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final newFetchedData = SingleSubCategorysModel.fromJson(response.body).data ?? [];
+        if (newFetchedData.isNotEmpty) {
+          singleSubCategoryModel.value.data?.addAll(newFetchedData);
+          singleSubCategoryCurrentPage = nextPage;
+        }
+        if (newFetchedData.length < 18) {
+          singleSubCategoryHasMoreData.value = false;
+        }
+      } else {
+        singleSubCategoryHasMoreData.value = false;
+      }
+    } catch (e) {
+      singleSubCategoryHasMoreData.value = false;
+    } finally {
+      singleSubCategoryIsPaginating.value = false;
+      refresh();
     }
   }
 
