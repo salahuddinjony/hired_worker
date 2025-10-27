@@ -39,6 +39,7 @@ class BookingModelData {
   String? id;
   Customer? customerId;
   ContractorWrapper? contractorId;
+  String? location;
   SubCategory? subCategoryId;
   int? bookingId;
   String? bookingType;
@@ -63,6 +64,7 @@ class BookingModelData {
     this.id,
     this.customerId,
     this.contractorId,
+    this.location,
     this.subCategoryId,
     this.bookingId,
     this.bookingType,
@@ -105,6 +107,7 @@ class BookingModelData {
       subCategoryId: json["subCategoryId"] == null
           ? null
           : SubCategory.fromJson(json["subCategoryId"]),
+      location: json['location'],
       bookingId: json["bookingId"],
       bookingType: json["bookingType"],
       bookingDate: json["bookingDate"] == null

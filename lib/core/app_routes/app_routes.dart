@@ -4,6 +4,7 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
+import 'package:servana/view/screens/contractor_part/home/on_going_screen/ongoing_order_details_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
@@ -87,6 +88,7 @@ class AppRoutes {
   static const String orderScreen = "/OrderScreen";
   static const String orderDetailsScreen1 = "/OrderDetailsScreen1";
   static const String orderDetailsScreen2 = "/OrderDetailsScreen2";
+  static const String ongoingDetailsScreen = "/OngoingDetailsScreen";
   static const String messageListScreen = "/MessageListScreen";
   static const String chatScreen = "/ChatScreen";
   static const String profileScreen = "/ProfileScreen";
@@ -159,6 +161,7 @@ class AppRoutes {
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: orderDetailsScreen1, page: () => OrderDetailsScreen1()),
     GetPage(name: orderDetailsScreen2, page: () => OrderDetailsScreen2()),
+    GetPage(name: ongoingDetailsScreen, page: () => OngoingOrderDetailsScreen()),
     // GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),

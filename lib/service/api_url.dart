@@ -18,7 +18,7 @@ class ApiUrl {
   static const String veryfiOTPresend = "/otps/generate-otp";
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
-  static const String categories = "/categories/";
+  static const String categories = "/categories";
   static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";

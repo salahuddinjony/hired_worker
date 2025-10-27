@@ -24,16 +24,12 @@ class ThanksScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(),
-              const SizedBox(),
-              const SizedBox(),
-      
               Column(
                 children: [
                   Text(
-                    'Thanks of Subscriptions!',
+                    'Thanks For Your Subscription!',
                     style: TextStyle(
-                      fontSize: 20.sp,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
                     ),
@@ -44,17 +40,20 @@ class ThanksScreen extends StatelessWidget {
                   const SizedBox(height: 12),
       
                   const Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.center,
                     child: Text(
-                      "You have successfully signed up for business user.",
+                      textAlign: TextAlign.center,
+                      "You have successfully signed up as a business user.",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
-      
+
+                  const SizedBox(height: 12),
+
                   const Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.center,
                     child: Text(
-                      "Let's setup your business now.",
+                      "Please sign in to get started!",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),

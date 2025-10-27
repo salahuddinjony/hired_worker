@@ -37,7 +37,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -63,8 +63,8 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                 );
               } else if (controller.status.value.isEmpty) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: 50.0),
-                  child: Center(child: Text('No categories found')),
+                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                  child: Center(child: Text('No tasks found')),
                 );
               } else if (controller.status.value.isError) {
                 return Center(
@@ -170,7 +170,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                             selectedSubCategoryId,
                           );
                         } else {
-                          Get.snackbar("Error", "Please select a category");
+                          Get.snackbar("Error", "Please select at least one task to continue.");
                         }
                       },
                       title: "Continue".tr,

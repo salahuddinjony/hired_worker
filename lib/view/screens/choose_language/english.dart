@@ -88,7 +88,7 @@ Map<String, String> english = {
   "Total Earning this month": "Total Earnings",
   "Total Service": "Total Services",
   "Upcoming Services": "Upcoming Services",
-  "Schedule": "Schedule",
+  "Schedule": "Availability",
   "Available": "Available",
   "Hello, how can we assist you?": "Hello, how can we assist you?",
   "Service Details": "Service Details",

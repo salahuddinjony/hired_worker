@@ -43,7 +43,7 @@ class CustomNetworkImage extends StatelessWidget {
           borderRadius: borderRadius,
           shape: boxShape,
         ),
-        child: child ?? const Icon(Icons.person, color: Colors.white),
+        child: Center(child: child ?? const Icon(Icons.person, color: Colors.white)),
       );
     }
     

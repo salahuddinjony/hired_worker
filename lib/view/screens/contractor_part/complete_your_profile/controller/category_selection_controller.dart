@@ -28,7 +28,7 @@ class CategorySelectionController extends GetxController {
     status.value = RxStatus.loading();
 
     try {
-      final response = await ApiClient.getData(ApiUrl.categories);
+      final response = await ApiClient.getData(ApiUrl.categories + '?page=1&limit=1000');
 
       categoryModel.value = CategoryModel.fromJson(response.body);
 
@@ -45,7 +45,6 @@ class CategorySelectionController extends GetxController {
 
   Future<void> updateContractorData(String? categoryId) async {
     if (categoryId == null) {
-      showCustomSnackBar("Please select at least one day to continue.");
       return;
     }
 

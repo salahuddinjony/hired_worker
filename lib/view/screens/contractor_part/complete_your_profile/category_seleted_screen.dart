@@ -164,7 +164,7 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                         if (selectedCategoryId != null) {
                           controller.updateContractorData(selectedCategoryId);
                         } else {
-                          Get.snackbar("Error", "Please select a category");
+                          Get.snackbar("Error", "Please select at least one service to continue.");
                         }
                       },
                       title: "Continue".tr,

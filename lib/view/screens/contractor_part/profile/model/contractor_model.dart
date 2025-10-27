@@ -1,13 +1,3 @@
-// To parse this JSON data, do
-//
-//     final contractorModel = contractorModelFromJson(jsonString);
-
-import 'dart:convert';
-
-ContractorModel contractorModelFromJson(String str) => ContractorModel.fromJson(json.decode(str));
-
-String contractorModelToJson(ContractorModel data) => json.encode(data.toJson());
-
 class ContractorModel {
     bool? success;
     String? message;
@@ -43,6 +33,7 @@ class Data {
     String? status;
     Contractor? contractor;
     bool? isDeleted;
+    num? profileCompletion;
     DateTime? passwordChangedAt;
     DateTime? createdAt;
     DateTime? updatedAt;
@@ -59,6 +50,7 @@ class Data {
         this.status,
         this.contractor,
         this.isDeleted,
+        this.profileCompletion,
         this.passwordChangedAt,
         this.createdAt,
         this.updatedAt,
@@ -76,6 +68,7 @@ class Data {
         status: json["status"],
         contractor: json["contractor"] == null ? null : Contractor.fromJson(json["contractor"]),
         isDeleted: json["isDeleted"],
+        profileCompletion: json['profileCompletion'],
         passwordChangedAt: json["passwordChangedAt"] == null ? null : DateTime.parse(json["passwordChangedAt"]),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
