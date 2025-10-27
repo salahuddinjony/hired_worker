@@ -28,7 +28,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         NavigationDelegate(
           onPageStarted: (String url) async {
             if (url.contains('success')) {
-              await SharePrefsHelper.setBool(AppStrings.isProfileComplete, true);
               Navigator.pop(context);
               _showSuccessDialog();
             }

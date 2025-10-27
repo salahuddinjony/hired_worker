@@ -14,6 +14,10 @@ class CustomServiceCard extends StatelessWidget {
   final String hourlyRate;
   final String rating;
   final String? image;
+  final String? location;
+  final String? customerImage;
+  final String? customerName;
+  final String? subcategoryName;
 
   const CustomServiceCard({
     super.key,
@@ -22,7 +26,7 @@ class CustomServiceCard extends StatelessWidget {
     required this.hourlyRate,
     required this.rating,
     required this.status,
-    required this.image,
+    required this.image, this.location, this.customerImage, this.customerName, this.subcategoryName,
   });
 
   @override
@@ -95,23 +99,77 @@ class CustomServiceCard extends StatelessWidget {
                       bottom: 3.h,
                     ),
 
-                    const SizedBox(height: 4.0),
+                    const SizedBox(height: 6.0),
+                    Row(
+                      children: [
+                        CustomNetworkImage(
+                          imageUrl: customerImage ?? "",
+                          height: 20,
+                          width: 20,
+                          boxShape: BoxShape.circle,
+                        ),
+                        CustomText(
+                          left: 8,
+                          text:  customerName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 6.0),
+
+                    Row(
+                      children: [
+                        const Icon(Icons.home_repair_service, size: 20),
+                        CustomText(
+                          left: 8,
+                          text: subcategoryName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6.0),
+
 
                     CustomText(
                       text: "\$ $hourlyRate/hour",
-                      fontSize: 12.w,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black_04,
                       bottom: 3.h,
                     ),
+                    // Row(
+                    //   children: [
+                    //     const CustomImage(imageSrc: AppIcons.filled),
+                    //     CustomText(
+                    //       text: rating,
+                    //       fontSize: 12.w,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: AppColors.black,
+                    //     ),
+                    //   ],
+                    // ),
+
+
+                    SizedBox(height: 6.h),
+
                     Row(
                       children: [
-                        const CustomImage(imageSrc: AppIcons.filled),
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 14,
+                          color: AppColors.black_04,
+                        ),
+                        SizedBox(width: 4.w),
                         CustomText(
-                          text: rating,
+                          text: location ?? " - ",
                           fontSize: 12.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_04,
                         ),
                       ],
                     ),

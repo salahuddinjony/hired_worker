@@ -81,6 +81,11 @@ class _OrderScreenState extends State<OrderScreen> {
                               image: data.contractorId?.img,
                               status: data.status,
                               index: index,
+                              location: data.location,
+                              hourlyRate: data.totalAmount,
+                              customerName: data.customerId?.fullName,
+                              customerImage: data.customerId?.img,
+                              subcategoryName: data.subCategoryId?.name,
                             );
                           } else {
                             return const Padding(
@@ -114,6 +119,10 @@ class _OrderScreenState extends State<OrderScreen> {
                             price: data.totalAmount.toString(),
                             image: data.contractorId?.img,
                             index: index,
+                            location: data.location,
+                            customerName: data.customerId?.fullName,
+                            customerImage: data.customerId?.img,
+                            subcategoryName: data.subCategoryId?.name,
                           );
                         } else {
                           return const Padding(

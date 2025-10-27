@@ -31,7 +31,7 @@ class SubCategorySelectionController extends GetxController {
     status.value = RxStatus.loading();
 
     try {
-      final response = await ApiClient.getData(ApiUrl.singleSubCategories + id);
+      final response = await ApiClient.getData(ApiUrl.singleSubCategories + id + '?page=1&limit=1000');
 
       subCategoryModel.value = SubCategoryModel.fromJson(response.body);
 
@@ -48,7 +48,6 @@ class SubCategorySelectionController extends GetxController {
 
   Future<void> updateContractorData(String? subCategoryId) async {
     if (subCategoryId == null) {
-      showCustomSnackBar("Please select at least one day to continue.");
       return;
     }
 

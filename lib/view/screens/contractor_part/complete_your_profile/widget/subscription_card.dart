@@ -13,6 +13,7 @@ class SubscriptionCard extends StatelessWidget {
   final String duration;
   final List<String> features;
   final VoidCallback onSubscribe;
+  final bool isFree;
 
   const SubscriptionCard({
     super.key,
@@ -21,6 +22,7 @@ class SubscriptionCard extends StatelessWidget {
     required this.duration,
     required this.features,
     required this.onSubscribe,
+    this.isFree = false,
   });
 
   @override
@@ -32,6 +34,7 @@ class SubscriptionCard extends StatelessWidget {
         children: [
           // Main container
           Container(
+            padding: const EdgeInsetsGeometry.all(10),
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -46,17 +49,21 @@ class SubscriptionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 250.h),
+                SizedBox(height: 220.h),
                 Column(
-                  spacing: 10.h,
+                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children:
                       features
                           .asMap()
                           .entries
                           .map(
                             (entry) => CustomText(
-                              text: "${entry.key + 1}. ${entry.value}",
+                              textAlign: TextAlign.left,
+                              maxLines: 10,
+                              text: "${entry.key + 1}. ${entry.value}".trim(),
                               fontSize: 20.w,
                               fontWeight: FontWeight.w500,
                               color: AppColors.white,
@@ -66,8 +73,8 @@ class SubscriptionCard extends StatelessWidget {
                 ),
                 SizedBox(height: 30.h),
                 Padding(
-                  padding: EdgeInsets.all(20.w),
-                  child: CustomButton(onTap: onSubscribe, title: "Subscribe".tr),
+                  padding: EdgeInsets.all(20.sp),
+                  child: CustomButton(onTap: onSubscribe, title: isFree ? "Free" : "Subscribe".tr),
                 ),
               ],
             ),
@@ -89,14 +96,14 @@ class SubscriptionCard extends StatelessWidget {
                     child: Column(
                       children: [
                         CustomText(
-                          text: price,
-                          fontSize: 16.w,
+                          text: '\$$price',
+                          fontSize: 22.sp,
                           color: AppColors.black,
                           fontWeight: FontWeight.w700,
                         ),
                         CustomText(
                           text: duration,
-                          fontSize: 15.w,
+                          fontSize: 23.sp,
                           color: AppColors.black,
                           fontWeight: FontWeight.w700,
                         ),
@@ -129,7 +136,7 @@ class SubscriptionCard extends StatelessWidget {
               ),
               child: CustomText(
                 text: planName,
-                fontSize: 17.w,
+                fontSize: 28.sp,
                 color: AppColors.white,
                 fontWeight: FontWeight.w700,
               ),

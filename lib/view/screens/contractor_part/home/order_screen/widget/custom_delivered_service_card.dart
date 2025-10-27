@@ -21,17 +21,21 @@ class CustomDeliveredServiceCard extends StatelessWidget {
   final bool isButtonShow;
   final double height;
   final int? index;
+  final String? location;
+  final String? customerImage;
+  final String? customerName;
+  final String? subcategoryName;
 
   const CustomDeliveredServiceCard({
     super.key,
     required this.title,
     required this.rating,
     required this.dateTime,
-    required this.price,
     required this.image,
     this.isButtonShow = true,
-    this.height = 130,
+    this.height = 200,
     this.index,
+    this.location, this.customerImage, this.customerName, this.subcategoryName, required this.price,
   });
 
   @override
@@ -88,20 +92,54 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         // ),
                       ],
                     ),
+                    // SizedBox(height: 4.h),
+                    // Row(
+                    //   children: [
+                    //     const CustomImage(imageSrc: AppIcons.filled),
+                    //     SizedBox(width: 4.w),
+                    //     CustomText(
+                    //       text: rating,
+                    //       fontSize: 12.w,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: AppColors.black,
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(height: 4.h),
                     Row(
                       children: [
-                        const CustomImage(imageSrc: AppIcons.filled),
-                        SizedBox(width: 4.w),
+                        CustomNetworkImage(
+                          imageUrl: customerImage ?? "",
+                          height: 20,
+                          width: 20,
+                          boxShape: BoxShape.circle,
+                        ),
                         CustomText(
-                          text: rating,
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w500,
+                          left: 8,
+                          text:  customerName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
                           color: AppColors.black,
                         ),
                       ],
                     ),
+
                     SizedBox(height: 4.h),
+
+                    Row(
+                      children: [
+                        const Icon(Icons.home_repair_service, size: 20),
+                        CustomText(
+                          left: 8,
+                          text: subcategoryName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 6.h),
+
                     Row(
                       children: [
                         const Icon(
@@ -118,6 +156,36 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                    SizedBox(height: 6.h),
+
+                    CustomText(
+                      text: "\$ ${price ?? " - "}/hour",
+                      fontSize: 12.5.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black_04,
+                      bottom: 3.h,
+                    ),
+
+                    SizedBox(height: 4.h),
+
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 14,
+                          color: AppColors.black_04,
+                        ),
+                        SizedBox(width: 4.w),
+                        CustomText(
+                          text: location ?? " - ",
+                          fontSize: 12.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_04,
+                        ),
+                      ],
+                    ),
+
                     const Spacer(),
                     if (isButtonShow) Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

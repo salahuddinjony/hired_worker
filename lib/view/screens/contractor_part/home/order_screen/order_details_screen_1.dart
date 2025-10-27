@@ -45,8 +45,13 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
               id: data.id!,
               image: data.contractorId?.img,
               status: '',
+              location: data.location,
               isButtonShow: false,
-              height: 100,
+              height: 180,
+              hourlyRate: data.totalAmount,
+              customerName: data.customerId?.fullName,
+              customerImage: data.customerId?.img,
+              subcategoryName: data.subCategoryId?.name,
             ),
 
             const SizedBox(height: 16.0),
@@ -98,7 +103,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('• ${e.name} - ${e.count} ${e.unit}'),
-                                Text('AUD ${e.price}'),
+                                Text('\$${e.price}'),
                               ],
                             );
                           }).toList(),
