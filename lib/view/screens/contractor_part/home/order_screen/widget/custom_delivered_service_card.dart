@@ -35,7 +35,11 @@ class CustomDeliveredServiceCard extends StatelessWidget {
     this.isButtonShow = true,
     this.height = 200,
     this.index,
-    this.location, this.customerImage, this.customerName, this.subcategoryName, required this.price,
+    this.location,
+    this.customerImage,
+    this.customerName,
+    this.subcategoryName,
+    required this.price,
   });
 
   @override
@@ -43,9 +47,12 @@ class CustomDeliveredServiceCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0, right: 16, left: 16),
       child: Container(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: image != null && image!.isNotEmpty ? 0 : 15.w),
+        padding: EdgeInsetsGeometry.symmetric(
+          horizontal: image != null && image!.isNotEmpty ? 0 : 15.w,
+        ),
         width: MediaQuery.sizeOf(context).width,
-        height: height.h, // Increased height slightly
+        height: height.h,
+        // Increased height slightly
         decoration: BoxDecoration(
           color: AppColors.cardClr,
           borderRadius: BorderRadius.circular(13),
@@ -53,20 +60,24 @@ class CustomDeliveredServiceCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (image != null && image!.isNotEmpty) ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(13),
-                bottomLeft: Radius.circular(13),
+            if (image != null && image!.isNotEmpty)
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  bottomLeft: Radius.circular(13),
+                ),
+                child: CustomNetworkImage(
+                  imageUrl: image ?? "",
+                  height: 130.h,
+                  width: 150.w,
+                ),
               ),
-              child: CustomNetworkImage(
-                imageUrl: image ?? "",
-                height: 130.h,
-                width: 150.w,
-              ),
-            ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -116,7 +127,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                         ),
                         CustomText(
                           left: 8,
-                          text:  customerName ?? " - ",
+                          text: customerName ?? " - ",
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black,
@@ -187,45 +198,46 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                     ),
 
                     const Spacer(),
-                    if (isButtonShow) Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomButton(
-                          onTap: () {},
-                          title: "Completed".tr,
-                          height: 26.h,
-                          width: 55.w,
-                          fillColor: AppColors.cardClr,
-                          textColor: AppColors.green,
-                          fontSize: 10.w,
-                          borderRadius: 10,
-                        ),
-                        CustomButton(
-                          onTap: () {},
-                          title: "AUD $price",
-                          height: 26.h,
-                          width: 50.w,
-                          fontSize: 10.w,
-                          fillColor: Colors.transparent,
-                          textColor: AppColors.red,
-                        ),
-                        CustomButton(
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.orderDetailsScreen2,
-                              arguments: {'index': index},
-                            );
-                          },
-                          title: "View".tr,
-                          height: 26.h,
-                          width: 50.w,
-                          fontSize: 10.w,
-                          fillColor: AppColors.cardClr,
-                          textColor: AppColors.black,
-                          borderRadius: 10,
-                        ),
-                      ],
-                    ),
+                    if (isButtonShow)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomButton(
+                            onTap: () {},
+                            title: "Completed".tr,
+                            height: 26.h,
+                            width: 55.w,
+                            fillColor: AppColors.cardClr,
+                            textColor: AppColors.green,
+                            fontSize: 10.w,
+                            borderRadius: 10,
+                          ),
+                          CustomButton(
+                            onTap: () {},
+                            title: "\$ $price",
+                            height: 26.h,
+                            width: 50.w,
+                            fontSize: 10.w,
+                            fillColor: Colors.transparent,
+                            textColor: AppColors.red,
+                          ),
+                          CustomButton(
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.orderDetailsScreen2,
+                                arguments: {'index': index},
+                              );
+                            },
+                            title: "View".tr,
+                            height: 26.h,
+                            width: 50.w,
+                            fontSize: 10.w,
+                            fillColor: AppColors.cardClr,
+                            textColor: AppColors.black,
+                            borderRadius: 10,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
