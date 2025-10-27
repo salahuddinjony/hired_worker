@@ -487,7 +487,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             children: [
                              Obx(() {
                                 return CustomText(
-                                  text: 'App Fee (${controller.parcentage.value.toStringAsFixed(0)}% of AUD  ${paymentAmount.toStringAsFixed(0)}):',
+                                  text: 'Booking Fee (${controller.parcentage.value.toStringAsFixed(0)}% of AUD  ${paymentAmount.toStringAsFixed(0)}):',
                                   fontSize: 15.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black_08,

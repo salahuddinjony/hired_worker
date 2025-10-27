@@ -47,6 +47,7 @@ class Data {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? v;
+    String? adminAccept;
 
     Data({
         this.id,
@@ -63,6 +64,7 @@ class Data {
         this.createdAt,
         this.updatedAt,
         this.v,
+        this.adminAccept,
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -80,6 +82,7 @@ class Data {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+        adminAccept: json["adminAccept"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -97,6 +100,7 @@ class Data {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
+        "adminAccept": adminAccept,
     };
 }
 
@@ -161,6 +165,8 @@ class Location {
     String? type;
     List<double>? coordinates;
     String? address;
+    String? street;
+    String? unit;
     String? name;
     bool? isSelect;
     String? id;
@@ -169,6 +175,8 @@ class Location {
         this.type,
         this.coordinates,
         this.address,
+        this.street,
+        this.unit,
         this.name,
         this.isSelect,
         this.id,
@@ -180,6 +188,8 @@ class Location {
                 ? null
                 : List<double>.from((json["coordinates"] as List).map((x) => x.toDouble())),
         address: json["address"],
+        street: json["street"],
+        unit: json["unit"],
         name: json["name"],
         isSelect: json["isSelect"],
         id: json["_id"],
@@ -189,6 +199,8 @@ class Location {
         "type": type,
         "coordinates": coordinates,
         "address": address,
+        "street": street,
+        "unit": unit,
         "name": name,
         "isSelect": isSelect,
         "_id": id,
