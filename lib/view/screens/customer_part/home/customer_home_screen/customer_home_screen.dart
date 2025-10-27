@@ -637,30 +637,32 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                  SizedBox(
-                    height: 120.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(right: 10.h),
-                      itemCount: categorys.length,
-                      separatorBuilder: (context, index) => SizedBox(width: 8.w),
-                      itemBuilder: (BuildContext context, int index) {
-                        return CustomPopularServicesCard(
-                          image: categorys[index].img ?? AppConstants.electrician,
-                          name: categorys[index].name,
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.customerParSubCategoryItem,
-                              arguments: {
-                                'name': categorys[index].name,
-                                'id': categorys[index].id,
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+      homeController.getCategoryStatus.value.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SizedBox(
+              height: 120.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(right: 10.h),
+                itemCount: categorys.length,
+                separatorBuilder: (context, index) => SizedBox(width: 8.w),
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomPopularServicesCard(
+                    image: categorys[index].img ?? AppConstants.electrician,
+                    name: categorys[index].name,
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.customerParSubCategoryItem,
+                        arguments: {
+                          'name': categorys[index].name,
+                          'id': categorys[index].id,
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
 
                 // Sub Category Section
                 Row(
