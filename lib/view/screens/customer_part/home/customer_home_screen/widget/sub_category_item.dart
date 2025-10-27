@@ -10,8 +10,10 @@ import 'package:servana/view/screens/customer_part/home/customer_home_screen/wid
 // Alias to avoid Datum name conflict
 import 'package:servana/view/screens/customer_part/home/model/sub_category_model.dart' as sub;
 
+
 class SubCategoryPreviewSection extends StatelessWidget {
-  const SubCategoryPreviewSection({super.key});
+  final Axis scrollDirection;
+  const SubCategoryPreviewSection({super.key, this.scrollDirection = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class SubCategoryPreviewSection extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h), // tighter padding
         children: groupedData.entries.take(2).map((entry) {
           return Padding(
-            padding: EdgeInsets.only(bottom: 10.h), // reduce space between sections
+            padding: EdgeInsets.only(bottom: 10.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,14 +49,13 @@ class SubCategoryPreviewSection extends StatelessWidget {
                   fontSize: 16.w,
                   fontWeight: FontWeight.w600,
                   color: AppColors.black_08,
-                  bottom: 6.h, // less space under title
+                  bottom: 6.h,
                 ),
                 SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: scrollDirection,
                   child: Row(
                     children: entry.value
-                        .take(3)
-                        .map((item) {
+                        .map<Widget>((item) {
                       return Padding(
                         padding: EdgeInsets.only(right: 10.w),
                         child: CustomPopularServicesCard(

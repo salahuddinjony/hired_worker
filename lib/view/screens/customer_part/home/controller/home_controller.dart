@@ -15,6 +15,8 @@ import 'package:servana/view/screens/customer_part/home/model/sub_category_model
 import 'package:servana/view/screens/customer_part/home/slider/model/banners_model.dart';
 
 class HomeController extends GetxController {
+
+  ScrollController scrollCategoryController = ScrollController();
   @override
   void onInit() {
     super.onInit();
@@ -22,10 +24,24 @@ class HomeController extends GetxController {
     getSubCategory();
     getAllContactor();
     getBanners();
+    scrollCategoryController.addListener(_onScroll);
   }
 
   // PageController for banners and current index observable (used by UI)
   PageController bannerPageController = PageController();
+  int currentPage = 1;
+  RxBool hasMoreData = true.obs;
+  RxBool isPaginating = false.obs;
+
+  void _onScroll() {
+    if (scrollCategoryController.position.pixels >=
+        scrollCategoryController.position.maxScrollExtent - 100 &&
+        !isPaginating.value &&
+        hasMoreData.value) {
+      getMoreCategory();
+    }
+  }
+
   RxInt currentBannerIndex = 0.obs;
   Timer? bannerTimer;
 
@@ -33,10 +49,15 @@ class HomeController extends GetxController {
   Rx<RxStatus> getCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<CustomerCategoryModel> categoryModel = CustomerCategoryModel().obs;
 
-  Future<void> getCategory() async {
+
+  Future<void> getCategory({int page = 1}) async {
     getCategoryStatus.value = RxStatus.loading();
     try {
-      final response = await ApiClient.getData(ApiUrl.categories);
+      final Map<String, dynamic> queryParameters = {
+        'limit': '18',
+        'page': page.toString(),
+      };
+      final response = await ApiClient.getData(ApiUrl.categories, query: queryParameters); 
 
       categoryModel.value = CustomerCategoryModel.fromJson(response.body);
 
@@ -54,6 +75,18 @@ class HomeController extends GetxController {
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     }
+  }
+
+    // Load more data when scrolling reaches the bottom
+  Future<void> getMoreCategory() async {
+    if (!hasMoreData.value || 
+        isPaginating.value || 
+        getCategoryStatus.value.isLoading) {
+      return;
+    }
+
+    isPaginating.value = true;
+    await getCategory(page: currentPage + 1);
   }
 
   //======= get Sub Category =======//
