@@ -31,6 +31,19 @@ class CustomerCategoryScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
+          // Calculate how many empty cells are needed to center the loading indicator
+          int crossAxisCount = 3;
+          int remainder = categorys.length % crossAxisCount;
+          int extraCells = 0;
+          if (homeController.categoryHasMoreData.value) {
+            if (remainder == 1) {
+              extraCells = 2; // 1 item + 2 empty cells
+            } else if (remainder == 2) {
+              extraCells = 1; // 2 items + 1 empty cell
+            } else if (remainder == 0) {
+              extraCells = 3; // new row for loading indicator
+            }
+          }
           return GridView.builder(
             controller: homeController.scrollCategoryController,
             padding: EdgeInsets.only(right: 10.h, left: 20.h),
@@ -41,10 +54,26 @@ class CustomerCategoryScreen extends StatelessWidget {
               mainAxisSpacing: 8,
             ),
             physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: categorys.length + (homeController.categoryHasMoreData.value ? 1 : 0),
+            itemCount: categorys.length + (homeController.categoryHasMoreData.value ? extraCells : 0),
             itemBuilder: (BuildContext context, int index) {
-              if (index >= categorys.length) {
-                // Show loading indicator at the end of the list
+              if (index < categorys.length) {
+                return CustomPopularServicesCard(
+                  image: categorys[index].img,
+                  name: categorys[index].name,
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.customerParSubCategoryItem,
+                      arguments: {
+                        'name': categorys[index].name,
+                        'id': categorys[index].id,
+                      },
+                    );
+                  },
+                );
+              }
+              // Add empty cells before the loading indicator to center it
+              final int loadingIndicatorIndex = categorys.length + (extraCells ~/ 2);
+              if (index == loadingIndicatorIndex) {
                 return const Center(
                   child: SizedBox(
                     width: 20,
@@ -52,20 +81,9 @@ class CustomerCategoryScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 );
+              } else {
+                return const SizedBox();
               }
-              return CustomPopularServicesCard(
-                image: categorys[index].img,
-                name: categorys[index].name,
-                onTap: () {
-                  Get.toNamed(
-                    AppRoutes.customerParSubCategoryItem,
-                    arguments: {
-                      'name': categorys[index].name,
-                      'id': categorys[index].id,
-                    },
-                  );
-                },
-              );
             },
           );
         }),

@@ -21,16 +21,32 @@ class HomeController extends GetxController {
       scrollCategoryController.dispose();
     } catch (_) {}
     scrollCategoryController = ScrollController();
-    scrollCategoryController.addListener(_onScroll);
+    scrollCategoryController.addListener(() {
+      _onScroll(
+        getMoreData: getMoreCategory,
+        hasMoreData: categoryHasMoreData.value,
+        isPaginating: categoryIsPaginating.value,
+        scrollController: scrollCategoryController,
+      );
+    });
   }
 
+  // PageController for banners and current index observable (used by UI)
+  PageController bannerPageController = PageController();
+
+  // Pagination for category
   ScrollController scrollCategoryController = ScrollController();
   int categoryCurrentPage = 1;
   RxBool categoryHasMoreData = true.obs;
   RxBool categoryIsPaginating = false.obs;
 
+  // Pagination for sub-category
+  ScrollController scrollSubCategoryController = ScrollController();
+  // (Removed duplicate declarations)
 
-
+  // Pagination for single subcategory
+  ScrollController singleSubCategoryScrollController = ScrollController();
+  // (Removed duplicate declarations)
 
   @override
   void onInit() {
@@ -39,18 +55,49 @@ class HomeController extends GetxController {
     getSubCategory();
     getAllContactor();
     getBanners();
-    scrollCategoryController.addListener(_onScroll);
+
+    // Add scroll listener for category pagination
+    scrollCategoryController.addListener(() {
+      _onScroll(
+        getMoreData: getMoreCategory,
+        hasMoreData: categoryHasMoreData.value,
+        isPaginating: categoryIsPaginating.value,
+        scrollController: scrollCategoryController,
+      );
+    });
+
+    //  Add scroll listener for sub-category pagination
+    scrollSubCategoryController.addListener(() {
+      _onScroll(
+        getMoreData: getMoreSubCategory,
+        hasMoreData: subCategoryHasMoreData.value,
+        isPaginating: subCategoryIsPaginating.value,
+        scrollController: scrollSubCategoryController,
+      );
+    });
+
+    // Add scroll listener for single sub-category pagination
+    singleSubCategoryScrollController.addListener(() {
+      _onScroll(
+        getMoreData: getMoreSingleSubCategory,
+        hasMoreData: singleSubCategoryHasMoreData.value,
+        isPaginating: singleSubCategoryIsPaginating.value,
+        scrollController: singleSubCategoryScrollController,
+      );
+    });
   }
 
-  // PageController for banners and current index observable (used by UI)
-  PageController bannerPageController = PageController();
-
-  void _onScroll() {
-    if (scrollCategoryController.position.pixels >=
-        scrollCategoryController.position.maxScrollExtent - 100 &&
-        !categoryIsPaginating.value &&
-        categoryHasMoreData.value) {
-      getMoreCategory();
+  void _onScroll({
+    required ScrollController scrollController,
+    required isPaginating,
+    required bool hasMoreData,
+    required Function getMoreData,
+  }) {
+    if (scrollController.position.pixels >=
+            scrollController.position.maxScrollExtent - 100 &&
+        !isPaginating &&
+        hasMoreData) {
+      getMoreData();
     }
   }
 
@@ -61,8 +108,7 @@ class HomeController extends GetxController {
   Rx<RxStatus> getCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<CustomerCategoryModel> categoryModel = CustomerCategoryModel().obs;
 
-
-  Future<void> getCategory({int page = 1,  bool isRefresh = false}) async {
+  Future<void> getCategory({int page = 1, bool isRefresh = false}) async {
     getCategoryStatus.value = RxStatus.loading();
     try {
       if (isRefresh) {
@@ -78,10 +124,14 @@ class HomeController extends GetxController {
         'limit': '18',
         'page': page.toString(),
       };
-      final response = await ApiClient.getData(ApiUrl.categories, query: queryParameters);
+      final response = await ApiClient.getData(
+        ApiUrl.categories,
+        query: queryParameters,
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final newFetchedData = CustomerCategoryModel.fromJson(response.body).data ?? [];
+        final newFetchedData =
+            CustomerCategoryModel.fromJson(response.body).data ?? [];
         if (page == 1) {
           categoryModel.value = CustomerCategoryModel.fromJson(response.body);
         } else {
@@ -113,44 +163,71 @@ class HomeController extends GetxController {
     }
   }
 
-    // Load more data when scrolling reaches the bottom
+  // Load more data when scrolling reaches the bottom
   Future<void> getMoreCategory() async {
     if (!categoryHasMoreData.value ||
         categoryIsPaginating.value ||
         getCategoryStatus.value.isLoading) {
       return;
     }
-    debugPrint('Loading more category data. for page: ${categoryCurrentPage + 1}');
+    debugPrint(
+      'Loading more category data. for page: ${categoryCurrentPage + 1}',
+    );
     categoryIsPaginating.value = true;
     await getCategory(page: categoryCurrentPage + 1);
   }
+
   // Refresh data from the beginning
   Future<void> refreshCategory() async {
-    await getCategory(
-      page: 1,
-      isRefresh: true,
-    );
+    await getCategory(page: 1, isRefresh: true);
   }
-
-  
 
   //======= get Sub Category =======//
   Rx<RxStatus> getSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SubCategorysModel> subCategoryModel = SubCategorysModel().obs;
+  int subCategoryCurrentPage = 1;
+  RxBool subCategoryHasMoreData = true.obs;
+  RxBool subCategoryIsPaginating = false.obs;
 
-  Future<void> getSubCategory() async {
+  Future<void> getSubCategory({int page = 1, bool isRefresh = false}) async {
     getSubCategoryStatus.value = RxStatus.loading();
     try {
-      final response = await ApiClient.getData(ApiUrl.subCategories);
+      if (isRefresh) {
+        subCategoryCurrentPage = 1;
+        subCategoryHasMoreData.value = true;
+        subCategoryIsPaginating.value = false;
+        subCategoryModel.value.data?.clear();
+      }
+      final Map<String, dynamic> queryParameters = {
+        'limit': '500',
+        'page': page.toString(),
+      };
+      final response = await ApiClient.getData(
+        ApiUrl.subCategories,
+        query: queryParameters,
+      );
 
-      subCategoryModel.value = SubCategorysModel.fromJson(response.body);
-
+      final newFetchedData =
+          SubCategorysModel.fromJson(response.body).data ?? [];
+      if (page == 1) {
+        subCategoryModel.value = SubCategorysModel.fromJson(response.body);
+      } else {
+        if (subCategoryModel.value.data == null) {
+          subCategoryModel.value.data = newFetchedData;
+        } else {
+          subCategoryModel.value.data?.addAll(newFetchedData);
+        }
+      }
+      if (newFetchedData.length < 500) {
+        subCategoryHasMoreData.value = false;
+      } else {
+        subCategoryHasMoreData.value = true;
+      }
+      subCategoryCurrentPage = page;
       getSubCategoryStatus.value = RxStatus.success();
       refresh();
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('category data: ${subCategoryModel.value}');
-        // showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
       }
@@ -161,40 +238,72 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> getMoreSubCategory() async {
+    if (!subCategoryHasMoreData.value ||
+        subCategoryIsPaginating.value ||
+        getSubCategoryStatus.value.isLoading) {
+      return;
+    }
+    debugPrint(
+      'Loading more subcategory data. for page: ${subCategoryCurrentPage + 1}',
+    );
+    subCategoryIsPaginating.value = true;
+    await getSubCategory(page: subCategoryCurrentPage + 1);
+    subCategoryIsPaginating.value = false;
+  }
+
+  Future<void> refreshSubCategory() async {
+    await getSubCategory(page: 1, isRefresh: true);
+  }
+
   //======= get single Sub Category =======//
   Rx<RxStatus> getSingleSubCategoryStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<SingleSubCategorysModel> singleSubCategoryModel =
       SingleSubCategorysModel().obs;
-    // Pagination for single subcategory
-    ScrollController singleSubCategoryScrollController = ScrollController();
-    int singleSubCategoryCurrentPage = 1;
-    RxBool singleSubCategoryHasMoreData = true.obs;
-    RxBool singleSubCategoryIsPaginating = false.obs;
-  Future<void> getSingleSubCategory({required String categoryId}) async {
+  int singleSubCategoryCurrentPage = 1;
+  RxBool singleSubCategoryHasMoreData = true.obs;
+  RxBool singleSubCategoryIsPaginating = false.obs;
+
+  Future<void> getSingleSubCategory({
+    required String categoryId,
+    int page = 1,
+    bool isRefresh = false,
+  }) async {
     getSingleSubCategoryStatus.value = RxStatus.loading();
-    singleSubCategoryCurrentPage = 1;
-    singleSubCategoryHasMoreData.value = true;
-    singleSubCategoryIsPaginating.value = false;
+    if (isRefresh) {
+      singleSubCategoryCurrentPage = 1;
+      singleSubCategoryHasMoreData.value = true;
+      singleSubCategoryIsPaginating.value = false;
+      singleSubCategoryModel.value.data?.clear();
+    }
     try {
       final response = await ApiClient.getData(
         ApiUrl.singleSubCategory(categoryId: categoryId),
-        query: {'page': singleSubCategoryCurrentPage.toString(), 'limit': '18'},
+        query: {'page': page.toString(), 'limit': '500'},
       );
 
-      singleSubCategoryModel.value = SingleSubCategorysModel.fromJson(
-        response.body,
-      );
-
+      final newFetchedData =
+          SingleSubCategorysModel.fromJson(response.body).data ?? [];
+      if (page == 1) {
+        singleSubCategoryModel.value = SingleSubCategorysModel.fromJson(
+          response.body,
+        );
+      } else {
+        if (singleSubCategoryModel.value.data == null) {
+          singleSubCategoryModel.value.data = newFetchedData;
+        } else {
+          singleSubCategoryModel.value.data?.addAll(newFetchedData);
+        }
+      }
+      if (newFetchedData.length < 500) {
+        singleSubCategoryHasMoreData.value = false;
+      } else {
+        singleSubCategoryHasMoreData.value = true;
+      }
+      singleSubCategoryCurrentPage = page;
       getSingleSubCategoryStatus.value = RxStatus.success();
       refresh();
-
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final newFetchedData = SingleSubCategorysModel.fromJson(response.body).data ?? [];
-        if (newFetchedData.length < 18) {
-          singleSubCategoryHasMoreData.value = false;
-        } else {
-          singleSubCategoryHasMoreData.value = true;
-        }
         debugPrint('category data: ${singleSubCategoryModel.value}');
       } else {
         showCustomSnackBar(response.body['message'] ?? " ", isError: false);
@@ -213,31 +322,22 @@ class HomeController extends GetxController {
       return;
     }
     singleSubCategoryIsPaginating.value = true;
-    final nextPage = singleSubCategoryCurrentPage + 1;
-    try {
-      final response = await ApiClient.getData(
-        ApiUrl.singleSubCategory(categoryId: categoryId),
-        query: {'page': nextPage.toString(), 'limit': '18'},
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final newFetchedData = SingleSubCategorysModel.fromJson(response.body).data ?? [];
-        if (newFetchedData.isNotEmpty) {
-          singleSubCategoryModel.value.data?.addAll(newFetchedData);
-          singleSubCategoryCurrentPage = nextPage;
-        }
-        if (newFetchedData.length < 18) {
-          singleSubCategoryHasMoreData.value = false;
-        }
-      } else {
-        singleSubCategoryHasMoreData.value = false;
-      }
-    } catch (e) {
-      singleSubCategoryHasMoreData.value = false;
-    } finally {
-      singleSubCategoryIsPaginating.value = false;
-      refresh();
-    }
+    await getSingleSubCategory(
+      categoryId: categoryId,
+      page: singleSubCategoryCurrentPage + 1,
+    );
+    singleSubCategoryIsPaginating.value = false;
   }
+
+  Future<void> refreshSingleSubCategory({required String categoryId}) async {
+    await getSingleSubCategory(
+      categoryId: categoryId,
+      page: 1,
+      isRefresh: true,
+    );
+  }
+
+  // (Removed duplicate getMoreSingleSubCategory method)
 
   //======= get All services contractor or[ SubCategory wise Contractors] =======//
   Rx<RxStatus> getAllServicesContractorStatus = Rx<RxStatus>(
@@ -251,7 +351,10 @@ class HomeController extends GetxController {
     try {
       final response = await ApiClient.getData(
         ApiUrl.getAllContractors,
-        query: {if (subCategoryId != null) 'subCategory': subCategoryId},
+        query: {
+          if (subCategoryId != null) 'subCategory': subCategoryId,
+          'limit': '1000',
+        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -333,6 +436,7 @@ class HomeController extends GetxController {
     try {
       final response = await ApiClient.getData(
         ApiUrl.getReviewas(userId: userId),
+        query: {'limit': '500'},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -365,7 +469,10 @@ class HomeController extends GetxController {
   Rx<RxStatus> bannerStatus = Rx<RxStatus>(RxStatus.loading());
   Future<void> getBanners() async {
     try {
-      final response = await ApiClient.getData(ApiUrl.getBanners);
+      final response = await ApiClient.getData(
+        ApiUrl.getBanners,
+        query: {'limit': '100'},
+      );
       if (response.statusCode == 200) {
         final data = BannersResponse.fromJson(response.body);
         bannerList.value = data.data;
@@ -386,16 +493,18 @@ class HomeController extends GetxController {
     }
   }
 
-
-// Start the auto sliding of banners
+  // Start the auto sliding of banners
   void startBannerAutoSlide() {
-   
     bannerTimer?.cancel();
     if (bannerList.isEmpty) return;
 
     bannerTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (bannerList.isEmpty) return;
-      final next = (currentBannerIndex.value + 1) % bannerList.where((banner) => banner.type.toLowerCase() == 'top').length;
+      final next =
+          (currentBannerIndex.value + 1) %
+          bannerList
+              .where((banner) => banner.type.toLowerCase() == 'top')
+              .length;
       try {
         bannerPageController.animateToPage(
           next,
@@ -403,9 +512,7 @@ class HomeController extends GetxController {
           curve: Curves.easeInOut,
         );
         currentBannerIndex.value = next;
-      } catch (e) {
-        
-      }
+      } catch (e) {}
     });
   }
 
@@ -414,8 +521,7 @@ class HomeController extends GetxController {
     bannerTimer?.cancel();
     try {
       bannerPageController.dispose();
-      scrollCategoryController.dispose();
-      
+      // scrollCategoryController.dispose();
     } catch (_) {}
     super.onClose();
   }
