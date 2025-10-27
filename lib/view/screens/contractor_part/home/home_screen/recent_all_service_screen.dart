@@ -46,7 +46,7 @@ class RecentAllServiceScreen extends StatelessWidget {
                         data.contractorId?.contractor?.ratings.toString() ??
                         " - ",
                     status: data.status ?? " - ",
-                    image: data.contractorId?.img,
+                    image: data.subCategoryId?.img,
                     customerName: data.customerId?.fullName,
                     customerImage: data.customerId?.img,
                     subcategoryName: data.subCategoryId?.name,

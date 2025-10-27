@@ -53,7 +53,7 @@ class CustomServiceCard extends StatelessWidget {
                   topLeft: Radius.circular(13),
                   bottomLeft: Radius.circular(13),
                 ),
-                height: 110.h,
+                height: 155.h,
                 width: 150.w,
               ),
             Expanded(
@@ -165,11 +165,13 @@ class CustomServiceCard extends StatelessWidget {
                           color: AppColors.black_04,
                         ),
                         SizedBox(width: 4.w),
-                        CustomText(
-                          text: location ?? " - ",
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black_04,
+                        Expanded(
+                          child: CustomText(
+                            text: location ?? " - ",
+                            fontSize: 12.w,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.black_04,
+                          ),
                         ),
                       ],
                     ),

@@ -44,10 +44,10 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
               rating:
                   data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
               dateTime: data.updatedAt!,
-              image: data.contractorId?.img,
+              image: data.subCategoryId?.img,
               isButtonShow: false,
               location: data.location,
-              height: 180,
+              height: 148.h,
               price: (data.totalAmount ?? " - ").toString(),
               customerName: data.customerId?.fullName,
               customerImage: data.customerId?.img,
