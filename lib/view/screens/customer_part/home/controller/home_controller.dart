@@ -16,6 +16,13 @@ import 'package:servana/view/screens/customer_part/home/model/sub_category_model
 import 'package:servana/view/screens/customer_part/home/slider/model/banners_model.dart';
 
 class HomeController extends GetxController {
+  void resetCategoryScrollController() {
+    try {
+      scrollCategoryController.dispose();
+    } catch (_) {}
+    scrollCategoryController = ScrollController();
+    scrollCategoryController.addListener(_onScroll);
+  }
 
   ScrollController scrollCategoryController = ScrollController();
   int categoryCurrentPage = 1;
@@ -407,6 +414,8 @@ class HomeController extends GetxController {
     bannerTimer?.cancel();
     try {
       bannerPageController.dispose();
+      scrollCategoryController.dispose();
+      
     } catch (_) {}
     super.onClose();
   }

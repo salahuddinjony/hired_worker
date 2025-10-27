@@ -626,6 +626,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
+                        homeController.resetCategoryScrollController();
                         Get.toNamed(AppRoutes.customerCategoryScreen);
                       },
                       child: CustomText(
@@ -637,16 +638,27 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-      homeController.getCategoryStatus.value.isLoading
+      homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty)
           ? const Center(child: CircularProgressIndicator())
           : SizedBox(
               height: 120.h,
               child: ListView.separated(
+                controller: homeController.scrollCategoryController,
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.only(right: 10.h),
-                itemCount: categorys.length,
+                itemCount: categorys.length + (homeController.categoryHasMoreData.value ? 1 : 0),
                 separatorBuilder: (context, index) => SizedBox(width: 8.w),
                 itemBuilder: (BuildContext context, int index) {
+                  if (index >= categorys.length) {
+                    // Show loading indicator at the end of the list
+                    return const Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
                   return CustomPopularServicesCard(
                     image: categorys[index].img ?? AppConstants.electrician,
                     name: categorys[index].name,

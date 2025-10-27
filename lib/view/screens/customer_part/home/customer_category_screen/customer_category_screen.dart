@@ -15,15 +15,22 @@ class CustomerCategoryScreen extends StatelessWidget {
     final HomeController homeController = Get.find<HomeController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "All Services".tr),
+      appBar: CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: "All Services".tr,
+        onLeftIconTap: () {
+          homeController.resetCategoryScrollController();
+          Get.back();
+        },
+      ),
       body: SafeArea(
         child: Obx(() {
           final categorys = homeController.categoryModel.value.data ?? [];
-           final isInitialLoading = homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty);
+          final isInitialLoading = homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty);
           if (isInitialLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-        
+
           return GridView.builder(
             controller: homeController.scrollCategoryController,
             padding: EdgeInsets.only(right: 10.h, left: 20.h),
@@ -39,7 +46,11 @@ class CustomerCategoryScreen extends StatelessWidget {
               if (index >= categorys.length) {
                 // Show loading indicator at the end of the list
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
               return CustomPopularServicesCard(
