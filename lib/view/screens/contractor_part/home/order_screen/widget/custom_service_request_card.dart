@@ -154,7 +154,7 @@ class CustomServiceRequestCard extends StatelessWidget {
 
 
                     CustomText(
-                      text: "\$ ${hourlyRate ?? " - "}/hour",
+                      text: "\$ ${hourlyRate ?? " - "}",
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black_04,

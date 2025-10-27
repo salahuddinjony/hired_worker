@@ -160,7 +160,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
                     SizedBox(height: 6.h),
 
                     CustomText(
-                      text: "\$ ${price ?? " - "}/hour",
+                      text: "\$ ${price ?? " - "}",
                       fontSize: 12.5.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black_04,
