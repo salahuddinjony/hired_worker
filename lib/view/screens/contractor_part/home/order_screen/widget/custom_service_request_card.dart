@@ -58,204 +58,205 @@ class CustomServiceRequestCard extends StatelessWidget {
           color: AppColors.cardClr,
           borderRadius: BorderRadius.circular(13),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            if (image != null && image!.isNotEmpty)
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(13),
-                  bottomLeft: Radius.circular(13),
-                ),
-                child: CustomNetworkImage(
-                  imageUrl: image!,
-                  height: 130.h,
-                  width: 150.w,
-                ),
-              ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (image != null && image!.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(13),
+                      bottomLeft: Radius.circular(13),
+                    ),
+                    child: CustomNetworkImage(
+                      imageUrl: image!,
+                      height: 150.h,
+                      width: 150.w,
+                    ),
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: CustomText(
-                            textAlign: TextAlign.start,
-                            text: title,
-                            fontSize: 14.w,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: CustomText(
+                                textAlign: TextAlign.start,
+                                text: title,
+                                fontSize: 14.w,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            // SizedBox(width: 4.w),
+                            // CustomNetworkImage(
+                            //   imageUrl: AppConstants.profileImage,
+                            //   height: 20,
+                            //   width: 20,
+                            //   boxShape: BoxShape.circle,
+                            // ),
+                          ],
                         ),
-                        // SizedBox(width: 4.w),
-                        // CustomNetworkImage(
-                        //   imageUrl: AppConstants.profileImage,
-                        //   height: 20,
-                        //   width: 20,
-                        //   boxShape: BoxShape.circle,
+                        // SizedBox(height: 4.h),
+                        // Row(
+                        //   children: [
+                        //     const CustomImage(imageSrc: AppIcons.filled),
+                        //     SizedBox(width: 4.w),
+                        //     CustomText(
+                        //       text: rating,
+                        //       fontSize: 12.w,
+                        //       fontWeight: FontWeight.w500,
+                        //       color: AppColors.black,
+                        //     ),
+                        //   ],
                         // ),
-                      ],
-                    ),
-                    // SizedBox(height: 4.h),
-                    // Row(
-                    //   children: [
-                    //     const CustomImage(imageSrc: AppIcons.filled),
-                    //     SizedBox(width: 4.w),
-                    //     CustomText(
-                    //       text: rating,
-                    //       fontSize: 12.w,
-                    //       fontWeight: FontWeight.w500,
-                    //       color: AppColors.black,
-                    //     ),
-                    //   ],
-                    // ),
-                    SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        CustomNetworkImage(
-                          imageUrl: customerImage ?? "",
-                          height: 20,
-                          width: 20,
-                          boxShape: BoxShape.circle,
+                        SizedBox(height: 4.h),
+                        Row(
+                          children: [
+                            CustomNetworkImage(
+                              imageUrl: customerImage ?? "",
+                              height: 20,
+                              width: 20,
+                              boxShape: BoxShape.circle,
+                            ),
+                            CustomText(
+                              left: 8,
+                              text:  customerName ?? " - ",
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black,
+                            ),
+                          ],
                         ),
+
+                        SizedBox(height: 4.h),
+
+                        Row(
+                          children: [
+                            const Icon(Icons.home_repair_service, size: 20),
+                            CustomText(
+                              left: 8,
+                              text: subcategoryName ?? " - ",
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.h),
+
+
                         CustomText(
-                          left: 8,
-                          text:  customerName ?? " - ",
+                          text: "\$ ${hourlyRate ?? " - "}",
                           fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black_04,
+                          bottom: 3.h,
+                        ),
+                        SizedBox(height: 6.h),
+
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_month,
+                              size: 14,
+                              color: AppColors.black_04,
+                            ),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: DateFormat('dd MMM yyyy').format(dateTime),
+                              fontSize: 12.w,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black_04,
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 6.h),
+
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on_outlined,
+                              size: 14,
+                              color: AppColors.black_04,
+                            ),
+                            SizedBox(width: 4.w),
+                            Expanded(
+                              child: CustomText(
+                                text: location ?? " - ",
+                                fontSize: 12.w,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.black_04,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-
-                    SizedBox(height: 4.h),
-
-                    Row(
-                      children: [
-                        const Icon(Icons.home_repair_service, size: 20),
-                        CustomText(
-                          left: 8,
-                          text: subcategoryName ?? " - ",
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 6.h),
-
-
-                    CustomText(
-                      text: "\$ ${hourlyRate ?? " - "}",
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black_04,
-                      bottom: 3.h,
-                    ),
-                    SizedBox(height: 6.h),
-
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.calendar_month,
-                          size: 14,
-                          color: AppColors.black_04,
-                        ),
-                        SizedBox(width: 4.w),
-                        CustomText(
-                          text: DateFormat('dd MMM yyyy').format(dateTime),
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black_04,
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 6.h),
-
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_outlined,
-                          size: 14,
-                          color: AppColors.black_04,
-                        ),
-                        SizedBox(width: 4.w),
-                        CustomText(
-                          text: location ?? " - ",
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black_04,
-                        ),
-                      ],
-                    ),
-
-                    const Spacer(),
-
-                    if (status == 'accepted')
-                      Text(
-                        textAlign: TextAlign.center,
-                        'Waiting for your payment confirmation from the user.',
-                        style: TextStyle(fontSize: 12.sp),
-                      ),
-
-                    if (status != 'accepted' && isButtonShow)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomButton(
-                            onTap: () {
-                              Get.find<OrderController>().acceptOrder(id);
-                            },
-                            title: "Accept".tr,
-                            height: 26.h,
-                            width: 70.w,
-                            fontSize: 10.w,
-                            borderRadius: 10,
-                          ),
-                          CustomButton(
-                            onTap: () {
-                              Get.find<OrderController>().cancelOrder(id);
-                            },
-                            title: "Cancel".tr,
-                            height: 26.h,
-                            width: 50.w,
-                            fontSize: 10.w,
-                            fillColor: Colors.transparent,
-                            isBorder: true,
-                            textColor: AppColors.red,
-                            borderRadius: 10,
-                            borderWidth: .3,
-                          ),
-                          CustomButton(
-                            onTap: () {
-                              Get.toNamed(
-                                AppRoutes.orderDetailsScreen1,
-                                arguments: {'index': index},
-                              );
-                            },
-                            title: "View".tr,
-                            height: 26.h,
-                            width: 50.w,
-                            fontSize: 10.w,
-                            fillColor: AppColors.cardClr,
-                            textColor: AppColors.black,
-                            borderRadius: 10,
-                          ),
-                        ],
-                      ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
+
+            if (isButtonShow)
+             SizedBox(height: 12.h,),
+
+            if (isButtonShow)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomButton(
+                    onTap: () {
+                      Get.find<OrderController>().acceptOrder(id);
+                    },
+                    title: "Accept".tr,
+                    height: 26.h,
+                    width: 70.w,
+                    fontSize: 10.w,
+                    borderRadius: 10,
+                  ),
+                  CustomButton(
+                    onTap: () {
+                      Get.find<OrderController>().cancelOrder(id);
+                    },
+                    title: "Cancel".tr,
+                    height: 26.h,
+                    width: 50.w,
+                    fontSize: 10.w,
+                    fillColor: Colors.transparent,
+                    isBorder: true,
+                    textColor: AppColors.red,
+                    borderRadius: 10,
+                    borderWidth: .3,
+                  ),
+                  CustomButton(
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.orderDetailsScreen1,
+                        arguments: {'index': index},
+                      );
+                    },
+                    title: "View".tr,
+                    height: 26.h,
+                    width: 50.w,
+                    fontSize: 10.w,
+                    fillColor: AppColors.cardClr,
+                    textColor: AppColors.black,
+                    borderRadius: 10,
+                  ),
+                ],
+              ),
           ],
         ),
       ),

@@ -30,7 +30,7 @@ class CustomOngoingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
-                imageUrl: data.contractorId?.img ?? "",
+                imageUrl: data.subCategoryId?.img ?? "",
                 // height: 170.h,
                 height: 160.h,
                 width: 126.w,

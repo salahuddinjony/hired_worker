@@ -272,7 +272,7 @@ class HomeScreen extends StatelessWidget {
                                       ?.toString() ?? // 123
                                   ' - ',
                               status: data.status ?? 'Unknown',
-                              image: data.contractorId?.img,
+                              image: data.subCategoryId?.img,
                               location: data.location,
                               customerImage: data.customerId?.img,
                               customerName: data.customerId?.fullName,
