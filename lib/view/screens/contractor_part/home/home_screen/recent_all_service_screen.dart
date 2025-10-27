@@ -41,12 +41,16 @@ class RecentAllServiceScreen extends StatelessWidget {
                   return CustomServiceCard(
                     title: getSubCategoryName(data),
                     updateDate: data.updatedAt!,
-                    hourlyRate: data.rateHourly.toString(),
+                    hourlyRate: data.totalAmount.toString(),
                     rating:
                         data.contractorId?.contractor?.ratings.toString() ??
                         " - ",
                     status: data.status ?? " - ",
                     image: data.contractorId?.img,
+                    customerName: data.customerId?.fullName,
+                    customerImage: data.customerId?.img,
+                    subcategoryName: data.subCategoryId?.name,
+                    location: data.location,
                   );
                 } else if (controller.status.value.isLoadingMore) {
                   return const Center(
