@@ -637,33 +637,30 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                GridView.builder(
-                  padding: EdgeInsets.only(right: 10.h),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 8,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: min(3, categorys.length),
-                  itemBuilder: (BuildContext context, int index) {
-                    return CustomPopularServicesCard(
-                      image: categorys[index].img ?? AppConstants.electrician,
-                      name: categorys[index].name,
-                      onTap: () {
-                        Get.toNamed(
-                          AppRoutes.customerParSubCategoryItem,
-                          arguments: {
-                            'name': categorys[index].name,
-                            'id': categorys[index].id,
+                  SizedBox(
+                    height: 120.h,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(right: 10.h),
+                      itemCount: categorys.length,
+                      separatorBuilder: (context, index) => SizedBox(width: 8.w),
+                      itemBuilder: (BuildContext context, int index) {
+                        return CustomPopularServicesCard(
+                          image: categorys[index].img ?? AppConstants.electrician,
+                          name: categorys[index].name,
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.customerParSubCategoryItem,
+                              arguments: {
+                                'name': categorys[index].name,
+                                'id': categorys[index].id,
+                              },
+                            );
                           },
                         );
                       },
-                    );
-                  },
-                ),
+                    ),
+                  ),
 
                 // Sub Category Section
                 Row(
@@ -834,32 +831,32 @@ class CustomerHomeScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                         ),
-                                        if (labelName.isNotEmpty)
-                                          Positioned(
-                                            left: 8,
-                                            bottom: 8,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 8.w,
-                                                vertical: 4.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black.withValues(
-                                                  alpha: 0.45,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                labelName,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                        // if (labelName.isNotEmpty)
+                                        //   Positioned(
+                                        //     left: 8,
+                                        //     bottom: 8,
+                                        //     child: Container(
+                                        //       padding: EdgeInsets.symmetric(
+                                        //         horizontal: 8.w,
+                                        //         vertical: 4.h,
+                                        //       ),
+                                        //       decoration: BoxDecoration(
+                                        //         color: Colors.black.withValues(
+                                        //           alpha: 0.45,
+                                        //         ),
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(8),
+                                        //       ),
+                                        //       child: Text(
+                                        //         labelName,
+                                        //         style: TextStyle(
+                                        //           color: Colors.white,
+                                        //           fontSize: 12.sp,
+                                        //           fontWeight: FontWeight.w600,
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   ),
                                       ],
                                     ),
                                   ),

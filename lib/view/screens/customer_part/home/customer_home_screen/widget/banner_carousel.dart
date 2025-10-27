@@ -202,31 +202,31 @@ class BannerSlide extends StatelessWidget {
             ),
 
             // Overlay label (category/subcategory name)
-            if (labelName.isNotEmpty)
-              Positioned(
-                left: 8,
-                bottom: 8,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: .45),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        labelName,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            // if (labelName.isNotEmpty)
+            //   Positioned(
+            //     left: 8,
+            //     bottom: 8,
+            //     child: Container(
+            //       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            //       decoration: BoxDecoration(
+            //         color: Colors.black.withValues(alpha: .45),
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             labelName,
+            //             style: TextStyle(
+            //               color: Colors.white,
+            //               fontSize: 12.sp,
+            //               fontWeight: FontWeight.w600,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),
