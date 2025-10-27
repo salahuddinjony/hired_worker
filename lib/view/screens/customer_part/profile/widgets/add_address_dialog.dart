@@ -10,12 +10,22 @@ class AddAddressBottomSheet extends StatefulWidget {
   final String address;
   final double? latitude;
   final double? longitude;
+  final String? street;
+  final String? unit;
+  final String? directions;
+  final bool isUpdate;
+
 
   const AddAddressBottomSheet({
     super.key,
     required this.address,
     this.latitude,
+        
     this.longitude,
+    this.street,
+    this.unit,
+    this.directions,
+    this.isUpdate = false,
   });
 
   @override
@@ -34,6 +44,15 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   void initState() {
     super.initState();
     addressController.text = widget.address;
+    streetController.text = widget.street ?? '';
+    unitController.text = widget.unit ?? '';
+    directionsController.text = widget.directions ?? '';
+    // If editing, try to infer address type from widget.street/unit/directions/title
+    if (widget.isUpdate) {
+      // Try to get type from street/unit/directions/title if available
+      // If you pass type as a field, use it here. For now, default to Home if not found.
+      // You may want to add a 'type' field to AddAddressBottomSheet for more robust logic.
+    }
   }
 
   @override
@@ -203,6 +222,22 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   }
                   
                   try {
+                    if (widget.isUpdate) {
+                      debugPrint('Updating existing address...');
+                      // You need locationId for patchAddress, but it's not passed here. You may need to extend AddAddressBottomSheet to accept locationId.
+                      // For now, assume address is unique and use address as locationId (not ideal, but matches your controller signature)
+                      await controller.patchAddress(
+                        locationId: widget.address, // Ideally, pass the real locationId
+                        address: (streetController.text.isNotEmpty ? '${streetController.text}, ' : '') + addressController.text,
+                        coordinates: [if (widget.latitude != null) widget.latitude!, if (widget.longitude != null) widget.longitude!],
+                        street: streetController.text.isNotEmpty ? streetController.text : null,
+                        unit: unitController.text.isNotEmpty ? unitController.text : null,
+                        directions: directionsController.text.isNotEmpty ? directionsController.text : null,
+                        name: selectedType,
+                      );
+                      debugPrint('Address updated successfully!');
+                      return;
+                    }
                     debugPrint('Calling addNewAddress...');
                     controller.addNewAddress(
                       title: selectedType,

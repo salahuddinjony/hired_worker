@@ -9,7 +9,6 @@ import 'package:servana/view/components/custom_from_card/custom_from_card.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
@@ -143,40 +142,16 @@ class EditCustomerProfileScreen extends StatelessWidget {
                 },
               ),
 
-              CustomFormCard(
-                title: "Address".tr,
-                controller: profileController.cityController.value,
-                hintText: 'Address',
-                readOnly: true,
-                onTap: () async {
-                  if (!Get.isRegistered<MapController>()) {
-                    Get.put(MapController());
-                  }
-
-                  // Navigate to map screen with argument to return data instead of updating contractor data
-                  final result = await Get.toNamed(
-                    '/SeletedMapScreen',
-                    arguments: {'returnData': true},
-                  );
-
-                  // Update address field with selected location
-                  if (result != null && result is Map<String, dynamic>) {
-                    profileController.updateAddressFromMap(result);
-                  }
-                },
-              ),
-              SizedBox(height: 20.h),
-
-              // Additional Address Section Title
+              // Addresses Section Title
               CustomText(
-                text: 'Saved Addresses'.tr,
+                text: 'Addresses'.tr,
                 fontSize: 18.w,
                 fontWeight: FontWeight.w600,
                 color: AppColors.black,
                 bottom: 10.h,
               ),
 
-              // Additional Address Card
+              // Addresses Card
               GestureDetector(
                 onTap: () {
                   profileController.showAddressBottomSheet();
@@ -247,8 +222,7 @@ class EditCustomerProfileScreen extends StatelessWidget {
                                             .additionalAddressController
                                             .value
                                             .text
-                                        : "Tap to manage your saved addresses"
-                                            .tr,
+                                        : "Tap to manage your addresses".tr,
                                 fontSize: 13.w,
                                 fontWeight: FontWeight.w400,
                                 color:

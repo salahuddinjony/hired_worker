@@ -19,6 +19,79 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/contr
 import '../../../../../utils/app_strings/app_strings.dart';
 
 class CustomerProfileController extends GetxController {
+  // Edit an address
+  void editAddress(SavedAddress address) {
+    // Fill controllers with address data
+    addressNameController.text = address.title;
+    streetController.text = address.street ?? '';
+    unitController.text = address.unit ?? '';
+    directionsController.text = address.directions ?? '';
+
+    // Show bottom sheet for editing
+    Get.bottomSheet(
+      AddAddressBottomSheet(
+        address: address.address,
+        latitude: address.latitude,
+        longitude: address.longitude,
+        unit: address.unit ?? '',
+        street: address.street ?? '',
+        directions: address.directions ?? '',
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      isDismissible: true,
+    );
+  }
+  // PATCH address for a specific location
+  Future<void> patchAddress({
+    required String locationId,
+    required String address,
+    required List<double> coordinates,
+    String? street,
+    String? unit,
+    String? directions,
+    String? name,
+  }) async {
+    try {
+      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+      final Map<String, dynamic> body = {
+        "address": address,
+        "street": street ?? streetController.text,
+        "unit": unit ?? unitController.text,
+        "coordinates": coordinates,
+        "detraction": directions ?? directionsController.text,
+        "name": name ?? addressNameController.text,
+      };
+      final response = await ApiClient.patchData(
+        "/customers/$userId/locations/$locationId",
+        jsonEncode(body),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          response.body['message'] ?? "Address updated successfully",
+          isError: false,
+        );
+        getMe();
+        Get.back();
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "Something went wrong",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
+
+  // Delete an address
+  void deleteAddress(SavedAddress address) {
+    savedAddresses.removeWhere((a) => a.id == address.id);
+    savedAddresses.refresh();
+    // Optionally update profile on backend
+    updateProfile();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -418,6 +491,11 @@ class CustomerProfileController extends GetxController {
     }
   }
 
+  TextEditingController streetController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController directionsController = TextEditingController();
+  TextEditingController addressNameController = TextEditingController();
+
   // Add new address to the list
   void addNewAddress({
     required String title,
@@ -431,6 +509,46 @@ class CustomerProfileController extends GetxController {
     debugPrint('=== Adding New Address ===');
     debugPrint('Title: $title');
     debugPrint('Address: $address');
+    // PATCH address for a specific location
+    Future<void> patchAddress({
+      required String locationId,
+      required String address,
+      required List<double> coordinates,
+    }) async {
+      try {
+        final String userId = await SharePrefsHelper.getString(
+          AppConstants.userId,
+        );
+        final Map<String, dynamic> body = {
+          "address": address,
+          "street": streetController.text,
+          "unit": unitController.text,
+          "coordinates": coordinates,
+          "detraction": directionsController.text,
+          "name": addressNameController.text,
+        };
+        final response = await ApiClient.patchData(
+          "/customers/$userId/locations/$locationId",
+          jsonEncode(body),
+        );
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          showCustomSnackBar(
+            response.body['message'] ?? "Address updated successfully",
+            isError: false,
+          );
+          getMe();
+          Get.back();
+        } else {
+          showCustomSnackBar(
+            response.body['message'] ?? "Something went wrong",
+            isError: true,
+          );
+        }
+      } catch (e) {
+        showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+      }
+    }
+
     debugPrint('Unit: $unit');
     debugPrint('Street: $street');
     debugPrint('Directions: $directions');

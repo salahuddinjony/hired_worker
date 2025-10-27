@@ -21,36 +21,38 @@ class CustomerHelpSupportScreen extends StatelessWidget {
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Help & Support".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            const Center(child: CustomImage(imageSrc: AppImages.helpImage)),
-            CustomText(
-              text: "Hello, how can we assist you?".tr,
-              fontSize: 16.w,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textCLr,
-            ),
-            CustomFormCard(
-                title: "Title",
-                hintText: "Enter the title of your issue",
-                controller: controller.titleController
-            ),
-            CustomFormCard(
-                title: "Write in bellow box",
-                hintText: "write here.....",
-                maxLine: 5,
-                controller: controller.detailsController
-            ),
-            SizedBox(height: 30.h,),
-            Obx(() => CustomButton(
-              onTap: controller.isLoading.value 
-                  ? () {} 
-                  : controller.createSupportTicket,
-              title: controller.isLoading.value 
-                  ? "Sending...".tr 
-                  : "Send".tr,
-            ))
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Center(child: CustomImage(imageSrc: AppImages.helpImage)),
+              CustomText(
+                text: "Hello, how can we assist you?".tr,
+                fontSize: 16.w,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textCLr,
+              ),
+              CustomFormCard(
+                  title: "Title",
+                  hintText: "Enter the title of your issue",
+                  controller: controller.titleController
+              ),
+              CustomFormCard(
+                  title: "Write in bellow box",
+                  hintText: "write here.....",
+                  maxLine: 5,
+                  controller: controller.detailsController
+              ),
+              SizedBox(height: 30.h,),
+              Obx(() => CustomButton(
+                onTap: controller.isLoading.value 
+                    ? () {} 
+                    : controller.createSupportTicket,
+                title: controller.isLoading.value 
+                    ? "Sending...".tr 
+                    : "Send".tr,
+              ))
+            ],
+          ),
         ),
       ),
     );

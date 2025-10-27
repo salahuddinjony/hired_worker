@@ -244,25 +244,26 @@ class _AddressItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeColor = _getColorForType(address.title);
-    
+    final controller = Get.find<CustomerProfileController>();
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16.r),
       child: Container(
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: address.isSelected 
-              ? AppColors.primary.withValues(alpha: 0.05) 
+          color: address.isSelected
+              ? AppColors.primary.withValues(alpha: 0.05)
               : Colors.grey[50],
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: address.isSelected 
-                ? AppColors.primary 
+            color: address.isSelected
+                ? AppColors.primary
                 : Colors.grey[200]!,
             width: address.isSelected ? 2 : 1,
           ),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Icon with type indicator
             Container(
@@ -309,6 +310,23 @@ class _AddressItem extends StatelessWidget {
                           size: 16.sp,
                         ),
                       ],
+                      Spacer(),
+                      // Edit button
+                      IconButton(
+                        icon: Icon(Icons.edit, size: 18.sp, color: Colors.grey[700]),
+                        tooltip: 'Edit',
+                        onPressed: () {
+                          controller.editAddress(address);
+                        },
+                      ),
+                      // Delete button
+                      IconButton(
+                        icon: Icon(Icons.delete, size: 18.sp, color: Colors.red[400]),
+                        tooltip: 'Delete',
+                        onPressed: () {
+                          controller.deleteAddress(address);
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(height: 6.h),
@@ -391,28 +409,6 @@ class _AddressItem extends StatelessWidget {
                       ],
                     ),
                   ],
-                  // if (address.directions != null && address.directions!.isNotEmpty) ...[
-                  //   SizedBox(height: 4.h),
-                  //   Row(
-                  //     children: [
-                  //       Icon(
-                  //         Icons.info_outline,
-                  //         size: 14.sp,
-                  //         color: Colors.grey[400],
-                  //       ),
-                  //       SizedBox(width: 4.w),
-                  //       Expanded(
-                  //         child: CustomText(
-                  //           text: address.directions!,
-                  //           fontSize: 11.sp,
-                  //           fontWeight: FontWeight.w400,
-                  //           color: Colors.grey[500]!,
-                  //           maxLines: 1,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ],
                 ],
               ),
             ),
