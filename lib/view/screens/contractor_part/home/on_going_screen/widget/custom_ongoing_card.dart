@@ -123,7 +123,7 @@ class CustomOngoingCard extends StatelessWidget {
                         const Icon(Icons.price_check, size: 20),
                         CustomText(
                           left: 8,
-                          text: "${data.totalAmount} \$ ",
+                          text: "\$ ${data.totalAmount}",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black,

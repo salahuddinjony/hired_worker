@@ -84,7 +84,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Category/SubCategory : ${data.subCategoryId?.name ?? " - "}',
+                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
                   ),
                   const SizedBox(height: 16.0),
                   Text(

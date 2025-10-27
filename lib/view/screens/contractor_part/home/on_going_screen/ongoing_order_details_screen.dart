@@ -66,7 +66,7 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Category/SubCategory : ${data.subCategoryId?.name ?? " - "}',
+                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
                   ),
                   const SizedBox(height: 16.0),
                   Text(
