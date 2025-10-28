@@ -8,7 +8,8 @@ class   AppStrings {
   static const String checknetworkconnection = "Check network connection";
   static const String enterThe8Character = "Please Enter The 8 character";
   static const String passwordNotMatch = "Passwords do not match";
-  static const String isProfileComplete = "isProfileComplete";
+  static const String isLoggedIn = "isLoggedIn";
+  // static const String isProfileComplete = "isProfileComplete";
 
   //================== Custom Controller String ===================//
   static const String item = "Item";

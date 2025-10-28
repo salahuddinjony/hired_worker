@@ -78,9 +78,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ' - ',
                               dateTime: data.updatedAt!,
                               id: data.id!,
-                              image: data.contractorId?.img,
+                              image: data.subCategoryId?.img,
                               status: data.status,
                               index: index,
+                              location: data.location,
+                              hourlyRate: data.totalAmount,
+                              customerName: data.customerId?.fullName,
+                              customerImage: data.customerId?.img,
+                              subcategoryName: data.subCategoryId?.name,
                             );
                           } else {
                             return const Padding(
@@ -112,8 +117,12 @@ class _OrderScreenState extends State<OrderScreen> {
                             rating: data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
                             dateTime: data.updatedAt!,
                             price: data.totalAmount.toString(),
-                            image: data.contractorId?.img,
+                            image: data.subCategoryId?.img,
                             index: index,
+                            location: data.location,
+                            customerName: data.customerId?.fullName,
+                            customerImage: data.customerId?.img,
+                            subcategoryName: data.subCategoryId?.name,
                           );
                         } else {
                           return const Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
@@ -122,7 +123,7 @@ class EditProfileScreen extends StatelessWidget {
 
               CustomFormCard(
                 title: "Date of Birth".tr,
-                hintText: 'yyyy/mm/dd',
+                hintText: 'dd/mm/yyyy',
                 controller: profileController.dobController.value,
                 readOnly: true,
                 onTap: () async {
@@ -134,8 +135,7 @@ class EditProfileScreen extends StatelessWidget {
                   );
 
                   if (pickedDate != null) {
-                    profileController.dobController.value.text =
-                        "${pickedDate.toLocal()}".split(' ')[0];
+                    profileController.dobController.value.text = DateFormat('dd/MM/yyyy').format(pickedDate);
                   }
                 },
               ),

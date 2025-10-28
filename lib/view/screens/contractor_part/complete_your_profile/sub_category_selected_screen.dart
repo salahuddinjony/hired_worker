@@ -18,14 +18,14 @@ class SubCategorySelectedScreen extends StatefulWidget {
 }
 
 class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
-  String? selectedSubCategoryId;
+  final List<String> selectedSubCategoryIds = [];
 
   void toggleSelection(String id) {
     setState(() {
-      if (selectedSubCategoryId == id) {
-        selectedSubCategoryId = null;
+      if (selectedSubCategoryIds.contains(id)) {
+        selectedSubCategoryIds.remove(id);
       } else {
-        selectedSubCategoryId = id;
+        selectedSubCategoryIds.add(id);
       }
     });
   }
@@ -33,11 +33,11 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
   @override
   Widget build(BuildContext context) {
     final SubCategorySelectionController controller =
-        Get.find<SubCategorySelectionController>();
+    Get.find<SubCategorySelectionController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Tasks"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -63,8 +63,8 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                 );
               } else if (controller.status.value.isEmpty) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: 50.0),
-                  child: Center(child: Text('No categories found')),
+                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                  child: Center(child: Text('No tasks found')),
                 );
               } else if (controller.status.value.isError) {
                 return Center(
@@ -77,9 +77,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                               "Something went wrong. Please try again.",
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            controller.getSubCategories();
-                          },
+                          onPressed: controller.getSubCategories,
                           child: const Text('Retry'),
                         ),
                       ],
@@ -93,67 +91,63 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                     children:
-                        controller.subCategoryModel.value.data!.map((item) {
-                          final isSelected = selectedSubCategoryId == item.id;
-                          return GestureDetector(
-                            onTap: () => toggleSelection(item.id.toString()),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    isSelected
-                                        ? const Color(0xFF3C003D)
-                                        : Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.05),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                    controller.subCategoryModel.value.data!.map((item) {
+                      final isSelected =
+                      selectedSubCategoryIds.contains(item.id.toString());
+                      return GestureDetector(
+                        onTap: () => toggleSelection(item.id.toString()),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? const Color(0xFF3C003D)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipOval(
-                                    child: CachedNetworkImage(
-                                      height: 45,
-                                      width: 45,
-                                      imageUrl: item.img ?? "",
-                                      fit: BoxFit.cover,
-                                      errorWidget:
-                                          (context, url, error) => Icon(
-                                            Icons.info_outline,
-                                            color: Colors.grey[500],
-                                          ),
-                                      placeholder:
-                                          (context, url) =>
-                                              const CircularProgressIndicator(
-                                                color: AppColors.primary,
-                                              ),
-                                    ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipOval(
+                                child: CachedNetworkImage(
+                                  height: 45,
+                                  width: 45,
+                                  imageUrl: item.img ?? "",
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.info_outline,
+                                    color: Colors.grey[500],
                                   ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    textAlign:  TextAlign.center,
-                                    maxLines: 2,
-                                    item.name ?? " - ",
-                                    style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 14.sp,
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                  placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                    color: AppColors.primary,
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                              const SizedBox(height: 12),
+                              Text(
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                item.name ?? " - ",
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 14.sp,
+                                  color:
+                                  isSelected ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
               }
@@ -164,17 +158,21 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                 return controller.updateStatus.value.isLoading
                     ? const CustomLoader()
                     : CustomButton(
-                      onTap: () {
-                        if (selectedSubCategoryId != null) {
-                          controller.updateContractorData(
-                            selectedSubCategoryId,
-                          );
-                        } else {
-                          Get.snackbar("Error", "Please select a category");
-                        }
-                      },
-                      title: "Continue".tr,
-                    );
+                  onTap: () {
+                    if (selectedSubCategoryIds.isNotEmpty) {
+
+                      controller.updateContractorData(
+                        selectedSubCategoryIds,
+                      );
+                    } else {
+                      Get.snackbar(
+                        "Error",
+                        "Please select at least one task to continue.",
+                      );
+                    }
+                  },
+                  title: "Continue".tr,
+                );
               } else {
                 return const SizedBox.shrink();
               }
@@ -186,11 +184,4 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
       ),
     );
   }
-}
-
-class CategoryItem {
-  final String title;
-  final IconData icon;
-
-  CategoryItem(this.title, this.icon);
 }

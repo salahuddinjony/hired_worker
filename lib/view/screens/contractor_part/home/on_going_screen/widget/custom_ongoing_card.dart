@@ -30,97 +30,141 @@ class CustomOngoingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
-                imageUrl: data.contractorId?.img ?? "",
+                imageUrl: data.subCategoryId?.img ?? "",
                 // height: 170.h,
                 height: 160.h,
                 width: 126.w,
                 borderRadius: BorderRadius.circular(10),
               ),
               SizedBox(width: 10.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "In Progress",
-                    fontSize: 18.w,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                    bottom: 10.h,
-                  ),
-                  // Row(
-                  //   children: [
-                  //     const Icon(Icons.location_on_outlined, size: 20),
-                  //     CustomText(
-                  //       text: "38 Chestnut Street Staunton",
-                  //       fontSize: 14.w,
-                  //       fontWeight: FontWeight.w400,
-                  //       color: AppColors.black,
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      CustomNetworkImage(
-                        imageUrl: data.customerId?.img ?? "",
-                        height: 20,
-                        width: 20,
-                        boxShape: BoxShape.circle,
-                      ),
-                      CustomText(
-                        left: 8,
-                        text: data.customerId?.fullName ?? " - ",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      const Icon(Icons.home_repair_service, size: 20),
-                      CustomText(
-                        left: 8,
-                        text: data.subCategoryId?.name ?? " - ",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      const Icon(Icons.price_check, size: 20),
-                      CustomText(
-                        left: 8,
-                        text: "${data.totalAmount} \$ ",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      const Icon(Icons.access_time, size: 20),
-                      CustomText(
-                        left: 8,
-                        text:
-                            data.day == null || data.day!.isEmpty
-                                ? " - "
-                                : data.day!.length == 2
-                                ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
-                                : "${data.day?[0] ?? " - "}",
-                        fontSize: 14.w,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: "In Progress",
+                          fontSize: 18.w,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                          bottom: 10.h,
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.ongoingDetailsScreen, arguments: {'index': index},);
+                          },
+                          child: Container(
+                            padding: const EdgeInsetsGeometry.symmetric(vertical: 2, horizontal: 6,),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.primary),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: CustomText(
+                              text: "View",
+                              fontSize: 16.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    // Row(
+                    //   children: [
+                    //     const Icon(Icons.location_on_outlined, size: 20),
+                    //     CustomText(
+                    //       text: "38 Chestnut Street Staunton",
+                    //       fontSize: 14.w,
+                    //       fontWeight: FontWeight.w400,
+                    //       color: AppColors.black,
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        CustomNetworkImage(
+                          imageUrl: data.customerId?.img ?? "",
+                          height: 20,
+                          width: 20,
+                          boxShape: BoxShape.circle,
+                        ),
+                        CustomText(
+                          left: 8,
+                          text: data.customerId?.fullName ?? " - ",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        const Icon(Icons.home_repair_service, size: 20),
+                        CustomText(
+                          left: 8,
+                          text: data.subCategoryId?.name ?? " - ",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        const Icon(Icons.price_check, size: 20),
+                        CustomText(
+                          left: 8,
+                          text: "\$ ${data.totalAmount}",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time, size: 20),
+                        CustomText(
+                          left: 8,
+                          text:
+                              data.day == null || data.day!.isEmpty
+                                  ? " - "
+                                  : data.day!.length == 2
+                                  ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                                  : "${data.day?[0] ?? " - "}",
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, size: 20),
+                        Expanded(
+                          child: CustomText(
+                            left: 8,
+                            text: data.location ?? " - ",
+                            fontSize: 14.w,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

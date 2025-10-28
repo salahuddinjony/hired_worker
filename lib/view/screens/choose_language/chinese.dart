@@ -82,7 +82,7 @@ final Map<String, String> chinese = {
   "Total Earning this month": "本月总收入",
   "Total Service": "总服务量",
   "Upcoming Services": "即将进行的服务",
-  "Schedule": "日程安排",
+  "Schedule": "可用性",
   "Available": "可用的",
   "Hello, how can we assist you?": "您好，我们能为您做些什么？",
   "Service Details": "服务详情",

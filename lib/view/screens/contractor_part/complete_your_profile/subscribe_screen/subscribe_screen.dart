@@ -73,11 +73,17 @@ class SubscribeScreen extends StatelessWidget {
                           duration: subscriptionPlan.duration ?? " - ",
                           features: subscriptionPlan.details!,
                           onSubscribe: () {
-                            controller.purchase(
-                              subscriptionPlan.id!,
-                              subscriptionPlan.price!,
-                            );
+                            debugPrint('xxx ${subscriptionPlan.price! == 0}');
+                            debugPrint('xxx ${subscriptionPlan.price!}');
+
+                            subscriptionPlan.price! == 0
+                                ? Get.offAllNamed(AppRoutes.thanksScreen)
+                                : controller.purchase(
+                                  subscriptionPlan.id!,
+                                  subscriptionPlan.price!,
+                                );
                           },
+                          isFree: subscriptionPlan.price! == 0,
                         );
                       },
                     ).toList(),

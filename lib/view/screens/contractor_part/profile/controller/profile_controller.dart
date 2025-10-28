@@ -74,7 +74,7 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         contractorModel.value = ContractorModel.fromJson(response.body);
 
-        debugPrint('xxx - inside get me ${contractorModel.value.data!.contractor!.materials!.length}');
+        debugPrint('xxx - inside get me ${contractorModel.value.data!.fullName}');
 
         initUserProfileInfoTextField(contractorModel.value.data!);
 

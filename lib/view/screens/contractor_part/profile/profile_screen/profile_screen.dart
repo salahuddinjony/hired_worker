@@ -244,6 +244,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () async {
                   await SharePrefsHelper.logOut();
                   debugPrint("Logged out successfully");
+                  SharePrefsHelper.remove(AppConstants.isLoggedIn);
                   Get.offAllNamed(AppRoutes.loginScreen);
                 },
                 child: CustomText(

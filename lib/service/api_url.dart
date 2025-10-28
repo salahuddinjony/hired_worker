@@ -9,6 +9,14 @@ class ApiUrl {
   // static String socketUrl = "https://backend.servana.com.au";
     static String socketUrl = "https://backend.servana.com.au";
   // static String socketUrl = "http://3.27.248.133:5002";
+  // static const String imageUrl = "https://backend.servana.com.au/api/v1";
+  // static const String baseUrl = "https://backend.servana.com.au/api/v1";
+  // static String socketUrl = "https://backend.servana.com.au";
+
+  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
+  static String socketUrl = "http://10.10.20.11:5002";
+
 
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
@@ -20,7 +28,7 @@ class ApiUrl {
   static const String veryfiOTPresend = "/otps/generate-otp";
   static const String login = "/auth/login";
   static const String getMe = "/users/me";
-  static const String categories = "/categories/";
+  static const String categories = "/categories";
   static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";
