@@ -11,8 +11,10 @@ import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/contractor_model.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
+import 'package:servana/view/screens/customer_part/profile/widgets/add_address_dialog.dart';
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
@@ -39,6 +41,9 @@ class AuthController extends GetxController {
   // Location data for address
   RxnDouble latitude = RxnDouble();
   RxnDouble longitude = RxnDouble();
+  Rx<TextEditingController> streetController = TextEditingController().obs;
+  Rx<TextEditingController> unitController = TextEditingController().obs;
+  Rx<TextEditingController> directionController = TextEditingController().obs;
 
   Rx<bool> isAgree = false.obs;
 
@@ -63,13 +68,6 @@ class AuthController extends GetxController {
       emailController.value.text = email;
       passController.value.text = password;
     }
-  }
-
-  // Update address from map selection
-  void updateAddressFromMap(Map<String, dynamic> locationData) {
-    addressController.value.text = locationData['address'] ?? '';
-    latitude.value = locationData['latitude'];
-    longitude.value = locationData['longitude'];
   }
 
   ///=====================LOGIN METHOD=====================
@@ -245,6 +243,51 @@ class AuthController extends GetxController {
     }
   }
 
+  // Update address from map selection
+  void updateAddressFromMap(Map<String, dynamic> locationData) {
+    debugPrint('callAddress: ${locationData.toString()}');
+    addressController.value.text = locationData['address'] ?? '';
+    latitude.value = locationData['latitude'];
+    longitude.value = locationData['longitude'];
+    streetController.value.text = locationData['street'] ?? '';
+    unitController.value.text = locationData['unit'] ?? '';
+    directionController.value.text = locationData['direction'] ?? '';
+  }
+
+  // Navigate to map and then show add address dialog
+  Future<void> showAddAddressDialog({bool isSignUp = false}) async {
+    // First, navigate to map to pick location
+    if (!Get.isRegistered<MapController>()) {
+      Get.put(MapController());
+    }
+
+    final result = await Get.toNamed(
+      '/SeletedMapScreen',
+      arguments: {'returnData': true},
+    );
+
+    // If location is selected, show address details bottom sheet
+    if (result != null && result is Map<String, dynamic>) {
+      addressController.value.text = result['address'] ?? '';
+      latitude.value = result['latitude'];
+      longitude.value = result['longitude'];
+
+      // Show bottom sheet with address details
+      Get.bottomSheet(
+        AddAddressBottomSheet(
+          address: addressController.value.text,
+          latitude: latitude.value,
+          longitude: longitude.value,
+          isSignUp: isSignUp,
+          isFromProfile: true,
+        ),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+      );
+    }
+  }
+
   ///=====================Register METHOD=====================
   Rx<RxStatus> signUpLoading = Rx<RxStatus>(RxStatus.success());
 
@@ -276,11 +319,15 @@ class AuthController extends GetxController {
         "city": addressController.value.text,
         "location": [
           {
+            "type": "Point",
             "coordinates": [
               longitude.value ?? -84.090724,
               latitude.value ?? 9.928069,
             ],
             "address": addressController.value.text,
+            "street": streetController.value.text,
+            "direction": directionController.value.text,
+            "unit": unitController.value.text,
             "name": "Default",
             "isSelect": true,
           },

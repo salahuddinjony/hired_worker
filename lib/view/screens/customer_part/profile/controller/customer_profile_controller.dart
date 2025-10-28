@@ -39,7 +39,6 @@ class CustomerProfileController extends GetxController {
         directions: address.direction ?? '',
         isUpdate: true,
         name: address.name ?? '',
-
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -248,7 +247,7 @@ class CustomerProfileController extends GetxController {
   //   "name": savedLocationType.value,
   //   "isSelect": false,
   // };
-  Future<void> updateProfile({bool editLocations=false}) async {
+  Future<void> updateProfile({bool editLocations = false}) async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -460,11 +459,9 @@ class CustomerProfileController extends GetxController {
   //========= Address Management Methods ===========//
 
   // Show bottom sheet for address selection
-  void showAddressBottomSheet({bool isFromProfile = false}) { 
+  void showAddressBottomSheet({bool isFromProfile = false}) {
     Get.bottomSheet(
-       AddressSelectionBottomSheet( 
-        isFromProfile: isFromProfile, 
-      ),
+      AddressSelectionBottomSheet(isFromProfile: isFromProfile),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
