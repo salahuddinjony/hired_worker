@@ -74,14 +74,14 @@ class CustomServiceContractorCard extends StatelessWidget {
                             children: [
                               SizedBox(width: 5.w),
                               CustomText(
-                                text: (() {
-                                  final dp = (hourlyPrice ?? '').trim();
-                                  if (dp.isEmpty) return '';
-                                  return 'AUD $dp';
-                                })(),
-                                fontSize: 12.w,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
+                              text: (() {
+                                final dp = (hourlyPrice ?? '').trim();
+                                if (dp.isEmpty) return '';
+                                return '\$$dp';
+                              })(),
+                              fontSize: 12.w,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
                               ),
                             ],
                           ),

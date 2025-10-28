@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import '../controller/customer_profile_controller.dart';
 
@@ -18,6 +19,7 @@ class AddAddressBottomSheet extends StatefulWidget {
   final bool isUpdate;
   final String? name;
   final bool isFromProfile;
+  final bool isSignUp;
 
   const AddAddressBottomSheet({
     super.key,
@@ -30,6 +32,7 @@ class AddAddressBottomSheet extends StatefulWidget {
     this.directions,
     this.isUpdate = false,
     this.isFromProfile = false,
+    this.isSignUp = false,
     this.name,
   });
 
@@ -40,6 +43,7 @@ class AddAddressBottomSheet extends StatefulWidget {
 class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   final CustomerProfileController controller =
       Get.find<CustomerProfileController>();
+  final AuthController authController = Get.find<AuthController>();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController unitController = TextEditingController();
@@ -181,7 +185,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               // Address Field
               _buildTextField(
-                isUpdate: widget.isUpdate,
+                isUpdate: widget.isSignUp || widget.isUpdate,
                 controller: addressController,
                 hint: 'Address / Building Name',
                 icon: Icons.location_on_outlined,
@@ -232,6 +236,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   debugPrint('Address: ${addressController.text}');
                   debugPrint('Street: ${streetController.text}');
                   debugPrint('Unit/House: ${unitController.text}');
+                  debugPrint('Directions: ${directionsController.text}');
                   debugPrint('Type: $selectedType');
                   debugPrint('Latitude: $latitude');
                   debugPrint('Longitude: $longitude');
@@ -251,7 +256,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   }
 
                   try {
-                    if (widget.isUpdate) {
+                    if (widget.isUpdate && widget.isSignUp == false) {
                       debugPrint('Updating existing address...');
                       await controller.patchAddress(
                         locationId: widget.locationId ?? '',
@@ -275,6 +280,26 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                         name: selectedType,
                       );
                       debugPrint('Address updated successfully!');
+                      return;
+                    }
+                    if(widget.isSignUp){
+                      debugPrint('Saving address during sign-up...');
+                      authController.updateAddressFromMap({
+                        'address': addressController.text,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                        'street': streetController.text.isNotEmpty
+                            ? streetController.text
+                            : null,
+                        'unit': unitController.text.isNotEmpty
+                            ? unitController.text
+                            : null,
+                        'direction': directionsController.text.isNotEmpty
+                            ? directionsController.text
+                            : null,
+                      });
+                      debugPrint('Address saved to AuthController during sign-up!');
+                      Navigator.of(context).pop();
                       return;
                     }
 
@@ -328,8 +353,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     );
                   }
                 },
-                title:
-                    widget.isUpdate ? "Update Address".tr : "Save Address".tr,
+                title:widget.isSignUp? "Continue".tr:
+                    widget.isUpdate ? "Update Address".tr : "Save Address".tr, 
               ),
             ],
           ),

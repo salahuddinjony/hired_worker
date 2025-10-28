@@ -354,6 +354,7 @@ class HomeController extends GetxController {
         query: {
           if (subCategoryId != null) 'subCategory': subCategoryId,
           'limit': '1000',
+          // 'isHomeSelect': 'true'
         },
       );
 
@@ -402,7 +403,7 @@ class HomeController extends GetxController {
 
     try {
       final response = await ApiClient.getData(
-        ApiUrl.getContractorQuestions(subCategoryId: subCategoryId),
+        ApiUrl.getContractorQuestions(subCategoryId: '68fcec104dbf9a00eb739eb0'),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -742,6 +742,7 @@ class ContractorBookingController extends GetxController {
     required String subcategoryId,
     required String paymentedBookingId,
   }) async {
+
     isLoading.value = true;
 
     final customerId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -796,7 +797,7 @@ class ContractorBookingController extends GetxController {
       'customerId': customerId,
       'bookingId': paymentedBookingId,
       'contractorId': contractorId,
-      'subCategoryId': subcategoryId,
+      'subCategoryId': "68fcec104dbf9a00eb739eb0",
       'questions': questionsPayload,
       'material': materialsPayload,
       'bookingType': bookingType.value,
