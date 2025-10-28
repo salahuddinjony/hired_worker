@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,9 @@ void main() async {
     ),
   );
   final DependencyInjection di = DependencyInjection();
+
+  await dotenv.load(fileName: '.env');
+
   di.dependencies();
   // SocketApi.init();
   runApp(const MyApp());

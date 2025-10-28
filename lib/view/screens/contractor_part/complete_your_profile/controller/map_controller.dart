@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,7 +22,7 @@ class MapController extends GetxController {
   RxBool isClean = false.obs;
   var suggestions = <Map<String, dynamic>>[].obs;
   var selectedLocation = Rxn<Map<String, dynamic>>();
-  final String apiKey = AppConstants.mapApiKey;
+  final String apiKey = dotenv.env['API_KEY']!;
 
   @override
   void onInit() {
