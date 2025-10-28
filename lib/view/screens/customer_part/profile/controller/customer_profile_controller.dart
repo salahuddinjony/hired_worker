@@ -460,9 +460,11 @@ class CustomerProfileController extends GetxController {
   //========= Address Management Methods ===========//
 
   // Show bottom sheet for address selection
-  void showAddressBottomSheet() {
+  void showAddressBottomSheet({bool isFromProfile = false}) { 
     Get.bottomSheet(
-      const AddressSelectionBottomSheet(),
+       AddressSelectionBottomSheet( 
+        isFromProfile: isFromProfile, 
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
@@ -471,7 +473,7 @@ class CustomerProfileController extends GetxController {
   }
 
   // Navigate to map and then show add address dialog
-  Future<void> showAddAddressDialog() async {
+  Future<void> showAddAddressDialog({bool isFromProfile = false}) async {
     // First, navigate to map to pick location
     if (!Get.isRegistered<MapController>()) {
       Get.put(MapController());
@@ -494,6 +496,7 @@ class CustomerProfileController extends GetxController {
           address: address,
           latitude: latitude,
           longitude: longitude,
+          isFromProfile: isFromProfile,
         ),
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -509,6 +512,7 @@ class CustomerProfileController extends GetxController {
 
   // Add new address to the list
   void addNewAddress({
+    bool isFromProfile = false,
     required String title,
     required String address,
     String? unit,
@@ -521,44 +525,44 @@ class CustomerProfileController extends GetxController {
     debugPrint('Title: $title');
     debugPrint('Address: $address');
     // PATCH address for a specific location
-    Future<void> patchAddress({
-      required String locationId,
-      required String address,
-      required List<double> coordinates,
-    }) async {
-      try {
-        final String userId = await SharePrefsHelper.getString(
-          AppConstants.userId,
-        );
-        final Map<String, dynamic> body = {
-          "address": address,
-          "street": streetController.text,
-          "unit": unitController.text,
-          "coordinates": coordinates,
-          "detraction": directionsController.text,
-          "name": addressNameController.text,
-        };
-        final response = await ApiClient.patchData(
-          "/customers/$userId/locations/$locationId",
-          jsonEncode(body),
-        );
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          showCustomSnackBar(
-            response.body['message'] ?? "Address updated successfully",
-            isError: false,
-          );
-          getMe();
-          Get.back();
-        } else {
-          showCustomSnackBar(
-            response.body['message'] ?? "Something went wrong",
-            isError: true,
-          );
-        }
-      } catch (e) {
-        showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-      }
-    }
+    // Future<void> patchAddress({
+    //   required String locationId,
+    //   required String address,
+    //   required List<double> coordinates,
+    // }) async {
+    //   try {
+    //     final String userId = await SharePrefsHelper.getString(
+    //       AppConstants.userId,
+    //     );
+    //     final Map<String, dynamic> body = {
+    //       "address": address,
+    //       "street": streetController.text,
+    //       "unit": unitController.text,
+    //       "coordinates": coordinates,
+    //       "detraction": directionsController.text,
+    //       "name": addressNameController.text,
+    //     };
+    //     final response = await ApiClient.patchData(
+    //       "/customers/$userId/locations/$locationId",
+    //       jsonEncode(body),
+    //     );
+    //     if (response.statusCode == 200 || response.statusCode == 201) {
+    //       showCustomSnackBar(
+    //         response.body['message'] ?? "Address updated successfully",
+    //         isError: false,
+    //       );
+    //       getMe();
+    //       Get.back();
+    //     } else {
+    //       showCustomSnackBar(
+    //         response.body['message'] ?? "Something went wrong",
+    //         isError: true,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    //   }
+    // }
 
     debugPrint('Unit: $unit');
     debugPrint('Street: $street');
@@ -605,6 +609,11 @@ class CustomerProfileController extends GetxController {
 
     // Trigger UI update
     savedAddresses.refresh();
+    if (isFromProfile) {
+      updateProfile(editLocations: true);
+    } else {
+      updateProfile();
+    }
 
     // Get.snackbar(
     //   '✓ Success'.tr,

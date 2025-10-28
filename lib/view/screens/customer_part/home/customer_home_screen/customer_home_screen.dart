@@ -141,328 +141,330 @@ class CustomerHomeScreen extends StatelessWidget {
 
                                   return GestureDetector(
                                     onTap: () {
-                                      // open draggable bottom sheet for selection
-                                      Get.bottomSheet(
-                                        DraggableScrollableSheet(
-                                          expand: false,
-                                          initialChildSize: 0.45,
-                                          minChildSize: 0.25,
-                                          maxChildSize: 0.9,
-                                          builder: (context, scrollController) {
-                                            return Container(
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  // Drag handle
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          vertical: 14.0,
-                                                        ),
-                                                    child: Center(
-                                                      child: Container(
-                                                        height: 6.h,
-                                                        width: 64.w,
-                                                        decoration: BoxDecoration(
-                                                          color:
-                                                              Colors.grey[300],
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                12,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 16.0,
-                                                        ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Select your address'
-                                                              .tr,
-                                                          style:
-                                                              const TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Get.back();
-                                                          },
-                                                          child: Text(
-                                                            'Close'.tr,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: ListView.separated(
-                                                      controller:
-                                                          scrollController,
-                                                      separatorBuilder:
-                                                          (_, __) => Padding(
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      16.0,
-                                                                ),
-                                                            child: Divider(
-                                                              height: 1,
-                                                              color:
-                                                                  Colors
-                                                                      .grey[300],
-                                                            ),
-                                                          ),
-                                                      itemCount:
-                                                          savedAddresses
-                                                              .length +
-                                                          1,
-                                                      itemBuilder: (
-                                                        context,
-                                                        index,
-                                                      ) {
-                                                        if (index == 0) {
-                                                          return InkWell(
-                                                            onTap: () async {
-                                                              Get.back();
-                                                              await customerProfileController
-                                                                  .showAddAddressDialog();
-                                                            },
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        16.0,
-                                                                    vertical:
-                                                                        14.0,
-                                                                  ),
-                                                              child: Row(
-                                                                children: [
-                                                                  Container(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                          8.0,
-                                                                        ),
-                                                                    decoration: BoxDecoration(
-                                                                      color: AppColors
-                                                                          .primary
-                                                                          .withValues(
-                                                                            alpha:
-                                                                                .12,
-                                                                          ),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            10,
-                                                                          ),
-                                                                    ),
-                                                                    child: const Icon(
-                                                                      Icons
-                                                                          .add_location_alt_outlined,
-                                                                      color:
-                                                                          AppColors
-                                                                              .primary,
-                                                                      size: 20,
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 14.w,
-                                                                  ),
-                                                                  Expanded(
-                                                                    child: Text(
-                                                                      'Add New Address'
-                                                                          .tr,
-                                                                      style: TextStyle(
-                                                                        fontSize:
-                                                                            16.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w700,
-                                                                        color:
-                                                                            AppColors.primary,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
+                                        customerProfileController.showAddressBottomSheet( isFromProfile: true);
 
-                                                        final addr =
-                                                            savedAddresses[index -
-                                                                1];
-                                                        final isSelected =
-                                                            addr.isSelected ==
-                                                            true;
+                                      // // open draggable bottom sheet for selection
+                                      // Get.bottomSheet(
+                                      //   DraggableScrollableSheet(
+                                      //     expand: false,
+                                      //     initialChildSize: 0.45,
+                                      //     minChildSize: 0.25,
+                                      //     maxChildSize: 0.9,
+                                      //     builder: (context, scrollController) {
+                                      //       return Container(
+                                      //         decoration: const BoxDecoration(
+                                      //           color: Colors.white,
+                                      //           borderRadius: BorderRadius.only(
+                                      //             topLeft: Radius.circular(16),
+                                      //             topRight: Radius.circular(16),
+                                      //           ),
+                                      //         ),
+                                      //         child: Column(
+                                      //           children: [
+                                      //             // Drag handle
+                                      //             Padding(
+                                      //               padding:
+                                      //                   const EdgeInsets.symmetric(
+                                      //                     vertical: 14.0,
+                                      //                   ),
+                                      //               child: Center(
+                                      //                 child: Container(
+                                      //                   height: 6.h,
+                                      //                   width: 64.w,
+                                      //                   decoration: BoxDecoration(
+                                      //                     color:
+                                      //                         Colors.grey[300],
+                                      //                     borderRadius:
+                                      //                         BorderRadius.circular(
+                                      //                           12,
+                                      //                         ),
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //             Padding(
+                                      //               padding:
+                                      //                   const EdgeInsets.symmetric(
+                                      //                     horizontal: 16.0,
+                                      //                   ),
+                                      //               child: Row(
+                                      //                 mainAxisAlignment:
+                                      //                     MainAxisAlignment
+                                      //                         .spaceBetween,
+                                      //                 children: [
+                                      //                   Text(
+                                      //                     'Select your address'
+                                      //                         .tr,
+                                      //                     style:
+                                      //                         const TextStyle(
+                                      //                           fontSize: 16,
+                                      //                           fontWeight:
+                                      //                               FontWeight
+                                      //                                   .w600,
+                                      //                         ),
+                                      //                   ),
+                                      //                   TextButton(
+                                      //                     onPressed: () {
+                                      //                       Get.back();
+                                      //                     },
+                                      //                     child: Text(
+                                      //                       'Close'.tr,
+                                      //                     ),
+                                      //                   ),
+                                      //                 ],
+                                      //               ),
+                                      //             ),
+                                      //             Expanded(
+                                      //               child: ListView.separated(
+                                      //                 controller:
+                                      //                     scrollController,
+                                      //                 separatorBuilder:
+                                      //                     (_, __) => Padding(
+                                      //                       padding:
+                                      //                           const EdgeInsets.symmetric(
+                                      //                             horizontal:
+                                      //                                 16.0,
+                                      //                           ),
+                                      //                       child: Divider(
+                                      //                         height: 1,
+                                      //                         color:
+                                      //                             Colors
+                                      //                                 .grey[300],
+                                      //                       ),
+                                      //                     ),
+                                      //                 itemCount:
+                                      //                     savedAddresses
+                                      //                         .length +
+                                      //                     1,
+                                      //                 itemBuilder: (
+                                      //                   context,
+                                      //                   index,
+                                      //                 ) {
+                                      //                   if (index == 0) {
+                                      //                     return InkWell(
+                                      //                       onTap: () async {
+                                      //                         Get.back();
+                                      //                         await customerProfileController
+                                      //                             .showAddAddressDialog();
+                                      //                       },
+                                      //                       child: Padding(
+                                      //                         padding:
+                                      //                             const EdgeInsets.symmetric(
+                                      //                               horizontal:
+                                      //                                   16.0,
+                                      //                               vertical:
+                                      //                                   14.0,
+                                      //                             ),
+                                      //                         child: Row(
+                                      //                           children: [
+                                      //                             Container(
+                                      //                               padding:
+                                      //                                   const EdgeInsets.all(
+                                      //                                     8.0,
+                                      //                                   ),
+                                      //                               decoration: BoxDecoration(
+                                      //                                 color: AppColors
+                                      //                                     .primary
+                                      //                                     .withValues(
+                                      //                                       alpha:
+                                      //                                           .12,
+                                      //                                     ),
+                                      //                                 borderRadius:
+                                      //                                     BorderRadius.circular(
+                                      //                                       10,
+                                      //                                     ),
+                                      //                               ),
+                                      //                               child: const Icon(
+                                      //                                 Icons
+                                      //                                     .add_location_alt_outlined,
+                                      //                                 color:
+                                      //                                     AppColors
+                                      //                                         .primary,
+                                      //                                 size: 20,
+                                      //                               ),
+                                      //                             ),
+                                      //                             SizedBox(
+                                      //                               width: 14.w,
+                                      //                             ),
+                                      //                             Expanded(
+                                      //                               child: Text(
+                                      //                                 'Add New Address'
+                                      //                                     .tr,
+                                      //                                 style: TextStyle(
+                                      //                                   fontSize:
+                                      //                                       16.sp,
+                                      //                                   fontWeight:
+                                      //                                       FontWeight.w700,
+                                      //                                   color:
+                                      //                                       AppColors.primary,
+                                      //                                 ),
+                                      //                               ),
+                                      //                             ),
+                                      //                           ],
+                                      //                         ),
+                                      //                       ),
+                                      //                     );
+                                      //                   }
 
-                                                        return InkWell(
-                                                          onTap: () {
-                                                            final idx =
-                                                                savedAddresses
-                                                                    .indexWhere(
-                                                                      (a) =>
-                                                                          a.id ==
-                                                                          addr.id,
-                                                                    );
-                                                            if (idx != -1) {
-                                                              // Select locally and close the sheet immediately
-                                                              customerProfileController
-                                                                  .selectAddress(
-                                                                    idx,
-                                                                  );
-                                                              Get.back();
+                                      //                   final addr =
+                                      //                       savedAddresses[index -
+                                      //                           1];
+                                      //                   final isSelected =
+                                      //                       addr.isSelected ==
+                                      //                       true;
 
-                                                              // Fire the network update in background (don't await)
-                                                              customerProfileController
-                                                                  .updateProfile();
-                                                            }
-                                                          },
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      16.0,
-                                                                  vertical:
-                                                                      14.0,
-                                                                ),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                // Radio outer circle with inner dot when selected
-                                                                Container(
-                                                                  width: 28,
-                                                                  height: 28,
-                                                                  decoration: BoxDecoration(
-                                                                    shape:
-                                                                        BoxShape
-                                                                            .circle,
-                                                                    border: Border.all(
-                                                                      color:
-                                                                          isSelected
-                                                                              ? AppColors.primary
-                                                                              : Colors.grey[350]!,
-                                                                      width:
-                                                                          2.2,
-                                                                    ),
-                                                                    color:
-                                                                        isSelected
-                                                                            ? AppColors.primary.withValues(
-                                                                              alpha:
-                                                                                  .08,
-                                                                            )
-                                                                            : Colors.transparent,
-                                                                  ),
-                                                                  child: Center(
-                                                                    child:
-                                                                        isSelected
-                                                                            ? Container(
-                                                                              width:
-                                                                                  12,
-                                                                              height:
-                                                                                  12,
-                                                                              decoration: const BoxDecoration(
-                                                                                color:
-                                                                                    AppColors.primary,
-                                                                                shape:
-                                                                                    BoxShape.circle,
-                                                                              ),
-                                                                            )
-                                                                            : const SizedBox.shrink(),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 14.w,
-                                                                ),
-                                                                Expanded(
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        addr.title.isNotEmpty
-                                                                            ? addr.title
-                                                                            : 'Other',
-                                                                        style: TextStyle(
-                                                                          fontSize:
-                                                                              16.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w700,
-                                                                          color:
-                                                                              AppColors.black_08,
-                                                                        ),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            6.h,
-                                                                      ),
-                                                                      Text(
-                                                                        addr.address,
-                                                                        style: TextStyle(
-                                                                          fontSize:
-                                                                              14.sp,
-                                                                          color: const Color(
-                                                                            0xff7D8796,
-                                                                          ),
-                                                                        ),
-                                                                        maxLines:
-                                                                            2,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
-                                                                      if (addr
-                                                                          .city
-                                                                          .isNotEmpty) ...[
-                                                                        SizedBox(
-                                                                          height:
-                                                                              6.h,
-                                                                        ),
-                                                                        Text(
-                                                                          addr.city,
-                                                                          style: TextStyle(
-                                                                            fontSize:
-                                                                                12.sp,
-                                                                            color:
-                                                                                Colors.grey[600],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                        backgroundColor: Colors.transparent,
-                                        isScrollControlled: true,
-                                      );
+                                      //                   return InkWell(
+                                      //                     onTap: () {
+                                      //                       final idx =
+                                      //                           savedAddresses
+                                      //                               .indexWhere(
+                                      //                                 (a) =>
+                                      //                                     a.id ==
+                                      //                                     addr.id,
+                                      //                               );
+                                      //                       if (idx != -1) {
+                                      //                         // Select locally and close the sheet immediately
+                                      //                         customerProfileController
+                                      //                             .selectAddress(
+                                      //                               idx,
+                                      //                             );
+                                      //                         Get.back();
+
+                                      //                         // Fire the network update in background (don't await)
+                                      //                         customerProfileController
+                                      //                             .updateProfile();
+                                      //                       }
+                                      //                     },
+                                      //                     child: Padding(
+                                      //                       padding:
+                                      //                           const EdgeInsets.symmetric(
+                                      //                             horizontal:
+                                      //                                 16.0,
+                                      //                             vertical:
+                                      //                                 14.0,
+                                      //                           ),
+                                      //                       child: Row(
+                                      //                         crossAxisAlignment:
+                                      //                             CrossAxisAlignment
+                                      //                                 .center,
+                                      //                         children: [
+                                      //                           // Radio outer circle with inner dot when selected
+                                      //                           Container(
+                                      //                             width: 28,
+                                      //                             height: 28,
+                                      //                             decoration: BoxDecoration(
+                                      //                               shape:
+                                      //                                   BoxShape
+                                      //                                       .circle,
+                                      //                               border: Border.all(
+                                      //                                 color:
+                                      //                                     isSelected
+                                      //                                         ? AppColors.primary
+                                      //                                         : Colors.grey[350]!,
+                                      //                                 width:
+                                      //                                     2.2,
+                                      //                               ),
+                                      //                               color:
+                                      //                                   isSelected
+                                      //                                       ? AppColors.primary.withValues(
+                                      //                                         alpha:
+                                      //                                             .08,
+                                      //                                       )
+                                      //                                       : Colors.transparent,
+                                      //                             ),
+                                      //                             child: Center(
+                                      //                               child:
+                                      //                                   isSelected
+                                      //                                       ? Container(
+                                      //                                         width:
+                                      //                                             12,
+                                      //                                         height:
+                                      //                                             12,
+                                      //                                         decoration: const BoxDecoration(
+                                      //                                           color:
+                                      //                                               AppColors.primary,
+                                      //                                           shape:
+                                      //                                               BoxShape.circle,
+                                      //                                         ),
+                                      //                                       )
+                                      //                                       : const SizedBox.shrink(),
+                                      //                             ),
+                                      //                           ),
+                                      //                           SizedBox(
+                                      //                             width: 14.w,
+                                      //                           ),
+                                      //                           Expanded(
+                                      //                             child: Column(
+                                      //                               crossAxisAlignment:
+                                      //                                   CrossAxisAlignment
+                                      //                                       .start,
+                                      //                               children: [
+                                      //                                 Text(
+                                      //                                   addr.title.isNotEmpty
+                                      //                                       ? addr.title
+                                      //                                       : 'Other',
+                                      //                                   style: TextStyle(
+                                      //                                     fontSize:
+                                      //                                         16.sp,
+                                      //                                     fontWeight:
+                                      //                                         FontWeight.w700,
+                                      //                                     color:
+                                      //                                         AppColors.black_08,
+                                      //                                   ),
+                                      //                                 ),
+                                      //                                 SizedBox(
+                                      //                                   height:
+                                      //                                       6.h,
+                                      //                                 ),
+                                      //                                 Text(
+                                      //                                   addr.address,
+                                      //                                   style: TextStyle(
+                                      //                                     fontSize:
+                                      //                                         14.sp,
+                                      //                                     color: const Color(
+                                      //                                       0xff7D8796,
+                                      //                                     ),
+                                      //                                   ),
+                                      //                                   maxLines:
+                                      //                                       2,
+                                      //                                   overflow:
+                                      //                                       TextOverflow.ellipsis,
+                                      //                                 ),
+                                      //                                 if (addr
+                                      //                                     .city
+                                      //                                     .isNotEmpty) ...[
+                                      //                                   SizedBox(
+                                      //                                     height:
+                                      //                                         6.h,
+                                      //                                   ),
+                                      //                                   Text(
+                                      //                                     addr.city,
+                                      //                                     style: TextStyle(
+                                      //                                       fontSize:
+                                      //                                           12.sp,
+                                      //                                       color:
+                                      //                                           Colors.grey[600],
+                                      //                                     ),
+                                      //                                   ),
+                                      //                                 ],
+                                      //                               ],
+                                      //                             ),
+                                      //                           ),
+                                      //                         ],
+                                      //                       ),
+                                      //                     ),
+                                      //                   );
+                                      //                 },
+                                      //               ),
+                                      //             ),
+                                      //           ],
+                                      //         ),
+                                      //       );
+                                      //     },
+                                      //   ),
+                                      //   backgroundColor: Colors.transparent,
+                                      //   isScrollControlled: true,
+                                      // );
                                     },
                                     child: Row(
                                       children: [
@@ -490,7 +492,8 @@ class CustomerHomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                   );
-                                }),
+                                }
+                                ),
                               ],
                             ),
                           ],

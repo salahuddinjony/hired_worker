@@ -17,6 +17,7 @@ class AddAddressBottomSheet extends StatefulWidget {
   final String? directions;
   final bool isUpdate;
   final String? name;
+  final bool isFromProfile;
 
   const AddAddressBottomSheet({
     super.key,
@@ -28,6 +29,7 @@ class AddAddressBottomSheet extends StatefulWidget {
     this.unit,
     this.directions,
     this.isUpdate = false,
+    this.isFromProfile = false,
     this.name,
   });
 
@@ -299,6 +301,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                               : null,
                       latitude: latitude,
                       longitude: longitude,
+                      isFromProfile: widget.isFromProfile,
                     );
 
                     debugPrint('Address saved successfully!');
