@@ -25,23 +25,28 @@ class CustomerProfileController extends GetxController {
     addressNameController.text = address.title;
     streetController.text = address.street ?? '';
     unitController.text = address.unit ?? '';
-    directionsController.text = address.directions ?? '';
+    directionsController.text = address.direction ?? '';
 
     // Show bottom sheet for editing
     Get.bottomSheet(
       AddAddressBottomSheet(
+        locationId: address.id,
         address: address.address,
         latitude: address.latitude,
         longitude: address.longitude,
         unit: address.unit ?? '',
         street: address.street ?? '',
-        directions: address.directions ?? '',
+        directions: address.direction ?? '',
+        isUpdate: true,
+        name: address.name ?? '',
+
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
     );
   }
+
   // PATCH address for a specific location
   Future<void> patchAddress({
     required String locationId,
@@ -53,13 +58,13 @@ class CustomerProfileController extends GetxController {
     String? name,
   }) async {
     try {
-      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+      final String userId = customerModel.value.data?.customer?.id ?? '';
       final Map<String, dynamic> body = {
         "address": address,
         "street": street ?? streetController.text,
         "unit": unit ?? unitController.text,
         "coordinates": coordinates,
-        "detraction": directions ?? directionsController.text,
+        "direction": directions ?? directionsController.text,
         "name": name ?? addressNameController.text,
       };
       final response = await ApiClient.patchData(
@@ -187,7 +192,6 @@ class CustomerProfileController extends GetxController {
                 double? latitude;
                 double? longitude;
                 if (loc.coordinates != null && loc.coordinates!.isNotEmpty) {
-                  // Defensive: coordinates should be [longitude, latitude]
                   longitude =
                       loc.coordinates!.length > 0 ? loc.coordinates![0] : null;
                   latitude =
@@ -198,8 +202,12 @@ class CustomerProfileController extends GetxController {
                       loc.id ??
                       DateTime.now().millisecondsSinceEpoch.toString(),
                   title: loc.name ?? '',
+                  name: loc.name ?? '',
                   address: loc.address ?? '',
                   city: cityController.value.text,
+                  street: loc.street,
+                  unit: loc.unit,
+                  direction: loc.direction,
                   latitude: latitude,
                   longitude: longitude,
                   isSelected: loc.isSelect ?? false,
@@ -240,7 +248,7 @@ class CustomerProfileController extends GetxController {
   //   "name": savedLocationType.value,
   //   "isSelect": false,
   // };
-  Future<void> updateProfile() async {
+  Future<void> updateProfile({bool editLocations=false}) async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -256,7 +264,7 @@ class CustomerProfileController extends GetxController {
                 "name": addr.title,
                 "street": addr.street ?? '',
                 "unit": addr.unit ?? '',
-                "directions": addr.directions ?? '',
+                "direction": addr.direction ?? '',
                 "isSelect": addr.isSelected,
               },
             )
@@ -332,7 +340,10 @@ class CustomerProfileController extends GetxController {
         isError: false,
       );
       getMe();
-      Get.back();
+      if (!editLocations) {
+        Get.back(); // Close address bottom sheet if open
+      }
+      // Get.back();
     } else {
       updateProfileStatus.value = RxStatus.success();
       showCustomSnackBar("Something went wrong", isError: false);
@@ -566,7 +577,7 @@ class CustomerProfileController extends GetxController {
       address: address,
       unit: unit,
       street: street,
-      directions: directions,
+      direction: directions,
       city:
           cityController.value.text.isNotEmpty
               ? cityController.value.text

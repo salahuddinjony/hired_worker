@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/global/general_controller/general_controller.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as html_parser;
@@ -23,27 +24,36 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Privacy Policy".tr),
       body: Obx(
-        () => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SingleChildScrollView(
-            child: Html(
-              data: cleanHtml(generalController.privacy.value),
-              style: {
-                "body": Style(
-                  fontSize: FontSize(18.w),
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  textAlign: TextAlign.justify,
-                  margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
+        () {
+          if (generalController.privacy.value.isEmpty) {
+            return const Center(
+              child: CustomLoader(),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: SingleChildScrollView(
+              child: SafeArea(
+                child: Html(
+                  data: cleanHtml(generalController.privacy.value),
+                  style: {
+                    "body": Style(
+                      fontSize: FontSize(18.w),
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w400,
+                      textAlign: TextAlign.justify,
+                      margin: Margins.zero,
+                      padding: HtmlPaddings.zero,
+                    ),
+                    "p": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                    "div": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                    "br": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                  },
                 ),
-                "p": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                "div": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                "br": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-              },
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
