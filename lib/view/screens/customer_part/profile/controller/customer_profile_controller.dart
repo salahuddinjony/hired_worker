@@ -94,7 +94,7 @@ class CustomerProfileController extends GetxController {
     savedAddresses.removeWhere((a) => a.id == address.id);
     savedAddresses.refresh();
     // Optionally update profile on backend
-    updateProfile();
+    updateProfile(editLocations: true);
   }
 
   @override

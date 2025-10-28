@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import '../controller/customer_profile_controller.dart';
 
 class AddAddressBottomSheet extends StatefulWidget {
@@ -22,7 +23,7 @@ class AddAddressBottomSheet extends StatefulWidget {
     required this.address,
     this.latitude,
     this.locationId,
-    this.longitude,   
+    this.longitude,
     this.street,
     this.unit,
     this.directions,
@@ -42,20 +43,19 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   final TextEditingController unitController = TextEditingController();
   final TextEditingController directionsController = TextEditingController();
   String selectedType = 'Home';
+  double? latitude;
+  double? longitude;
 
   @override
   void initState() {
     super.initState();
-    addressController.text =widget.address;
+    addressController.text = widget.address;
     streetController.text = widget.street ?? '';
     unitController.text = widget.unit ?? '';
     directionsController.text = widget.directions ?? '';
     selectedType = widget.name ?? 'Home';
-    // If editing, try to infer address type from widget.street/unit/directions/title
-    if (widget.isUpdate) {
-
-     
-    }
+    latitude = widget.latitude;
+    longitude = widget.longitude;
   }
 
   @override
@@ -124,28 +124,31 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   ),
                   SizedBox(width: 12.w),
                   CustomText(
-                    text: widget.isUpdate ? "Update Address".tr : "Address Details".tr,
+                    text:
+                        widget.isUpdate
+                            ? "Update Address".tr
+                            : "Address Details".tr,
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
                   ),
 
                   const Spacer(),
-                       GestureDetector(
-                  onTap: () => Get.back(),
-                  child: Container(
-                    padding: EdgeInsets.all(6.w),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.close,
-                      size: 18.sp,
-                      color: Colors.grey[600],
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        size: 18.sp,
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ),
-                ),
                 ],
               ),
 
@@ -176,6 +179,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               // Address Field
               _buildTextField(
+                isUpdate: widget.isUpdate,
                 controller: addressController,
                 hint: 'Address / Building Name',
                 icon: Icons.location_on_outlined,
@@ -227,6 +231,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   debugPrint('Street: ${streetController.text}');
                   debugPrint('Unit/House: ${unitController.text}');
                   debugPrint('Type: $selectedType');
+                  debugPrint('Latitude: $latitude');
+                  debugPrint('Longitude: $longitude');
 
                   if (addressController.text.isEmpty) {
                     debugPrint('Error: Address is empty');
@@ -247,14 +253,10 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                       debugPrint('Updating existing address...');
                       await controller.patchAddress(
                         locationId: widget.locationId ?? '',
-                        address:
-                            (streetController.text.isNotEmpty
-                                ? '${streetController.text}, '
-                                : '') +
-                            addressController.text,
+                        address: addressController.text,
                         coordinates: [
-                          if (widget.latitude != null) widget.latitude!,
-                          if (widget.longitude != null) widget.longitude!,
+                          if (latitude != null) latitude!,
+                          if (longitude != null) longitude!,
                         ],
                         street:
                             streetController.text.isNotEmpty
@@ -295,8 +297,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                           directionsController.text.isNotEmpty
                               ? directionsController.text
                               : null,
-                      latitude: widget.latitude,
-                      longitude: widget.longitude,
+                      latitude: latitude,
+                      longitude: longitude,
                     );
 
                     debugPrint('Address saved successfully!');
@@ -313,8 +315,6 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     // Open saved addresses list
                     controller.showAddressBottomSheet();
                     debugPrint('✅ showAddressBottomSheet() called');
-
-
                   } catch (e) {
                     debugPrint('❌ Error saving address: $e');
                     Get.snackbar(
@@ -325,7 +325,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     );
                   }
                 },
-                title: widget.isUpdate ? "Update Address".tr : "Save Address".tr,
+                title:
+                    widget.isUpdate ? "Update Address".tr : "Save Address".tr,
               ),
             ],
           ),
@@ -395,6 +396,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   }
 
   Widget _buildTextField({
+    bool isUpdate = false,
     required TextEditingController controller,
     required String hint,
     IconData? icon,
@@ -409,7 +411,39 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
       child: Row(
         children: [
           if (icon != null) ...[
-            Icon(icon, color: AppColors.primary, size: 20.sp),
+            GestureDetector(
+              onTap: () async {
+                if (isUpdate) {
+                  debugPrint('Edit icon tapped - to open map screen ');
+                  if (!Get.isRegistered<MapController>()) {
+                    Get.put(MapController());
+                  }
+
+                  final result = await Get.toNamed(
+                    '/SeletedMapScreen',
+                    arguments: {'returnData': true},
+                  );
+
+                  // If location is selected, update address, latitude, longitude
+                  if (result != null && result is Map<String, dynamic>) {
+                    final address = result['address'] ?? '';
+                    final lat = result['latitude'];
+                    final lng = result['longitude'];
+                    setState(() {
+                      addressController.text = address;
+                      latitude =
+                          lat is double ? lat : double.tryParse(lat.toString());
+                      longitude =
+                          lng is double ? lng : double.tryParse(lng.toString());
+                    });
+                  }
+                } else {
+                  debugPrint('Icon tapped - no action defined yet.');
+                  return null;
+                }
+              },
+              child: Icon(icon, color: AppColors.primary, size: 20.sp),
+            ),
             SizedBox(width: 12.w),
           ],
           Expanded(
