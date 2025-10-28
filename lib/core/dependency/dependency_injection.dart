@@ -19,7 +19,6 @@ import 'package:servana/view/screens/contractor_part/profile/schedule_screen/con
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/payment_webview_screen/payment_webview_controller.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/controller/conversation_controller.dart';
-import 'package:servana/view/screens/message/controller/message_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../../view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
 import '../../view/screens/contractor_part/complete_your_profile/controller/certificate_upload_controller.dart';

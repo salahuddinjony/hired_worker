@@ -11,7 +11,6 @@ import 'package:servana/view/screens/contractor_part/profile/subcategory/sub_cat
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
-import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -32,7 +31,6 @@ import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.
 import '../../view/screens/contractor_part/home/on_going_screen/upload_photo_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_details_screen_2.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
 import '../../view/screens/contractor_part/profile/edit_profile_screen/edit_profile_screen.dart';

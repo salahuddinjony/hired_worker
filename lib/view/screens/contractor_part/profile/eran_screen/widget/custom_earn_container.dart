@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/utils.dart';
-import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/withdraw_history_model.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';

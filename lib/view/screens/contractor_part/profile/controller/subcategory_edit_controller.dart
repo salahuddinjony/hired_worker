@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/sub_category_model.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 
-import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';

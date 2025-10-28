@@ -87,7 +87,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
                                     controller.materialsAndQuantity.length,
                                 itemBuilder: (context, index) {
                                   final material = controller.materialsAndQuantity[index];
-                                  int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
+                                  final int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
                                   int minCount = 0;
                                   if (isUpdate && index < controller.originalMaterialCounts.length) {
                                     minCount = controller.originalMaterialCounts[index];
