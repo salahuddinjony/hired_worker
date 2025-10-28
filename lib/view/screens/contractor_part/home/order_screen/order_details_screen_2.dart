@@ -7,7 +7,6 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/widget/custom_delivered_service_card.dart';
-import 'package:servana/view/screens/contractor_part/home/order_screen/widget/custom_service_request_card.dart';
 import 'package:servana/view/screens/customer_part/order/controller/customer_order_controller.dart';
 
 import '../../../../../utils/helper_methods/helper_methods.dart';

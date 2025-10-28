@@ -14,13 +14,13 @@ class ConversationController extends GetxController with MixinChatConversation {
     loadConversations();
 
     await getRole();
-    String roles = await SharePrefsHelper.getString(AppConstants.role);
+    final String roles = await SharePrefsHelper.getString(AppConstants.role);
     debugPrint("User Role================>> $roles");
-    debugPrint("User Role bool================>> ${this.thisRole.value}");
+    debugPrint("User Role bool================>> ${thisRole.value}");
   }
 
   Future<void> getRole() async {
-    String role = await SharePrefsHelper.getString(AppConstants.role);
+    final String role = await SharePrefsHelper.getString(AppConstants.role);
     thisRole.value = role == "customer" ? true : false;
   }
 

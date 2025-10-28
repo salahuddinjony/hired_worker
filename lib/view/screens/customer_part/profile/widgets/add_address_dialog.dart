@@ -236,7 +236,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
                       snackPosition: SnackPosition.BOTTOM,
-                      margin: EdgeInsets.all(16),
+                      margin: const EdgeInsets.all(16),
                       borderRadius: 8,
                     );
                     return;

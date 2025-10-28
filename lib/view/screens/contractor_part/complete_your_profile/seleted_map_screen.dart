@@ -23,13 +23,6 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
   void initState() {
     super.initState();
     mapController = Get.find<MapController>();
-
-    if (mapController.cameraPosition.value == null) {
-      mapController.cameraPosition.value = const CameraPosition(
-        target: LatLng(37.7749, -122.4194),
-        zoom: 12,
-      );
-    }
   }
 
   @override
@@ -50,7 +43,7 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
 
           Obx(() {
             return GoogleMap(
-              initialCameraPosition: mapController.cameraPosition.value!,
+              initialCameraPosition: mapController.cameraPosition.value,
               onMapCreated: mapController.onMapCreated,
               markers: mapController.markers.toSet(),
               myLocationEnabled: false,

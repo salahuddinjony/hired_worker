@@ -70,6 +70,9 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_html: ^3.0.0
 
+  meta: any
+  flutter_chat_types: any
+  uuid: any
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1 
   change_app_package_name: ^1.1.0

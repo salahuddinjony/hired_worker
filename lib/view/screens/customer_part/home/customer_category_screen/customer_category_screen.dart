@@ -32,8 +32,8 @@ class CustomerCategoryScreen extends StatelessWidget {
           }
 
           // Calculate how many empty cells are needed to center the loading indicator
-          int crossAxisCount = 3;
-          int remainder = categorys.length % crossAxisCount;
+          const int crossAxisCount = 3;
+          final int remainder = categorys.length % crossAxisCount;
           int extraCells = 0;
           if (homeController.categoryHasMoreData.value) {
             if (remainder == 1) {

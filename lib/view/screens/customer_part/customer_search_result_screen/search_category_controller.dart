@@ -59,7 +59,7 @@ class SearchCategoryController extends GetxController {
       };
       
       // Make API call with searchTerm as query parameter
-      Response response = await ApiClient.getData(
+      final Response response = await ApiClient.getData(
         ApiUrl.categories,
         query: queryParameters,
       );

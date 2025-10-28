@@ -1079,7 +1079,7 @@ class ContractorBookingController extends GetxController {
         // Final fallback
         if (errorMsg.isEmpty) errorMsg = 'Failed to update booking';
 
-        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        EasyLoading.showInfo(errorMsg, duration: const Duration(seconds: 3));
         isLoading.value = false;
         return false;
       }

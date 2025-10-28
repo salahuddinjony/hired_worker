@@ -38,7 +38,7 @@ class CreateHelpController extends GetxController {
       EasyLoading.show();
 
       // Make API call
-      Response response = await ApiClient.postData(ApiUrl.createSupport, body);
+      final Response response = await ApiClient.postData(ApiUrl.createSupport, body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData =
