@@ -83,10 +83,6 @@ class _SkillsEditScreenState extends State<SkillsEditScreen> {
               "Add your skills and expertise.".tr,
               style: const TextStyle(color: Colors.black87),
             ),
-            Text(
-              "You can always change it later.".tr,
-              style: const TextStyle(color: Colors.black54),
-            ),
             const SizedBox(height: 24),
 
             // Skill Input Section

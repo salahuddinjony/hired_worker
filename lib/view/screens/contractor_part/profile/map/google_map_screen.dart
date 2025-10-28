@@ -65,7 +65,6 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         });
       }
     } catch (e) {
-      debugPrint('xxx ${e.toString()}');
       setState(() {
         errorMessage = 'Please enter a location (e.g., "Central Park, NY" or "1600 Pennsylvania Ave")';
         isLoading = false;
@@ -100,7 +99,6 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
 
   @override
   void dispose() {
-    // Only dispose of mapController if it's initialized
     mapController?.dispose();
     super.dispose();
   }
