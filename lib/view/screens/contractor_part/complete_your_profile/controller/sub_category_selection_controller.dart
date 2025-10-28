@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/sub_category_model.dart';
@@ -46,8 +48,8 @@ class SubCategorySelectionController extends GetxController {
     }
   }
 
-  Future<void> updateContractorData(String? subCategoryId) async {
-    if (subCategoryId == null) {
+  Future<void> updateContractorData(List<String> subCategoryId) async {
+    if (subCategoryId.isEmpty) {
       return;
     }
 
@@ -56,7 +58,7 @@ class SubCategorySelectionController extends GetxController {
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
     final String uri = '${ApiUrl.updateUser}/$userId';
 
-    final Map<String, String> body = {'data': '{"subCategory": "$subCategoryId"}'};
+    final Map<String, String> body = {'data': jsonEncode({"subCategory": subCategoryId.toList()})};
 
     try {
       final response = await ApiClient.patchMultipartData(
