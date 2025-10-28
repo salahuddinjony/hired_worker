@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
+import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/components/extension/extension.dart';
 import '../controller/customer_profile_controller.dart';
 import '../model/address_model.dart';
 
 class AddressSelectionBottomSheet extends StatelessWidget {
-  const AddressSelectionBottomSheet({super.key});
+  final bool isFromProfile;
+
+  const AddressSelectionBottomSheet({super.key, this.isFromProfile = false});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +102,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 Get.back();
-                controller.showAddAddressDialog();
+                controller.showAddAddressDialog(isFromProfile: isFromProfile);
               },
               borderRadius: BorderRadius.circular(12.r),
               child: Container(
@@ -194,8 +197,27 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                           return _AddressItem(
                             address: address,
                             onTap: () {
-                              controller.selectAddress(index);
-                              Get.back();
+                              if (isFromProfile) {
+                                final savedAddresses =
+                                    controller.savedAddresses;
+                                final selectedAddress =
+                                    controller.getSelectedAddress();
+                                final idx = savedAddresses.indexWhere(
+                                  (a) => a.id == address.id,
+                                );
+                                if (idx != -1) {
+                                  // Select locally and close the sheet immediately
+                                  controller.selectAddress(idx);
+                                  Get.back();
+
+                                  // Fire the network update in background (don't await)
+                                  controller.updateProfile();
+                                }
+                                return;
+                              } else {
+                                controller.selectAddress(index);
+                                Get.back();
+                              }
                             },
                           );
                         },
