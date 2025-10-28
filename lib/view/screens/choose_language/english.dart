@@ -121,7 +121,6 @@ Map<String, String> english = {
   "History Status": "History Status",
   "Time": "Time",
   "Select Category": "Select Category",
-  "Sub Category": "Sub Category",
   "Status": "Status",
   "Service provider": "Service provider",
   "Update": "Update",
@@ -140,6 +139,7 @@ Map<String, String> english = {
   "Search......": "Search......",
   "My Balance": "My Balance",
   "Call": "Call",
+  "Save": "Save",
   "Rating": "Rating",
   "Edit Profile": "Edit Profile",
   "Service Request History": "Service Request History",
@@ -167,4 +167,5 @@ Map<String, String> english = {
       "Add your skills above to get started",
   "Add at least one skill to continue": "Add at least one skill to continue",
   "Photo Upload": "Photo Upload",
+  "Skill": "Skills",
 };

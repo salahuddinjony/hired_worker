@@ -6,6 +6,8 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_c
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/ongoing_order_details_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
+import 'package:servana/view/screens/contractor_part/profile/skill/skills_edit_screen.dart';
+import 'package:servana/view/screens/contractor_part/profile/subcategory/sub_category_edit_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
@@ -82,8 +84,10 @@ class AppRoutes {
   static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
   static const String categorySeletedScreen = "/CategorySeletedScreen";
   static const String subCategorySelectedScreen = "/SubCategorySelectedScreen";
+  static const String subCategoryEditScreen = "/SubCategoryEditScreen";
   static const String certificateScreen = "/CertificateScreen";
   static const String skillsAddScreen = "/SkillsAddScreen";
+  static const String skillsEditScreen = "/SkillsEditScreen";
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
   static const String orderDetailsScreen1 = "/OrderDetailsScreen1";
@@ -155,8 +159,10 @@ class AppRoutes {
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
     GetPage(name: subCategorySelectedScreen, page: () => SubCategorySelectedScreen()),
+    GetPage(name: subCategoryEditScreen, page: () => SubCategoryEditScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
+    GetPage(name: skillsEditScreen, page: () => SkillsEditScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: orderDetailsScreen1, page: () => OrderDetailsScreen1()),

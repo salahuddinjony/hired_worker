@@ -114,20 +114,20 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                      profileController
-                          .contractorModel
-                          .value
-                          .data
-                          ?.contractor
-                          ?.balance
-                          .toString() ??
+                          profileController
+                              .contractorModel
+                              .value
+                              .data
+                              ?.contractor
+                              ?.balance
+                              .toString() ??
                           " - ",
                       title: "Total Earning this month".tr,
                     ),
                     CustomHomeCard(
                       text:
-                      homeController.bookingModel.value.meta?.total
-                          .toString() ??
+                          homeController.bookingModel.value.meta?.total
+                              .toString() ??
                           " - ",
                       title: "Total Service".tr,
                       imageSrc: AppIcons.iconTwo,
@@ -142,15 +142,15 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                      homeController.bookingModel.value.data?.length
-                          .toString() ??
+                          homeController.bookingModel.value.data?.length
+                              .toString() ??
                           " - ",
                       title: "Recent Services".tr,
                       imageSrc: AppIcons.iconFour,
                     ),
                     CustomHomeCard(
                       text:
-                      "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
+                          "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
                       title: "Current billing price".tr,
                       imageSrc: AppIcons.iconThree,
                     ),
@@ -202,6 +202,47 @@ class ProfileScreen extends StatelessWidget {
               ),
               CustomProfileMenuList(
                 onTap: () {
+                  Get.toNamed(
+                    AppRoutes.subCategoryEditScreen,
+                    arguments: {
+                      'id':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .category,
+                      'service': profileController
+                          .contractorModel
+                          .value
+                          .data!
+                          .contractor!
+                          .subCategory,
+                    },
+                  );
+                },
+                image: AppIcons.totalService,
+                name: "Sub Category".tr,
+              ),
+              CustomProfileMenuList(
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.skillsEditScreen,
+                    arguments: {
+                      'skill': profileController
+                          .contractorModel
+                          .value
+                          .data!
+                          .contractor!
+                          .skills,
+                    },
+                  );
+                },
+                image: AppIcons.sklils,
+                name: "Skill".tr,
+              ),
+              CustomProfileMenuList(
+                onTap: () {
                   Get.toNamed(AppRoutes.eranScreen);
                 },
                 image: AppIcons.eran,
@@ -222,7 +263,7 @@ class ProfileScreen extends StatelessWidget {
                 image: AppIcons.call,
                 name: "Support".tr,
               ),
-               CustomProfileMenuList(
+              CustomProfileMenuList(
                 iconData: Icons.lock,
                 name: "Change Password".tr,
                 onTap: () {
