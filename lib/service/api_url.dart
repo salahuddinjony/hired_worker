@@ -1,14 +1,4 @@
 class ApiUrl {
-  // static const String baseUrl = "http://13.237.45.213/api/v1";
-  static const String imageUrl = "https://backend.servana.com.au/api/v1";
-  // static const String imageUrl = "http://3.27.248.133:5002/api/v1";
-  // static const String baseUrl = "https://backend.servana.com.au/api/v1";
-  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
-
-  // static const String baseUrl = "http://3.27.248.133:5002/api/v1";
-  // static String socketUrl = "https://backend.servana.com.au";
-    static String socketUrl = "https://backend.servana.com.au";
-  // static String socketUrl = "http://3.27.248.133:5002";
   // static const String imageUrl = "https://backend.servana.com.au/api/v1";
   // static const String baseUrl = "https://backend.servana.com.au/api/v1";
   // static String socketUrl = "https://backend.servana.com.au";
