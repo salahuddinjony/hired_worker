@@ -274,7 +274,7 @@ class MapController extends GetxController {
         isClean.value = true;
       } else {
         suggestions.clear();
-        Get.snackbar('Error', 'No suggestions found for "$query".');
+        // Get.snackbar('Error', 'No suggestions found for "$query".');
       }
     } catch (e) {
       suggestions.clear();
@@ -323,7 +323,7 @@ class MapController extends GetxController {
         );
         suggestions.clear();
       } else {
-        Get.snackbar('Error', 'No results found for selected place.');
+        // Get.snackbar('Error', 'No results found for selected place.');
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to search place: $e');
@@ -375,7 +375,7 @@ class MapController extends GetxController {
           CameraUpdate.newCameraPosition(cameraPosition.value),
         );
       } else {
-        Get.snackbar('Error', 'No results found for "$query".');
+        // Get.snackbar('Error', 'No results found for "$query".');
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to search place: $e');

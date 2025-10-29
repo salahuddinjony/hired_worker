@@ -21,15 +21,19 @@ class ProfileController extends GetxController {
 
   //========= update profile controller ===========//
   Rx<TextEditingController> nameController = TextEditingController().obs;
+  Rx<TextEditingController> bioController = TextEditingController().obs;
+  Rx<TextEditingController> experienceController = TextEditingController().obs;
   Rx<TextEditingController> phoneController = TextEditingController().obs;
-  Rx<TextEditingController> cityController = TextEditingController().obs;
+  // Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
 
   initUserProfileInfoTextField(Data data) {
     nameController.value.text = data.fullName ?? '';
     phoneController.value.text = data.contactNo ?? '';
     dobController.value.text = data.contractor?.dob.toString() ?? '';
-    cityController.value.text = data.contractor?.location?.address ?? '';
+    // cityController.value.text = data.contractor?.location?.address ?? '';
+    bioController.value.text = data.contractor?.bio ?? "";
+    experienceController.value.text = data.contractor?.experience ?? "";
     customController.selectedGender.value = data.contractor?.gender ?? '';
   }
 
@@ -130,13 +134,11 @@ class ProfileController extends GetxController {
     final Map<String, String> body = {
       'fullName': nameController.value.text,
       'contactNo': phoneController.value.text,
-      'city': cityController.value.text,
+      // 'city': cityController.value.text,
       'dob': dobController.value.text,
+      'experience': experienceController.value.text,
+      'bio': bioController.value.text,
       'gender': customController.selectedGender.value,
-      
-
-
-
     };
 
     if (selectedImage.value != null) {
