@@ -510,7 +510,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     'hourlyRate': booking.rateHourly ?? 0,
                     'bookingId': booking.id,
                     'isUpdate': true,
-                    'PaymentedTotalAmount': booking.totalAmount ?? 0,
+                    'paymentedTotalAmount':booking.totalAmount ?? 0,
                     'subCategoryImage': booking.subCategoryId?.img ?? '',
                   },
                 );

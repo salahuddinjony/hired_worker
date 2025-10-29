@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
@@ -30,10 +32,15 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
     final Map<String, dynamic> args = Get.arguments ?? {};
 
     final dynamic contractor = args['contractorDetails'];
+    debugPrint("Received contractorDetails: ${contractor.toString()}");
     allContractor? contractorData =
         contractor is allContractor ? contractor : null;
-    final String userId = args['id']?.toString() ?? contractorData?.userId.id ?? '';
+    final String userId =
+        args['id']?.toString() ?? contractorData?.userId.id ?? '';
     debugPrint("Received userId: $userId");
+
+    final String receivedSubCategoryId = args['subCategoryId'] ?? '';
+    debugPrint("Received subCategoryId: $receivedSubCategoryId");
 
     if (userId.isNotEmpty) {
       if (contractorData == null) {
@@ -99,14 +106,14 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           debugPrint("Image URL for contractor: '$imgUrl'");
           debugPrint("Contractor data exists: ${contractorData != null}");
           debugPrint("Contractor userId.img: '${contractorData?.userId.img}'");
-          
+
           final String fullName =
               contractorData?.userId.fullName ??
               (reviewUser != null ? (reviewUser['fullName'] ?? '') : '');
           final String role =
               contractorData?.userId.role ??
               (reviewUser != null ? (reviewUser['role'] ?? '') : '');
-          final String location = contractorData?.location ?? '';
+          final String location = contractorData?.location?.address ?? '';
           final String ratingsStr =
               contractorData != null
                   ? contractorData.ratings.toString()
@@ -121,6 +128,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
           final String rateHourlyStr =
               contractorData?.rateHourly.toString() ?? '';
           final List<String> skills = contractorData?.skills ?? <String>[];
+          final List<SubCategoryModel> subCategories =
+              receivedSubCategoryId.isNotEmpty
+                  ? contractorData?.subCategory
+                          .where((sub) => sub.id == receivedSubCategoryId)
+                          .toList() ??
+                      <SubCategoryModel>[]
+                  : contractorData?.subCategory ?? <SubCategoryModel>[];
           final scheduleModel = contractorData?.myScheduleId;
           final String bio = contractorData?.bio ?? '';
 
@@ -172,7 +186,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                           ? location
                                               .split(",")
                                               .reversed
-                                              .take(3)
+                                              .take(2)
                                               .toList()
                                               .reversed
                                               .join(", ")
@@ -188,13 +202,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            const CustomImage(imageSrc: AppIcons.callCircle),
-                            SizedBox(width: 12.w),
-                            const CustomImage(imageSrc: AppIcons.heartMajor),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     const CustomImage(imageSrc: AppIcons.callCircle),
+                        //     SizedBox(width: 12.w),
+                        //     const CustomImage(imageSrc: AppIcons.heartMajor),
+                        //   ],
+                        // ),
                       ],
                     ),
                     SizedBox(height: 20.h),
@@ -212,7 +226,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                const CustomImage(imageSrc: AppImages.likeImage),
+                                const CustomImage(
+                                  imageSrc: AppImages.likeImage,
+                                ),
                                 CustomText(
                                   text: ratingsStr,
                                   fontSize: 16.w,
@@ -229,7 +245,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                const CustomImage(imageSrc: AppImages.clickImage),
+                                const CustomImage(
+                                  imageSrc: AppImages.clickImage,
+                                ),
                                 CustomText(
                                   text: '0',
                                   fontSize: 16.w,
@@ -347,22 +365,54 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  text: "Skills Category".tr,
+                                  text: "Skills Service".tr,
                                   fontSize: 12.w,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.black_08,
                                 ),
-                                CustomText(
-                                  text:
-                                      (contractorData != null &&
-                                              contractorData
-                                                  .skillsCategory
-                                                  .isNotEmpty)
-                                          ? contractorData.skillsCategory
-                                          : "Home Repair & Maintenance",
-                                  fontSize: 14.w,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
+                                SizedBox(height: 4.h),
+                                Row(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl:
+                                          contractorData?.category?.img ?? '',
+                                      imageBuilder:
+                                          (context, imageProvider) => Container(
+                                            width: 25.w,
+                                            height: 25.w,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                      placeholder:
+                                          (context, url) =>
+                                              const CircularProgressIndicator(),
+                                      errorWidget:
+                                          (context, url, error) => Icon(
+                                            Icons.category,
+                                            size: 16.w,
+                                            color: AppColors.black_08,
+                                          ),
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    CustomText(
+                                      text:
+                                          (contractorData
+                                                      ?.category
+                                                      ?.name
+                                                      .isNotEmpty ==
+                                                  true)
+                                              ? contractorData!.category!.name
+                                              : "N/A",
+                                      fontSize: 14.w,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -371,6 +421,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8.h),
+
                     // Individual Skills
                     // Align(
                     //   alignment: Alignment.centerLeft,
@@ -384,15 +435,350 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                     // ),
                     SkillsList(skills: skills),
                     SizedBox(height: 20.h),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Card(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 0.w,
+                            vertical: 12.h,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.task_alt,
+                                  color: Colors.white,
+                                  size: 20.w,
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: "Tasks (Select a task)".tr,
+                                      fontSize: 16.w,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // SizedBox(width: 8.w),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Get.snackbar(
+                              //       "How to select".tr,
+                              //       "Tap a task card below. Selected task will be highlighted and used for booking."
+                              //           .tr,
+                              //       snackPosition: SnackPosition.BOTTOM,
+                              //       backgroundColor: Colors.black.withValues(
+                              //         alpha: .8,
+                              //       ),
+                              //       colorText: Colors.white,
+                              //     );
+                              //   },
+                              //   borderRadius: BorderRadius.circular(20.r),
+                              //   child: Container(
+                              //     padding: EdgeInsets.symmetric(
+                              //       horizontal: 10.w,
+                              //       vertical: 6.h,
+                              //     ),
+                              //     decoration: BoxDecoration(
+                              //       color: AppColors.primary.withValues(alpha: .1),
+                              //       borderRadius: BorderRadius.circular(20.r),
+                              //     ),
+                              //     child: Row(
+                              //       children: [
+                              //         Icon(
+                              //           Icons.info_outline,
+                              //           color: AppColors.primary,
+                              //           size: 16.w,
+                              //         ),
+                              //         SizedBox(width: 6.w),
+                              //         CustomText(
+                              //           text: "How".tr,
+                              //           fontSize: 12.w,
+                              //           fontWeight: FontWeight.w600,
+                              //           color: AppColors.primary,
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Subcategories List
+                    subCategories.isEmpty
+                        ? CustomText(
+                          text: "No tasks available".tr,
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black_08,
+                          bottom: 10.h,
+                        )
+                        : SizedBox(
+                          height: 125.h,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: subCategories.length,
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                            itemBuilder: (context, index) {
+                              final sub = subCategories[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  if (!receivedSubCategoryId.isNotEmpty) {
+                                    homeController.selectedCategoryId.value =
+                                        sub.id;
+                                  }
+                                },
+                                child:
+                                    receivedSubCategoryId.isNotEmpty
+                                        ? SizedBox(
+                                          width: 100.w,
+                                          child: Card(
+                                            color:
+                                                receivedSubCategoryId ==
+                                                            sub.id ||
+                                                        homeController
+                                                                .selectedCategoryId
+                                                                .value ==
+                                                            sub.id
+                                                    ? AppColors.primary
+                                                    : AppColors.white,
+                                            elevation: 1,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 12,
+                                                  ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  if (receivedSubCategoryId ==
+                                                      sub.id)
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Icon(
+                                                        Icons
+                                                            .check_circle_rounded,
+                                                        size: 14.w,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  Container(
+                                                    width: 40.w,
+                                                    height: 40.w,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        color:
+                                                            receivedSubCategoryId ==
+                                                                        sub.id ||
+                                                                    homeController
+                                                                            .selectedCategoryId
+                                                                            .value ==
+                                                                        sub.id
+                                                                ? AppColors
+                                                                    .white
+                                                                : AppColors
+                                                                    .primary,
+                                                        width: 2.w,
+                                                      ),
+                                                    ),
+                                                    child: CircleAvatar(
+                                                      radius: 20.w,
+                                                      backgroundColor:
+                                                          AppColors.black_08,
+                                                      backgroundImage:
+                                                          sub.img.isNotEmpty
+                                                              ? CachedNetworkImageProvider(
+                                                                sub.img,
+                                                              )
+                                                              : null,
+                                                      child:
+                                                          sub.img.isEmpty
+                                                              ? Icon(
+                                                                Icons.person,
+                                                                size: 24.w,
+                                                                color:
+                                                                    Colors
+                                                                        .white,
+                                                              )
+                                                              : null,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 8.h),
+                                                  CustomText(
+                                                    text: sub.name,
+                                                    fontSize: 12.w,
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        receivedSubCategoryId ==
+                                                                    sub.id ||
+                                                                homeController
+                                                                        .selectedCategoryId
+                                                                        .value ==
+                                                                    sub.id
+                                                            ? AppColors.white
+                                                            : AppColors
+                                                                .black_08,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        : Obx(
+                                          () => SizedBox(
+                                            width: 100.w,
+                                            child: Card(
+                                              color:
+                                                  receivedSubCategoryId ==
+                                                              sub.id ||
+                                                          homeController
+                                                                  .selectedCategoryId
+                                                                  .value ==
+                                                              sub.id
+                                                      ? AppColors.primary
+                                                      : AppColors.white,
+                                              elevation: 1,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 12,
+                                                    ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    if (receivedSubCategoryId ==
+                                                            sub.id ||
+                                                        homeController
+                                                                .selectedCategoryId
+                                                                .value ==
+                                                            sub.id)
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        child: Icon(
+                                                          Icons
+                                                              .check_circle_rounded,
+                                                          size: 14.w,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    Container(
+                                                      width: 40.w,
+                                                      height: 40.w,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                          color:
+                                                              receivedSubCategoryId ==
+                                                                          sub.id ||
+                                                                      homeController
+                                                                              .selectedCategoryId
+                                                                              .value ==
+                                                                          sub.id
+                                                                  ? AppColors
+                                                                      .white
+                                                                  : AppColors
+                                                                      .primary,
+                                                          width: 2.w,
+                                                        ),
+                                                      ),
+                                                      child: CircleAvatar(
+                                                        radius: 20.w,
+                                                        backgroundColor:
+                                                            AppColors.black_08,
+                                                        backgroundImage:
+                                                            sub.img.isNotEmpty
+                                                                ? CachedNetworkImageProvider(
+                                                                  sub.img,
+                                                                )
+                                                                : null,
+                                                        child:
+                                                            sub.img.isEmpty
+                                                                ? Icon(
+                                                                  Icons.person,
+                                                                  size: 24.w,
+                                                                  color:
+                                                                      Colors
+                                                                          .white,
+                                                                )
+                                                                : null,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 8.h),
+                                                    CustomText(
+                                                      text: sub.name,
+                                                      fontSize: 12.w,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          receivedSubCategoryId ==
+                                                                      sub.id ||
+                                                                  homeController
+                                                                          .selectedCategoryId
+                                                                          .value ==
+                                                                      sub.id
+                                                              ? AppColors.white
+                                                              : AppColors
+                                                                  .black_08,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                              );
+                            },
+                          ),
+                        ),
+                    SizedBox(height: 20.h),
 
                     CustomButton(
                       onTap: () async {
                         final String subCategoryId =
-                            contractorData?.subCategory.id ?? '';
+                            receivedSubCategoryId.isNotEmpty
+                                ? receivedSubCategoryId
+                                : homeController.selectedCategoryId.value;
                         if (subCategoryId.isEmpty) {
-                          showCustomSnackBar(
-                            "Subcategory not available for booking.",
-                            isError: true,
+                          EasyLoading.showInfo(
+                            "Please select a task to proceed.".tr,
                           );
                           return;
                         }
@@ -412,7 +798,8 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             AppRoutes.customarQaScreen,
                             arguments: {
                               'contractorId': contractorData?.userId.id,
-                              'contractorIdForTimeSlot': contractorData?.userId.contractor,
+                              'contractorIdForTimeSlot':
+                                  contractorData?.userId.contractor,
                               'subcategoryId': subCategoryId,
                               'materials': itemsMaterials,
                               'questions': homeController.contractorQuestions,
@@ -421,9 +808,10 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                               'categoryName':
                                   contractorData?.skillsCategory ?? "N/A",
                               'subCategoryName':
-                                  contractorData?.subCategory.name ?? 'N/A',
+                                  contractorData?.subCategory.first.name ??
+                                  'N/A',
                               'subCategoryImage':
-                                  contractorData?.subCategory.img ?? '',
+                                  contractorData?.subCategory.first.img ?? '',
                             },
                           );
                         } else {

@@ -43,9 +43,9 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
             ? args['totalAmount']
             : int.tryParse(args['totalAmount']?.toString() ?? '0') ?? 0;
     final int paymentedTotalAmount =
-        args['PaymentedTotalAmount'] is int
-            ? args['PaymentedTotalAmount']
-            : int.tryParse(args['PaymentedTotalAmount']?.toString() ?? '0') ??
+        args['paymentedTotalAmount'] is int 
+            ? args['paymentedTotalAmount']
+            : int.tryParse(args['paymentedTotalAmount']?.toString() ?? '0') ??
                 0;
     final String bookingId =
         args['bookingId']?.toString() ??
@@ -82,6 +82,11 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
           controller.dayController.value.text =
               '${selectedDates.length} dates selected';
         }
+        // controller. = paymentedTotalAmount;
+        //also set total amount and already haved  previous materials if any
+
+
+      
 
         debugPrint('Initialized controller with existing booking data:');
         debugPrint('BookingType: $bookingType');
@@ -90,6 +95,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
         debugPrint('EndTime: $endTime');
         debugPrint('SelectedDates: $selectedDates');
         debugPrint('HourlyRate: $hourlyRate');
+   debugPrint("Paymented Total Amount received: $paymentedTotalAmount");
+    debugPrint("Hourly rate : $hourlyRate");
       }
     });
 
@@ -488,19 +495,32 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20.h),
                     CustomText(
-                      text: 'Charge /Hour AUD ${controller.hourlyRate}',
+                      text:isUpdate? 'Charge /Hour \$${hourlyRate}':'Charge /Hour \$${controller.hourlyRate}',
                       fontSize: 18.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
                       bottom: 8,
                     ),
                     Obx(() {
-                      final total = controller.calculateTotalPayableAmount();
-                      final hours = controller.durations.value;
+                      final duration = int.tryParse(controller.durations.value) ?? 1;
+                      final hourlyRate = controller.hourlyRate;
+                      final subtotal = duration * hourlyRate;
+                        final hours = controller.durations.value;
                       return CustomText(
-                        text: "Total: AUD $total ($hours Hours)",
+                        text: "Selected Duration: $hours hr(s)",
                         fontSize: 18.w,
                         fontWeight: FontWeight.w500,
+                        color: AppColors.black,
+                        bottom: 8,
+                      );
+                    }),
+                    Obx(() {
+                      final total = controller.calculateTotalPayableAmount();
+                    
+                      return CustomText(
+                        text: "Total: \$${total.toStringAsFixed(2)}",
+                        fontSize: 18.w,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.black,
                         bottom: 50,
                       );
@@ -734,7 +754,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                             'contractorName': contractorName,
                             'categoryName': categoryName,
                             'subCategoryName': subCategoryName,
-                            'PaymentedTotalAmount': paymentedTotalAmount,
+                            'paymentedTotalAmount': paymentedTotalAmount,
                             'updateBookingId': updateBookingId,
                           },
                         );

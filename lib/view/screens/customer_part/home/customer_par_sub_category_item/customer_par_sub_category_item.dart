@@ -29,7 +29,7 @@ class CustomerParSubCategoryItem extends StatelessWidget {
         homeController.getMoreSingleSubCategory(categoryId: id);
       }
     });
-
+    debugPrint("Fetching Sub Categories for Category ID: $id");
     homeController.getSingleSubCategory(categoryId: id);
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: name),
@@ -72,7 +72,7 @@ class CustomerParSubCategoryItem extends StatelessWidget {
                     image: data[index].img ?? '',
                     name: data[index].name ?? '',
                     onTap: () {
-                        homeController.getAllContactor();
+                        homeController.getAllContactor(subCategoryId: data[index].id.toString());
                       Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
                           arguments: {
                             'id': data[index].id.toString(), // subcategory id

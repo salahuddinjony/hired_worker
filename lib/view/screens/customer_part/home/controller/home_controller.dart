@@ -30,6 +30,10 @@ class HomeController extends GetxController {
       );
     });
   }
+RxString selectedCategoryId = ''.obs;
+
+
+
 
   // PageController for banners and current index observable (used by UI)
   PageController bannerPageController = PageController();
@@ -278,8 +282,11 @@ class HomeController extends GetxController {
     }
     try {
       final response = await ApiClient.getData(
-        ApiUrl.singleSubCategory(categoryId: categoryId),
-        query: {'page': page.toString(), 'limit': '500'},
+        ApiUrl.singleSubCategory,
+        query: {
+          'categoryId': categoryId,
+          'page': page.toString(), 
+          'limit': '500'},
       );
 
       final newFetchedData =
@@ -345,7 +352,8 @@ class HomeController extends GetxController {
   );
   RxList<allContractor> getAllContactorList = <allContractor>[].obs;
 
-  Future<void> getAllContactor({String? subCategoryId}) async {
+
+  Future<void> getAllContactor({String? subCategoryId, String? userId, bool isHomeSelect = true}) async {
     getAllServicesContractorStatus.value = RxStatus.loading();
 
     try {
@@ -354,14 +362,14 @@ class HomeController extends GetxController {
         query: {
           if (subCategoryId != null) 'subCategory': subCategoryId,
           'limit': '1000',
-          // 'isHomeSelect': 'true'
+          if (isHomeSelect) 'isHomeSelect': 'true',
+          if (userId != null) 'customerId': userId,
         },
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.body;
         debugPrint('Raw API response: $data');
-
         // Parse the response
         final contractorResponse = ContractorResponse.fromJson(data);
         getAllContactorList.value = contractorResponse.data;
@@ -390,7 +398,9 @@ class HomeController extends GetxController {
       getAllServicesContractorStatus.value = RxStatus.error();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-    }
+    } finally {
+      refresh();
+    } 
   }
 
   // get contractor question based on subCategory
@@ -403,7 +413,11 @@ class HomeController extends GetxController {
 
     try {
       final response = await ApiClient.getData(
-        ApiUrl.getContractorQuestions(subCategoryId: '68fcec104dbf9a00eb739eb0'),
+        ApiUrl.getContractorQuestions,
+        query: {
+          'limit': '500',
+          'subCategory': subCategoryId
+        }
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

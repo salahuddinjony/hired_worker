@@ -140,8 +140,10 @@ class CustomerHomeScreen extends StatelessWidget {
                                   }
 
                                   return GestureDetector(
-                                    onTap: () {
+                                    onTap: () async{
+                                      final userId = customerProfileController.customerModel.value.data?.id ?? '';
                                         customerProfileController.showAddressBottomSheet( isFromProfile: true);
+                                        await homeController.getAllContactor(isHomeSelect: false, userId: userId);
 
                                       // // open draggable bottom sheet for selection
                                       // Get.bottomSheet(
@@ -666,6 +668,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     image: categorys[index].img ?? AppConstants.electrician,
                     name: categorys[index].name,
                     onTap: () {
+                      debugPrint('Navigate with Category ID: ${categorys[index].id}');
                       Get.toNamed(
                         AppRoutes.customerParSubCategoryItem,
                         arguments: {
@@ -716,6 +719,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
+                        homeController.getAllContactor(isHomeSelect: false);
                         Get.toNamed(AppRoutes.customerServicesContractorScreen);
                       },
                       child: CustomText(

@@ -44,7 +44,7 @@ class CustomerServicesContractorScreen extends StatelessWidget {
                 ...categories.map((category) {
                   final categoryWiseContractors =
                       contractors.where((contractor) {
-                        if (category.id != contractor.category.id) {
+                        if (category.id != contractor.category?.id) {
                           return false;
                         }
                         return true;

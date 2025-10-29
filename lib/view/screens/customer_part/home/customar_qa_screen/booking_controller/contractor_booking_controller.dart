@@ -616,7 +616,7 @@ class ContractorBookingController extends GetxController {
   int get weeklyTotalAmount => totalDurationAmount * selectedDates.length;
 
   int calculateTotalPayableAmount() {
-    int total = 0;
+    int total =  0;
 
     if (bookingType.value == 'weekly' && selectedDates.length > 1) {
       total += weeklyTotalAmount;
@@ -797,7 +797,7 @@ class ContractorBookingController extends GetxController {
       'customerId': customerId,
       'bookingId': paymentedBookingId,
       'contractorId': contractorId,
-      'subCategoryId': "68fcec104dbf9a00eb739eb0",
+      'subCategoryId': subcategoryId,
       'questions': questionsPayload,
       'material': materialsPayload,
       'bookingType': bookingType.value,
