@@ -7,8 +7,8 @@ class ApiUrl {
 
   // static const String baseUrl = "http://3.27.248.133:5002/api/v1";
   // static String socketUrl = "https://backend.servana.com.au";
-    static String socketUrl = "https://backend.servana.com.au";
-  // static String socketUrl = "http://3.27.248.133:5002";
+  // static String socketUrl = "https://backend.servana.com.au";
+  static String socketUrl = "http://10.10.20.11:5002";
 
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
@@ -38,8 +38,7 @@ class ApiUrl {
   // static const String getAllBookings = "/bookings/all-bookings-by-user";
   static const String submitReview = "/reviews/create-review";
 
-  static String singleSubCategory({required String categoryId}) =>
-      "/sub-categories?categoryId=$categoryId";
+  static String singleSubCategory = "/sub-categories";
 
   static String allMessageRoom({required String userId}) =>
       "/chat-rooms/my-chat-list/$userId";
@@ -332,8 +331,7 @@ class ApiUrl {
   static const String amountTopUp = '/wallet/initiate-top-up';
 
   // get contractor question based on subCategory
-  static String getContractorQuestions({required String subCategoryId}) =>
-      "/questions/$subCategoryId";
+  static String getContractorQuestions = "/questions";
 
   //get all message rooms for user
   static String getAllMessages({required String conversationId}) =>
