@@ -459,9 +459,9 @@ class CustomerProfileController extends GetxController {
   //========= Address Management Methods ===========//
 
   // Show bottom sheet for address selection
-  void showAddressBottomSheet({bool isFromProfile = false}) {
+  void showAddressBottomSheet({bool isFromProfile = false, bool? useByUserId}) {
     Get.bottomSheet(
-      AddressSelectionBottomSheet(isFromProfile: isFromProfile),
+      AddressSelectionBottomSheet(isFromProfile: isFromProfile, useByUserId: useByUserId),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,

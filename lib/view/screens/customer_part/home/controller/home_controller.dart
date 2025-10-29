@@ -2,10 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'dart:async';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/service/api_check.dart';
 import 'package:servana/service/api_client.dart';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
+import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/models/contractor_question.dart';
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
@@ -57,7 +59,7 @@ RxString selectedCategoryId = ''.obs;
     super.onInit();
     getCategory();
     getSubCategory();
-    getAllContactor();
+    getAllContactor(isHomeSelect: true);
     getBanners();
 
     // Add scroll listener for category pagination
@@ -353,17 +355,18 @@ RxString selectedCategoryId = ''.obs;
   RxList<allContractor> getAllContactorList = <allContractor>[].obs;
 
 
-  Future<void> getAllContactor({String? subCategoryId, String? userId, bool isHomeSelect = true}) async {
+  Future<void> getAllContactor({String? subCategoryId, bool useByUserId = false, bool isHomeSelect = false}) async {
     getAllServicesContractorStatus.value = RxStatus.loading();
 
     try {
+      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
       final response = await ApiClient.getData(
         ApiUrl.getAllContractors,
         query: {
           if (subCategoryId != null) 'subCategory': subCategoryId,
           'limit': '1000',
           if (isHomeSelect) 'isHomeSelect': 'true',
-          if (userId != null) 'customerId': userId,
+          if (useByUserId == true) 'customerId': userId,
         },
       );
 
