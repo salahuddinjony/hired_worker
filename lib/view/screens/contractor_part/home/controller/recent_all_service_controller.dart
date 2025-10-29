@@ -23,7 +23,8 @@ class RecentAllServiceController extends GetxController {
       scrollController.addListener(() {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
-          getMoreRecentServices();
+          // only 10 booking will be shown
+          // getMoreRecentServices();
         }
       });
     });
