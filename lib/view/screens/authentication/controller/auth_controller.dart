@@ -219,6 +219,7 @@ class AuthController extends GetxController {
         switch (role) {
           case 'contractor':
             if (response.body['data']['profileCompletion'] < 80) {
+              showCustomSnackBar('Please provide complete information for your profile.', isError: false);
               Get.offAllNamed(AppRoutes.seletedMapScreen);
             } else {
               await SharePrefsHelper.setBool(AppStrings.isLoggedIn, true);

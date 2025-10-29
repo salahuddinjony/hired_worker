@@ -141,9 +141,10 @@ class EditProfileScreen extends StatelessWidget {
               ),
 
               CustomFormCard(
-                title: "City".tr,
+                title: "Location".tr,
                 controller: profileController.cityController.value,
                 hintText: 'City',
+                readOnly: true,
               ),
               SizedBox(height: 20.h),
               Obx(

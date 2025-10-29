@@ -114,7 +114,7 @@ class Contractor {
     String? bio;
     String? city;
     String? language;
-    String? location;
+    Location? location; // ✅ Changed from String? to Location?
     num? rateHourly;
     num? balance;
     String? skillsCategory;
@@ -144,7 +144,7 @@ class Contractor {
         this.bio,
         this.city,
         this.language,
-        this.location,
+        this.location, // ✅
         this.rateHourly,
         this.balance,
         this.skillsCategory,
@@ -175,7 +175,9 @@ class Contractor {
         bio: json["bio"],
         city: json["city"],
         language: json["language"],
-        location: json["location"],
+        location: json["location"] == null
+            ? null
+            : Location.fromJson(json["location"]), // ✅
         rateHourly: json["rateHourly"],
         balance: json["balance"],
         skillsCategory: json["skillsCategory"],
@@ -221,7 +223,7 @@ class Contractor {
         "bio": bio,
         "city": city,
         "language": language,
-        "location": location,
+        "location": location?.toJson(), // ✅
         "rateHourly": rateHourly,
         "balance": balance,
         "skillsCategory": skillsCategory,
@@ -244,6 +246,7 @@ class Contractor {
         "hasActiveSubscription": hasActiveSubscription,
     };
 }
+
 
 class Material {
     String? name;
@@ -338,6 +341,36 @@ class Schedule {
     Map<String, dynamic> toJson() => {
         "days": days,
         "timeSlots": timeSlots ?? [],
+        "_id": id,
+    };
+}
+
+class Location {
+    String? type;
+    List<num>? coordinates;
+    String? address;
+    String? id;
+
+    Location({
+        this.type,
+        this.coordinates,
+        this.address,
+        this.id,
+    });
+
+    factory Location.fromJson(Map<String, dynamic> json) => Location(
+        type: json["type"],
+        coordinates: json["coordinates"] == null
+            ? []
+            : List<num>.from(json["coordinates"].map((x) => x)),
+        address: json["address"],
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "type": type,
+        "coordinates": coordinates ?? [],
+        "address": address,
         "_id": id,
     };
 }

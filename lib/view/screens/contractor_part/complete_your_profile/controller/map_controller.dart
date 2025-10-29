@@ -7,16 +7,20 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:servana/service/api_url.dart';
 import 'package:servana/utils/app_const/app_const.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../customer_part/profile/model/user_model.dart';
 
 class MapController extends GetxController {
   // Observable variables
-  var cameraPosition =
-      const CameraPosition(target: LatLng(37.7749, -122.4194), zoom: 12).obs;
+  var cameraPosition = const CameraPosition(
+      target: LatLng(37.7749, -122.4194),
+      zoom: 12
+  ).obs;
   var markers = <Marker>{}.obs;
   GoogleMapController? mapController;
   RxBool isClean = false.obs;
@@ -24,11 +28,30 @@ class MapController extends GetxController {
   var selectedLocation = Rxn<Map<String, dynamic>>();
   final String apiKey = dotenv.env['API_KEY']!;
 
+  // for profile screen
+  double? longitude;
+  double? latitude;
+
   @override
   void onInit() {
     super.onInit();
-    _addInitialMarker();
-    getUserLocation();
+
+    longitude = Get.arguments != null && Get.arguments['long'] != null
+        ? (Get.arguments['long'] as num).toDouble()
+        : null;
+
+    latitude = Get.arguments != null && Get.arguments['lat'] != null
+        ? (Get.arguments['lat'] as num).toDouble()
+        : null;
+
+    // Only get user location if both latitude and longitude are null
+    if (latitude == null && longitude == null) {
+      _setDefaultLocation();
+    } else {
+      getUserLocation();
+    }
+
+    _addInitialMarker(latitude, longitude);
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -36,20 +59,94 @@ class MapController extends GetxController {
     update();
   }
 
-  void _addInitialMarker() {
+  void _addInitialMarker([double? lat, double? long]) {
     markers.add(
-      const Marker(
-        markerId: MarkerId('initial_marker'),
-        position: LatLng(37.7749, -122.4194),
-        infoWindow: InfoWindow(title: 'San Francisco'),
+      Marker(
+        markerId: const MarkerId('initial_marker'),
+        position: LatLng(lat ?? 37.7749, long ?? -122.4194),
+        infoWindow: const InfoWindow(title: 'San Francisco'),
       ),
     );
   }
 
+  // Set default location to San Francisco
+  void _setDefaultLocation() {
+    const double defaultLat = 37.7749;
+    const double defaultLng = -122.4194;
+
+    cameraPosition.value = const CameraPosition(
+      target: LatLng(defaultLat, defaultLng),
+      zoom: 12,
+    );
+
+    markers.add(
+      const Marker(
+        markerId: MarkerId('default_location'),
+        position: LatLng(defaultLat, defaultLng),
+        infoWindow: InfoWindow(title: 'San Francisco'),
+      ),
+    );
+
+    // Set default location as selected
+    selectedLocation.value = {
+      'latitude': defaultLat,
+      'longitude': defaultLng,
+      'address': 'San Francisco, CA, USA',
+    };
+
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(cameraPosition.value),
+    );
+  }
+
   Future<void> getUserLocation() async {
+    // If both latitude and longitude are provided, use them directly
+    if (latitude != null && longitude != null) {
+      final double targetLat = latitude!;
+      final double targetLng = longitude!;
+
+      cameraPosition.value = CameraPosition(
+        target: LatLng(targetLat, targetLng),
+        zoom: 15,
+      );
+
+      markers.add(
+        Marker(
+          markerId: const MarkerId('provided_location'),
+          position: LatLng(targetLat, targetLng),
+          infoWindow: const InfoWindow(title: 'Provided Location'),
+        ),
+      );
+
+      // Fetch address via reverse geocoding
+      final url =
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$targetLat,$targetLng&key=$apiKey';
+      final response = await http.get(Uri.parse(url));
+      final data = json.decode(response.body);
+
+      String address = 'Unknown Address';
+      if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+        address = data['results'][0]['formatted_address'];
+      }
+
+      // Set provided location as selected
+      selectedLocation.value = {
+        'latitude': targetLat,
+        'longitude': targetLng,
+        'address': address,
+      };
+
+      mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition.value),
+      );
+      return;
+    }
+
+    // Only get current device location if no coordinates are provided
     final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Get.snackbar('Error', 'Location services are disabled.');
+      _setDefaultLocation();
       return;
     }
 
@@ -58,19 +155,19 @@ class MapController extends GetxController {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         Get.snackbar('Error', 'Location permissions denied.');
+        _setDefaultLocation();
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       Get.snackbar('Error', 'Location permissions permanently denied.');
+      _setDefaultLocation();
       return;
     }
 
     final Position position = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
 
     cameraPosition.value = CameraPosition(
@@ -85,6 +182,7 @@ class MapController extends GetxController {
         infoWindow: const InfoWindow(title: 'Your Location'),
       ),
     );
+
     // Fetch address via reverse geocoding
     final url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$apiKey';
@@ -95,6 +193,7 @@ class MapController extends GetxController {
     if (data['status'] == 'OK' && data['results'].isNotEmpty) {
       address = data['results'][0]['formatted_address'];
     }
+
     // Set current location as selected by default
     selectedLocation.value = {
       'latitude': position.latitude,
@@ -167,10 +266,10 @@ class MapController extends GetxController {
             List<Map<String, dynamic>>.from(data['predictions'])
                 .map(
                   (prediction) => {
-                    'description': prediction['description'],
-                    'place_id': prediction['place_id'],
-                  },
-                )
+                'description': prediction['description'],
+                'place_id': prediction['place_id'],
+              },
+            )
                 .toList();
         isClean.value = true;
       } else {
@@ -291,7 +390,13 @@ class MapController extends GetxController {
     markers.clear();
     suggestions.clear();
     isClean.value = false;
-    getUserLocation();
+
+    // If both latitude and longitude are null, set default location
+    if (latitude == null && longitude == null) {
+      _setDefaultLocation();
+    } else {
+      getUserLocation();
+    }
   }
 
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
@@ -304,7 +409,15 @@ class MapController extends GetxController {
     final String uri = '${ApiUrl.updateUser}/$userId';
 
     final Map<String, String> body = {
-      'data': '{"location": "${selectedLocation.value?['address']}"}',
+      'data': jsonEncode({
+        "location": {
+          "address": selectedLocation.value?['address'],
+          "coordinates": [
+            selectedLocation.value?['longitude'],
+            selectedLocation.value?['latitude'],
+          ],
+        },
+      }),
     };
 
     try {
@@ -319,7 +432,18 @@ class MapController extends GetxController {
 
         status.value = RxStatus.success();
 
-        Get.toNamed(AppRoutes.scheduleSeletedScreen);
+        // if not come from profile screen, longitude would be null
+        if (longitude == null) {
+          Get.toNamed(AppRoutes.scheduleSeletedScreen);
+        } else {
+          Get.find<ProfileController>().getMe();
+          showCustomSnackBar(
+            "Your location has been updated to ${selectedLocation.value?['address']}",
+            isError: false,
+          );
+          Get.back();
+        }
+
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",
