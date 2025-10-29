@@ -14,21 +14,26 @@ import 'package:servana/view/screens/contractor_part/profile/model/material_mode
 import 'package:servana/view/screens/contractor_part/profile/model/notification_model.dart';
 
 import '../../../../../utils/app_strings/app_strings.dart';
+import '../../complete_your_profile/controller/map_controller.dart';
 
 class ProfileController extends GetxController {
   final CustomController customController = Get.find<CustomController>();
 
   //========= update profile controller ===========//
   Rx<TextEditingController> nameController = TextEditingController().obs;
+  Rx<TextEditingController> bioController = TextEditingController().obs;
+  Rx<TextEditingController> experienceController = TextEditingController().obs;
   Rx<TextEditingController> phoneController = TextEditingController().obs;
-  Rx<TextEditingController> cityController = TextEditingController().obs;
+  // Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
 
   initUserProfileInfoTextField(Data data) {
     nameController.value.text = data.fullName ?? '';
     phoneController.value.text = data.contactNo ?? '';
     dobController.value.text = data.contractor?.dob.toString() ?? '';
-    cityController.value.text = data.contractor?.location ?? '';
+    // cityController.value.text = data.contractor?.location?.address ?? '';
+    bioController.value.text = data.contractor?.bio ?? "";
+    experienceController.value.text = data.contractor?.experience ?? "";
     customController.selectedGender.value = data.contractor?.gender ?? '';
   }
 
@@ -64,6 +69,7 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
+
   //========= Customer Profile ===========//
   Rx<ContractorModel> contractorModel = ContractorModel().obs;
 
@@ -74,7 +80,7 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         contractorModel.value = ContractorModel.fromJson(response.body);
 
-        debugPrint('xxx - inside get me ${contractorModel.value.data!.contractor!.materials!.length}');
+        debugPrint('xxx - inside get me ${contractorModel.value.data!.fullName}');
 
         initUserProfileInfoTextField(contractorModel.value.data!);
 
@@ -128,13 +134,11 @@ class ProfileController extends GetxController {
     final Map<String, String> body = {
       'fullName': nameController.value.text,
       'contactNo': phoneController.value.text,
-      'city': cityController.value.text,
+      // 'city': cityController.value.text,
       'dob': dobController.value.text,
+      'experience': experienceController.value.text,
+      'bio': bioController.value.text,
       'gender': customController.selectedGender.value,
-      
-
-
-
     };
 
     if (selectedImage.value != null) {

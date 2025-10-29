@@ -7,7 +7,6 @@ import 'package:servana/helper/shared_prefe/shared_prefe.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/utils/app_icons/app_icons.dart';
-import 'package:servana/utils/app_strings/app_strings.dart';
 import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -15,8 +14,8 @@ import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
-import 'package:servana/view/screens/contractor_part/profile/map/google_map_screen.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
+import '../../map/google_map_screen.dart';
 import 'widget/custom_profile_menu_list.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -114,23 +113,29 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                      profileController
-                          .contractorModel
-                          .value
-                          .data
-                          ?.contractor
-                          ?.balance
-                          .toString() ??
+                          profileController
+                              .contractorModel
+                              .value
+                              .data
+                              ?.contractor
+                              ?.balance
+                              .toString() ??
                           " - ",
                       title: "Total Earning this month".tr,
                     ),
                     CustomHomeCard(
                       text:
-                      homeController.bookingModel.value.meta?.total
-                          .toString() ??
+                          homeController.bookingModel.value.meta?.total
+                              .toString() ??
                           " - ",
                       title: "Total Service".tr,
                       imageSrc: AppIcons.iconTwo,
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.recentAllServiceScreen,
+                          arguments: {"showTotalService": true},
+                        );
+                      },
                     ),
                   ],
                 );
@@ -142,15 +147,18 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                      homeController.bookingModel.value.data?.length
-                          .toString() ??
+                          homeController.bookingModel.value.data?.length
+                              .toString() ??
                           " - ",
                       title: "Recent Services".tr,
                       imageSrc: AppIcons.iconFour,
+                      onTap: () {
+                        Get.toNamed(AppRoutes.recentAllServiceScreen);
+                      },
                     ),
                     CustomHomeCard(
                       text:
-                      "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
+                          "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
                       title: "Current billing price".tr,
                       imageSrc: AppIcons.iconThree,
                     ),
@@ -161,17 +169,23 @@ class ProfileScreen extends StatelessWidget {
               // CustomProfileMenuList(),
               GestureDetector(
                 onTap: () {
-                  Get.to(
-                    GoogleMapScreen(
-                      location:
-                          profileController
-                              .contractorModel
-                              .value
-                              .data
-                              ?.contractor
-                              ?.location ??
-                          "",
-                    ),
+                  // Get.to(
+                  //   GoogleMapScreen(
+                  //     location:
+                  //         profileController
+                  //             .contractorModel
+                  //             .value
+                  //             .data
+                  //             ?.contractor
+                  //             ?.location
+                  //             ?.address ??
+                  //         "",
+                  //   ),
+                  // );
+
+                  Get.toNamed(AppRoutes.seletedMapScreen, arguments: {'long': profileController.contractorModel.value.data!.contractor!.location!.coordinates![0],
+                    'lat': profileController.contractorModel.value.data!.contractor!.location!.coordinates![1],
+                  },
                   );
                 },
                 child: CustomProfileMenuList(
@@ -202,6 +216,49 @@ class ProfileScreen extends StatelessWidget {
               ),
               CustomProfileMenuList(
                 onTap: () {
+                  Get.toNamed(
+                    AppRoutes.subCategoryEditScreen,
+                    arguments: {
+                      'id':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .category,
+                      'service':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .subCategory,
+                    },
+                  );
+                },
+                image: AppIcons.totalService,
+                name: "Sub Category".tr,
+              ),
+              CustomProfileMenuList(
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.skillsEditScreen,
+                    arguments: {
+                      'skill':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .skills,
+                    },
+                  );
+                },
+                image: AppIcons.sklils,
+                name: "Skill".tr,
+              ),
+              CustomProfileMenuList(
+                onTap: () {
                   Get.toNamed(AppRoutes.eranScreen);
                 },
                 image: AppIcons.eran,
@@ -222,7 +279,7 @@ class ProfileScreen extends StatelessWidget {
                 image: AppIcons.call,
                 name: "Support".tr,
               ),
-               CustomProfileMenuList(
+              CustomProfileMenuList(
                 iconData: Icons.lock,
                 name: "Change Password".tr,
                 onTap: () {
@@ -244,6 +301,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () async {
                   await SharePrefsHelper.logOut();
                   debugPrint("Logged out successfully");
+                  SharePrefsHelper.remove(AppConstants.isLoggedIn);
                   Get.offAllNamed(AppRoutes.loginScreen);
                 },
                 child: CustomText(

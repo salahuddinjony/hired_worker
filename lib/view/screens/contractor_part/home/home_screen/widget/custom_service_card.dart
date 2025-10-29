@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:servana/helper/time_converter/time_converter.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_icons/app_icons.dart';
-import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+import '../../../map/google_map_screen.dart';
 
 class CustomServiceCard extends StatelessWidget {
   final String title;
@@ -14,6 +15,10 @@ class CustomServiceCard extends StatelessWidget {
   final String hourlyRate;
   final String rating;
   final String? image;
+  final String? location;
+  final String? customerImage;
+  final String? customerName;
+  final String? subcategoryName;
 
   const CustomServiceCard({
     super.key,
@@ -22,7 +27,7 @@ class CustomServiceCard extends StatelessWidget {
     required this.hourlyRate,
     required this.rating,
     required this.status,
-    required this.image,
+    required this.image, this.location, this.customerImage, this.customerName, this.subcategoryName,
   });
 
   @override
@@ -49,7 +54,7 @@ class CustomServiceCard extends StatelessWidget {
                   topLeft: Radius.circular(13),
                   bottomLeft: Radius.circular(13),
                 ),
-                height: 110.h,
+                height: 155.h,
                 width: 150.w,
               ),
             Expanded(
@@ -95,25 +100,86 @@ class CustomServiceCard extends StatelessWidget {
                       bottom: 3.h,
                     ),
 
-                    const SizedBox(height: 4.0),
+                    const SizedBox(height: 6.0),
+                    Row(
+                      children: [
+                        CustomNetworkImage(
+                          imageUrl: customerImage ?? "",
+                          height: 20,
+                          width: 20,
+                          boxShape: BoxShape.circle,
+                        ),
+                        CustomText(
+                          left: 8,
+                          text:  customerName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 6.0),
+
+                    Row(
+                      children: [
+                        const Icon(Icons.home_repair_service, size: 20),
+                        CustomText(
+                          left: 8,
+                          text: subcategoryName ?? " - ",
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6.0),
+
 
                     CustomText(
-                      text: "\$ $hourlyRate/hour",
-                      fontSize: 12.w,
+                      text: "\$ $hourlyRate",
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black_04,
                       bottom: 3.h,
                     ),
-                    Row(
-                      children: [
-                        const CustomImage(imageSrc: AppIcons.filled),
-                        CustomText(
-                          text: rating,
-                          fontSize: 12.w,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
-                        ),
-                      ],
+                    // Row(
+                    //   children: [
+                    //     const CustomImage(imageSrc: AppIcons.filled),
+                    //     CustomText(
+                    //       text: rating,
+                    //       fontSize: 12.w,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: AppColors.black,
+                    //     ),
+                    //   ],
+                    // ),
+
+
+                    SizedBox(height: 6.h),
+
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => GoogleMapScreen(location: location ?? ""));
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 14,
+                            color: AppColors.blue,
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: CustomText(
+                              text: location ?? " - ",
+                              fontSize: 12.w,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

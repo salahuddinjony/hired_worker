@@ -6,17 +6,33 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text_field/custom_text_field.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
-
 import '../../../components/custom_loader/custom_loader.dart';
 
-class SelectedMapScreen extends StatelessWidget {
+class SelectedMapScreen extends StatefulWidget {
   const SelectedMapScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final MapController mapController = Get.find<MapController>();
-    final TextEditingController searchController = TextEditingController();
+  State<SelectedMapScreen> createState() => _SelectedMapScreenState();
+}
 
+class _SelectedMapScreenState extends State<SelectedMapScreen> {
+  late MapController mapController;
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = Get.find<MapController>();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomRoyelAppbar(
         leftIcon: true,
@@ -24,12 +40,8 @@ class SelectedMapScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Obx(() {
-            mapController.cameraPosition.value = const CameraPosition(
-              target: LatLng(37.7749, -122.4194),
-              zoom: 12,
-            );
 
+          Obx(() {
             return GoogleMap(
               initialCameraPosition: mapController.cameraPosition.value,
               onMapCreated: mapController.onMapCreated,
@@ -41,133 +53,136 @@ class SelectedMapScreen extends StatelessWidget {
                 mapController.onMapTap(position);
                 searchController.text =
                     mapController.selectedLocation.value?['address'] ??
-                    'San Francisco';
+                        'San Francisco';
                 mapController.setIsClean(true);
               },
             );
           }),
+
+
           Positioned(
             top: 30,
             right: 30,
             left: 30,
             child: Column(
               children: [
-                CustomTextField(
-                  textEditingController: searchController,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: AppColors.textCLr,
-                  ),
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      mapController.setIsClean(true);
-                      mapController.fetchPlaceSuggestions(value);
-                    } else {
-                      mapController.setIsClean(false);
-                      mapController.suggestions.clear();
-                    }
-                  },
-                  suffixIcon:
-                      mapController.isClean.value
-                          ? IconButton(
-                            icon: const Icon(
-                              Icons.clear,
+                Obx(() {
+                  return CustomTextField(
+                    textEditingController: searchController,
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: AppColors.textCLr,
+                    ),
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        mapController.setIsClean(true);
+                        mapController.fetchPlaceSuggestions(value);
+                      } else {
+                        mapController.setIsClean(false);
+                        mapController.suggestions.clear();
+                      }
+                    },
+                    suffixIcon: mapController.isClean.value
+                        ? IconButton(
+                      icon: const Icon(
+                        Icons.clear,
+                        color: AppColors.textCLr,
+                      ),
+                      onPressed: () {
+                        searchController.clear();
+                        mapController.clearSelectedLocation();
+                        mapController.suggestions.clear();
+                        mapController.setIsClean(false);
+                      },
+                    )
+                        : null,
+                    hintText: 'Enter your address'.tr,
+                    hintStyle: const TextStyle(color: AppColors.textCLr),
+                    fillColor: AppColors.white,
+                    onFieldSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        mapController.searchPlace(value);
+                        mapController.suggestions.clear();
+                      }
+                    },
+                  );
+                }),
+
+                Obx(() {
+                  if (mapController.suggestions.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Container(
+                    constraints: const BoxConstraints(maxHeight: 200),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: mapController.suggestions.length,
+                      itemBuilder: (context, index) {
+                        final suggestion =
+                        mapController.suggestions[index]['description'];
+                        return ListTile(
+                          title: Text(
+                            suggestion,
+                            style: const TextStyle(
                               color: AppColors.textCLr,
                             ),
-                            onPressed: () {
-                              searchController.clear();
-                              mapController.clearSelectedLocation();
-                            },
-                          )
-                          : null,
-                  hintText: 'Enter your address'.tr,
-                  hintStyle: const TextStyle(color: AppColors.textCLr),
-                  fillColor: AppColors.white,
-                  onFieldSubmitted: (value) {
-                    if (value.isNotEmpty) {
-                      mapController.searchPlace(value);
-                      mapController.suggestions.clear();
-                    }
-                  },
-                ),
-                Obx(
-                  () =>
-                      mapController.suggestions.isNotEmpty
-                          ? Container(
-                            constraints: const BoxConstraints(maxHeight: 200),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: mapController.suggestions.length,
-                              itemBuilder: (context, index) {
-                                final suggestion =
-                                    mapController
-                                        .suggestions[index]['description'];
-                                return ListTile(
-                                  title: Text(
-                                    suggestion,
-                                    style: const TextStyle(
-                                      color: AppColors.textCLr,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    searchController.text = suggestion;
-                                    mapController.searchPlaceById(
-                                      mapController
-                                          .suggestions[index]['place_id'],
-                                    );
-                                    mapController.setIsClean(true);
-                                  },
-                                );
-                              },
-                            ),
-                          )
-                          : const SizedBox.shrink(),
-                ),
+                          ),
+                          onTap: () {
+                            searchController.text = suggestion;
+                            mapController.searchPlaceById(
+                              mapController.suggestions[index]['place_id'],
+                            );
+                            mapController.setIsClean(true);
+                            mapController.suggestions.clear();
+                          },
+                        );
+                      },
+                    ),
+                  );
+                }),
               ],
             ),
           ),
+
+
           Obx(() {
             return Positioned(
               bottom: 30,
               right: 30,
               left: 30,
-              child:
-                  mapController.status.value.isLoading
-                      ? const CustomLoader()
-                      : CustomButton(
-                        onTap: () {
-                          if (mapController.selectedLocation.value != null) {
-                            // Check if there's a callback to return data (for reusable purpose)
-                            if (Get.arguments != null &&
-                                Get.arguments['returnData'] == true) {
-                              // Return the selected location data back to the previous screen
-                              Get.back(
-                                result: mapController.selectedLocation.value,
-                              );
-                            } else {
-                              // Original contractor flow - update contractor data
-                              mapController.updateContractorData();
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Error',
-                              'Please select a location first.',
-                            );
-                          }
-                        },
-                        title: "Continue".tr,
-                      ),
+              child: mapController.status.value.isLoading
+                  ? const CustomLoader()
+                  : CustomButton(
+                onTap: () {
+                  if (mapController.selectedLocation.value != null) {
+                    if (Get.arguments != null &&
+                        Get.arguments['returnData'] == true) {
+                      Get.back(
+                        result: mapController.selectedLocation.value,
+                      );
+                    } else {
+                      mapController.updateContractorData();
+                    }
+                  } else {
+                    Get.snackbar(
+                      'Error',
+                      'Please select a location first.',
+                    );
+                  }
+                },
+                title: "Continue".tr,
+              ),
             );
           }),
         ],

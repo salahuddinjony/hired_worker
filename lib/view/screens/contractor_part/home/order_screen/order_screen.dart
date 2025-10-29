@@ -8,7 +8,6 @@ import 'package:servana/view/screens/contractor_part/home/order_screen/controlle
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
-import '../controller/contractor_home_controller.dart';
 import 'widget/custom_delivered_service_card.dart';
 import 'widget/custom_service_request_card.dart';
 
@@ -78,9 +77,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ' - ',
                               dateTime: data.updatedAt!,
                               id: data.id!,
-                              image: data.contractorId?.img,
+                              image: data.subCategoryId?.img,
                               status: data.status,
                               index: index,
+                              location: data.location,
+                              hourlyRate: data.totalAmount,
+                              customerName: data.customerId?.fullName,
+                              customerImage: data.customerId?.img,
+                              subcategoryName: data.subCategoryId?.name,
                             );
                           } else {
                             return const Padding(
@@ -112,8 +116,12 @@ class _OrderScreenState extends State<OrderScreen> {
                             rating: data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
                             dateTime: data.updatedAt!,
                             price: data.totalAmount.toString(),
-                            image: data.contractorId?.img,
+                            image: data.subCategoryId?.img,
                             index: index,
+                            location: data.location,
+                            customerName: data.customerId?.fullName,
+                            customerImage: data.customerId?.img,
+                            subcategoryName: data.subCategoryId?.name,
                           );
                         } else {
                           return const Padding(

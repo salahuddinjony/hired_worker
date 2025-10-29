@@ -6,7 +6,6 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/parser.dart' as html_parser;
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});

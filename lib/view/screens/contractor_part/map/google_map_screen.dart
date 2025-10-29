@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:servana/utils/app_colors/app_colors.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   final String location;
@@ -65,7 +66,6 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         });
       }
     } catch (e) {
-      debugPrint('xxx ${e.toString()}');
       setState(() {
         errorMessage = 'Please enter a location (e.g., "Central Park, NY" or "1600 Pennsylvania Ave")';
         isLoading = false;
@@ -81,6 +81,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(widget.location),
       ),
       body: isLoading
@@ -100,7 +102,6 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
 
   @override
   void dispose() {
-    // Only dispose of mapController if it's initialized
     mapController?.dispose();
     super.dispose();
   }

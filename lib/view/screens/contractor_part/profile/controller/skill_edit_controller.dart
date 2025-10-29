@@ -3,20 +3,28 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 
-import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 
-class SkillSelectionController extends GetxController {
+class SkillEditController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
+
+  List<String> skills = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    skills = Get.arguments['skill'];
+
+  }
 
   Future<void> updateContractorData(Set<String> skills) async {
     if (skills.isEmpty) {
-      showCustomSnackBar("Please select at least one day to continue.");
       return;
     }
 
@@ -37,7 +45,9 @@ class SkillSelectionController extends GetxController {
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
 
-        Get.toNamed(AppRoutes.addMaterialsScreen);
+        Get.find<ProfileController>().getMe();
+
+        Get.back();
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

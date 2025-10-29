@@ -3,19 +3,20 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/model/sub_category_model.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 
-import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 
-class SubCategorySelectionController extends GetxController {
+class SubCategoryEditController extends GetxController {
   // for subcategory
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
   Rx<SubCategoryModel> subCategoryModel = SubCategoryModel().obs;
   String id = '';
+  List<String> services = [];
 
   // for update button
   Rx<RxStatus> updateStatus = Rx<RxStatus>(RxStatus.success());
@@ -26,6 +27,8 @@ class SubCategorySelectionController extends GetxController {
     super.onInit();
 
     id = Get.arguments['id'];
+    services = Get.arguments['service'];
+
     getSubCategories();
   }
 
@@ -70,7 +73,9 @@ class SubCategorySelectionController extends GetxController {
       if (response.statusCode == 200) {
         updateStatus.value = RxStatus.success();
 
-        Get.toNamed(AppRoutes.certificateScreen);
+        Get.find<ProfileController>().getMe();
+
+        Get.back();
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

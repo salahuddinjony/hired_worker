@@ -10,7 +10,6 @@ import 'package:servana/utils/app_icons/app_icons.dart'; // App icons
 import 'package:servana/utils/extensions/widget_extension.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/widget/custom_service_card.dart';
 import 'package:servana/view/screens/contractor_part/home/model/booking_model.dart';
@@ -79,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                                 CustomText(
                                   text: "Welcome!".tr,
                                   // .tr for translation
-                                  fontSize: 18.w,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.black_02,
                                   bottom: 2,
@@ -177,6 +176,12 @@ class HomeScreen extends StatelessWidget {
                                   " - ",
                               title: "Total Service".tr,
                               imageSrc: AppIcons.iconTwo,
+                              onTap: () {
+                                Get.toNamed(
+                                  AppRoutes.recentAllServiceScreen,
+                                  arguments: {"showTotalService": true},
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -199,6 +204,9 @@ class HomeScreen extends StatelessWidget {
                                   " - ",
                               title: "Recent Services".tr,
                               imageSrc: AppIcons.iconTwo,
+                              onTap: () {
+                                Get.toNamed(AppRoutes.recentAllServiceScreen);
+                              },
                             ),
                           ],
                         ),
@@ -227,14 +235,14 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             CustomText(
                               text: "Recent Service".tr,
-                              fontSize: 14.w,
+                              fontSize: 18.w,
                               fontWeight: FontWeight.w600,
                               color: AppColors.black,
                             ),
                             // "See all" link
                             CustomText(
                               text: "See all".tr,
-                              fontSize: 14.w,
+                              fontSize: 18.w,
                               fontWeight: FontWeight.w600,
                               color: AppColors.primary,
                             ).onTap(() {
@@ -266,13 +274,17 @@ class HomeScreen extends StatelessWidget {
                             return CustomServiceCard(
                               title: getSubCategoryName(data),
                               updateDate: data.createdAt ?? DateTime.now(),
-                              hourlyRate: data.rateHourly?.toString() ?? ' - ',
+                              hourlyRate: data.totalAmount?.toString() ?? ' - ',
                               rating:
                                   data.contractorId?.contractor?.ratings
                                       ?.toString() ?? // 123
                                   ' - ',
                               status: data.status ?? 'Unknown',
-                              image: data.contractorId?.img,
+                              image: data.subCategoryId?.img,
+                              location: data.location,
+                              customerImage: data.customerId?.img,
+                              customerName: data.customerId?.fullName,
+                              subcategoryName: data.subCategoryId?.name,
                             );
                           },
                         ),

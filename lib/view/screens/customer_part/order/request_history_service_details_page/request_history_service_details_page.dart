@@ -10,8 +10,6 @@ import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booki
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../review_page/review_page.dart';
-import '../../../../../utils/app_icons/app_icons.dart';
-import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
 class RequestHistoryServiceDetailsPage extends StatelessWidget {

@@ -43,10 +43,15 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
               dateTime: data.updatedAt!,
               id: data.id!,
-              image: data.contractorId?.img,
+              image: data.subCategoryId?.img,
               status: '',
+              location: data.location,
               isButtonShow: false,
-              height: 100,
+              height: 150.h,
+              hourlyRate: data.totalAmount,
+              customerName: data.customerId?.fullName,
+              customerImage: data.customerId?.img,
+              subcategoryName: data.subCategoryId?.name,
             ),
 
             const SizedBox(height: 16.0),
@@ -79,7 +84,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Category/SubCategory : ${data.subCategoryId?.name ?? " - "}',
+                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
                   ),
                   const SizedBox(height: 16.0),
                   Text(
@@ -98,7 +103,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('• ${e.name} - ${e.count} ${e.unit}'),
-                                Text('AUD ${e.price}'),
+                                Text('\$${e.price}'),
                               ],
                             );
                           }).toList(),
@@ -145,7 +150,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType}'),
+                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -157,12 +162,29 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                     color: AppColors.primary.withValues(alpha: 0.1),
                     thickness: 1.6,
                   ),
-                  Text(
-                    data.day == null || data.day!.isEmpty
-                        ? " - "
-                        : data.day!.length == 2
-                        ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
-                        : "${data.day?[0] ?? " - "}",
+                  Row(
+                    children: [
+                      const Text(
+                        'Date: '
+                      ),
+                      Text(
+                        data.day == null || data.day!.isEmpty
+                            ? " - "
+                            : data.day!.length == 2
+                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : "${data.day?[0] ?? " - "}",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Time: '
+                      ),
+                      Text(
+                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
+                      ),
+                    ],
                   ),
                 ],
               ),

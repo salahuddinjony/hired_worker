@@ -69,7 +69,10 @@ dependencies:
   double_tap_to_exit: ^1.0.3
   url_launcher: ^6.3.0
   flutter_html: ^3.0.0
-
+  flutter_dotenv: ^6.0.0
+  meta: any
+  flutter_chat_types: any
+  uuid: any
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1 
   change_app_package_name: ^1.1.0
@@ -104,6 +107,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

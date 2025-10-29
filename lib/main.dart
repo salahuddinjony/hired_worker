@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:servana/service/socket_service.dart';
 import 'package:servana/view/screens/choose_language/language_translator.dart';
 import 'core/app_routes/app_routes.dart';
 import 'core/dependency/dependency_injection.dart';
@@ -20,6 +20,9 @@ void main() async {
     ),
   );
   final DependencyInjection di = DependencyInjection();
+
+  await dotenv.load(fileName: '.env');
+
   di.dependencies();
   // SocketApi.init();
   runApp(const MyApp());

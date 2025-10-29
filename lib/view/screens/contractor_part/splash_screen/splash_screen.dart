@@ -38,9 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
           if (userRole == "customer") {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
           } else if (userRole == "contractor") {
-            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
+            if (await SharePrefsHelper.getBool(AppStrings.isLoggedIn) ==
                 null) {
-              Get.offAllNamed(AppRoutes.seletedMapScreen);
+              Get.offAllNamed(AppRoutes.loginScreen);
             } else {
               Get.offAllNamed(AppRoutes.homeScreen);
             }

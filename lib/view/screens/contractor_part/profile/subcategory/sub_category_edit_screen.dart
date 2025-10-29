@@ -3,55 +3,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/category_selection_controller.dart';
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../components/custom_button/custom_button.dart';
-import '../../../components/custom_loader/custom_loader.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/subcategory_edit_controller.dart';
 
-class CategorySelectedScreen extends StatefulWidget {
-  const CategorySelectedScreen({super.key});
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../components/custom_button/custom_button.dart';
+import '../../../../components/custom_loader/custom_loader.dart';
+
+class SubCategoryEditScreen extends StatefulWidget {
+  const SubCategoryEditScreen({super.key});
 
   @override
-  State<CategorySelectedScreen> createState() =>
-      _CategorySelectionScreenState();
+  State<SubCategoryEditScreen> createState() => _CategorySelectionScreenState();
 }
 
-class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
-  String? selectedCategoryId;
+class _CategorySelectionScreenState extends State<SubCategoryEditScreen> {
+  final List<String> selectedSubCategoryIds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSubCategoryIds.addAll(
+      Get.find<SubCategoryEditController>().services,
+    );
+  }
 
   void toggleSelection(String id) {
     setState(() {
-      if (selectedCategoryId == id) {
-        selectedCategoryId = null;
+      if (selectedSubCategoryIds.contains(id)) {
+        selectedSubCategoryIds.remove(id);
       } else {
-        selectedCategoryId = id;
+        selectedSubCategoryIds.add(id);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final CategorySelectionController controller =
-        Get.find<CategorySelectionController>();
+    final SubCategoryEditController controller =
+        Get.find<SubCategoryEditController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Category".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Sub Category".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Set up your personal information.".tr,
-              style: const TextStyle(color: Colors.black87),
-            ),
-            Text(
-              "You can always change it later.".tr,
-              style: const TextStyle(color: Colors.black54),
-            ),
-            const SizedBox(height: 24),
-
             Obx(() {
               if (controller.status.value.isLoading) {
                 return const Center(
@@ -62,8 +60,8 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                 );
               } else if (controller.status.value.isEmpty) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: 50.0),
-                  child: Center(child: Text('No categories found')),
+                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                  child: Center(child: Text('No tasks found')),
                 );
               } else if (controller.status.value.isError) {
                 return Center(
@@ -71,11 +69,12 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     padding: const EdgeInsets.only(top: 50.0),
                     child: Column(
                       children: [
-                        Text(controller.status.value.errorMessage!),
+                        Text(
+                          controller.status.value.errorMessage ??
+                              "Something went wrong. Please try again.",
+                        ),
                         ElevatedButton(
-                          onPressed: () {
-                            controller.getCategories();
-                          },
+                          onPressed: controller.getSubCategories,
                           child: const Text('Retry'),
                         ),
                       ],
@@ -89,8 +88,10 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                     children:
-                        controller.categoryModel.value.data!.map((item) {
-                          final isSelected = selectedCategoryId == item.id;
+                        controller.subCategoryModel.value.data!.map((item) {
+                          final isSelected = selectedSubCategoryIds.contains(
+                            item.id.toString(),
+                          );
                           return GestureDetector(
                             onTap: () => toggleSelection(item.id.toString()),
                             child: Container(
@@ -132,16 +133,16 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
-                                    textAlign:  TextAlign.center,
+                                    textAlign: TextAlign.center,
                                     maxLines: 2,
                                     item.name ?? " - ",
                                     style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
                                       fontSize: 14.sp,
                                       color:
-                                      isSelected
-                                          ? Colors.white
-                                          : Colors.black,
+                                          isSelected
+                                              ? Colors.white
+                                              : Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -161,13 +162,18 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                     ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
-                        if (selectedCategoryId != null) {
-                          controller.updateContractorData(selectedCategoryId);
+                        if (selectedSubCategoryIds.isNotEmpty) {
+                          controller.updateContractorData(
+                            selectedSubCategoryIds,
+                          );
                         } else {
-                          Get.snackbar("Error", "Please select at least one service to continue.");
+                          Get.snackbar(
+                            "Error",
+                            "Please select at least one task to continue.",
+                          );
                         }
                       },
-                      title: "Continue".tr,
+                      title: "Save".tr,
                     );
               } else {
                 return const SizedBox.shrink();
@@ -180,11 +186,4 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
       ),
     );
   }
-}
-
-class CategoryItem {
-  final String title;
-  final IconData icon;
-
-  CategoryItem(this.title, this.icon);
 }
