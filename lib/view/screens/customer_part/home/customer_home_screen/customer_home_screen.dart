@@ -141,9 +141,7 @@ class CustomerHomeScreen extends StatelessWidget {
 
                                   return GestureDetector(
                                     onTap: () async{
-                                      final userId = customerProfileController.customerModel.value.data?.id ?? '';
-                                        customerProfileController.showAddressBottomSheet( isFromProfile: true);
-                                        await homeController.getAllContactor(isHomeSelect: false, userId: userId);
+                                        customerProfileController.showAddressBottomSheet( isFromProfile: true, useByUserId: true);
 
                                       // // open draggable bottom sheet for selection
                                       // Get.bottomSheet(

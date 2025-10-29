@@ -5,13 +5,19 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/components/extension/extension.dart';
+import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../controller/customer_profile_controller.dart';
 import '../model/address_model.dart';
 
 class AddressSelectionBottomSheet extends StatelessWidget {
   final bool isFromProfile;
+  final bool? useByUserId;
 
-  const AddressSelectionBottomSheet({super.key, this.isFromProfile = false});
+  const AddressSelectionBottomSheet({
+    super.key,
+    this.isFromProfile = false,
+    this.useByUserId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +202,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                           final address = controller.savedAddresses[index];
                           return _AddressItem(
                             address: address,
-                            onTap: () {
+                            onTap: () async {
                               if (isFromProfile) {
                                 final savedAddresses =
                                     controller.savedAddresses;
@@ -211,7 +217,16 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                                   Get.back();
 
                                   // Fire the network update in background (don't await)
-                                  controller.updateProfile();
+                                  await controller.updateProfile();
+                                  if (useByUserId == true && selectedAddress != null) {
+                                    debugPrint(
+                                        'Refreshing contactor list for userId: $useByUserId');
+                                    final homeController =
+                                        Get.find<HomeController>();
+                                    await homeController.getAllContactor(
+                                      useByUserId: useByUserId == true ? true : false,
+                                    );
+                                  }
                                 }
                                 return;
                               } else {
