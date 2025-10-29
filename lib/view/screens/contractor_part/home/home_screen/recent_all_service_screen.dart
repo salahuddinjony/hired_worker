@@ -17,8 +17,12 @@ class RecentAllServiceScreen extends StatelessWidget {
     final RecentAllServiceController controller =
         Get.find<RecentAllServiceController>();
 
+    final bool showTotalService =
+        (Get.arguments as Map<String, dynamic>?)?['showTotalService'] as bool? ?? false;
+
+
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Recent Service".tr),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: !showTotalService ? "Recent Service".tr : "Total Service".tr),
       body: Obx(() {
         if (controller.status.value.isLoading) {
           return const Center(

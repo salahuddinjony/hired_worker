@@ -176,6 +176,12 @@ class HomeScreen extends StatelessWidget {
                                   " - ",
                               title: "Total Service".tr,
                               imageSrc: AppIcons.iconTwo,
+                              onTap: () {
+                                Get.toNamed(
+                                  AppRoutes.recentAllServiceScreen,
+                                  arguments: {"showTotalService": true},
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -198,6 +204,9 @@ class HomeScreen extends StatelessWidget {
                                   " - ",
                               title: "Recent Services".tr,
                               imageSrc: AppIcons.iconTwo,
+                              onTap: () {
+                                Get.toNamed(AppRoutes.recentAllServiceScreen);
+                              },
                             ),
                           ],
                         ),

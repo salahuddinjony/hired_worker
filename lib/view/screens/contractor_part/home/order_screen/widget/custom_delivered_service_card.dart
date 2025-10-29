@@ -7,6 +7,7 @@ import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_button/custom_button.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+import '../../../map/google_map_screen.dart';
 
 class CustomDeliveredServiceCard extends StatelessWidget {
   final String title;
@@ -179,23 +180,28 @@ class CustomDeliveredServiceCard extends StatelessWidget {
 
                         SizedBox(height: 4.h),
 
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              size: 14,
-                              color: AppColors.black_04,
-                            ),
-                            SizedBox(width: 4.w),
-                            Expanded(
-                              child: CustomText(
-                                text: location ?? " - ",
-                                fontSize: 12.w,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.black_04,
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => GoogleMapScreen(location: location ?? ""));
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                size: 14,
+                                color: AppColors.blue,
                               ),
-                            ),
-                          ],
+                              SizedBox(width: 4.w),
+                              Expanded(
+                                child: CustomText(
+                                  text: location ?? " - ",
+                                  fontSize: 12.w,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

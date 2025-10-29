@@ -47,7 +47,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
               status: '',
               location: data.location,
               isButtonShow: false,
-              height: 148.h,
+              height: 150.h,
               hourlyRate: data.totalAmount,
               customerName: data.customerId?.fullName,
               customerImage: data.customerId?.img,

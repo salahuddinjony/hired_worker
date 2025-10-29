@@ -14,8 +14,8 @@ import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
-import 'package:servana/view/screens/contractor_part/profile/map/google_map_screen.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
+import '../../map/google_map_screen.dart';
 import 'widget/custom_profile_menu_list.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -130,6 +130,12 @@ class ProfileScreen extends StatelessWidget {
                           " - ",
                       title: "Total Service".tr,
                       imageSrc: AppIcons.iconTwo,
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.recentAllServiceScreen,
+                          arguments: {"showTotalService": true},
+                        );
+                      },
                     ),
                   ],
                 );
@@ -146,6 +152,9 @@ class ProfileScreen extends StatelessWidget {
                           " - ",
                       title: "Recent Services".tr,
                       imageSrc: AppIcons.iconFour,
+                      onTap: () {
+                        Get.toNamed(AppRoutes.recentAllServiceScreen);
+                      },
                     ),
                     CustomHomeCard(
                       text:
@@ -160,17 +169,23 @@ class ProfileScreen extends StatelessWidget {
               // CustomProfileMenuList(),
               GestureDetector(
                 onTap: () {
-                  Get.to(
-                    GoogleMapScreen(
-                      location:
-                          profileController
-                              .contractorModel
-                              .value
-                              .data
-                              ?.contractor
-                              ?.location ??
-                          "",
-                    ),
+                  // Get.to(
+                  //   GoogleMapScreen(
+                  //     location:
+                  //         profileController
+                  //             .contractorModel
+                  //             .value
+                  //             .data
+                  //             ?.contractor
+                  //             ?.location
+                  //             ?.address ??
+                  //         "",
+                  //   ),
+                  // );
+
+                  Get.toNamed(AppRoutes.seletedMapScreen, arguments: {'long': profileController.contractorModel.value.data!.contractor!.location!.coordinates![0],
+                    'lat': profileController.contractorModel.value.data!.contractor!.location!.coordinates![1],
+                  },
                   );
                 },
                 child: CustomProfileMenuList(
@@ -211,12 +226,13 @@ class ProfileScreen extends StatelessWidget {
                               .data!
                               .contractor!
                               .category,
-                      'service': profileController
-                          .contractorModel
-                          .value
-                          .data!
-                          .contractor!
-                          .subCategory,
+                      'service':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .subCategory,
                     },
                   );
                 },
@@ -228,12 +244,13 @@ class ProfileScreen extends StatelessWidget {
                   Get.toNamed(
                     AppRoutes.skillsEditScreen,
                     arguments: {
-                      'skill': profileController
-                          .contractorModel
-                          .value
-                          .data!
-                          .contractor!
-                          .skills,
+                      'skill':
+                          profileController
+                              .contractorModel
+                              .value
+                              .data!
+                              .contractor!
+                              .skills,
                     },
                   );
                 },

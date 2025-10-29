@@ -145,6 +145,7 @@ Map<String, String> english = {
   "Service Request History": "Service Request History",
   "Back to Home": "Back to Home",
   "Name": "Name",
+  "Location": "Location",
   "Book": "Book",
   "Bio": "Bio",
   "Review": "Review",

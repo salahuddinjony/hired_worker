@@ -14,6 +14,7 @@ import 'package:servana/view/screens/contractor_part/profile/model/material_mode
 import 'package:servana/view/screens/contractor_part/profile/model/notification_model.dart';
 
 import '../../../../../utils/app_strings/app_strings.dart';
+import '../../complete_your_profile/controller/map_controller.dart';
 
 class ProfileController extends GetxController {
   final CustomController customController = Get.find<CustomController>();
@@ -28,7 +29,7 @@ class ProfileController extends GetxController {
     nameController.value.text = data.fullName ?? '';
     phoneController.value.text = data.contactNo ?? '';
     dobController.value.text = data.contractor?.dob.toString() ?? '';
-    cityController.value.text = data.contractor?.location ?? '';
+    cityController.value.text = data.contractor?.location?.address ?? '';
     customController.selectedGender.value = data.contractor?.gender ?? '';
   }
 
@@ -63,6 +64,7 @@ class ProfileController extends GetxController {
     getMaterial();
     super.onInit();
   }
+
 
   //========= Customer Profile ===========//
   Rx<ContractorModel> contractorModel = ContractorModel().obs;

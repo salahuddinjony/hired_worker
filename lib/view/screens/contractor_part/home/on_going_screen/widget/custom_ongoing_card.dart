@@ -8,6 +8,7 @@ import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_button/custom_button.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+import '../../../map/google_map_screen.dart';
 
 class CustomOngoingCard extends StatelessWidget {
   final int index;
@@ -147,19 +148,24 @@ class CustomOngoingCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on_outlined, size: 20),
-                        Expanded(
-                          child: CustomText(
-                            left: 8,
-                            text: data.location ?? " - ",
-                            fontSize: 14.w,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.black,
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => GoogleMapScreen(location: data.location ?? ""));
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(Icons.location_on_outlined, size: 20, color: AppColors.blue,),
+                          Expanded(
+                            child: CustomText(
+                              left: 8,
+                              text: data.location ?? " - ",
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blue,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
