@@ -132,7 +132,7 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType}'),
+                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -144,12 +144,29 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                     color: AppColors.primary.withValues(alpha: 0.1),
                     thickness: 1.6,
                   ),
-                  Text(
-                    data.day == null || data.day!.isEmpty
-                        ? " - "
-                        : data.day!.length == 2
-                        ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
-                        : "${data.day?[0] ?? " - "}",
+                  Row(
+                    children: [
+                      const Text(
+                          'Date: '
+                      ),
+                      Text(
+                        data.day == null || data.day!.isEmpty
+                            ? " - "
+                            : data.day!.length == 2
+                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : "${data.day?[0] ?? " - "}",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                          'Time: '
+                      ),
+                      Text(
+                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
+                      ),
+                    ],
                   ),
                 ],
               ),
