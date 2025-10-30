@@ -22,6 +22,7 @@ class AddAddressBottomSheet extends StatefulWidget {
   final bool isSignUp;
   final bool isContractor;
   final Map<String, dynamic>? addressData;
+  final bool isFromProfileContractor;
 
   const AddAddressBottomSheet({
     super.key,
@@ -38,6 +39,7 @@ class AddAddressBottomSheet extends StatefulWidget {
     this.isContractor = false,
     this.name,
     this.addressData,
+    this.isFromProfileContractor = false,
   });
 
   @override
@@ -63,7 +65,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
     streetController.text = widget.street ?? '';
     unitController.text = widget.unit ?? '';
     directionsController.text = widget.directions ?? '';
-    selectedType = widget.name ??  'Home';
+    selectedType = widget.name ?? 'Home';
     latitude = widget.latitude;
     longitude = widget.longitude;
   }
@@ -143,7 +145,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     color: AppColors.black,
                   ),
 
-                 const Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () => Get.back(),
                     child: Container(
@@ -262,7 +264,9 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   }
 
                   try {
-                    if (widget.isUpdate && widget.isSignUp == false && widget.isContractor == false) {
+                    if (widget.isUpdate &&
+                        widget.isSignUp == false &&
+                        widget.isContractor == false) {
                       debugPrint('Updating existing address...');
                       await controller.patchAddress(
                         locationId: widget.locationId ?? '',
@@ -315,28 +319,53 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     }
                     if (widget.isSignUp && widget.isContractor) {
                       final mapController = Get.find<MapController>();
-                      debugPrint('xxxx Updating contractor address during sign-up...');
-                    await mapController.updateContractorData(
-                      isFromProfileContractor: true,
-                      address: addressController.text,
-                      latitude: latitude,
-                      longitude: longitude,
-                      street:
-                          streetController.text.isNotEmpty
-                              ? streetController.text
-                              : null,
-                      unit:
-                          unitController.text.isNotEmpty
-                              ? unitController.text
-                              : null,
-                      directions:
-                          directionsController.text.isNotEmpty
-                              ? directionsController.text
-                              : null,
-                    );
-                    return ; 
+                      debugPrint(
+                        'sign up Updating contractor address during sign-up...',
+                      );
+                      await mapController.updateContractorData(
+                        address: addressController.text,
+                        latitude: latitude,
+                        longitude: longitude,
+                        street:
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        unit:
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        directions:
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                      );
+                      return;
                     }
-
+                    if (widget.isFromProfileContractor && widget.isContractor) {
+                      final mapController = Get.find<MapController>();
+                      debugPrint(
+                        'sign up Updating contractor address during sign-up...',
+                      );
+                      await mapController.updateContractorData(
+                        isFromProfileContractor: true,
+                        address: addressController.text,
+                        latitude: latitude,
+                        longitude: longitude,
+                        street:
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        unit:
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        directions:
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                      );
+                      return;
+                    }
 
                     debugPrint('Calling addNewAddress...');
 
@@ -376,9 +405,9 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
                     debugPrint('Opening saved addresses bottom sheet...');
                     // Open saved addresses list
-                 if(!widget.isContractor){
-                     controller.showAddressBottomSheet();
-                 }
+                    if (!widget.isContractor) {
+                      controller.showAddressBottomSheet();
+                    }
                     debugPrint('✅ showAddressBottomSheet() called');
                   } catch (e) {
                     debugPrint('❌ Error saving address: $e');
