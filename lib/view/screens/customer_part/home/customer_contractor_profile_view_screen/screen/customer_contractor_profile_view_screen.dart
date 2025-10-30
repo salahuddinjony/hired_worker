@@ -469,7 +469,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                      text: "Tasks (Select a task)".tr,
+                                      text: "Select a task".tr,
                                       fontSize: 16.w,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.black,

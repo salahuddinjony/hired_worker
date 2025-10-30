@@ -67,7 +67,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     getMe();
-    getMaterial();
+    // getMaterial();
     super.onInit();
   }
 
@@ -103,30 +103,30 @@ class ProfileController extends GetxController {
   Rx<RxStatus> getMaterialStatus = Rx<RxStatus>(RxStatus.loading());
   Rx<MaterialModel> materialModel = MaterialModel().obs;
 
-  //======= get material =======//
-  Future<void> getMaterial() async {
-    getMaterialStatus.value = RxStatus.loading();
-    try {
-      final response = await ApiClient.getData(ApiUrl.materials);
+  // //======= get material =======//
+  // Future<void> getMaterial() async {
+  //   getMaterialStatus.value = RxStatus.loading();
+  //   try {
+  //     final response = await ApiClient.getData(ApiUrl.materials);
 
-      materialModel.value = MaterialModel.fromJson(response.body);
+  //     materialModel.value = MaterialModel.fromJson(response.body);
 
-      getMaterialStatus.value = RxStatus.success();
-      refresh();
+  //     getMaterialStatus.value = RxStatus.success();
+  //     refresh();
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-      } else {
-        showCustomSnackBar(
-          response.body['message'] ?? "Material Failed",
-          isError: false,
-        );
-      }
-    } catch (e) {
-      getMaterialStatus.value = RxStatus.success();
-      refresh();
-      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
-    }
-  }
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //     } else {
+  //       showCustomSnackBar(
+  //         response.body['message'] ?? "Material Failed",
+  //         isError: false,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     getMaterialStatus.value = RxStatus.success();
+  //     refresh();
+  //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+  //   }
+  // }
 
   //========= update profile ===========//
   Rx<RxStatus> updateProfileStatus = Rx<RxStatus>(RxStatus.success());
