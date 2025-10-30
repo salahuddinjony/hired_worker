@@ -516,7 +516,7 @@ class AuthController extends GetxController {
         );
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.seletedMapScreen);
+            Get.offAllNamed(AppRoutes.scheduleSeletedScreen);
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.loginScreen);
