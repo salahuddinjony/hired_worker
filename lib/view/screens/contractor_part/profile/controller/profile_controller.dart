@@ -222,6 +222,9 @@ class ProfileController extends GetxController {
         isUpdate: true,
         name:"",
         isContractor: true,
+        isFromProfileContractor: true,
+
+
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
