@@ -217,10 +217,7 @@ class AuthController extends GetxController {
         switch (role) {
           case 'contractor':
             if (response.body['data']['profileCompletion'] < 80) {
-              showCustomSnackBar(
-                'Please provide complete information for your profile.',
-                isError: false,
-              );
+              showCustomSnackBar('Please provide complete information for your profile.', isError: false);
               Get.offAllNamed(AppRoutes.seletedMapScreen);
             } else {
               await SharePrefsHelper.setBool(AppStrings.isLoggedIn, true);
@@ -319,41 +316,24 @@ class AuthController extends GetxController {
       "password": passController.value.text,
       "contactNo": phoneController.value.text,
       "role": isContactor ? "contractor" : "customer",
-      "city": addressController.value.text,
-      "location": [
-        {
-          "type": "Point",
-          "coordinates": [
-            longitude.value ?? -84.090724,
-            latitude.value ?? 9.928069,
-          ],
-          "address": addressController.value.text,
-          "street": streetController.value.text,
-          "direction": directionController.value.text,
-          "unit": unitController.value.text,
-          "name": "Default",
-          "isSelect": true,
-        },
-      ],
-
-      // if (!isContactor) ...{
-      //   "city": addressController.value.text,
-      //   "location": [
-      //     {
-      //       "type": "Point",
-      //       "coordinates": [
-      //         longitude.value ?? -84.090724,
-      //         latitude.value ?? 9.928069,
-      //       ],
-      //       "address": addressController.value.text,
-      //       "street": streetController.value.text,
-      //       "direction": directionController.value.text,
-      //       "unit": unitController.value.text,
-      //       "name": "Default",
-      //       "isSelect": true,
-      //     },
-      //   ],
-      // },
+      if (!isContactor) ...{
+        "city": addressController.value.text,
+        "location": [
+          {
+            "type": "Point",
+            "coordinates": [
+              longitude.value ?? -84.090724,
+              latitude.value ?? 9.928069,
+            ],
+            "address": addressController.value.text,
+            "street": streetController.value.text,
+            "direction": directionController.value.text,
+            "unit": unitController.value.text,
+            "name": "Default",
+            "isSelect": true,
+          },
+        ],
+      },
     };
 
     debugPrint('Registration payload: $body');
@@ -536,7 +516,7 @@ class AuthController extends GetxController {
         );
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.scheduleSeletedScreen);
+            Get.offAllNamed(AppRoutes.seletedMapScreen);
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.loginScreen);

@@ -68,33 +68,8 @@ class ContractorSignUpScreen extends StatelessWidget {
                 hintText: "Enter your number".tr,
                 controller: authController.phoneController.value,
               ),
-              // isContactor==false
-              //     ? CustomFormCard(
-              //   title: "Enter your address".tr,
-              //   hintText: "Enter your address".tr,
-              //   controller: authController.addressController.value,
-              //   readOnly: true,
-              //   onTap: () async {
-              //     // // Initialize MapController if not already registered (for reusable map screen)
-              //     // if (!Get.isRegistered<MapController>()) {
-              //     //   Get.put(MapController());
-              //     // }
-                  
-              //     // // Navigate to map screen with argument to return data
-              //     // final result = await Get.toNamed(
-              //     //   '/SeletedMapScreen',
-              //     //   arguments: {'returnData': true},
-              //     // );
-                  
-              //     // // Update address field with selected location
-              //     // if (result != null && result is Map<String, dynamic>) {
-              //     //   authController.updateAddressFromMap(result);
-              //     // }
-              //      authController.showAddAddressDialog(isSignUp: true);
-              //   },
-              // )
-              //     : const SizedBox.shrink(),
-              CustomFormCard(
+              isContactor==false
+                  ? CustomFormCard(
                 title: "Enter your address".tr,
                 hintText: "Enter your address".tr,
                 controller: authController.addressController.value,
@@ -117,7 +92,8 @@ class ContractorSignUpScreen extends StatelessWidget {
                   // }
                    authController.showAddAddressDialog(isSignUp: true);
                 },
-              ),
+              )
+                  : const SizedBox.shrink(),
               CustomFormCard(
                 isPassword: true,
                 title: "Enter New Password".tr,
