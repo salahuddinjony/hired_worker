@@ -6,6 +6,7 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../controller/customer_profile_controller.dart';
 
 class AddAddressBottomSheet extends StatefulWidget {
@@ -339,6 +340,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                                 ? directionsController.text
                                 : null,
                       );
+                      Get.offAllNamed(AppRoutes.scheduleSeletedScreen);
                       return;
                     }
                     if (widget.isFromProfileContractor && widget.isContractor) {
