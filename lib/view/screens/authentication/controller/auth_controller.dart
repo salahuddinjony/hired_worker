@@ -256,7 +256,7 @@ class AuthController extends GetxController {
   }
 
   // Navigate to map and then show add address dialog
-  Future<void> showAddAddressDialog({bool isSignUp = false}) async {
+  Future<void> showAddAddressDialog({bool isSignUp = false, bool isContractor = false, Map<String, dynamic>? addressData}) async {
     // First, navigate to map to pick location
     if (!Get.isRegistered<MapController>()) {
       Get.put(MapController());
@@ -275,16 +275,32 @@ class AuthController extends GetxController {
 
       // Show bottom sheet with address details
       Get.bottomSheet(
-        AddAddressBottomSheet(
+        isContractor
+        ? SizedBox(
+            height: Get.height,
+            child: AddAddressBottomSheet(
           address: addressController.value.text,
           latitude: latitude.value,
           longitude: longitude.value,
           isSignUp: isSignUp,
           isFromProfile: true,
-        ),
+          isContractor: isContractor,
+          addressData: addressData,
+            ),
+          )
+        : AddAddressBottomSheet(
+            address: addressController.value.text,
+            latitude: latitude.value,
+            longitude: longitude.value,
+            isSignUp: isSignUp,
+            isFromProfile: true,
+            isContractor: isContractor,
+          ),
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        isDismissible: true,
+        isDismissible: !isContractor,
+        barrierColor: Colors.black87,
+        enableDrag: !isContractor,
       );
     }
   }
@@ -516,7 +532,8 @@ class AuthController extends GetxController {
         );
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.seletedMapScreen);
+          showAddAddressDialog(isSignUp: true, isContractor: true);
+            // Get.offAllNamed(AppRoutes.seletedMapScreen);
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.loginScreen);

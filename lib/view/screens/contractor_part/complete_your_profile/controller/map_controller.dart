@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,10 +18,8 @@ import '../../../customer_part/profile/model/user_model.dart';
 
 class MapController extends GetxController {
   // Observable variables
-  var cameraPosition = const CameraPosition(
-      target: LatLng(37.7749, -122.4194),
-      zoom: 12
-  ).obs;
+  var cameraPosition =
+      const CameraPosition(target: LatLng(37.7749, -122.4194), zoom: 12).obs;
   var markers = <Marker>{}.obs;
   GoogleMapController? mapController;
   RxBool isClean = false.obs;
@@ -36,13 +35,15 @@ class MapController extends GetxController {
   void onInit() {
     super.onInit();
 
-    longitude = Get.arguments != null && Get.arguments['long'] != null
-        ? (Get.arguments['long'] as num).toDouble()
-        : null;
+    longitude =
+        Get.arguments != null && Get.arguments['long'] != null
+            ? (Get.arguments['long'] as num).toDouble()
+            : null;
 
-    latitude = Get.arguments != null && Get.arguments['lat'] != null
-        ? (Get.arguments['lat'] as num).toDouble()
-        : null;
+    latitude =
+        Get.arguments != null && Get.arguments['lat'] != null
+            ? (Get.arguments['lat'] as num).toDouble()
+            : null;
 
     // Only get user location if both latitude and longitude are null
     if (latitude == null && longitude == null) {
@@ -266,10 +267,10 @@ class MapController extends GetxController {
             List<Map<String, dynamic>>.from(data['predictions'])
                 .map(
                   (prediction) => {
-                'description': prediction['description'],
-                'place_id': prediction['place_id'],
-              },
-            )
+                    'description': prediction['description'],
+                    'place_id': prediction['place_id'],
+                  },
+                )
                 .toList();
         isClean.value = true;
       } else {
@@ -401,7 +402,15 @@ class MapController extends GetxController {
 
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
 
-  Future<void> updateContractorData() async {
+  Future<void> updateContractorData({
+    String? address,
+    double? latitude,
+    double? longitude,
+    String? street,
+    String? unit,
+    String? directions,
+    bool isFromProfileContractor = false,
+  }) async {
     status.value = RxStatus.loading();
 
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -411,15 +420,18 @@ class MapController extends GetxController {
     final Map<String, String> body = {
       'data': jsonEncode({
         "location": {
-          "address": selectedLocation.value?['address'],
+          "address": address ?? selectedLocation.value?['address'],
           "coordinates": [
-            selectedLocation.value?['longitude'],
-            selectedLocation.value?['latitude'],
+            longitude ?? selectedLocation.value?['longitude'],
+            latitude ?? selectedLocation.value?['latitude'],
           ],
+          "street": street ?? "",
+          "unit": unit ?? "",
+          "directions": directions ?? "",
         },
       }),
     };
-
+    EasyLoading.show(status: 'Updating location...');
     try {
       final response = await ApiClient.patchMultipartData(
         uri,
@@ -433,17 +445,26 @@ class MapController extends GetxController {
         status.value = RxStatus.success();
 
         // if not come from profile screen, longitude would be null
-        if (longitude == null) {
-          Get.toNamed(AppRoutes.scheduleSeletedScreen);
-        } else {
+        // if (longitude == null) {
+        //   Get.toNamed(AppRoutes.scheduleSeletedScreen);
+        // } else {
+        //   Get.find<ProfileController>().getMe();
+        //   showCustomSnackBar(
+        //     "Your location has been updated to ${selectedLocation.value?['address']}",
+        //     isError: false,
+        //   );
+        //   Get.back();
+        // }
+        if (isFromProfileContractor) {
           Get.find<ProfileController>().getMe();
           showCustomSnackBar(
             "Your location has been updated to ${selectedLocation.value?['address']}",
             isError: false,
           );
           Get.back();
+        } else {
+          Get.toNamed(AppRoutes.scheduleSeletedScreen);
         }
-
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",
@@ -458,6 +479,8 @@ class MapController extends GetxController {
       showCustomSnackBar("Error updating contractor data: $e", isError: true);
 
       status.value = RxStatus.error();
+    }finally {
+      EasyLoading.dismiss();
     }
   }
 }

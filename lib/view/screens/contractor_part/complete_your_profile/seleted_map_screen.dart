@@ -171,9 +171,10 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
                       Get.back(
                         result: mapController.selectedLocation.value,
                       );
-                    } else {
-                      mapController.updateContractorData();
-                    }
+                    } 
+                    // else {
+                    //   mapController.updateContractorData();
+                    // }
                   } else {
                     Get.snackbar(
                       'Error',
