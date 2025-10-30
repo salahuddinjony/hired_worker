@@ -5,6 +5,7 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/components/extension/extension.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import 'package:servana/view/screens/customer_part/home/controller/home_controller.dart';
 import '../controller/customer_profile_controller.dart';
 import '../model/address_model.dart';
@@ -12,17 +13,20 @@ import '../model/address_model.dart';
 class AddressSelectionBottomSheet extends StatelessWidget {
   final bool isFromProfile;
   final bool? useByUserId;
+  final bool isContractor;
 
   const AddressSelectionBottomSheet({
     super.key,
     this.isFromProfile = false,
     this.useByUserId,
+    this.isContractor = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final CustomerProfileController controller =
         Get.find<CustomerProfileController>();
+    final contractorController= Get.find<ProfileController>();
 
     return Container(
       constraints: BoxConstraints(
@@ -100,7 +104,8 @@ class AddressSelectionBottomSheet extends StatelessWidget {
 
           Divider(height: 1.h, thickness: 1, color: Colors.grey[200]),
 
-          SizedBox(height: 12.h),
+         if(!isContractor)...[
+           SizedBox(height: 12.h),
 
           // Add New Address Button
           Padding(
@@ -156,8 +161,65 @@ class AddressSelectionBottomSheet extends StatelessWidget {
           ),
 
           SizedBox(height: 16.h),
+         ],
 
-          // Address List - SCROLLABLE SECTION
+          if(isContractor)...[
+            SizedBox(height: 8.h),
+            Flexible(
+              child: Obx(
+                () => Card(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 20.w,
+                      vertical: 16.h,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                        children: [
+                          CustomText(
+                          text: "Current Location".tr,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                          ),
+                          const Spacer(),
+                          IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            size: 20.sp,
+                            color: Colors.grey[700],
+                          ),
+                          tooltip: 'Edit',
+                          onPressed: () {
+                            contractorController.editAddress(
+
+                            );
+
+                           
+                          },
+                          ),
+                        ],
+                        ),
+                        SizedBox(height: 8.h),
+                        CustomText(
+                        text:
+                          "${contractorController.location.value?.address ?? ''}",
+                        fontSize: 14.sp,
+                        color: Colors.grey[700]!,
+                        ),
+                      ],
+                      ),
+                    ),
+                    ),
+            ),
+            ), 
+          ],
+          if(!isContractor)...[
+           // Address List - SCROLLABLE SECTION
           Flexible(
             child: Obx(
               () =>
@@ -239,6 +301,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
                       ),
             ),
           ),
+          ],
 
           SizedBox(height: 20.h),
         ],

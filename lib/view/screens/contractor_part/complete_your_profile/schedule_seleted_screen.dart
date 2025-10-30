@@ -35,7 +35,7 @@ class _ScheduleSelectedScreenState extends State<ScheduleSelectedScreen> {
         Get.find<ScheduleSelectionController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Select Times".tr),
+      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Select Times".tr),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(

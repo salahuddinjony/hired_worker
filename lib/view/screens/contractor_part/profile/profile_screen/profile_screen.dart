@@ -11,6 +11,7 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
@@ -183,10 +184,24 @@ class ProfileScreen extends StatelessWidget {
                   //   ),
                   // );
 
-                  Get.toNamed(AppRoutes.seletedMapScreen, arguments: {'long': profileController.contractorModel.value.data!.contractor!.location!.coordinates![0],
-                    'lat': profileController.contractorModel.value.data!.contractor!.location!.coordinates![1],
-                  },
-                  );
+                  // Get.toNamed(AppRoutes.seletedMapScreen, arguments: {'long': profileController.contractorModel.value.data!.contractor!.location!.coordinates![0],
+                  //   'lat': profileController.contractorModel.value.data!.contractor!.location!.coordinates![1],
+                  // },
+                  // );
+                  final authController = Get.find<AuthController>();
+                  final Map<String, dynamic> addressData = {
+                    'address': profileController
+                        .contractorModel.value.data?.contractor?.location?.address,
+                    'long': profileController
+                        .contractorModel.value.data?.contractor?.location?.coordinates?[0],
+                    'lat': profileController
+                        .contractorModel.value.data?.contractor?.location?.coordinates?[1],
+                    'street':"",
+                    'unit':"",
+                    'city':"",
+
+                  };
+                   profileController.showAddressBottomSheet();
                 },
                 child: CustomProfileMenuList(
                   image: AppIcons.map,
@@ -319,4 +334,5 @@ class ProfileScreen extends StatelessWidget {
       bottomNavigationBar: const Navbar(currentIndex: 3),
     );
   }
+  
 }

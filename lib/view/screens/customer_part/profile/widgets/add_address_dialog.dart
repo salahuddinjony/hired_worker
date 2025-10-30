@@ -20,6 +20,8 @@ class AddAddressBottomSheet extends StatefulWidget {
   final String? name;
   final bool isFromProfile;
   final bool isSignUp;
+  final bool isContractor;
+  final Map<String, dynamic>? addressData;
 
   const AddAddressBottomSheet({
     super.key,
@@ -33,7 +35,9 @@ class AddAddressBottomSheet extends StatefulWidget {
     this.isUpdate = false,
     this.isFromProfile = false,
     this.isSignUp = false,
+    this.isContractor = false,
     this.name,
+    this.addressData,
   });
 
   @override
@@ -59,7 +63,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
     streetController.text = widget.street ?? '';
     unitController.text = widget.unit ?? '';
     directionsController.text = widget.directions ?? '';
-    selectedType = widget.name ?? 'Home';
+    selectedType = widget.name ??  'Home';
     latitude = widget.latitude;
     longitude = widget.longitude;
   }
@@ -139,7 +143,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     color: AppColors.black,
                   ),
 
-                  const Spacer(),
+                 const Spacer(),
                   GestureDetector(
                     onTap: () => Get.back(),
                     child: Container(
@@ -160,28 +164,30 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
               SizedBox(height: 24.h),
 
-              // Address Type Selection Label
-              CustomText(
-                text: "Address Type".tr,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700]!,
-              ),
+              if (!widget.isContractor) ...[
+                // Address Type Selection Label
+                CustomText(
+                  text: "Address Type".tr,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700]!,
+                ),
 
-              SizedBox(height: 12.h),
+                SizedBox(height: 12.h),
 
-              // Address Type Selection
-              Row(
-                children: [
-                  Expanded(child: _buildTypeChip('Home')),
-                  SizedBox(width: 10.w),
-                  Expanded(child: _buildTypeChip('Work')),
-                  SizedBox(width: 10.w),
-                  Expanded(child: _buildTypeChip('Other')),
-                ],
-              ),
+                // Address Type Selection
+                Row(
+                  children: [
+                    Expanded(child: _buildTypeChip('Home')),
+                    SizedBox(width: 10.w),
+                    Expanded(child: _buildTypeChip('Work')),
+                    SizedBox(width: 10.w),
+                    Expanded(child: _buildTypeChip('Other')),
+                  ],
+                ),
 
-              SizedBox(height: 24.h),
+                SizedBox(height: 24.h),
+              ],
 
               // Address Field
               _buildTextField(
@@ -256,7 +262,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   }
 
                   try {
-                    if (widget.isUpdate && widget.isSignUp == false) {
+                    if (widget.isUpdate && widget.isSignUp == false && widget.isContractor == false) {
                       debugPrint('Updating existing address...');
                       await controller.patchAddress(
                         locationId: widget.locationId ?? '',
@@ -282,26 +288,55 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                       debugPrint('Address updated successfully!');
                       return;
                     }
-                    if(widget.isSignUp){
+                    if (widget.isSignUp && widget.isContractor == false) {
                       debugPrint('Saving address during sign-up...');
                       authController.updateAddressFromMap({
                         'address': addressController.text,
                         'latitude': latitude,
                         'longitude': longitude,
-                        'street': streetController.text.isNotEmpty
-                            ? streetController.text
-                            : null,
-                        'unit': unitController.text.isNotEmpty
-                            ? unitController.text
-                            : null,
-                        'direction': directionsController.text.isNotEmpty
-                            ? directionsController.text
-                            : null,
+                        'street':
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        'unit':
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        'direction':
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
                       });
-                      debugPrint('Address saved to AuthController during sign-up!');
+                      debugPrint(
+                        'Address saved to AuthController during sign-up!',
+                      );
                       Navigator.of(context).pop();
                       return;
                     }
+                    if (widget.isSignUp && widget.isContractor) {
+                      final mapController = Get.find<MapController>();
+                      debugPrint('xxxx Updating contractor address during sign-up...');
+                    await mapController.updateContractorData(
+                      isFromProfileContractor: true,
+                      address: addressController.text,
+                      latitude: latitude,
+                      longitude: longitude,
+                      street:
+                          streetController.text.isNotEmpty
+                              ? streetController.text
+                              : null,
+                      unit:
+                          unitController.text.isNotEmpty
+                              ? unitController.text
+                              : null,
+                      directions:
+                          directionsController.text.isNotEmpty
+                              ? directionsController.text
+                              : null,
+                    );
+                    return ; 
+                    }
+
 
                     debugPrint('Calling addNewAddress...');
 
@@ -341,7 +376,9 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
                     debugPrint('Opening saved addresses bottom sheet...');
                     // Open saved addresses list
-                    controller.showAddressBottomSheet();
+                 if(!widget.isContractor){
+                     controller.showAddressBottomSheet();
+                 }
                     debugPrint('✅ showAddressBottomSheet() called');
                   } catch (e) {
                     debugPrint('❌ Error saving address: $e');
@@ -353,8 +390,12 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     );
                   }
                 },
-                title:widget.isSignUp? "Continue".tr:
-                    widget.isUpdate ? "Update Address".tr : "Save Address".tr, 
+                title:
+                    widget.isSignUp
+                        ? "Continue".tr
+                        : widget.isUpdate
+                        ? "Update Address".tr
+                        : "Save Address".tr,
               ),
             ],
           ),

@@ -350,12 +350,18 @@ class Location {
     List<num>? coordinates;
     String? address;
     String? id;
+    String? street;      
+    String? direction;   
+    String? unit;        
 
     Location({
         this.type,
         this.coordinates,
         this.address,
         this.id,
+        this.street,
+        this.direction,
+        this.unit,
     });
 
     factory Location.fromJson(Map<String, dynamic> json) => Location(
@@ -365,6 +371,9 @@ class Location {
             : List<num>.from(json["coordinates"].map((x) => x)),
         address: json["address"],
         id: json["_id"],
+        street: json["street"],       
+        direction: json["direction"], 
+        unit: json["unit"],           
     );
 
     Map<String, dynamic> toJson() => {
@@ -372,5 +381,8 @@ class Location {
         "coordinates": coordinates ?? [],
         "address": address,
         "_id": id,
+        "street": street,       
+        "direction": direction, 
+        "unit": unit,           
     };
 }
