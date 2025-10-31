@@ -422,8 +422,8 @@ class MapController extends GetxController {
         "location": {
           "address": address ?? selectedLocation.value?['address'],
           "coordinates": [
-            latitude ?? selectedLocation.value?['latitude'],
             longitude ?? selectedLocation.value?['longitude'],
+            latitude ?? selectedLocation.value?['latitude'],
           ],
           "street": street ?? "",
           "unit": unit ?? "",
