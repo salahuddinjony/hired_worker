@@ -786,12 +786,16 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             .getContractorQuestions(
                               subCategoryId: subCategoryId,
                             );
+                            debugPrint("Is success: $isSuccess");
                         debugPrint(
                           "Call getContractorQuestions with ID: $subCategoryId",
                         );
                         debugPrint("Subcategory ID: $subCategoryId");
 
                         if (isSuccess) {
+                          debugPrint(
+                            "Questions loaded: ${homeController.contractorQuestions.length}",
+                          );
                           final List<MaterialsModel> itemsMaterials =
                               contractorData?.materials ?? [];
                           Get.toNamed(
@@ -802,7 +806,9 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   contractorData?.userId.contractor,
                               'subcategoryId': subCategoryId,
                               'materials': itemsMaterials,
-                              'questions': homeController.contractorQuestions,
+                              'questions': homeController.contractorQuestions.isNotEmpty
+                                  ? homeController.contractorQuestions.first.question.toList()
+                                  : [],
                               'hourlyRate': rateHourlyStr,
                               'contractorName': fullName,
                               'categoryName':

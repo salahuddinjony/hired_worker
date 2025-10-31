@@ -24,6 +24,7 @@ class CustomFormCard extends StatelessWidget {
   final Color? titleColor;
   final void Function(String)? onChanged;
   final TextInputType? keyboardType;
+  final bool visibleAllTest;
 
   const CustomFormCard({
     super.key,
@@ -42,6 +43,7 @@ class CustomFormCard extends StatelessWidget {
     this.fontSize,
     this.titleColor,
     this.prefixIcon, this.keyboardType, this.onChanged,
+    this.visibleAllTest = false,
   });
 
   @override
@@ -56,7 +58,9 @@ class CustomFormCard extends StatelessWidget {
           fontSize: fontSize ?? 18.w,
           bottom: 12.h,
           textAlign: TextAlign.start,
-          maxLines: 2,
+
+          maxLines: visibleAllTest ? null : 2, // Show all text, no ellipsis
+          overflow: visibleAllTest ? TextOverflow.visible : TextOverflow.ellipsis, // Ensure no ellipsis
         ),
         CustomTextField(
           isDens: true,
