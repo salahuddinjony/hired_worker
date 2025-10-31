@@ -37,7 +37,7 @@ class CustomerHelpSupportScreen extends StatelessWidget {
                   controller: controller.titleController
               ),
               CustomFormCard(
-                  title: "Write in bellow box",
+                  title: "Write in below box",
                   hintText: "write here.....",
                   maxLine: 5,
                   controller: controller.detailsController
