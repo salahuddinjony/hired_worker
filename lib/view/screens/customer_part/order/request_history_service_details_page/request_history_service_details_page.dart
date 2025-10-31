@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -189,29 +190,185 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           color: AppColors.black,
           bottom: 20,
         ),
-        CustomText(
-          text: "Required Questions".tr,
-          fontSize: 18.w,
-          fontWeight: FontWeight.w700,
-          color: AppColors.black,
+
+        ExpandableNotifier(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: "Required Questions".tr,
+                    fontSize: 18.w,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.black,
+                  ),
+                  if (booking.questions.isNotEmpty) Builder(
+                    builder: (context) {
+                      final controller = ExpandableController.of(
+                        context,
+                        required: true,
+                      );
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(20.r),
+                        onTap: () {
+                          controller?.toggle();
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              controller?.expanded == true
+                                  ? "Tap to collapse"
+                                  : "Tap to show all",
+                              style: TextStyle(
+                                fontSize: 13.w,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Icon(
+                              controller?.expanded == true
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
+                              color: AppColors.primary,
+                              size: 28.w,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Builder(
+                builder: (context) {
+                  final controller = ExpandableController.of(
+                    context,
+                    required: true,
+                  );
+                  return controller?.expanded == true
+                      ? const Divider(thickness: .3, color: AppColors.black_02)
+                      : const SizedBox.shrink();
+                },
+              ),
+              Expandable(
+                collapsed:
+                    booking.questions.isNotEmpty
+                        ? CustomText(
+                          text: '',
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                          bottom: 4.h,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                        : CustomText(
+                          top: 8,
+                          text: 'No required questions'.tr,
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff6F767E),
+                        ),
+                expanded:
+                    booking.questions.isNotEmpty
+                        ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                              booking.questions.asMap().entries.map((entry) {
+                                final idx = entry.key;
+                                final q = entry.value;
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 12.h),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 10.h,
+                                    horizontal: 12.w,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xffF7F7F7),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: AppColors.primary.withOpacity(
+                                        0.08,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 28.w,
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              '${idx + 1}.',
+                                              style: TextStyle(
+                                                fontSize: 16.w,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.primary,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              q.question ?? '',
+                                              style: TextStyle(
+                                                fontSize: 16.w,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      if ((q.answer ?? '').isNotEmpty)
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 28.w,
+                                            top: 6.h,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.check_circle_outline,
+                                                color: AppColors.primary,
+                                                size: 18.w,
+                                              ),
+                                              SizedBox(width: 6.w),
+                                              Expanded(
+                                                child: Text(
+                                                  q.answer ?? '',
+                                                  style: TextStyle(
+                                                    fontSize: 14.w,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: const Color(
+                                                      0xff6F767E,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                        )
+                        : const SizedBox.shrink(),
+              ),
+              booking.questions.isEmpty ? const SizedBox(height: 12) : const SizedBox.shrink(),
+            ],
+          ),
         ),
-        const Divider(thickness: .3, color: AppColors.black_02),
-        if (booking.questions.isNotEmpty) ...[
-          CustomText(
-            text: "Question : ${booking.questions.first.question ?? ''}",
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
-          ),
-          CustomText(
-            top: 4,
-            text: "Answer : ${booking.questions.first.answer ?? ''}",
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
-            bottom: 20,
-          ),
-        ],
         CustomText(
           text: "Materials".tr,
           fontSize: 18.w,
@@ -510,7 +667,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     'hourlyRate': booking.rateHourly ?? 0,
                     'bookingId': booking.id,
                     'isUpdate': true,
-                    'paymentedTotalAmount':booking.totalAmount ?? 0,
+                    'paymentedTotalAmount': booking.totalAmount ?? 0,
                     'subCategoryImage': booking.subCategoryId?.img ?? '',
                   },
                 );
