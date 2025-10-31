@@ -23,8 +23,8 @@ class AuthController extends GetxController {
   //  12345678
 
   // contractor
-  // jeyora6791@fixwap.com
-  // 12345678
+  // ralopo4953@haotuwu.com
+  // 12345
 
   Rx<TextEditingController> nameController =
       TextEditingController(text: kDebugMode ? "Md Nishad Miah" : "").obs;

@@ -273,8 +273,9 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                         locationId: widget.locationId ?? '',
                         address: addressController.text,
                         coordinates: [
-                          if (latitude != null) latitude!,
+                       
                           if (longitude != null) longitude!,
+                          if (latitude != null) latitude!,
                         ],
                         street:
                             streetController.text.isNotEmpty
