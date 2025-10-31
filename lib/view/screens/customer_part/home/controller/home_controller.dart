@@ -419,7 +419,7 @@ RxString selectedCategoryId = ''.obs;
         ApiUrl.getContractorQuestions,
         query: {
           'limit': '500',
-          'subCategory': subCategoryId
+          'subCategoryId': subCategoryId
         }
       );
 

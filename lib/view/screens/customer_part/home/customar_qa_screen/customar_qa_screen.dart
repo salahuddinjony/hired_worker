@@ -50,27 +50,47 @@ class CustomarQaScreen extends StatelessWidget {
 
     final rawQuestions = args['questions'];
 
-    List<dynamic> questions = [];
+    List<Map<String, dynamic>> questions = [];
     if (rawQuestions == null) {
       questions = [];
     } else if (rawQuestions is Map && rawQuestions['data'] is List) {
-      questions = rawQuestions['data'];
+      // API response: data: [ { question: [ ... ] } ]
+      final dataList = rawQuestions['data'];
+      for (var item in dataList) {
+        if (item is Map && item['question'] is List) {
+          for (int i = 0; i < item['question'].length; i++) {
+            questions.add({
+              'id': '${i + 1}',
+              'question': item['question'][i],
+            });
+          }
+        } else if (item is Map && item['question'] is String) {
+          questions.add({
+            'id': item['_id']?.toString() ?? '',
+            'question': item['question'],
+          });
+        }
+      }
     } else if (rawQuestions is List) {
-      questions = rawQuestions;
-    } else {
-      questions = [rawQuestions];
+      for (int i = 0; i < rawQuestions.length; i++) {
+        final q = rawQuestions[i];
+        if (q is Map && q['question'] is String) {
+          questions.add({
+            'id': q['_id']?.toString() ?? '${i + 1}',
+            'question': q['question'],
+          });
+        } else if (q is String) {
+          questions.add({
+            'id': '${i + 1}',
+            'question': q,
+          });
+        }
+      }
+    } else if (rawQuestions is String) {
+      questions = [{ 'id': '1', 'question': rawQuestions }];
     }
 
-    // If no questions are provided, use demo questions immediately
-    if (questions.isEmpty) {
-      questions = [
-        {'id': '1', 'question': 'How many dimmers do you need installed?'},
-        {
-          'id': '2',
-          'question': 'What type of lighting fixtures do you prefer?',
-        },
-      ];
-    }
+
 
     // Initialize questions in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -90,6 +110,17 @@ class CustomarQaScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
+                  if(controller.questions.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: 50.h, bottom: 20.h),
+                      child: Text(
+                        "No questions available at this time.".tr,
+                        style: TextStyle(
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
                   // Dynamic questions list - render based on controller.questions
                   ...List.generate(controller.questions.length, (index) {
                     final q = controller.questions[index];
@@ -99,6 +130,7 @@ class CustomarQaScreen extends StatelessWidget {
                     return GetBuilder<ContractorBookingController>(
                       builder: (ctrl) {
                         return CustomFormCard(
+                          visibleAllTest: true,
                           title: "${index + 1}. $questionText",
                           hintText: "Answer here...",
                           controller:
