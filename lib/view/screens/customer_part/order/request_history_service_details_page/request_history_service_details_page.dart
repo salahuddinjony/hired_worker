@@ -175,7 +175,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
             CustomText(
               text:
-                  "${booking.rateHourly != null ? 'AUD ${booking.rateHourly}/hr' : ''}",
+                  "${booking.rateHourly != null ? '\$${booking.rateHourly}/hr' : ''}",
               fontSize: 16.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -383,13 +383,13 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
               children: [
                 CustomText(
                   text:
-                      "${m.name ?? ''} - ${m.count ?? ''} x AUD ${m.price ?? ''}",
+                      "${m.name ?? ''} - ${m.count ?? ''} x \$${m.price ?? ''}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
                 ),
                 CustomText(
-                  text: "AUD ${(m.price ?? 0) * (m.count ?? 0)}",
+                  text: "\$${(m.price ?? 0) * (m.count ?? 0)}",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -575,7 +575,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                               booking.totalAmount != null) ...[
                             SizedBox(height: 6.h),
                             CustomText(
-                              text: "Amount Paid: AUD ${booking.totalAmount}",
+                              text: "Amount Paid:  \$${booking.totalAmount}",
                               fontSize: 14.w,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff6F767E),
@@ -616,7 +616,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
         ),
         CustomText(
           top: 20,
-          text: "Total Amount".tr + ": AUD ${booking.totalAmount ?? '0'}",
+          text: "Total Amount".tr + ": \$${booking.totalAmount ?? '0'}",
           fontSize: 18.w,
           fontWeight: FontWeight.w700,
           color: AppColors.black,

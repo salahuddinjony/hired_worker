@@ -514,12 +514,24 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                         bottom: 8,
                       );
                     }),
+                      Obx(() {
+                        final materials = controller.materialsTotalAmount;
+                        final String  weeklyDays= controller.bookingType.value=='weekly' ? ' for ${controller.selectedDates.length} day(s)' : '';
+                      return CustomText(
+                        text: "Selected Materials: \$${materials.toStringAsFixed(2)} $weeklyDays",
+                        fontSize: 18.w,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.black,
+                        bottom: 8,
+                      );
+                    }),
+                    SizedBox(height: 10.h),
                     Obx(() {
                       final total = controller.calculateTotalPayableAmount();
                     
                       return CustomText(
                         text: "Total: \$${total.toStringAsFixed(2)}",
-                        fontSize: 18.w,
+                        fontSize: 25.w,
                         fontWeight: FontWeight.w800,
                         color: AppColors.black,
                         bottom: 50,

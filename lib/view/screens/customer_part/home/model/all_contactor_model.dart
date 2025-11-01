@@ -51,6 +51,7 @@ class Meta {
 }
 
 
+
 class allContractor {
   final String id;
   final String dob;
@@ -69,9 +70,9 @@ class allContractor {
   final String subscriptionStatus;
   final String customerId;
   final String paymentMethodId;
-  final MyScheduleModel? myScheduleId;
+  final List<MyScheduleModel> myScheduleId;
   final String? subscriptionId;
-  final bool hasActiveSubscription;
+  final bool? hasActiveSubscription;
   final bool isDeleted;
   final List<String> skills;
   final List<MaterialsModel> materials;
@@ -176,31 +177,31 @@ class allContractor {
       return <MaterialsModel>[];
     })();
 
-    // myScheduleId
-    MyScheduleModel? scheduleModel;
+    // myScheduleId can be a list, single object, or missing
+    List<MyScheduleModel> scheduleList = [];
     final rawSchedule = json['myScheduleId'];
     if (rawSchedule == null) {
-      scheduleModel = null;
-    } else if (rawSchedule is String) {
-      scheduleModel = MyScheduleModel(
-        id: rawSchedule,
-        contractorId: '',
-        schedules: [],
-        createdAt: '',
-        updatedAt: '',
-        v: 0,
-      );
+      scheduleList = [];
+    } else if (rawSchedule is List) {
+      scheduleList = rawSchedule
+          .where((e) => e != null && e is Map<String, dynamic>)
+          .map<MyScheduleModel>((e) => MyScheduleModel.fromJson(e as Map<String, dynamic>))
+          .toList();
     } else if (rawSchedule is Map<String, dynamic>) {
-      scheduleModel = MyScheduleModel.fromJson(rawSchedule);
+      scheduleList = [MyScheduleModel.fromJson(rawSchedule)];
+    } else if (rawSchedule is String) {
+      scheduleList = [
+        MyScheduleModel(
+          id: rawSchedule,
+          contractorId: '',
+          schedules: [],
+          createdAt: '',
+          updatedAt: '',
+          v: 0,
+        )
+      ];
     } else {
-      scheduleModel = MyScheduleModel(
-        id: rawSchedule.toString(),
-        contractorId: '',
-        schedules: [],
-        createdAt: '',
-        updatedAt: '',
-        v: 0,
-      );
+      scheduleList = [];
     }
 
     // userId
@@ -236,9 +237,9 @@ class allContractor {
       subscriptionStatus: json['subscriptionStatus'] ?? '',
       customerId: json['customerId'] ?? '',
       paymentMethodId: json['paymentMethodId'] ?? '',
-      myScheduleId: scheduleModel,
+      myScheduleId: scheduleList,
       subscriptionId: json['subscriptionId'],
-      hasActiveSubscription: json['hasActiveSubscription'] ?? false,
+      hasActiveSubscription: json['hasActiveSubscription'],
       isDeleted: json['isDeleted'] ?? false,
       skills: skillsList,
       materials: materialsList,
