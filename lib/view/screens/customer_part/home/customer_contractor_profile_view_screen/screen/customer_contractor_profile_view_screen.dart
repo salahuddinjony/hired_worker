@@ -135,7 +135,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                           .toList() ??
                       <SubCategoryModel>[]
                   : contractorData?.subCategory ?? <SubCategoryModel>[];
-          final scheduleModel = contractorData?.myScheduleId;
+          final scheduleModel = contractorData?.myScheduleId.first;
           final String bio = contractorData?.bio ?? '';
 
           return Column(
@@ -786,7 +786,7 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                             .getContractorQuestions(
                               subCategoryId: subCategoryId,
                             );
-                            debugPrint("Is success: $isSuccess");
+                        debugPrint("Is success: $isSuccess");
                         debugPrint(
                           "Call getContractorQuestions with ID: $subCategoryId",
                         );
@@ -806,9 +806,14 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   contractorData?.userId.contractor,
                               'subcategoryId': subCategoryId,
                               'materials': itemsMaterials,
-                              'questions': homeController.contractorQuestions.isNotEmpty
-                                  ? homeController.contractorQuestions.first.question.toList()
-                                  : [],
+                              'questions':
+                                  homeController.contractorQuestions.isNotEmpty
+                                      ? homeController
+                                          .contractorQuestions
+                                          .first
+                                          .question
+                                          .toList()
+                                      : [],
                               'hourlyRate': rateHourlyStr,
                               'contractorName': fullName,
                               'categoryName':

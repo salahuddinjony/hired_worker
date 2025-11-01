@@ -287,7 +287,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       Row(
                         children: [
                           CustomText(
-                            text: "Materials Total: ",
+                            text: "Materials Total ${controller.bookingType.value == 'weekly' ? 'for ${controller.selectedDates.length} day(s)' : ''}: ",
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -341,7 +341,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   children: [
                     CustomText(
                       text:
-                          "Selected Days: ${controller.selectedDates.length} days - \$ ${controller.selectedDates.length} x ${controller.totalDurationAmount}",
+                          "Selected Days: ${controller.selectedDates.length} days - ${controller.selectedDates.length} x \$${controller.totalDurationAmount}",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
@@ -372,7 +372,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 children: [
                   CustomText(
                     text:
-                        "Duration : ( ${controller.durations.value} x \$ ${controller.hourlyRate} ) ",
+                        "Duration : ( ${controller.durations.value} hr x \$ ${controller.hourlyRate} ) ",
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -654,8 +654,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 onTap: () async {
                   controller.collectAllAnswers();
                   // Step 1: Call payment API to get payment URL for remaining amount
-                  final int finalPaymentAmount =
-                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toInt();
+                  final double finalPaymentAmount =
+                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toDouble();
                   EasyLoading.show(status: 'Processing payment...');
                   final Map<String, dynamic> requestBody = {
                     "contractorId": contractorId,

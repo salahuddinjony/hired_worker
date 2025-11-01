@@ -609,6 +609,10 @@ class ContractorBookingController extends GetxController {
       final int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
       final int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       total += quantity * pricePerUnit;
+      // for select weekly booking the materials will be multiply with number of selected dates
+      if (bookingType.value == 'weekly') {
+        total += (quantity * pricePerUnit) * (selectedDates.length - 1);
+      }
     }
     return total;
   }
