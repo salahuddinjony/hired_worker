@@ -47,7 +47,6 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
               status: '',
               location: data.location,
               isButtonShow: false,
-              height: 150.h,
               hourlyRate: data.totalAmount,
               customerName: data.customerId?.fullName,
               customerImage: data.customerId?.img,
@@ -122,7 +121,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                       children:
                           data.questions!.map((e) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
+                              padding: const EdgeInsets.only(bottom: 8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -204,7 +203,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   title: "Accept".tr,
                   height: 26.h,
                   width: 70.w,
-                  fontSize: 10.w,
+                  fontSize: 13.5.sp,
                   borderRadius: 10,
                 ),
                 CustomButton(
@@ -215,7 +214,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   title: "Cancel".tr,
                   height: 26.h,
                   width: 50.w,
-                  fontSize: 10.w,
+                  fontSize: 13.5.sp,
                   fillColor: Colors.transparent,
                   isBorder: true,
                   textColor: AppColors.red,

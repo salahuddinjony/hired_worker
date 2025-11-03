@@ -17,6 +17,7 @@ import '../controller/profile_controller.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
+
   final ProfileController profileController = Get.find<ProfileController>();
   final CustomController customController = Get.find<CustomController>();
 
@@ -135,7 +136,9 @@ class EditProfileScreen extends StatelessWidget {
                   );
 
                   if (pickedDate != null) {
-                    profileController.dobController.value.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+                    profileController.dobController.value.text = DateFormat(
+                      'dd/MM/yyyy',
+                    ).format(pickedDate);
                   }
                 },
               ),
@@ -165,6 +168,8 @@ class EditProfileScreen extends StatelessWidget {
                           title: "Update".tr,
                         ),
               ),
+
+              const SizedBox(height: kBottomNavigationBarHeight),
             ],
           ),
         ),

@@ -17,6 +17,7 @@ import 'package:servana/view/screens/contractor_part/profile/controller/profile_
 import '../../../../../core/app_routes/app_routes.dart'; // App navigation routes
 import '../../../../../utils/helper_methods/helper_methods.dart';
 import '../../../../components/custom_nav_bar/navbar.dart'; // Custom bottom navigation bar
+import '../order_screen/order_screen.dart';
 import 'widget/custom_home_card.dart'; // Custom card widget for home screen
 
 class HomeScreen extends StatelessWidget {
@@ -194,8 +195,11 @@ class HomeScreen extends StatelessWidget {
                             CustomHomeCard(
                               text:
                                   controller.requestedServices.value.toString(),
-                              title: "Request Services".tr,
+                              title: "Requested Services".tr,
                               imageSrc: AppIcons.iconTwo,
+                              onTap: () {
+                                Get.to(() => const OrderScreen());
+                              },
                             ),
                             CustomHomeCard(
                               text:

@@ -6,6 +6,7 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../controller/customer_profile_controller.dart';
 
@@ -198,6 +199,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                 controller: addressController,
                 hint: 'Address / Building Name',
                 icon: Icons.location_on_outlined,
+                readOnly: widget.isContractor ? true : false,
+                isContractor: widget.isContractor,
               ),
 
               SizedBox(height: 16.h),
@@ -273,7 +276,6 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                         locationId: widget.locationId ?? '',
                         address: addressController.text,
                         coordinates: [
-                       
                           if (longitude != null) longitude!,
                           if (latitude != null) latitude!,
                         ],
@@ -501,6 +503,8 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
     required TextEditingController controller,
     required String hint,
     IconData? icon,
+    bool? readOnly,
+    bool? isContractor,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
@@ -522,7 +526,28 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
                   final result = await Get.toNamed(
                     '/SeletedMapScreen',
-                    arguments: {'returnData': true},
+                    arguments: {
+                      'returnData': true,
+                      if (isContractor != null && isContractor)
+                        'long':
+                            Get.find<ProfileController>()
+                                .contractorModel
+                                .value
+                                .data!
+                                .contractor!
+                                .location!
+                                .coordinates![0],
+
+                      if (isContractor != null && isContractor)
+                        'lat':
+                            Get.find<ProfileController>()
+                                .contractorModel
+                                .value
+                                .data!
+                                .contractor!
+                                .location!
+                                .coordinates![1],
+                    },
                   );
 
                   // If location is selected, update address, latitude, longitude
@@ -549,6 +574,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
           ],
           Expanded(
             child: TextField(
+              readOnly: readOnly == null ? false : true,
               controller: controller,
               style: TextStyle(
                 fontSize: 14.sp,

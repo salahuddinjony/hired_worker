@@ -26,7 +26,7 @@ class AddressSelectionBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomerProfileController controller =
         Get.find<CustomerProfileController>();
-    final contractorController= Get.find<ProfileController>();
+    final contractorController = Get.find<ProfileController>();
 
     return Container(
       constraints: BoxConstraints(
@@ -104,203 +104,209 @@ class AddressSelectionBottomSheet extends StatelessWidget {
 
           Divider(height: 1.h, thickness: 1, color: Colors.grey[200]),
 
-         if(!isContractor)...[
-           SizedBox(height: 12.h),
+          if (!isContractor) ...[
+            SizedBox(height: 12.h),
 
-          // Add New Address Button
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: InkWell(
-              onTap: () {
-                Get.back();
-                controller.showAddAddressDialog(isFromProfile: isFromProfile);
-              },
-              borderRadius: BorderRadius.circular(12.r),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primary,
-                      AppColors.primary.withValues(alpha: .8),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+            // Add New Address Button
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: InkWell(
+                onTap: () {
+                  Get.back();
+                  controller.showAddAddressDialog(isFromProfile: isFromProfile);
+                },
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 14.h,
+                    horizontal: 16.w,
                   ),
-                  borderRadius: BorderRadius.circular(12.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: .3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary,
+                        AppColors.primary.withValues(alpha: .8),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(4.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: .2),
-                        borderRadius: BorderRadius.circular(6.r),
+                    borderRadius: BorderRadius.circular(12.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: .3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
                       ),
-                      child: Icon(Icons.add, color: Colors.white, size: 20.sp),
-                    ),
-                    SizedBox(width: 10.w),
-                    CustomText(
-                      text: "Add New Address".tr,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: .2),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 20.sp,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      CustomText(
+                        text: "Add New Address".tr,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
 
-          SizedBox(height: 16.h),
-         ],
+            SizedBox(height: 16.h),
+          ],
 
-          if(isContractor)...[
+          if (isContractor) ...[
             SizedBox(height: 8.h),
             Flexible(
               child: Obx(
                 () => Card(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 16.h,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.w),
-                      child: Column(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 16.h,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                        children: [
-                          CustomText(
-                          text: "Current Location".tr,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                          ),
-                          const Spacer(),
-                          IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            size: 20.sp,
-                            color: Colors.grey[700],
-                          ),
-                          tooltip: 'Edit',
-                          onPressed: () {
-                            contractorController.editAddress(
-
-                            );
-
-                           
-                          },
-                          ),
-                        ],
-                        ),
-                        SizedBox(height: 8.h),
-                        CustomText(
-                        text:
-                          "${contractorController.location.value?.address ?? ''}",
-                        fontSize: 14.sp,
-                        color: Colors.grey[700]!,
-                        ),
-                      ],
-                      ),
-                    ),
-                    ),
-            ),
-            ), 
-          ],
-          if(!isContractor)...[
-           // Address List - SCROLLABLE SECTION
-          Flexible(
-            child: Obx(
-              () =>
-                  controller.savedAddresses.isEmpty
-                      ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: 40.h),
-                        child: Column(
                           children: [
-                            Icon(
-                              Icons.location_off_outlined,
-                              size: 64.sp,
-                              color: Colors.grey[300],
-                            ),
-                            SizedBox(height: 16.h),
                             CustomText(
-                              text: "No saved addresses yet".tr,
+                              text: "Current Location".tr,
                               fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[600]!,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
                             ),
-                            SizedBox(height: 8.h),
-                            CustomText(
-                              text: "Add your first address above".tr,
-                              fontSize: 13.sp,
-                              color: Colors.grey[400]!,
+                            const Spacer(),
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                size: 20.sp,
+                                color: Colors.grey[700],
+                              ),
+                              tooltip: 'Edit',
+                              onPressed: () {
+                                contractorController.editAddress();
+                              },
                             ),
                           ],
                         ),
-                      )
-                      : ListView.separated(
-                        shrinkWrap: true,
-                        physics:
-                            const BouncingScrollPhysics(), // ✅ Made scrollable
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
+                        SizedBox(height: 8.h),
+                        CustomText(
+                          text:
+                              "${contractorController.location.value?.address ?? ''}",
+                          fontSize: 14.sp,
+                          color: Colors.grey[700]!,
                         ),
-                        itemCount: controller.savedAddresses.length,
-                        separatorBuilder:
-                            (context, index) => SizedBox(height: 12.h),
-                        itemBuilder: (context, index) {
-                          final address = controller.savedAddresses[index];
-                          return _AddressItem(
-                            address: address,
-                            onTap: () async {
-                              if (isFromProfile) {
-                                final savedAddresses =
-                                    controller.savedAddresses;
-                                final selectedAddress =
-                                    controller.getSelectedAddress();
-                                final idx = savedAddresses.indexWhere(
-                                  (a) => a.id == address.id,
-                                );
-                                if (idx != -1) {
-                                  // Select locally and close the sheet immediately
-                                  controller.selectAddress(idx);
-                                  Get.back();
-
-                                  // Fire the network update in background (don't await)
-                                  await controller.updateProfile();
-                                  if (useByUserId == true && selectedAddress != null) {
-                                    debugPrint(
-                                        'Refreshing contactor list for userId: $useByUserId');
-                                    final homeController =
-                                        Get.find<HomeController>();
-                                    await homeController.getAllContactor(
-                                      useByUserId: useByUserId == true ? true : false,
-                                    );
-                                  }
-                                }
-                                return;
-                              } else {
-                                controller.selectAddress(index);
-                                Get.back();
-                              }
-                            },
-                          );
-                        },
-                      ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
+          if (!isContractor) ...[
+            // Address List - SCROLLABLE SECTION
+            Flexible(
+              child: Obx(
+                () =>
+                    controller.savedAddresses.isEmpty
+                        ? Padding(
+                          padding: EdgeInsets.symmetric(vertical: 40.h),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.location_off_outlined,
+                                size: 64.sp,
+                                color: Colors.grey[300],
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomText(
+                                text: "No saved addresses yet".tr,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[600]!,
+                              ),
+                              SizedBox(height: 8.h),
+                              CustomText(
+                                text: "Add your first address above".tr,
+                                fontSize: 13.sp,
+                                color: Colors.grey[400]!,
+                              ),
+                            ],
+                          ),
+                        )
+                        : ListView.separated(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          // ✅ Made scrollable
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20.w,
+                            vertical: 16.h,
+                          ),
+                          itemCount: controller.savedAddresses.length,
+                          separatorBuilder:
+                              (context, index) => SizedBox(height: 12.h),
+                          itemBuilder: (context, index) {
+                            final address = controller.savedAddresses[index];
+                            return _AddressItem(
+                              address: address,
+                              onTap: () async {
+                                if (isFromProfile) {
+                                  final savedAddresses =
+                                      controller.savedAddresses;
+                                  final selectedAddress =
+                                      controller.getSelectedAddress();
+                                  final idx = savedAddresses.indexWhere(
+                                    (a) => a.id == address.id,
+                                  );
+                                  if (idx != -1) {
+                                    // Select locally and close the sheet immediately
+                                    controller.selectAddress(idx);
+                                    Get.back();
+
+                                    // Fire the network update in background (don't await)
+                                    await controller.updateProfile();
+                                    if (useByUserId == true &&
+                                        selectedAddress != null) {
+                                      debugPrint(
+                                        'Refreshing contactor list for userId: $useByUserId',
+                                      );
+                                      final homeController =
+                                          Get.find<HomeController>();
+                                      await homeController.getAllContactor(
+                                        useByUserId:
+                                            useByUserId == true ? true : false,
+                                      );
+                                    }
+                                  }
+                                  return;
+                                } else {
+                                  controller.selectAddress(index);
+                                  Get.back();
+                                }
+                              },
+                            );
+                          },
+                        ),
+              ),
+            ),
           ],
 
           SizedBox(height: 20.h),
