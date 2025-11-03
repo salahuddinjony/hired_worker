@@ -484,7 +484,7 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
           ),
         CustomText(
           top: 20,
-          text: "Durations".tr,
+          text: "Duration".tr,
           fontSize: 18.w,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
