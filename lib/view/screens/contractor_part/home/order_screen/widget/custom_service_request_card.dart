@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
+import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/controller/order_controller.dart';
 import 'package:servana/view/screens/contractor_part/map/google_map_screen.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
@@ -37,7 +38,11 @@ class CustomServiceRequestCard extends StatelessWidget {
     this.isButtonShow = true,
     this.height = 210,
     this.index,
-    this.location, this.customerImage, this.customerName, this.subcategoryName, this.hourlyRate,
+    this.location,
+    this.customerImage,
+    this.customerName,
+    this.subcategoryName,
+    this.hourlyRate,
   });
 
   @override
@@ -128,7 +133,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                             ),
                             CustomText(
                               left: 8,
-                              text:  customerName ?? " - ",
+                              text: customerName ?? " - ",
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.black,
@@ -151,7 +156,6 @@ class CustomServiceRequestCard extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 6.h),
-
 
                         CustomText(
                           text: "\$ ${hourlyRate ?? " - "}",
@@ -183,7 +187,9 @@ class CustomServiceRequestCard extends StatelessWidget {
 
                         GestureDetector(
                           onTap: () {
-                            Get.to(() => GoogleMapScreen(location: location ?? ""));
+                            Get.to(
+                              () => GoogleMapScreen(location: location ?? ""),
+                            );
                           },
                           child: Row(
                             children: [
@@ -194,14 +200,13 @@ class CustomServiceRequestCard extends StatelessWidget {
                               ),
                               SizedBox(width: 4.w),
                               Expanded(
-                                  child: CustomText(
-                                    text: location ?? " - ",
-                                    fontSize: 12.w,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.blue,
-                                  ),
+                                child: CustomText(
+                                  text: location ?? " - ",
+                                  fontSize: 12.w,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blue,
                                 ),
-
+                              ),
                             ],
                           ),
                         ),
@@ -212,8 +217,7 @@ class CustomServiceRequestCard extends StatelessWidget {
               ],
             ),
 
-            if (isButtonShow)
-             SizedBox(height: 12.h,),
+            if (isButtonShow) SizedBox(height: 12.h),
 
             if (isButtonShow)
               Row(
@@ -226,17 +230,54 @@ class CustomServiceRequestCard extends StatelessWidget {
                     title: "Accept".tr,
                     height: 26.h,
                     width: 70.w,
-                    fontSize: 10.w,
+                    fontSize: 13.5.sp,
                     borderRadius: 10,
                   ),
                   CustomButton(
                     onTap: () {
-                      Get.find<OrderController>().cancelOrder(id);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(6),
+                            ),
+                            title: const Text('Cancel Booking'),
+                            content: const Text(
+                              'Are you sure you want to cancel this booking?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'No',
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  showCustomSnackBar(
+                                    'Your booking will be canceled shortly.',
+                                  );
+                                  Get.find<OrderController>().cancelOrder(id);
+                                },
+                                child: const Text(
+                                  'Yes',
+                                  style: TextStyle(color: AppColors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     title: "Cancel".tr,
                     height: 26.h,
                     width: 50.w,
-                    fontSize: 10.w,
+                    fontSize: 13.5.sp,
                     fillColor: Colors.transparent,
                     isBorder: true,
                     textColor: AppColors.red,
@@ -253,7 +294,7 @@ class CustomServiceRequestCard extends StatelessWidget {
                     title: "View".tr,
                     height: 26.h,
                     width: 50.w,
-                    fontSize: 10.w,
+                    fontSize: 13.5.sp,
                     fillColor: AppColors.cardClr,
                     textColor: AppColors.black,
                     borderRadius: 10,

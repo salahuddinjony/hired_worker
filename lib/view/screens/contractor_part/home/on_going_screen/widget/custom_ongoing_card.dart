@@ -153,6 +153,7 @@ class CustomOngoingCard extends StatelessWidget {
                         Get.to(() => GoogleMapScreen(location: data.location ?? ""));
                       },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Icon(Icons.location_on_outlined, size: 20, color: AppColors.blue,),
                           Expanded(
@@ -186,6 +187,7 @@ class CustomOngoingCard extends StatelessWidget {
                   fillColor: Colors.transparent,
                   borderWidth: 1,
                   textColor: AppColors.red,
+                  fontSize: 16.5.sp,
                 ),
               ),
               SizedBox(width: 10.w),
@@ -200,6 +202,7 @@ class CustomOngoingCard extends StatelessWidget {
                   },
                   title: "Finish".tr,
                   fillColor: AppColors.primary,
+                  fontSize: 16.5.sp,
                 ),
               ),
             ],

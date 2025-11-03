@@ -240,7 +240,7 @@ class MaterialsScreenState extends State<MaterialsScreen> {
                 TextField(
                   controller: unitController,
                   decoration: InputDecoration(
-                    hintText: "Ex: Square feet, ML, Piece",
+                    hintText: "Eg. Square Foot, Piece, Gram, Litre etc.",
                     hintStyle: TextStyle(fontSize: 15.sp),
                     border: const OutlineInputBorder(),
                   ),

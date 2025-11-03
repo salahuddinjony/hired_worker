@@ -25,7 +25,6 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-
       appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Request".tr),
       body: Obx(() {
         if (controller.commonStatus.value.isLoading) {

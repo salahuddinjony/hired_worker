@@ -17,6 +17,8 @@ class ContractorSignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
     final AuthController authController = Get.find<AuthController>();
     final bool isContactor = Get.arguments['isContactor'] ?? false;
     return Scaffold(
@@ -63,10 +65,23 @@ class ContractorSignUpScreen extends StatelessWidget {
                 hintText: "Enter your email".tr,
                 controller: authController.emailController.value,
               ),
-              CustomFormCard(
-                title: "Enter your mobile number".tr,
-                hintText: "Enter your number".tr,
-                controller: authController.phoneController.value,
+              Form(
+                key: _formKey,
+                child: CustomFormCard(
+                  title: "Enter your mobile number".tr,
+                  hintText: "Enter your number".tr,
+                  controller: authController.phoneController.value,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your mobile number";
+                    } else if (value.length < 10) {
+                      return "Please enter a valid mobile number";
+                    }
+
+                    return null;
+                  },
+                ),
               ),
               isContactor==false
                   ? CustomFormCard(
@@ -79,13 +94,13 @@ class ContractorSignUpScreen extends StatelessWidget {
                   // if (!Get.isRegistered<MapController>()) {
                   //   Get.put(MapController());
                   // }
-                  
+
                   // // Navigate to map screen with argument to return data
                   // final result = await Get.toNamed(
                   //   '/SeletedMapScreen',
                   //   arguments: {'returnData': true},
                   // );
-                  
+
                   // // Update address field with selected location
                   // if (result != null && result is Map<String, dynamic>) {
                   //   authController.updateAddressFromMap(result);
@@ -152,7 +167,9 @@ class ContractorSignUpScreen extends StatelessWidget {
                     ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
-                        authController.customerSignUp(isContactor);
+                        if (_formKey.currentState!.validate()) {
+                          authController.customerSignUp(isContactor);
+                        }
                       },
                       title: "Submit".tr,
                     );

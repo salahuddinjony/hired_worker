@@ -170,38 +170,7 @@ class ProfileScreen extends StatelessWidget {
               // CustomProfileMenuList(),
               GestureDetector(
                 onTap: () {
-                  // Get.to(
-                  //   GoogleMapScreen(
-                  //     location:
-                  //         profileController
-                  //             .contractorModel
-                  //             .value
-                  //             .data
-                  //             ?.contractor
-                  //             ?.location
-                  //             ?.address ??
-                  //         "",
-                  //   ),
-                  // );
-
-                  // Get.toNamed(AppRoutes.seletedMapScreen, arguments: {'long': profileController.contractorModel.value.data!.contractor!.location!.coordinates![0],
-                  //   'lat': profileController.contractorModel.value.data!.contractor!.location!.coordinates![1],
-                  // },
-                  // );
-                  final authController = Get.find<AuthController>();
-                  final Map<String, dynamic> addressData = {
-                    'address': profileController
-                        .contractorModel.value.data?.contractor?.location?.address,
-                    'long': profileController
-                        .contractorModel.value.data?.contractor?.location?.coordinates?[0],
-                    'lat': profileController
-                        .contractorModel.value.data?.contractor?.location?.coordinates?[1],
-                    'street':"",
-                    'unit':"",
-                    'city':"",
-
-                  };
-                   profileController.showAddressBottomSheet();
+                  profileController.showAddressBottomSheet();
                 },
                 child: CustomProfileMenuList(
                   image: AppIcons.map,
@@ -334,5 +303,4 @@ class ProfileScreen extends StatelessWidget {
       bottomNavigationBar: const Navbar(currentIndex: 3),
     );
   }
-  
 }

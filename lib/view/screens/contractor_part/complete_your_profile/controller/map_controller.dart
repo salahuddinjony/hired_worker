@@ -458,7 +458,7 @@ class MapController extends GetxController {
         if (isFromProfileContractor) {
           Get.find<ProfileController>().getMe();
           showCustomSnackBar(
-            "Your location has been updated to ${selectedLocation.value?['address']}",
+            "Your location has been updated successfully",
             isError: false,
           );
           Get.back();

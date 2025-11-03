@@ -169,4 +169,5 @@ Map<String, String> english = {
   "Add at least one skill to continue": "Add at least one skill to continue",
   "Photo Upload": "Photo Upload",
   "Skill": "Skills",
+  "Requested Services": "Requested Services",
 };
