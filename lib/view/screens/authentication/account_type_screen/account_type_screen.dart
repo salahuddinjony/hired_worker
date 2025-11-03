@@ -66,6 +66,29 @@ class AccountTypeScreen extends StatelessWidget {
               },
               title: "Contractor".tr,
             ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(
+                  text: "Already have an account?".tr,
+                  fontSize: 14.w,
+                  fontWeight: FontWeight.w300,
+                  color: AppColors.black,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.loginScreen);
+                  },
+                  child: CustomText(
+                    text: "Login".tr,
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.lightBlue,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
