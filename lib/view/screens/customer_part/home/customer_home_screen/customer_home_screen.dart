@@ -717,7 +717,7 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        homeController.getAllContactor(isHomeSelect: false);
+                        homeController.getAllContactor(isHomeSelect: false,useByUserId: true);
                         Get.toNamed(AppRoutes.customerServicesContractorScreen);
                       },
                       child: CustomText(
