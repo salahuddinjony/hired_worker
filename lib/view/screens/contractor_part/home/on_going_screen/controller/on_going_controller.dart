@@ -9,8 +9,10 @@ import 'package:servana/view/screens/contractor_part/home/model/booking_model.da
 
 class OnGoingController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.loading());
+  Rx<RxStatus> statusForRating = Rx<RxStatus>(RxStatus.success());
 
   RxList<BookingModelData> onGoingBookingList = <BookingModelData>[].obs;
+  RxDouble rating = 5.0.obs;
 
   ScrollController scrollController = ScrollController();
   int currentPage = 1;
@@ -122,6 +124,30 @@ class OnGoingController extends GetxController {
       showCustomSnackBar(response.body['message'], isError: false);
     } catch (e) {
       showCustomSnackBar(e.toString());
+    }
+  }
+
+  Future<void> rateCustomer(String id) async {
+    if (statusForRating.value.isLoading) return;
+
+    statusForRating.value = RxStatus.loading();
+
+    final Map<String, dynamic> data = {
+      "customerId": id,
+      "stars": rating.value,
+    };
+
+    try {
+      final response = await ApiClient.postData(
+        ApiUrl.rateCustomer,
+        jsonEncode(data),
+      );
+
+      showCustomSnackBar(response.body['message'], isError: false);
+    } catch (e) {
+      showCustomSnackBar(e.toString());
+    } finally {
+      statusForRating.value = RxStatus.success();
     }
   }
 }
