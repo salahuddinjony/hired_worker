@@ -10,7 +10,6 @@ import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/app_icons/app_icons.dart';
 import '../../screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../screens/message/message_list_screen/message_list_screen.dart';
 import '../../screens/contractor_part/profile/profile_screen/profile_screen.dart';
 
 class Navbar extends StatefulWidget {

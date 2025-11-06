@@ -84,17 +84,17 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String contractorName = args['contractorName'] ?? '';
     final String categoryName = args['categoryName'] ?? '';
     final String subCategoryName = args['subCategoryName'] ?? '';
-    final String isUpdate = args['isUpdate']?.toString() ?? 'false';
+    final bool isUpdate = args['isUpdate'] ?? false;
     final String bookingId = args['bookingId']?.toString() ?? '';
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
-    final String PaymentedTotalAmount =
-        args['PaymentedTotalAmount']?.toString() ?? '0';
+    final String paymentedTotalAmountString =
+        args['paymentedTotalAmount']?.toString() ?? '0';
     final String contractorIdForTimeSlot =
         args['contractorIdForTimeSlot']?.toString() ?? '';
 
-    final int paymentedTotalAmount = int.tryParse(PaymentedTotalAmount) ?? 0;
+    final int paymentedTotalAmount = int.tryParse(paymentedTotalAmountString) ?? 0;
     final int totalAmount = controller.totalAmount;
-    final bool isUpdateMode = isUpdate == 'true';
+    final bool isUpdateMode = isUpdate == true;
     final int paymentAmount =
         isUpdateMode ? (totalAmount - paymentedTotalAmount) : totalAmount;
 
@@ -134,7 +134,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       ),
                       CustomText(
                         top: 4,
-                        text: "AUD ${controller.hourlyRate}/h",
+                        text: "\$ ${controller.hourlyRate}/h",
                         fontSize: 16.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
@@ -258,7 +258,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         CustomText(
                                           text:
-                                              '- $count x AUD ${priceDouble.toStringAsFixed(2)}',
+                                              '- $count x \$ ${priceDouble.toStringAsFixed(2)}',
                                           fontSize: 14.w,
                                           fontWeight: FontWeight.w500,
                                           color: AppColors.black,
@@ -269,7 +269,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   CustomText(
                                     text:
-                                        'AUD ${totalPrice.toStringAsFixed(2)}',
+                                        '\$ ${totalPrice.toStringAsFixed(2)}',
                                     fontSize: 14.w,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.black,
@@ -287,7 +287,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       Row(
                         children: [
                           CustomText(
-                            text: "Materials Total: ",
+                            text: "Materials Total ${controller.bookingType.value == 'weekly' ? 'for ${controller.selectedDates.length} day(s)' : ''}: ",
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -295,7 +295,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           const Expanded(child: SizedBox()),
                           CustomText(
                             text:
-                                "AUD ${controller.materialsTotalAmount.toStringAsFixed(2)}",
+                                "\$ ${controller.materialsTotalAmount.toStringAsFixed(2)}",
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -341,14 +341,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   children: [
                     CustomText(
                       text:
-                          "Selected Days: ${controller.selectedDates.length} days - AUD ${controller.selectedDates.length} x ${controller.totalDurationAmount}",
+                          "Selected Days: ${controller.selectedDates.length} days - ${controller.selectedDates.length} x \$${controller.totalDurationAmount}",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
                     ),
                     const Expanded(child: SizedBox()),
                     CustomText(
-                      text: "AUD ${controller.weeklyTotalAmount.toString()}",
+                      text: "\$ ${controller.weeklyTotalAmount.toString()}",
                       fontSize: 14.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
@@ -372,14 +372,14 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 children: [
                   CustomText(
                     text:
-                        "Duration : ( ${controller.durations.value} x AUD ${controller.hourlyRate} ) ",
+                        "Duration : ( ${controller.durations.value} hr x \$ ${controller.hourlyRate} ) ",
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
                   const SizedBox(width: 8),
                   CustomText(
-                    text: "AUD ${controller.totalDurationAmount.toString()}",
+                    text: "\$ ${controller.totalDurationAmount.toString()}",
                     fontSize: 16.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -472,7 +472,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             
                               CustomText(
                                 text:
-                                    'AUD ${paymentedTotalAmount.toStringAsFixed(2)}',
+                                    '\$ ${paymentedTotalAmount.toStringAsFixed(2)}',
                                 fontSize: 18.w,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.green,
@@ -487,7 +487,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                             children: [
                              Obx(() {
                                 return CustomText(
-                                  text: 'App Fee (${controller.parcentage.value.toStringAsFixed(0)}% of AUD  ${paymentAmount.toStringAsFixed(0)}):',
+                                  text: 'Booking Fee (${controller.parcentage.value.toStringAsFixed(0)}% of \$${paymentAmount.toStringAsFixed(0)}):',
                                   fontSize: 15.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black_08,
@@ -499,7 +499,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                 final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
                                 return CustomText(
                                   text:
-                                      'AUD ${parcentageAmount.toStringAsFixed(2)}',
+                                      '\$ ${parcentageAmount.toStringAsFixed(2)}',
                                   fontSize: 18.w,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.red,
@@ -534,7 +534,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'AUD ',
+                                        text: '\$',
                                         style: TextStyle(
                                           fontSize: 18.w,
                                           fontWeight: FontWeight.bold,
@@ -577,7 +577,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'AUD ',
+                                    text: '\$ ',
                                     style: TextStyle(
                                       fontSize: 22.w,
                                       fontWeight: FontWeight.bold,
@@ -654,8 +654,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 onTap: () async {
                   controller.collectAllAnswers();
                   // Step 1: Call payment API to get payment URL for remaining amount
-                  final int finalPaymentAmount =
-                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toInt();
+                  final double finalPaymentAmount =
+                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toDouble();
                   EasyLoading.show(status: 'Processing payment...');
                   final Map<String, dynamic> requestBody = {
                     "contractorId": contractorId,

@@ -54,7 +54,7 @@ class PricingCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        CustomText(text: "AUD ", fontSize: 20.w, fontWeight: FontWeight.w600, color: AppColors.primary),
+                        CustomText(text: "\$ ", fontSize: 20.w, fontWeight: FontWeight.w600, color: AppColors.primary),
                         CustomText(text: hourlyRate, fontSize: 32.w, fontWeight: FontWeight.bold, color: AppColors.black),
                         CustomText(text: "/hr", fontSize: 16.w, fontWeight: FontWeight.w500, color: AppColors.black_08),
                       ],
@@ -81,21 +81,21 @@ class PricingCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, size: 16.w, color: AppColors.primary),
-                  SizedBox(width: 8.w),
-                  Expanded(child: CustomText(text: "Rate includes all basic tools and materials", fontSize: 12.w, fontWeight: FontWeight.w400, color: AppColors.black_08, maxLines: 2)),
-                ],
-              ),
-            ),
+            // SizedBox(height: 16.h),
+            // Container(
+            //   padding: EdgeInsets.all(12.w),
+            //   decoration: BoxDecoration(
+            //     color: AppColors.primary.withValues(alpha: 0.05),
+            //     borderRadius: BorderRadius.circular(8.r),
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       Icon(Icons.info_outline, size: 16.w, color: AppColors.primary),
+            //       SizedBox(width: 8.w),
+            //       Expanded(child: CustomText(text: "Rate includes all basic tools and materials", fontSize: 12.w, fontWeight: FontWeight.w400, color: AppColors.black_08, maxLines: 2)),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

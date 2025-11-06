@@ -302,7 +302,7 @@ class BookingCard extends StatelessWidget {
                                 'bookingId': booking.id,
                                 'updateBookingId': booking.bookingId,
                                 'isUpdate': true, // Indicate this is an update
-                                'PaymentedTotalAmount':
+                                'paymentedTotalAmount':
                                     booking.totalAmount ?? 0,
                                 'subCategoryImage': booking.subCategoryId?.img ?? ''
                               },

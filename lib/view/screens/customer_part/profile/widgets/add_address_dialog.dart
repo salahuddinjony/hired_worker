@@ -4,18 +4,44 @@ import 'package:get/get.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
+import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../controller/customer_profile_controller.dart';
 
 class AddAddressBottomSheet extends StatefulWidget {
   final String address;
+  final String? locationId;
   final double? latitude;
   final double? longitude;
+  final String? street;
+  final String? unit;
+  final String? directions;
+  final bool isUpdate;
+  final String? name;
+  final bool isFromProfile;
+  final bool isSignUp;
+  final bool isContractor;
+  final Map<String, dynamic>? addressData;
+  final bool isFromProfileContractor;
 
   const AddAddressBottomSheet({
     super.key,
     required this.address,
     this.latitude,
+    this.locationId,
     this.longitude,
+    this.street,
+    this.unit,
+    this.directions,
+    this.isUpdate = false,
+    this.isFromProfile = false,
+    this.isSignUp = false,
+    this.isContractor = false,
+    this.name,
+    this.addressData,
+    this.isFromProfileContractor = false,
   });
 
   @override
@@ -23,17 +49,27 @@ class AddAddressBottomSheet extends StatefulWidget {
 }
 
 class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
-  final CustomerProfileController controller = Get.find<CustomerProfileController>();
+  final CustomerProfileController controller =
+      Get.find<CustomerProfileController>();
+  final AuthController authController = Get.find<AuthController>();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController unitController = TextEditingController();
   final TextEditingController directionsController = TextEditingController();
   String selectedType = 'Home';
+  double? latitude;
+  double? longitude;
 
   @override
   void initState() {
     super.initState();
     addressController.text = widget.address;
+    streetController.text = widget.street ?? '';
+    unitController.text = widget.unit ?? '';
+    directionsController.text = widget.directions ?? '';
+    selectedType = widget.name ?? 'Home';
+    latitude = widget.latitude;
+    longitude = widget.longitude;
   }
 
   @override
@@ -102,44 +138,69 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   ),
                   SizedBox(width: 12.w),
                   CustomText(
-                    text: "Address Details".tr,
+                    text:
+                        widget.isUpdate
+                            ? "Update Address".tr
+                            : "Address Details".tr,
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
                   ),
-                ],
-              ),
-              
-              SizedBox(height: 24.h),
 
-              // Address Type Selection Label
-              CustomText(
-                text: "Address Type".tr,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700]!,
-              ),
-              
-              SizedBox(height: 12.h),
-
-              // Address Type Selection
-              Row(
-                children: [
-                  Expanded(child: _buildTypeChip('Home')),
-                  SizedBox(width: 10.w),
-                  Expanded(child: _buildTypeChip('Work')),
-                  SizedBox(width: 10.w),
-                  Expanded(child: _buildTypeChip('Other')),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        size: 18.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
               SizedBox(height: 24.h),
+
+              if (!widget.isContractor) ...[
+                // Address Type Selection Label
+                CustomText(
+                  text: "Address Type".tr,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700]!,
+                ),
+
+                SizedBox(height: 12.h),
+
+                // Address Type Selection
+                Row(
+                  children: [
+                    Expanded(child: _buildTypeChip('Home')),
+                    SizedBox(width: 10.w),
+                    Expanded(child: _buildTypeChip('Work')),
+                    SizedBox(width: 10.w),
+                    Expanded(child: _buildTypeChip('Other')),
+                  ],
+                ),
+
+                SizedBox(height: 24.h),
+              ],
 
               // Address Field
               _buildTextField(
+                isUpdate: widget.isSignUp || widget.isUpdate,
                 controller: addressController,
                 hint: 'Address / Building Name',
                 icon: Icons.location_on_outlined,
+                readOnly: widget.isContractor ? true : false,
+                isContractor: widget.isContractor,
               ),
 
               SizedBox(height: 16.h),
@@ -155,6 +216,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
               _buildTextField(
                 controller: streetController,
                 hint: 'Street Name',
+
                 icon: Icons.edit_road,
               ),
 
@@ -186,8 +248,11 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                   debugPrint('Address: ${addressController.text}');
                   debugPrint('Street: ${streetController.text}');
                   debugPrint('Unit/House: ${unitController.text}');
+                  debugPrint('Directions: ${directionsController.text}');
                   debugPrint('Type: $selectedType');
-                  
+                  debugPrint('Latitude: $latitude');
+                  debugPrint('Longitude: $longitude');
+
                   if (addressController.text.isEmpty) {
                     debugPrint('Error: Address is empty');
                     Get.snackbar(
@@ -196,39 +261,159 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
                       snackPosition: SnackPosition.BOTTOM,
-                      margin: EdgeInsets.all(16),
+                      margin: const EdgeInsets.all(16),
                       borderRadius: 8,
                     );
                     return;
                   }
-                  
+
                   try {
+                    if (widget.isUpdate &&
+                        widget.isSignUp == false &&
+                        widget.isContractor == false) {
+                      debugPrint('Updating existing address...');
+                      await controller.patchAddress(
+                        locationId: widget.locationId ?? '',
+                        address: addressController.text,
+                        coordinates: [
+                          if (longitude != null) longitude!,
+                          if (latitude != null) latitude!,
+                        ],
+                        street:
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        unit:
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        directions:
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                        name: selectedType,
+                      );
+                      debugPrint('Address updated successfully!');
+                      return;
+                    }
+                    if (widget.isSignUp && widget.isContractor == false) {
+                      debugPrint('Saving address during sign-up...');
+                      authController.updateAddressFromMap({
+                        'address': addressController.text,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                        'street':
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        'unit':
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        'direction':
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                      });
+                      debugPrint(
+                        'Address saved to AuthController during sign-up!',
+                      );
+                      Navigator.of(context).pop();
+                      return;
+                    }
+                    if (widget.isSignUp && widget.isContractor) {
+                      final mapController = Get.find<MapController>();
+                      debugPrint(
+                        'sign up Updating contractor address during sign-up...',
+                      );
+                      await mapController.updateContractorData(
+                        address: addressController.text,
+                        latitude: latitude,
+                        longitude: longitude,
+                        street:
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        unit:
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        directions:
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                      );
+                      Get.offAllNamed(AppRoutes.scheduleSeletedScreen);
+                      return;
+                    }
+                    if (widget.isFromProfileContractor && widget.isContractor) {
+                      final mapController = Get.find<MapController>();
+                      debugPrint(
+                        'sign up Updating contractor address during sign-up...',
+                      );
+                      await mapController.updateContractorData(
+                        isFromProfileContractor: true,
+                        address: addressController.text,
+                        latitude: latitude,
+                        longitude: longitude,
+                        street:
+                            streetController.text.isNotEmpty
+                                ? streetController.text
+                                : null,
+                        unit:
+                            unitController.text.isNotEmpty
+                                ? unitController.text
+                                : null,
+                        directions:
+                            directionsController.text.isNotEmpty
+                                ? directionsController.text
+                                : null,
+                      );
+                      return;
+                    }
+
                     debugPrint('Calling addNewAddress...');
+
                     controller.addNewAddress(
                       title: selectedType,
-                      address: (streetController.text.isNotEmpty ? '${streetController.text}, ' : '') + addressController.text,
-                      unit: unitController.text.isNotEmpty ? unitController.text : null,
-                      street: streetController.text.isNotEmpty ? streetController.text : null,
-                      directions: directionsController.text.isNotEmpty ? directionsController.text : null,
-                      latitude: widget.latitude,
-                      longitude: widget.longitude,
+                      address:
+                          (streetController.text.isNotEmpty
+                              ? '${streetController.text}, '
+                              : '') +
+                          addressController.text,
+                      unit:
+                          unitController.text.isNotEmpty
+                              ? unitController.text
+                              : null,
+                      street:
+                          streetController.text.isNotEmpty
+                              ? streetController.text
+                              : null,
+                      directions:
+                          directionsController.text.isNotEmpty
+                              ? directionsController.text
+                              : null,
+                      latitude: latitude,
+                      longitude: longitude,
+                      isFromProfile: widget.isFromProfile,
                     );
-                    
+
                     debugPrint('Address saved successfully!');
                     debugPrint('Closing add address bottom sheet...');
-                    
+
                     // Close current bottom sheet using both methods
                     Navigator.of(context).pop();
                     debugPrint('✅ Navigator.pop() called');
-                    
+
                     // Small delay for clean animation
                     await Future.delayed(const Duration(milliseconds: 500));
-                    
+
                     debugPrint('Opening saved addresses bottom sheet...');
                     // Open saved addresses list
-                    controller.showAddressBottomSheet();
+                    if (!widget.isContractor) {
+                      controller.showAddressBottomSheet();
+                    }
                     debugPrint('✅ showAddressBottomSheet() called');
-                    
                   } catch (e) {
                     debugPrint('❌ Error saving address: $e');
                     Get.snackbar(
@@ -239,7 +424,12 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                     );
                   }
                 },
-                title: "Save Address".tr,
+                title:
+                    widget.isSignUp
+                        ? "Continue".tr
+                        : widget.isUpdate
+                        ? "Update Address".tr
+                        : "Save Address".tr,
               ),
             ],
           ),
@@ -250,7 +440,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
 
   Widget _buildTypeChip(String label) {
     final isSelected = selectedType == label;
-    
+
     IconData icon;
     Color color;
     switch (label.toLowerCase()) {
@@ -270,7 +460,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
         icon = Icons.location_on_rounded;
         color = AppColors.primary;
     }
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -309,32 +499,82 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
   }
 
   Widget _buildTextField({
+    bool isUpdate = false,
     required TextEditingController controller,
     required String hint,
     IconData? icon,
+    bool? readOnly,
+    bool? isContractor,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: Colors.grey[200]!,
-          width: 1,
-        ),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
       child: Row(
         children: [
           if (icon != null) ...[
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 20.sp,
+            GestureDetector(
+              onTap: () async {
+                if (isUpdate) {
+                  debugPrint('Edit icon tapped - to open map screen ');
+                  if (!Get.isRegistered<MapController>()) {
+                    Get.put(MapController());
+                  }
+
+                  final result = await Get.toNamed(
+                    '/SeletedMapScreen',
+                    arguments: {
+                      'returnData': true,
+                      if (isContractor != null && isContractor)
+                        'long':
+                            Get.find<ProfileController>()
+                                .contractorModel
+                                .value
+                                .data!
+                                .contractor!
+                                .location!
+                                .coordinates![0],
+
+                      if (isContractor != null && isContractor)
+                        'lat':
+                            Get.find<ProfileController>()
+                                .contractorModel
+                                .value
+                                .data!
+                                .contractor!
+                                .location!
+                                .coordinates![1],
+                    },
+                  );
+
+                  // If location is selected, update address, latitude, longitude
+                  if (result != null && result is Map<String, dynamic>) {
+                    final address = result['address'] ?? '';
+                    final lat = result['latitude'];
+                    final lng = result['longitude'];
+                    setState(() {
+                      addressController.text = address;
+                      latitude =
+                          lat is double ? lat : double.tryParse(lat.toString());
+                      longitude =
+                          lng is double ? lng : double.tryParse(lng.toString());
+                    });
+                  }
+                } else {
+                  debugPrint('Icon tapped - no action defined yet.');
+                  return null;
+                }
+              },
+              child: Icon(icon, color: AppColors.primary, size: 20.sp),
             ),
             SizedBox(width: 12.w),
           ],
           Expanded(
             child: TextField(
+              readOnly: readOnly == null ? false : true,
               controller: controller,
               style: TextStyle(
                 fontSize: 14.sp,

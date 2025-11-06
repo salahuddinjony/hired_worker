@@ -75,6 +75,7 @@ class BookingResult {
   final bool? isDeleted;
   final String? createdAt;
   final String? updatedAt;
+  final String? location;
 
   BookingResult({
     this.id,
@@ -100,55 +101,64 @@ class BookingResult {
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
+    this.location,
   });
 
   factory BookingResult.fromJson(Map<String, dynamic> json) {
-    return BookingResult(
-      id: json['_id'] ?? '',
-      customerId:
-          json['customerId'] != null &&
-                  json['customerId'] is Map<String, dynamic>
-              ? Customer.fromJson(json['customerId'])
-              : null,
-      contractorId:
-          json['contractorId'] != null &&
-                  json['contractorId'] is Map<String, dynamic>
-              ? Contractor.fromJson(json['contractorId'])
-              : null,
-      subCategoryId:
-          json['subCategoryId'] != null &&
-                  json['subCategoryId'] is Map<String, dynamic>
-              ? SubCategory.fromJson(json['subCategoryId'])
-              : null,
-      bookingId: json['bookingId'] ?? 0,
-      bookingType: json['bookingType'] ?? '',
-      status: json['status'] ?? '',
-      paymentStatus: json['paymentStatus'] ?? '',
-      questions:
-          (json['questions'] as List?)
-              ?.map((e) => Question.fromJson(e))
-              .toList() ??
-          [],
-      material:
-          (json['material'] as List?)
-              ?.map((e) => MaterialItem.fromJson(e))
-              .toList() ??
-          [],
-      bookingDate: json['bookingDate'] ?? '',
-      day: json['day'], // Can be String or List<String>
-      startTime: json['startTime'] ?? '',
-      endTime: json['endTime'] ?? '',
-      duration: json['duration'] ?? 0,
-      timeSlots:
-          (json['timeSlots'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      price: json['price'] ?? 0,
-      rateHourly: json['rateHourly'] ?? 0,
-      totalAmount: json['totalAmount'] ?? 0,
-      files: json['files'] ?? [],
-      isDeleted: json['isDeleted'] ?? false,
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-    );
+  // Handle 'day' as either String or List<String>
+  dynamic dayValue = json['day'];
+  if (dayValue is List) {
+    dayValue = dayValue.map((e) => e.toString()).toList();
+  } else if (dayValue is String) {
+    // keep as is
+  }
+  return BookingResult(
+    id: json['_id'] ?? '',
+    customerId:
+      json['customerId'] != null &&
+          json['customerId'] is Map<String, dynamic>
+        ? Customer.fromJson(json['customerId'])
+        : null,
+    contractorId:
+      json['contractorId'] != null &&
+          json['contractorId'] is Map<String, dynamic>
+        ? Contractor.fromJson(json['contractorId'])
+        : null,
+    subCategoryId:
+      json['subCategoryId'] != null &&
+          json['subCategoryId'] is Map<String, dynamic>
+        ? SubCategory.fromJson(json['subCategoryId'])
+        : null,
+    bookingId: json['bookingId'] ?? 0,
+    bookingType: json['bookingType'] ?? '',
+    status: json['status'] ?? '',
+    paymentStatus: json['paymentStatus'] ?? '',
+    questions:
+      (json['questions'] as List?)
+        ?.map((e) => Question.fromJson(e))
+        .toList() ??
+      [],
+    material:
+      (json['material'] as List?)
+        ?.map((e) => MaterialItem.fromJson(e))
+        .toList() ??
+      [],
+    bookingDate: json['bookingDate'] ?? '',
+    day: dayValue,
+    startTime: json['startTime'] ?? '',
+    endTime: json['endTime'] ?? '',
+    duration: json['duration'] ?? 0,
+    timeSlots:
+      (json['timeSlots'] as List?)?.map((e) => e.toString()).toList() ?? [],
+    price: json['price'] ?? 0,
+    rateHourly: json['rateHourly'] ?? 0,
+    totalAmount: json['totalAmount'] ?? 0,
+    files: json['files'] ?? [],
+    isDeleted: json['isDeleted'] ?? false,
+    createdAt: json['createdAt'] ?? '',
+    updatedAt: json['updatedAt'] ?? '',
+    location: json['location'] ?? '',
+  );
   }
 }
 

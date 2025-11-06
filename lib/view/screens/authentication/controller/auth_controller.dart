@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
@@ -11,23 +14,26 @@ import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'dart:convert';
 import 'package:servana/utils/app_strings/app_strings.dart';
+import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/model/contractor_model.dart';
 import 'package:servana/view/screens/customer_part/profile/model/user_model.dart';
+import 'package:servana/view/screens/customer_part/profile/widgets/add_address_dialog.dart';
 
 class AuthController extends GetxController {
   ///======================CONTROLLER=====================
   //  Customer
-  //  nidiba8123@datoinf.com
+  //  bofoyo5239@dropeso.com
   //  12345678
 
   // contractor
-  // jeyora6791@fixwap.com
-  // 12345678
+  // ralopo4953@haotuwu.com
+  // 12345
 
   Rx<TextEditingController> nameController =
       TextEditingController(text: kDebugMode ? "Md Nishad Miah" : "").obs;
   Rx<TextEditingController> phoneController =
-      TextEditingController(text: kDebugMode ? "123456789" : "").obs;
+      TextEditingController(text: kDebugMode ? "1234567890" : "").obs;
+  Rx<TextEditingController> dobController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> addressController = TextEditingController().obs;
 
@@ -39,6 +45,9 @@ class AuthController extends GetxController {
   // Location data for address
   RxnDouble latitude = RxnDouble();
   RxnDouble longitude = RxnDouble();
+  Rx<TextEditingController> streetController = TextEditingController().obs;
+  Rx<TextEditingController> unitController = TextEditingController().obs;
+  Rx<TextEditingController> directionController = TextEditingController().obs;
 
   Rx<bool> isAgree = false.obs;
 
@@ -63,13 +72,6 @@ class AuthController extends GetxController {
       emailController.value.text = email;
       passController.value.text = password;
     }
-  }
-
-  // Update address from map selection
-  void updateAddressFromMap(Map<String, dynamic> locationData) {
-    addressController.value.text = locationData['address'] ?? '';
-    latitude.value = locationData['latitude'];
-    longitude.value = locationData['longitude'];
   }
 
   ///=====================LOGIN METHOD=====================
@@ -218,13 +220,16 @@ class AuthController extends GetxController {
 
         switch (role) {
           case 'contractor':
-            if (await SharePrefsHelper.getBool(AppStrings.isProfileComplete) ==
-                null) {
+            if (response.body['data']['profileCompletion'] < 80) {
+              showCustomSnackBar(
+                'Please provide complete information for your profile.',
+                isError: false,
+              );
               Get.offAllNamed(AppRoutes.seletedMapScreen);
             } else {
+              await SharePrefsHelper.setBool(AppStrings.isLoggedIn, true);
               Get.offAllNamed(AppRoutes.homeScreen);
             }
-            ;
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.customerHomeScreen);
@@ -243,6 +248,91 @@ class AuthController extends GetxController {
       loginStatus.value = RxStatus.success();
       refresh();
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    }
+  }
+
+  // Update address from map selection
+  void updateAddressFromMap(Map<String, dynamic> locationData) {
+    debugPrint('callAddress: ${locationData.toString()}');
+    addressController.value.text = locationData['address'] ?? '';
+    latitude.value = locationData['latitude'];
+    longitude.value = locationData['longitude'];
+    streetController.value.text = locationData['street'] ?? '';
+    unitController.value.text = locationData['unit'] ?? '';
+    directionController.value.text = locationData['direction'] ?? '';
+  }
+
+  // Navigate to map and then show add address dialog
+  Future<void> showAddAddressDialog({
+    bool isSignUp = false,
+    bool isContractor = false,
+    Map<String, dynamic>? addressData,
+  }) async {
+    // First, navigate to map to pick location
+    if (!Get.isRegistered<MapController>()) {
+      Get.put(MapController());
+    }
+
+    final result = await Get.toNamed(
+      '/SeletedMapScreen',
+      arguments: {'returnData': true},
+    );
+
+    // If location is selected, show address details bottom sheet
+    if (result != null && result is Map<String, dynamic>) {
+      addressController.value.text = result['address'] ?? '';
+      latitude.value = result['latitude'];
+      longitude.value = result['longitude'];
+
+      // Show bottom sheet with address details
+      Get.bottomSheet(
+        isContractor
+            ? SizedBox(
+              height: Get.height,
+              child: AddAddressBottomSheet(
+                address: addressController.value.text,
+                latitude: latitude.value,
+                longitude: longitude.value,
+                isSignUp: isSignUp,
+                isFromProfile: true,
+                isContractor: isContractor,
+                addressData: addressData,
+              ),
+            )
+            : AddAddressBottomSheet(
+              address: addressController.value.text,
+              latitude: latitude.value,
+              longitude: longitude.value,
+              isSignUp: isSignUp,
+              isFromProfile: true,
+              isContractor: isContractor,
+            ),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: !isContractor,
+        barrierColor: Colors.black87,
+        enableDrag: !isContractor,
+      );
+    }
+  }
+
+  // image picker
+  final Rx<File?> selectedImage = Rx<File?>(null);
+  final ImagePicker _picker = ImagePicker();
+
+  // Pick an image from the gallery
+  Future<void> pickImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      selectedImage.value = File(image.path);
+    }
+  }
+
+  // Pick an image using the camera
+  Future<void> pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      selectedImage.value = File(image.path);
     }
   }
 
@@ -273,15 +363,20 @@ class AuthController extends GetxController {
       "password": passController.value.text,
       "contactNo": phoneController.value.text,
       "role": isContactor ? "contractor" : "customer",
+      if (isContactor) "dob": dobController.value.text,
       if (!isContactor) ...{
         "city": addressController.value.text,
         "location": [
           {
+            "type": "Point",
             "coordinates": [
               longitude.value ?? -84.090724,
               latitude.value ?? 9.928069,
             ],
             "address": addressController.value.text,
+            "street": streetController.value.text,
+            "direction": directionController.value.text,
+            "unit": unitController.value.text,
             "name": "Default",
             "isSelect": true,
           },
@@ -292,10 +387,25 @@ class AuthController extends GetxController {
     debugPrint('Registration payload: $body');
 
     try {
-      final response = await ApiClient.postData(
-        isContactor ? ApiUrl.contractorRegister : ApiUrl.customerRegister,
-        jsonEncode(body),
-      );
+      late var response;
+
+      // final response = await ApiClient.postData(
+      //   isContactor ? ApiUrl.contractorRegister : ApiUrl.customerRegister,
+      //   jsonEncode(body),
+      // );
+
+      if (isContactor) {
+        response = await ApiClient.postMultipartData(
+          ApiUrl.contractorRegister,
+          body,
+          multipartBody: [MultipartBody("file", selectedImage.value!)],
+        );
+      } else {
+        response = await ApiClient.postData(
+          isContactor ? ApiUrl.contractorRegister : ApiUrl.customerRegister,
+          jsonEncode(body),
+        );
+      }
 
       signUpLoading.value = RxStatus.success();
       refresh();
@@ -304,12 +414,21 @@ class AuthController extends GetxController {
         debugPrint(
           'Registration successful - Status Code: ${response.statusCode}',
         );
-        debugPrint('Response body: ${response.body}');
+
+        late var decodedBody;
+
+        if (isContactor) {
+          decodedBody = jsonDecode(response.body);
+        } else {
+          decodedBody = response.body;
+        }
+
         showCustomSnackBar(
-          response.body['message'] ?? "Register successful",
+          "Registration completed successfully. Welcome!",
           isError: false,
         );
-        final data = response.body['data'];
+
+        final data = decodedBody['data'];
         final role = data['user']['role'];
         debugPrint('User role after registration: $role');
 
@@ -337,7 +456,7 @@ class AuthController extends GetxController {
         debugPrint('Error response body: ${response.body}');
         _handleLoginError(response);
         showCustomSnackBar(
-          response.body['message'] ?? "Register Failed",
+          isContactor ? jsonDecode(response.body)['message'] ?? "Register Failed" :  response.body['message'] ?? "Register Failed",
           isError: false,
         );
         ApiChecker.checkApi(response);
@@ -346,7 +465,7 @@ class AuthController extends GetxController {
       debugPrint("Error occurred during sign up: $e");
       signUpLoading.value = RxStatus.success();
       refresh();
-      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+      showCustomSnackBar(e.toString(), isError: true);
     }
 
     signUpLoading.value = RxStatus.success();
@@ -469,7 +588,8 @@ class AuthController extends GetxController {
         );
         switch (role) {
           case 'contractor':
-            Get.offAllNamed(AppRoutes.seletedMapScreen);
+            showAddAddressDialog(isSignUp: true, isContractor: true);
+            // Get.offAllNamed(AppRoutes.seletedMapScreen);
             break;
           case 'customer':
             Get.offAllNamed(AppRoutes.loginScreen);

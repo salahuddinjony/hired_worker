@@ -19,7 +19,17 @@ class CustomerParSubCategoryItem extends StatelessWidget {
     final String id = Get.arguments['id'];
     debugPrint("Sub Category ID: $id");
     debugPrint("Sub Category Name: $name");
-    
+
+    // Listen for scroll events to trigger pagination
+    homeController.singleSubCategoryScrollController.addListener(() {
+      if (homeController.singleSubCategoryScrollController.position.pixels >=
+          homeController.singleSubCategoryScrollController.position.maxScrollExtent - 100 &&
+          !homeController.singleSubCategoryIsPaginating.value &&
+          homeController.singleSubCategoryHasMoreData.value) {
+        homeController.getMoreSingleSubCategory(categoryId: id);
+      }
+    });
+    debugPrint("Fetching Sub Categories for Category ID: $id");
     homeController.getSingleSubCategory(categoryId: id);
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: name),
@@ -39,37 +49,44 @@ class CustomerParSubCategoryItem extends StatelessWidget {
         }
         return Column(
           children: [
-            GridView.builder(
-              padding: EdgeInsets.only(right: 10.h, left: 20.h),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 8,
+            Expanded(
+              child: GridView.builder(
+                controller: homeController.singleSubCategoryScrollController,
+                padding: EdgeInsets.only(right: 10.h, left: 20.h),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 8,
+                ),
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: data.length + (homeController.singleSubCategoryHasMoreData.value ? 1 : 0),
+                itemBuilder: (BuildContext context, int index) {
+                  if (index >= data.length) {
+                    // Show loading indicator at the end of the list
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return CustomPopularServicesCard(
+                    image: data[index].img ?? '',
+                    name: data[index].name ?? '',
+                    onTap: () {
+                        homeController.getAllContactor(subCategoryId: data[index].id.toString(), useByUserId: true);
+                      Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
+                          arguments: {
+                            'id': data[index].id.toString(), // subcategory id
+                            'name': data[index].name.toString()
+                          }
+                      );
+                    },
+                  );
+                },
               ),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CustomPopularServicesCard(
-                  image: data[index].img ?? '',
-                  name: data[index].name ?? '',
-                  onTap: () {
-                      homeController.getAllContactor();
-                    Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
-                        arguments: {
-                          'id': data[index].id.toString(), // subcategory id
-                          'name': data[index].name.toString()
-                        }
-                    
-                    );
-                  },
-                );
-              },
             ),
           ],
         );
       }),
     );
   }
-}
+  }

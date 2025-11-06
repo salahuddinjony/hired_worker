@@ -4,11 +4,13 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/subscribe_screen/thanks_screen.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
+import 'package:servana/view/screens/contractor_part/home/on_going_screen/ongoing_order_details_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
+import 'package:servana/view/screens/contractor_part/profile/skill/skills_edit_screen.dart';
+import 'package:servana/view/screens/contractor_part/profile/subcategory/sub_category_edit_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
 import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
-import 'package:servana/view/screens/message/chat_screen/chat_screen.dart';
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -29,7 +31,6 @@ import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.
 import '../../view/screens/contractor_part/home/on_going_screen/upload_photo_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_details_screen_2.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
-import '../../view/screens/message/message_list_screen/message_list_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
 import '../../view/screens/contractor_part/profile/edit_profile_screen/edit_profile_screen.dart';
@@ -81,12 +82,15 @@ class AppRoutes {
   static const String scheduleSeletedScreen = "/ScheduleSeletedScreen";
   static const String categorySeletedScreen = "/CategorySeletedScreen";
   static const String subCategorySelectedScreen = "/SubCategorySelectedScreen";
+  static const String subCategoryEditScreen = "/SubCategoryEditScreen";
   static const String certificateScreen = "/CertificateScreen";
   static const String skillsAddScreen = "/SkillsAddScreen";
+  static const String skillsEditScreen = "/SkillsEditScreen";
   static const String homeScreen = "/HomeScreen";
   static const String orderScreen = "/OrderScreen";
   static const String orderDetailsScreen1 = "/OrderDetailsScreen1";
   static const String orderDetailsScreen2 = "/OrderDetailsScreen2";
+  static const String ongoingDetailsScreen = "/OngoingDetailsScreen";
   static const String messageListScreen = "/MessageListScreen";
   static const String chatScreen = "/ChatScreen";
   static const String profileScreen = "/ProfileScreen";
@@ -153,12 +157,15 @@ class AppRoutes {
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
     GetPage(name: subCategorySelectedScreen, page: () => SubCategorySelectedScreen()),
+    GetPage(name: subCategoryEditScreen, page: () => SubCategoryEditScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
+    GetPage(name: skillsEditScreen, page: () => SkillsEditScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
     GetPage(name: orderDetailsScreen1, page: () => OrderDetailsScreen1()),
     GetPage(name: orderDetailsScreen2, page: () => OrderDetailsScreen2()),
+    GetPage(name: ongoingDetailsScreen, page: () => OngoingOrderDetailsScreen()),
     // GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),

@@ -7,7 +7,6 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/app_const/app_const.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/screens/contractor_part/home/order_screen/widget/custom_delivered_service_card.dart';
-import 'package:servana/view/screens/contractor_part/home/order_screen/widget/custom_service_request_card.dart';
 import 'package:servana/view/screens/customer_part/order/controller/customer_order_controller.dart';
 
 import '../../../../../utils/helper_methods/helper_methods.dart';
@@ -44,10 +43,13 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
               rating:
                   data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
               dateTime: data.updatedAt!,
-              image: data.contractorId?.img,
+              image: data.subCategoryId?.img,
               isButtonShow: false,
-              height: 100,
+              location: data.location,
               price: (data.totalAmount ?? " - ").toString(),
+              customerName: data.customerId?.fullName,
+              customerImage: data.customerId?.img,
+              subcategoryName: data.subCategoryId?.name,
             ),
 
             const SizedBox(height: 16.0),
@@ -119,7 +121,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Category/SubCategory : ${data.subCategoryId?.name ?? " - "}',
+                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
                   ),
                   const SizedBox(height: 16.0),
                   Text(
@@ -138,7 +140,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('• ${e.name} - ${e.count} ${e.unit}'),
-                                Text('AUD ${e.price}'),
+                                Text('\$${e.price}'),
                               ],
                             );
                           }).toList(),
@@ -185,7 +187,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType}'),
+                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -197,12 +199,29 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                     color: AppColors.primary.withValues(alpha: 0.1),
                     thickness: 1.6,
                   ),
-                  Text(
-                    data.day == null || data.day!.isEmpty
-                        ? " - "
-                        : data.day!.length == 2
-                        ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
-                        : "${data.day?[0] ?? " - "}",
+                  Row(
+                    children: [
+                      const Text(
+                          'Date: '
+                      ),
+                      Text(
+                        data.day == null || data.day!.isEmpty
+                            ? " - "
+                            : data.day!.length == 2
+                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : "${data.day?[0] ?? " - "}",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                          'Time: '
+                      ),
+                      Text(
+                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -217,7 +236,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                 title: "Completed".tr,
                 height: 26.h,
                 width: 100.w,
-                fontSize: 10.w,
+                fontSize: 13.5.sp,
                 fillColor: Colors.transparent,
                 isBorder: true,
                 textColor: AppColors.green,

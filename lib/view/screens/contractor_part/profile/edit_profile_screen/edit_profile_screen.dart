@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:servana/helper/image_handelar/image_handelar.dart';
 import 'package:servana/view/components/custom_Controller/custom_controller.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
@@ -16,6 +17,7 @@ import '../controller/profile_controller.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
+
   final ProfileController profileController = Get.find<ProfileController>();
   final CustomController customController = Get.find<CustomController>();
 
@@ -122,7 +124,7 @@ class EditProfileScreen extends StatelessWidget {
 
               CustomFormCard(
                 title: "Date of Birth".tr,
-                hintText: 'yyyy/mm/dd',
+                hintText: 'dd/mm/yyyy',
                 controller: profileController.dobController.value,
                 readOnly: true,
                 onTap: () async {
@@ -134,16 +136,25 @@ class EditProfileScreen extends StatelessWidget {
                   );
 
                   if (pickedDate != null) {
-                    profileController.dobController.value.text =
-                        "${pickedDate.toLocal()}".split(' ')[0];
+                    profileController.dobController.value.text = DateFormat(
+                      'dd/MM/yyyy',
+                    ).format(pickedDate);
                   }
                 },
               ),
 
               CustomFormCard(
-                title: "City".tr,
-                controller: profileController.cityController.value,
-                hintText: 'City',
+                title: "Experience".tr,
+                controller: profileController.experienceController.value,
+                hintText: 'Experience (year)',
+                keyboardType: TextInputType.phone,
+              ),
+
+              CustomFormCard(
+                title: "Bio".tr,
+                controller: profileController.bioController.value,
+                hintText: 'Bio',
+                maxLine: 3,
               ),
               SizedBox(height: 20.h),
               Obx(
@@ -157,6 +168,8 @@ class EditProfileScreen extends StatelessWidget {
                           title: "Update".tr,
                         ),
               ),
+
+              const SizedBox(height: kBottomNavigationBarHeight),
             ],
           ),
         ),

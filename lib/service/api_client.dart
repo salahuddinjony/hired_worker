@@ -274,11 +274,11 @@ class ApiClient extends GetxService {
   }
 
   static Future<Response> postMultipartData(
-    String uri,
-    dynamic body, {
-    List<MultipartBody>? multipartBody,
-    Map<String, String>? headers,
-  }) async {
+      String uri,
+      dynamic body, {
+        List<MultipartBody>? multipartBody,
+        Map<String, String>? headers,
+      }) async {
     try {
       bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
 
@@ -299,9 +299,17 @@ class ApiClient extends GetxService {
         'POST',
         Uri.parse(ApiUrl.baseUrl + uri),
       );
-      request.fields.addAll(body);
 
-      if (multipartBody!.isNotEmpty) {
+      // Convert all body values to strings
+      final bodyMap = Map<String, String>.fromEntries(
+          (body as Map).entries.map((entry) =>
+              MapEntry(entry.key, entry.value.toString())
+          )
+      );
+
+      request.fields.addAll(bodyMap);
+
+      if (multipartBody != null && multipartBody.isNotEmpty) {
         for (final element in multipartBody) {
           debugPrint("📁 File path: ${element.file.path}");
           final mimeType = lookupMimeType(element.file.path);
@@ -319,7 +327,7 @@ class ApiClient extends GetxService {
       request.headers.addAll(mainHeaders);
       final http.StreamedResponse response = await request.send();
       final content = await response.stream.bytesToString();
-      
+
       debugPrint('📥 ====> POST MULTIPART RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -333,7 +341,7 @@ class ApiClient extends GetxService {
 
       return Response(
         statusCode: response.statusCode,
-        statusText: somethingWentWrong,
+        statusText: response.reasonPhrase ?? somethingWentWrong,
         body: content,
       );
     } catch (e) {

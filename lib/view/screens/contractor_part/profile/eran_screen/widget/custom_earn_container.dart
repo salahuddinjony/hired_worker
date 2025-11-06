@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/utils.dart';
+import 'package:servana/view/screens/contractor_part/profile/model/withdraw_history_model.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_icons/app_icons.dart';
 import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+
 class CustomEarnContainer extends StatelessWidget {
-  final String? statusText;
-  const CustomEarnContainer({super.key, this.statusText});
+  final WithdrawalData data;
+
+  const CustomEarnContainer({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8.0),
       child: Container(
         width: MediaQuery.sizeOf(context).width,
@@ -21,13 +24,14 @@ class CustomEarnContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(17),
         ),
         child: Column(
+          spacing: 6,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "# 123A2CC 58J",
+                  text: data.payoutId ?? " - ",
                   fontSize: 16.w,
                   fontWeight: FontWeight.w500,
                   color: AppColors.black,
@@ -42,7 +46,7 @@ class CustomEarnContainer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: CustomText(
-                    text: "+\$150",
+                    text: "+\$${data.amount ?? " - "}",
                     fontSize: 16.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
@@ -50,16 +54,16 @@ class CustomEarnContainer extends StatelessWidget {
                 ),
               ],
             ),
+            // CustomText(
+            //   top: 6,
+            //   text: "Fan Installation",
+            //   fontSize: 18.w,
+            //   fontWeight: FontWeight.w500,
+            //   color: AppColors.black,
+            //   bottom: 10.h,
+            // ),
             CustomText(
-              top: 6,
-              text: "Fan Installation",
-              fontSize: 18.w,
-              fontWeight: FontWeight.w500,
-              color: AppColors.black,
-              bottom: 10.h,
-            ),
-            CustomText(
-              text: "Today - 10 April, 2025",
+              text: data.createdAt!.toIso8601String().substring(0, 10),
               fontSize: 18.w,
               fontWeight: FontWeight.w500,
               color: AppColors.black,
@@ -78,7 +82,7 @@ class CustomEarnContainer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: CustomText(
-                    text:statusText?? "Completed".tr,
+                    text: (data.status ?? " - ").capitalizeFirst!,
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.white,

@@ -19,10 +19,123 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/contr
 import '../../../../../utils/app_strings/app_strings.dart';
 
 class CustomerProfileController extends GetxController {
+  // Edit an address
+  void editAddress(SavedAddress address) {
+    // Fill controllers with address data
+    addressNameController.text = address.title;
+    streetController.text = address.street ?? '';
+    unitController.text = address.unit ?? '';
+    directionsController.text = address.direction ?? '';
+
+    // Show bottom sheet for editing
+    Get.bottomSheet(
+      AddAddressBottomSheet(
+        locationId: address.id,
+        address: address.address,
+        latitude: address.latitude,
+        longitude: address.longitude,
+        unit: address.unit ?? '',
+        street: address.street ?? '',
+        directions: address.direction ?? '',
+        isUpdate: true,
+        name: address.name ?? '',
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      isDismissible: true,
+    );
+  }
+
+  // PATCH address for a specific location
+  Future<void> patchAddress({
+    required String locationId,
+    required String address,
+    required List<double> coordinates,
+    String? street,
+    String? unit,
+    String? directions,
+    String? name,
+  }) async {
+    EasyLoading.show(status: "Updating Address...");
+    try {
+      final String userId = customerModel.value.data?.customer?.id ?? '';
+      final Map<String, dynamic> body = {
+        "address": address,
+        "street": street ?? streetController.text,
+        "unit": unit ?? unitController.text,
+        "coordinates": coordinates,
+        "direction": directions ?? directionsController.text,
+        "name": name ?? addressNameController.text,
+      };
+      final response = await ApiClient.patchData(
+        "/customers/$userId/locations/$locationId",
+        jsonEncode(body),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          response.body['message'] ?? "Address updated successfully",
+          isError: false,
+        );
+        getMe();
+        Get.back();
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "Something went wrong",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // Delete an address
+  Future<void> deleteAddress(SavedAddress address) async {
+    EasyLoading.show(status: "Deleting Address...");
+    try {
+      final String userId = customerModel.value.data?.customer?.id ?? '';
+      final response = await ApiClient.deleteData(
+        "/customers/$userId/locations/${address.id}",
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        savedAddresses.removeWhere((a) => a.id == address.id);
+        savedAddresses.refresh();
+
+        showCustomSnackBar(
+          response.body['message'] ?? "Address deleted successfully",
+          isError: false,
+        );
+        getMe();
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "Something went wrong",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
-    getMe();
+    // Only fetch user data if authenticated (has token)
+    _initializeController();
+  }
+
+  Future<void> _initializeController() async {
+    final token = await SharePrefsHelper.getString(AppConstants.bearerToken);
+    if (token.isNotEmpty) {
+      getMe();
+    } else {
+      debugPrint('Skipping getMe() - User not authenticated (during sign-up)');
+    }
   }
 
   final CustomController customController = Get.find<CustomController>();
@@ -114,7 +227,6 @@ class CustomerProfileController extends GetxController {
                 double? latitude;
                 double? longitude;
                 if (loc.coordinates != null && loc.coordinates!.isNotEmpty) {
-                  // Defensive: coordinates should be [longitude, latitude]
                   longitude =
                       loc.coordinates!.length > 0 ? loc.coordinates![0] : null;
                   latitude =
@@ -125,8 +237,12 @@ class CustomerProfileController extends GetxController {
                       loc.id ??
                       DateTime.now().millisecondsSinceEpoch.toString(),
                   title: loc.name ?? '',
+                  name: loc.name ?? '',
                   address: loc.address ?? '',
                   city: cityController.value.text,
+                  street: loc.street,
+                  unit: loc.unit,
+                  direction: loc.direction,
                   latitude: latitude,
                   longitude: longitude,
                   isSelected: loc.isSelect ?? false,
@@ -167,7 +283,7 @@ class CustomerProfileController extends GetxController {
   //   "name": savedLocationType.value,
   //   "isSelect": false,
   // };
-  Future<void> updateProfile() async {
+  Future<void> updateProfile({bool editLocations = false}) async {
     dynamic response;
     updateProfileStatus.value = RxStatus.loading();
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -183,7 +299,7 @@ class CustomerProfileController extends GetxController {
                 "name": addr.title,
                 "street": addr.street ?? '',
                 "unit": addr.unit ?? '',
-                "directions": addr.directions ?? '',
+                "direction": addr.direction ?? '',
                 "isSelect": addr.isSelected,
               },
             )
@@ -259,7 +375,10 @@ class CustomerProfileController extends GetxController {
         isError: false,
       );
       getMe();
-      Get.back();
+      if (!editLocations) {
+        Get.back(); // Close address bottom sheet if open
+      }
+      // Get.back();
     } else {
       updateProfileStatus.value = RxStatus.success();
       showCustomSnackBar("Something went wrong", isError: false);
@@ -376,9 +495,12 @@ class CustomerProfileController extends GetxController {
   //========= Address Management Methods ===========//
 
   // Show bottom sheet for address selection
-  void showAddressBottomSheet() {
+  void showAddressBottomSheet({bool isFromProfile = false, bool? useByUserId}) {
     Get.bottomSheet(
-      const AddressSelectionBottomSheet(),
+      AddressSelectionBottomSheet(
+        isFromProfile: isFromProfile,
+        useByUserId: useByUserId,
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
@@ -387,7 +509,7 @@ class CustomerProfileController extends GetxController {
   }
 
   // Navigate to map and then show add address dialog
-  Future<void> showAddAddressDialog() async {
+  Future<void> showAddAddressDialog({bool isFromProfile = false}) async {
     // First, navigate to map to pick location
     if (!Get.isRegistered<MapController>()) {
       Get.put(MapController());
@@ -410,6 +532,7 @@ class CustomerProfileController extends GetxController {
           address: address,
           latitude: latitude,
           longitude: longitude,
+          isFromProfile: isFromProfile,
         ),
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -418,8 +541,14 @@ class CustomerProfileController extends GetxController {
     }
   }
 
+  TextEditingController streetController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController directionsController = TextEditingController();
+  TextEditingController addressNameController = TextEditingController();
+
   // Add new address to the list
   void addNewAddress({
+    bool isFromProfile = false,
     required String title,
     required String address,
     String? unit,
@@ -431,6 +560,46 @@ class CustomerProfileController extends GetxController {
     debugPrint('=== Adding New Address ===');
     debugPrint('Title: $title');
     debugPrint('Address: $address');
+    // PATCH address for a specific location
+    // Future<void> patchAddress({
+    //   required String locationId,
+    //   required String address,
+    //   required List<double> coordinates,
+    // }) async {
+    //   try {
+    //     final String userId = await SharePrefsHelper.getString(
+    //       AppConstants.userId,
+    //     );
+    //     final Map<String, dynamic> body = {
+    //       "address": address,
+    //       "street": streetController.text,
+    //       "unit": unitController.text,
+    //       "coordinates": coordinates,
+    //       "detraction": directionsController.text,
+    //       "name": addressNameController.text,
+    //     };
+    //     final response = await ApiClient.patchData(
+    //       "/customers/$userId/locations/$locationId",
+    //       jsonEncode(body),
+    //     );
+    //     if (response.statusCode == 200 || response.statusCode == 201) {
+    //       showCustomSnackBar(
+    //         response.body['message'] ?? "Address updated successfully",
+    //         isError: false,
+    //       );
+    //       getMe();
+    //       Get.back();
+    //     } else {
+    //       showCustomSnackBar(
+    //         response.body['message'] ?? "Something went wrong",
+    //         isError: true,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    //   }
+    // }
+
     debugPrint('Unit: $unit');
     debugPrint('Street: $street');
     debugPrint('Directions: $directions');
@@ -448,7 +617,7 @@ class CustomerProfileController extends GetxController {
       address: address,
       unit: unit,
       street: street,
-      directions: directions,
+      direction: directions,
       city:
           cityController.value.text.isNotEmpty
               ? cityController.value.text
@@ -476,6 +645,11 @@ class CustomerProfileController extends GetxController {
 
     // Trigger UI update
     savedAddresses.refresh();
+    if (isFromProfile) {
+      updateProfile(editLocations: true);
+    } else {
+      updateProfile();
+    }
 
     // Get.snackbar(
     //   '✓ Success'.tr,

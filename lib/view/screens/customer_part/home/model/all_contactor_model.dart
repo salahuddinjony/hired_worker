@@ -1,3 +1,5 @@
+import 'package:servana/view/screens/customer_part/home/model/location_model.dart';
+
 class ContractorResponse {
   final bool success;
   final String message;
@@ -48,6 +50,8 @@ class Meta {
   }
 }
 
+
+
 class allContractor {
   final String id;
   final String dob;
@@ -56,25 +60,29 @@ class allContractor {
   final String bio;
   final String city;
   final String language;
-  final String location;
+  final LocationModel? location;
   final int rateHourly;
-  final int balance;
-  final SubCategoryModel subCategory;
-  final CategoryModel category;
+  final double balance;
+  final List<SubCategoryModel> subCategory;
+  final CategoryModel? category;
   final String skillsCategory;
   final double ratings;
   final String subscriptionStatus;
   final String customerId;
   final String paymentMethodId;
-  final MyScheduleModel? myScheduleId;
+  final List<MyScheduleModel> myScheduleId;
   final String? subscriptionId;
-  final bool hasActiveSubscription;
+  final bool? hasActiveSubscription;
   final bool isDeleted;
   final List<String> skills;
   final List<MaterialsModel> materials;
   final String createdAt;
   final String updatedAt;
   final UserId userId;
+  final bool? isHomeSelect;
+  final String? adminAccept;
+  final String? subscriptionEndDate;
+  final String? subscriptionStartDate;
 
   allContractor({
     required this.id,
@@ -103,9 +111,114 @@ class allContractor {
     required this.createdAt,
     required this.updatedAt,
     required this.userId,
+    this.isHomeSelect,
+    this.adminAccept,
+    this.subscriptionEndDate,
+    this.subscriptionStartDate,
   });
 
   factory allContractor.fromJson(Map<String, dynamic> json) {
+    // subCategory can be a list or a single object or missing
+    List<SubCategoryModel> subCategoryList = [];
+    final subCatRaw = json['subCategory'];
+    if (subCatRaw == null) {
+      subCategoryList = [];
+    } else if (subCatRaw is List) {
+      subCategoryList = subCatRaw
+          .where((e) => e != null && e is Map<String, dynamic>)
+          .map<SubCategoryModel>((e) => SubCategoryModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } else if (subCatRaw is Map<String, dynamic>) {
+      subCategoryList = [SubCategoryModel.fromJson(subCatRaw)];
+    } else {
+      subCategoryList = [];
+    }
+
+    // category can be null or object
+    CategoryModel? categoryModel;
+    if (json['category'] != null && json['category'] is Map<String, dynamic>) {
+      categoryModel = CategoryModel.fromJson(json['category']);
+    } else if (json['category'] != null && json['category'] is String) {
+      categoryModel = CategoryModel(id: json['category'], name: '', img: '');
+    } else {
+      categoryModel = null;
+    }
+
+    // skills can be a list or a string
+    List<String> skillsList = (() {
+      final raw = json['skills'];
+      if (raw == null) return <String>[];
+      if (raw is List) return raw.map((e) => e.toString()).toList();
+      if (raw is String) {
+        var s = raw.trim();
+        if (s.startsWith('[') && s.endsWith(']')) {
+          s = s.substring(1, s.length - 1);
+        }
+        if (s.isEmpty) return <String>[];
+        return s
+            .split(',')
+            .map((e) => e.trim().replaceAll(RegExp(r'^"|"$'), ''))
+            .where((e) => e.isNotEmpty)
+            .toList();
+      }
+      return [raw.toString()];
+    })();
+
+    // materials
+    List<MaterialsModel> materialsList = (() {
+      final raw = json['materials'];
+      if (raw == null) return <MaterialsModel>[];
+      if (raw is List) {
+        return raw
+            .where((e) => e != null && e is Map<String, dynamic>)
+            .map<MaterialsModel>((e) => MaterialsModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+      return <MaterialsModel>[];
+    })();
+
+    // myScheduleId can be a list, single object, or missing
+    List<MyScheduleModel> scheduleList = [];
+    final rawSchedule = json['myScheduleId'];
+    if (rawSchedule == null) {
+      scheduleList = [];
+    } else if (rawSchedule is List) {
+      scheduleList = rawSchedule
+          .where((e) => e != null && e is Map<String, dynamic>)
+          .map<MyScheduleModel>((e) => MyScheduleModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } else if (rawSchedule is Map<String, dynamic>) {
+      scheduleList = [MyScheduleModel.fromJson(rawSchedule)];
+    } else if (rawSchedule is String) {
+      scheduleList = [
+        MyScheduleModel(
+          id: rawSchedule,
+          contractorId: '',
+          schedules: [],
+          createdAt: '',
+          updatedAt: '',
+          v: 0,
+        )
+      ];
+    } else {
+      scheduleList = [];
+    }
+
+    // userId
+    UserId userIdModel = UserId.fromJson(json['userId'] ?? {});
+
+    LocationModel? locationModel;
+    final rawLocation = json['location'];
+    if (rawLocation == null) {
+      locationModel = null;
+    } else if (rawLocation is Map<String, dynamic>) {
+      locationModel = LocationModel.fromJson(rawLocation);
+    } else if (rawLocation is String) {
+      locationModel = LocationModel(address: rawLocation);
+    } else {
+      locationModel = LocationModel(address: rawLocation.toString());
+    }
+
     return allContractor(
       id: json['_id'] ?? '',
       dob: json['dob'] ?? '',
@@ -114,86 +227,29 @@ class allContractor {
       bio: json['bio'] ?? '',
       city: json['city'] ?? '',
       language: json['language'] ?? '',
-      location: json['location'] ?? '',
+      location: locationModel,
       rateHourly: (json['rateHourly'] ?? 0).toInt(),
-      balance: (json['balance'] ?? 0).toInt(),
-      // category and subCategory can come as objects or as ids/strings
-      category: CategoryModel.fromDynamic(json['category']),
-      subCategory: SubCategoryModel.fromDynamic(json['subCategory']),
+      balance: (json['balance'] ?? 0).toDouble(),
+      subCategory: subCategoryList,
+      category: categoryModel,
       skillsCategory: json['skillsCategory'] ?? '',
       ratings: (json['ratings'] ?? 0).toDouble(),
       subscriptionStatus: json['subscriptionStatus'] ?? '',
       customerId: json['customerId'] ?? '',
       paymentMethodId: json['paymentMethodId'] ?? '',
-      myScheduleId:
-          (() {
-            final raw = json['myScheduleId'];
-            if (raw == null) return null;
-            if (raw is String) {
-              // sometimes API might return an id string
-              return MyScheduleModel(
-                id: raw,
-                contractorId: '',
-                schedules: [],
-                createdAt: '',
-                updatedAt: '',
-                v: 0,
-              );
-            }
-            if (raw is Map<String, dynamic>)
-              return MyScheduleModel.fromJson(raw);
-            // fallback
-            return MyScheduleModel(
-              id: raw.toString(),
-              contractorId: '',
-              schedules: [],
-              createdAt: '',
-              updatedAt: '',
-              v: 0,
-            );
-          })(),
+      myScheduleId: scheduleList,
       subscriptionId: json['subscriptionId'],
-      hasActiveSubscription: json['hasActiveSubscription'] ?? false,
+      hasActiveSubscription: json['hasActiveSubscription'],
       isDeleted: json['isDeleted'] ?? false,
-      // parse skills which can be: null, a JSON list, or a string like "[painting, installing]"
-      skills:
-          (() {
-            final raw = json['skills'];
-            if (raw == null) return <String>[];
-            if (raw is List) return raw.map((e) => e.toString()).toList();
-            if (raw is String) {
-              var s = raw.trim();
-              // remove surrounding brackets if present
-              if (s.startsWith('[') && s.endsWith(']')) {
-                s = s.substring(1, s.length - 1);
-              }
-              if (s.isEmpty) return <String>[];
-              return s
-                  .split(',')
-                  .map((e) => e.trim().replaceAll(RegExp(r'^"|"$'), ''))
-                  .where((e) => e.isNotEmpty)
-                  .toList();
-            }
-            // fallback: convert other types to single-string list
-            return [raw.toString()];
-          })(),
-      // Some API responses contain null entries inside `materials` list
-      // or the whole field may be null. We should safely skip nulls
-      // and only map valid objects to avoid runtime parse errors.
-      materials: (() {
-        final raw = json['materials'];
-        if (raw == null) return <MaterialsModel>[];
-        if (raw is List) {
-          return raw
-              .where((e) => e != null && e is Map<String, dynamic>)
-              .map<MaterialsModel>((e) => MaterialsModel.fromJson(e as Map<String, dynamic>))
-              .toList();
-        }
-        return <MaterialsModel>[];
-      })(),
+      skills: skillsList,
+      materials: materialsList,
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
-      userId: UserId.fromJson(json['userId'] ?? {}),
+      userId: userIdModel,
+      isHomeSelect: json['isHomeSelect'],
+      adminAccept: json['userId'] != null && json['userId'] is Map<String, dynamic> ? json['userId']['adminAccept'] : null,
+      subscriptionEndDate: json['subscriptionEndDate'],
+      subscriptionStartDate: json['subscriptionStartDate'],
     );
   }
 }

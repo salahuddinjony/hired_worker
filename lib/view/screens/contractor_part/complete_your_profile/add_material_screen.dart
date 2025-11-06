@@ -48,148 +48,147 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
 
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder:
+          (_) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(20.w),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          isEdit ? "Edit Materials" : "Add Materials",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.cancel, color: Colors.red),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15.h),
+
                     Text(
-                      isEdit ? "Edit Materials" : "Add Materials",
+                      'Materials Name',
                       style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15.sp,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.cancel, color: Colors.red),
-                      onPressed: () => Navigator.pop(context),
+
+                    SizedBox(height: 4.h),
+
+                    // Name
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        hintText: "Write here",
+                        border: const OutlineInputBorder(),
+                        hintStyle: TextStyle(fontSize: 15.sp),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+
+                    Text(
+                      'Materials Unit (Optional)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+
+                    SizedBox(height: 4.h),
+
+                    // Unit
+                    TextField(
+                      controller: unitController,
+                      decoration: InputDecoration(
+                        hintText: "Eg. Square Foot, Piece, Gram, Litre etc.",
+                        hintStyle: TextStyle(fontSize: 15.sp),
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+
+                    Text(
+                      'Price (AUD)',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+
+                    SizedBox(height: 4.h),
+                    // Price
+                    TextField(
+                      controller: priceController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: "Enter price here",
+                        hintStyle: TextStyle(fontSize: 15.sp),
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // Save / Update
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        child: Text(
+                          isEdit ? "Update" : "Save",
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        onPressed: () {
+                          final name = nameController.text.trim();
+                          final unit = unitController.text.trim();
+                          final price = priceController.text.trim();
+
+                          if (name.isEmpty || price.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Name and Price are required."),
+                              ),
+                            );
+                            return;
+                          }
+
+                          if (isEdit) {
+                            _updateMaterial(editIndex, name, unit, price);
+                          } else {
+                            _addMaterial(name, unit, price);
+                          }
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 15.h),
-
-                Text(
-                  'Materials Name',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15.sp,
-                  ),
-                ),
-
-                SizedBox(height: 4.h),
-
-                // Name
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    hintText: "Write here",
-                    border: const OutlineInputBorder(),
-                    hintStyle: TextStyle(fontSize: 15.sp),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-
-                Text(
-                  'Materials Unit (Optional)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15.sp,
-                  ),
-                ),
-
-                SizedBox(height: 4.h),
-
-                // Unit
-                TextField(
-                  controller: unitController,
-                  decoration: InputDecoration(
-                    hintText: "Ex: Square feet, ML, Piece",
-                    hintStyle: TextStyle(fontSize: 15.sp),
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-
-                Text(
-                  'Price (AUD)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15.sp,
-                  ),
-                ),
-
-                SizedBox(height: 4.h),
-                // Price
-                TextField(
-                  controller: priceController,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: "Enter price here",
-                    hintStyle: TextStyle(fontSize: 15.sp),
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-
-                // Save / Update
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      isEdit ? "Update" : "Save",
-                      style: TextStyle(color: AppColors.white, fontSize: 14.sp),
-                    ),
-                    onPressed: () {
-                      final name = nameController.text.trim();
-                      final unit = unitController.text.trim();
-                      final price = priceController.text.trim();
-
-                      if (name.isEmpty || price.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Name and Price are required."),
-                          ),
-                        );
-                        return;
-                      }
-
-                      if (isEdit) {
-                        _updateMaterial(
-                          editIndex,
-                          name,
-                          unit,
-                          price,
-                        );
-                      } else {
-                        _addMaterial(name, unit, price);
-                      }
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -260,9 +259,8 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                 itemBuilder: (context, index) {
                   final item = materials[index];
                   final name = item["name"] ?? "";
-                  final unit = (item["unit"] ?? "").isEmpty
-                      ? ""
-                      : " / ${item["unit"]}";
+                  final unit =
+                      (item["unit"] ?? "").isEmpty ? "" : " / ${item["unit"]}";
                   final price = item["price"] ?? "0";
 
                   return Container(
@@ -302,10 +300,14 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                               SizedBox(height: 4.h),
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 6.w, vertical: 2.h),
+                                  horizontal: 6.w,
+                                  vertical: 2.h,
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.r),
-                                  color: AppColors.primary.withValues(alpha: .3),
+                                  color: AppColors.primary.withValues(
+                                    alpha: .3,
+                                  ),
                                 ),
                                 child: Text(
                                   "\$$price",
@@ -325,13 +327,12 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                             IconButton(
                               tooltip: "Edit",
                               icon: const Icon(Icons.edit),
-                              onPressed: () =>
-                                  _showMaterialDialog(editIndex: index),
+                              onPressed:
+                                  () => _showMaterialDialog(editIndex: index),
                             ),
                             IconButton(
                               tooltip: "Delete",
-                              icon:
-                              const Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () => _removeMaterial(index),
                             ),
                           ],
@@ -351,26 +352,26 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                   return controller.status.value.isLoading
                       ? const CustomLoader()
                       : Container(
-                    width: 0.4.sw,
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Continue",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
+                        width: 0.4.sw,
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
-                      ),
-                    ),
-                  ).onTap(() {
-                    controller.updateContractorData(materials);
-                  });
-                },),
+                        child: Center(
+                          child: Text(
+                            "Continue",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ).onTap(() {
+                        controller.updateContractorData(materials);
+                      });
+                }),
 
                 Container(
                   width: 0.4.sw,
@@ -395,7 +396,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
               ],
             ),
 
-            SizedBox(height: 16.h),
+            const SizedBox(height: kBottomNavigationBarHeight),
           ],
         ),
       ),

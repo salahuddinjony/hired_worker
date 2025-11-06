@@ -51,12 +51,15 @@ class _EranScreenState extends State<EranScreen> {
                       color: AppColors.white,
                       backgroundClr: Colors.transparent,
                     ),
-                    CustomText(
-                      text: "\$${profileController.contractorModel.value.data?.contractor?.balance ?? " - "}",
-                      fontSize: 20.w,
-                      fontWeight: FontWeight.w500,
-                      bottom: 10.h,
-                    ),
+                    Obx(() {
+                      return CustomText(
+                        text:
+                            "\$${profileController.contractorModel.value.data?.contractor?.balance ?? " - "}",
+                        fontSize: 20.w,
+                        fontWeight: FontWeight.w500,
+                        bottom: 10.h,
+                      );
+                    }),
                     CustomText(
                       text: "Available Balance".tr,
                       fontSize: 14.w,
@@ -90,45 +93,92 @@ class _EranScreenState extends State<EranScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.0.w),
                 child: CustomTabBar(
-                  tabs: profileController.nameList,
-                  selectedIndex: profileController.currentIndex.value,
+                  tabs: withdrawController.nameList,
+                  selectedIndex: withdrawController.currentIndex.value,
                   onTabSelected: (value) {
-                    profileController.currentIndex.value = value;
+                    withdrawController.currentIndex.value = value;
                     setState(() {});
-                    profileController.update();
+                    withdrawController.update();
                   },
                   selectedColor: AppColors.primary,
                   unselectedColor: AppColors.black_04,
                 ),
               ),
               SizedBox(height: 10.h),
-              if (profileController.currentIndex.value == 0)
+
+              if (withdrawController.currentIndex.value == 0)
+                Obx(() {
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      controller: withdrawController.receivedScrollController,
+                      itemCount:
+                          withdrawController.receivedList.length +
+                          (withdrawController
+                                  .statusForReceived
+                                  .value
+                                  .isLoadingMore
+                              ? 1
+                              : 0),
+                      itemBuilder: (context, index) {
+                        if (index < withdrawController.receivedList.length) {
+                          final data = withdrawController.receivedList[index];
+                          return CustomEarnContainer(data: data);
+                        } else {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                }),
+
+              if (withdrawController.currentIndex.value == 1)
                 Expanded(
-                  child: ListView(
+                  child: ListView.builder(
                     padding: EdgeInsets.zero,
-                    children: List.generate(3, (value) {
-                      return const CustomEarnContainer();
-                    }),
+                    controller: withdrawController.rejectedScrollController,
+                    itemCount:
+                        withdrawController.rejectedList.length +
+                        (withdrawController
+                                .statusForRejected
+                                .value
+                                .isLoadingMore
+                            ? 1
+                            : 0),
+                    itemBuilder: (context, index) {
+                      if (index < withdrawController.rejectedList.length) {
+                        final data = withdrawController.rejectedList[index];
+                        return CustomEarnContainer(data: data);
+                      } else {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
-              if (profileController.currentIndex.value == 1)
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: List.generate(2, (value) {
-                      return CustomEarnContainer(statusText: "Pending".tr);
-                    }),
-                  ),
-                ),
-              if (profileController.currentIndex.value == 2)
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: List.generate(1, (value) {
-                      return CustomEarnContainer(statusText: "Rejected".tr);
-                    }),
-                  ),
-                ),
+
+              // if (withdrawController.currentIndex.value == 2)
+              //   Expanded(
+              //     child: ListView(
+              //       padding: EdgeInsets.zero,
+              //       children: List.generate(2, (value) {
+              //         return CustomEarnContainer(statusText: "Pending".tr);
+              //       }),
+              //     ),
+              //   ),
             ],
           );
         }

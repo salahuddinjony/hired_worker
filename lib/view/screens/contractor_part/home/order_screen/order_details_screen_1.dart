@@ -43,10 +43,14 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
               dateTime: data.updatedAt!,
               id: data.id!,
-              image: data.contractorId?.img,
+              image: data.subCategoryId?.img,
               status: '',
+              location: data.location,
               isButtonShow: false,
-              height: 100,
+              hourlyRate: data.totalAmount,
+              customerName: data.customerId?.fullName,
+              customerImage: data.customerId?.img,
+              subcategoryName: data.subCategoryId?.name,
             ),
 
             const SizedBox(height: 16.0),
@@ -79,7 +83,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Category/SubCategory : ${data.subCategoryId?.name ?? " - "}',
+                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
                   ),
                   const SizedBox(height: 16.0),
                   Text(
@@ -98,7 +102,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('• ${e.name} - ${e.count} ${e.unit}'),
-                                Text('AUD ${e.price}'),
+                                Text('\$${e.price}'),
                               ],
                             );
                           }).toList(),
@@ -117,7 +121,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                       children:
                           data.questions!.map((e) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
+                              padding: const EdgeInsets.only(bottom: 8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -145,7 +149,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType}'),
+                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -157,12 +161,29 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                     color: AppColors.primary.withValues(alpha: 0.1),
                     thickness: 1.6,
                   ),
-                  Text(
-                    data.day == null || data.day!.isEmpty
-                        ? " - "
-                        : data.day!.length == 2
-                        ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
-                        : "${data.day?[0] ?? " - "}",
+                  Row(
+                    children: [
+                      const Text(
+                        'Date: '
+                      ),
+                      Text(
+                        data.day == null || data.day!.isEmpty
+                            ? " - "
+                            : data.day!.length == 2
+                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : "${data.day?[0] ?? " - "}",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Time: '
+                      ),
+                      Text(
+                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -182,7 +203,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   title: "Accept".tr,
                   height: 26.h,
                   width: 70.w,
-                  fontSize: 10.w,
+                  fontSize: 13.5.sp,
                   borderRadius: 10,
                 ),
                 CustomButton(
@@ -193,7 +214,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                   title: "Cancel".tr,
                   height: 26.h,
                   width: 50.w,
-                  fontSize: 10.w,
+                  fontSize: 13.5.sp,
                   fillColor: Colors.transparent,
                   isBorder: true,
                   textColor: AppColors.red,

@@ -123,13 +123,13 @@ class CustomerProfileScreen extends StatelessWidget {
               //     // Get.toNamed(AppRoutes.customerRequestHistoryScreen);
               //   },
               // ),
-              CustomProfileMenuList(
-                image: AppIcons.history,
-                name: "Payment History".tr,
-                onTap: () {
-                  // Get.toNamed(AppRoutes.customerRequestHistoryScreen);
-                },
-              ),
+              // CustomProfileMenuList(
+              //   image: AppIcons.history,
+              //   name: "Payment History".tr,
+              //   onTap: () {
+              //     // Get.toNamed(AppRoutes.customerRequestHistoryScreen);
+              //   },
+              // ),
               CustomProfileMenuList(
                 onTap: () async{
                 

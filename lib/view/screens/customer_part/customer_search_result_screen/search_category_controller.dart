@@ -53,11 +53,15 @@ class SearchCategoryController extends GetxController {
     try {
       isLoading.value = true;
       status.value = RxStatus.loading();
+      final Map <String, String> queryParameters = {
+        'searchTerm': searchTerm,
+        'limit': '200',
+      };
       
       // Make API call with searchTerm as query parameter
-      Response response = await ApiClient.getData(
+      final Response response = await ApiClient.getData(
         ApiUrl.categories,
-        query: {'searchTerm': searchTerm},
+        query: queryParameters,
       );
 
       if (response.statusCode == 200) {

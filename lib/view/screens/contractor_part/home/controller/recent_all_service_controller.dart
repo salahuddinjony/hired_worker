@@ -15,6 +15,10 @@ class RecentAllServiceController extends GetxController {
   int currentPage = 1;
   bool isLock = false;
 
+  final bool flagForPagination =
+      (Get.arguments as Map<String, dynamic>?)?['showTotalService'] as bool? ??
+      false;
+
   @override
   void onInit() {
     super.onInit();
@@ -23,6 +27,10 @@ class RecentAllServiceController extends GetxController {
       scrollController.addListener(() {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
+          if (!flagForPagination) {
+            return;
+          }
+
           getMoreRecentServices();
         }
       });

@@ -32,10 +32,14 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
     final String bookingId = args['bookingId']?.toString() ?? ''; 
     final bool isUpdate = args['isUpdate'] ?? false;
-    final PaymentedTotalAmount= args['PaymentedTotalAmount'] ?? 0;
+    final paymentedTotalAmount = args['paymentedTotalAmount'] ?? 0;
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
     final String contractorIdForTimeSlot = args['contractorIdForTimeSlot']?.toString() ?? '';
     final String subCategoryImage = args['subCategoryImage']?.toString() ?? '';
+
+
+    debugPrint("Paymented Total Amount received: $paymentedTotalAmount");
+    debugPrint("Hourly rate : $hourlyRate");
 
     // Initialize materials in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -87,7 +91,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
                                     controller.materialsAndQuantity.length,
                                 itemBuilder: (context, index) {
                                   final material = controller.materialsAndQuantity[index];
-                                  int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
+                                  final int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
                                   int minCount = 0;
                                   if (isUpdate && index < controller.originalMaterialCounts.length) {
                                     minCount = controller.originalMaterialCounts[index];
@@ -138,7 +142,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'hourlyRate': hourlyRate,
                 'isUpdate': isUpdate,
                 'updateBookingId':updateBookingId,
-                'PaymentedTotalAmount': PaymentedTotalAmount,
+                'paymentedTotalAmount': paymentedTotalAmount,
                 'bookingId': bookingId,
                 'subCategoryImage': subCategoryImage,
               },

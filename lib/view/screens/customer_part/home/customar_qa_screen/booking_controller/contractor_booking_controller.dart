@@ -609,6 +609,10 @@ class ContractorBookingController extends GetxController {
       final int quantity = int.tryParse(material['count'] ?? '0') ?? 0;
       final int pricePerUnit = int.tryParse(material['price'] ?? '0') ?? 0;
       total += quantity * pricePerUnit;
+      // for select weekly booking the materials will be multiply with number of selected dates
+      if (bookingType.value == 'weekly') {
+        total += (quantity * pricePerUnit) * (selectedDates.length - 1);
+      }
     }
     return total;
   }
@@ -616,7 +620,7 @@ class ContractorBookingController extends GetxController {
   int get weeklyTotalAmount => totalDurationAmount * selectedDates.length;
 
   int calculateTotalPayableAmount() {
-    int total = 0;
+    int total =  0;
 
     if (bookingType.value == 'weekly' && selectedDates.length > 1) {
       total += weeklyTotalAmount;
@@ -742,6 +746,7 @@ class ContractorBookingController extends GetxController {
     required String subcategoryId,
     required String paymentedBookingId,
   }) async {
+
     isLoading.value = true;
 
     final customerId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -1079,7 +1084,7 @@ class ContractorBookingController extends GetxController {
         // Final fallback
         if (errorMsg.isEmpty) errorMsg = 'Failed to update booking';
 
-        EasyLoading.showInfo(errorMsg, duration: Duration(seconds: 3));
+        EasyLoading.showInfo(errorMsg, duration: const Duration(seconds: 3));
         isLoading.value = false;
         return false;
       }

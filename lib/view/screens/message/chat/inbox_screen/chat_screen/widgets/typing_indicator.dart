@@ -11,8 +11,8 @@ class TypingIndicator extends StatelessWidget {
       width: double.infinity,
       color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           SizedBox(width: 8),
           Text(
             'Typing...',
