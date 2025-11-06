@@ -74,6 +74,8 @@ dependencies:
   flutter_chat_types: any
   uuid: any
   expandable: ^5.0.1
+  flutter_rating_bar: ^4.0.1
+
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1 
   change_app_package_name: ^1.1.0
