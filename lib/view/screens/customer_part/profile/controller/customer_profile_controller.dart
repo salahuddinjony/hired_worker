@@ -56,6 +56,7 @@ class CustomerProfileController extends GetxController {
     String? directions,
     String? name,
   }) async {
+    EasyLoading.show(status: "Updating Address...");
     try {
       final String userId = customerModel.value.data?.customer?.id ?? '';
       final Map<String, dynamic> body = {
@@ -85,21 +86,56 @@ class CustomerProfileController extends GetxController {
       }
     } catch (e) {
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
   // Delete an address
-  void deleteAddress(SavedAddress address) {
-    savedAddresses.removeWhere((a) => a.id == address.id);
-    savedAddresses.refresh();
-    // Optionally update profile on backend
-    updateProfile(editLocations: true);
+  Future<void> deleteAddress(SavedAddress address) async {
+    EasyLoading.show(status: "Deleting Address...");
+    try {
+      final String userId = customerModel.value.data?.customer?.id ?? '';
+      final response = await ApiClient.deleteData(
+        "/customers/$userId/locations/${address.id}",
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        savedAddresses.removeWhere((a) => a.id == address.id);
+        savedAddresses.refresh();
+
+        showCustomSnackBar(
+          response.body['message'] ?? "Address deleted successfully",
+          isError: false,
+        );
+        getMe();
+      } else {
+        showCustomSnackBar(
+          response.body['message'] ?? "Something went wrong",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 
   @override
   void onInit() {
     super.onInit();
-    getMe();
+    // Only fetch user data if authenticated (has token)
+    _initializeController();
+  }
+
+  Future<void> _initializeController() async {
+    final token = await SharePrefsHelper.getString(AppConstants.bearerToken);
+    if (token.isNotEmpty) {
+      getMe();
+    } else {
+      debugPrint('Skipping getMe() - User not authenticated (during sign-up)');
+    }
   }
 
   final CustomController customController = Get.find<CustomController>();
@@ -461,7 +497,10 @@ class CustomerProfileController extends GetxController {
   // Show bottom sheet for address selection
   void showAddressBottomSheet({bool isFromProfile = false, bool? useByUserId}) {
     Get.bottomSheet(
-      AddressSelectionBottomSheet(isFromProfile: isFromProfile, useByUserId: useByUserId),
+      AddressSelectionBottomSheet(
+        isFromProfile: isFromProfile,
+        useByUserId: useByUserId,
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
