@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/utils/extensions/widget_extension.dart';
@@ -11,6 +12,11 @@ import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
+
+import '../../../../../helper/image_handelar/image_handelar.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 
 class ContractorSignUpScreen extends StatelessWidget {
   const ContractorSignUpScreen({super.key});
@@ -55,6 +61,67 @@ class ContractorSignUpScreen extends StatelessWidget {
                   bottom: 20.h,
                 ),
               ),
+
+              // image
+              Obx(() {
+                return Center(
+                  child: Stack(
+                    children: [
+                      authController.selectedImage.value == null
+                          ? CustomNetworkImage(
+                            imageUrl:
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Octicons-cloud-upload.svg/1200px-Octicons-cloud-upload.svg.png',
+                            height: 120.h,
+                            width: 120.w,
+                            fit: BoxFit.fill,
+                            boxShape: BoxShape.circle,
+                            backgroundColor: AppColors.black.withValues(
+                              alpha: 0.05,
+                            ),
+                          )
+                          : Container(
+                            height: 120.h,
+                            width: 120.w,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: FileImage(
+                                  authController.selectedImage.value!,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+
+                      Positioned(
+                        bottom: 5,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            authController.pickImageFromGallery();
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.camera_alt,
+                              size: 18,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+
+              const SizedBox(height: 10),
+
               CustomFormCard(
                 title: "Enter your name".tr,
                 hintText: "Enter your name".tr,
@@ -67,47 +134,82 @@ class ContractorSignUpScreen extends StatelessWidget {
               ),
               Form(
                 key: _formKey,
-                child: CustomFormCard(
-                  title: "Enter your mobile number".tr,
-                  hintText: "Enter your number".tr,
-                  controller: authController.phoneController.value,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your mobile number";
-                    } else if (value.length < 10) {
-                      return "Please enter a valid mobile number";
-                    }
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomFormCard(
+                      title: "Enter your mobile number".tr,
+                      hintText: "Enter your number".tr,
+                      controller: authController.phoneController.value,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your mobile number";
+                        } else if (value.length < 10) {
+                          return "Please enter a valid mobile number";
+                        }
 
-                    return null;
-                  },
+                        return null;
+                      },
+                    ),
+
+                    // date of birth
+                    CustomFormCard(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your date of birth';
+                        }
+
+                        return null;
+                      },
+                      title: "Date of Birth".tr,
+                      hintText: 'dd/mm/yyyy',
+                      controller: authController.dobController.value,
+                      readOnly: true,
+                      onTap: () async {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime(2000, 1, 1),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate != null) {
+                          authController.dobController.value.text = DateFormat(
+                            'dd/MM/yyyy',
+                          ).format(pickedDate);
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
-              isContactor==false
+
+              isContactor == false
                   ? CustomFormCard(
-                title: "Enter your address".tr,
-                hintText: "Enter your address".tr,
-                controller: authController.addressController.value,
-                readOnly: true,
-                onTap: () async {
-                  // // Initialize MapController if not already registered (for reusable map screen)
-                  // if (!Get.isRegistered<MapController>()) {
-                  //   Get.put(MapController());
-                  // }
+                    title: "Enter your address".tr,
+                    hintText: "Enter your address".tr,
+                    controller: authController.addressController.value,
+                    readOnly: true,
+                    onTap: () async {
+                      // // Initialize MapController if not already registered (for reusable map screen)
+                      // if (!Get.isRegistered<MapController>()) {
+                      //   Get.put(MapController());
+                      // }
 
-                  // // Navigate to map screen with argument to return data
-                  // final result = await Get.toNamed(
-                  //   '/SeletedMapScreen',
-                  //   arguments: {'returnData': true},
-                  // );
+                      // // Navigate to map screen with argument to return data
+                      // final result = await Get.toNamed(
+                      //   '/SeletedMapScreen',
+                      //   arguments: {'returnData': true},
+                      // );
 
-                  // // Update address field with selected location
-                  // if (result != null && result is Map<String, dynamic>) {
-                  //   authController.updateAddressFromMap(result);
-                  // }
-                   authController.showAddAddressDialog(isSignUp: true);
-                },
-              )
+                      // // Update address field with selected location
+                      // if (result != null && result is Map<String, dynamic>) {
+                      //   authController.updateAddressFromMap(result);
+                      // }
+                      authController.showAddAddressDialog(isSignUp: true);
+                    },
+                  )
                   : const SizedBox.shrink(),
               CustomFormCard(
                 isPassword: true,
@@ -167,7 +269,18 @@ class ContractorSignUpScreen extends StatelessWidget {
                     ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (isContactor) {
+                          if (isContactor &&
+                              authController.selectedImage.value == null) {
+                            showCustomSnackBar('Please upload your image first');
+
+                            return;
+                          }
+
+                          if (_formKey.currentState!.validate()) {
+                            authController.customerSignUp(isContactor);
+                          }
+                        } else {
                           authController.customerSignUp(isContactor);
                         }
                       },
