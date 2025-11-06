@@ -1,11 +1,11 @@
 class ApiUrl {
-  // static const String imageUrl = "https://backend.servana.com.au/api/v1";
-  // static const String baseUrl = "https://backend.servana.com.au/api/v1";
-  // static String socketUrl = "https://backend.servana.com.au";
+  static const String imageUrl = "https://backend.servana.com.au/api/v1";
+  static const String baseUrl = "https://backend.servana.com.au/api/v1";
+  static String socketUrl = "https://backend.servana.com.au";
 
-  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
-  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
-  static String socketUrl = "http://10.10.20.11:5002";
+  // static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  // static const String baseUrl = "http://10.10.20.11:5002/api/v1";
+  // static String socketUrl = "http://10.10.20.11:5002";
 
 
   ///========================= Authentication =========================
@@ -22,6 +22,7 @@ class ApiUrl {
   static const String singleSubCategories = "/sub-categories/by-category/";
   static const String subCategories = "/sub-categories/";
   static const String subscriptionPlanList = "/subscriptions/plans";
+  static const String rateCustomer = "/reviews/create-review-customer";
   static const String purchaseSubscriptionPlan =
       "/payments/create-checkout-subscriptions";
   static const String withdraw = "/payments/withdraw";

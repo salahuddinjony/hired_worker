@@ -52,7 +52,7 @@ class CustomOngoingCard extends StatelessWidget {
                           bottom: 10.h,
                         ),
 
-                        GestureDetector(
+                        if (isShowButton) GestureDetector(
                           onTap: () {
                             Get.toNamed(AppRoutes.ongoingDetailsScreen, arguments: {'index': index},);
                           },
