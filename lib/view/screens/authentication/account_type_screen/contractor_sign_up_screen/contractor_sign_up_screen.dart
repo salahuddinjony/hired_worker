@@ -63,7 +63,7 @@ class ContractorSignUpScreen extends StatelessWidget {
               ),
 
               // image
-              Obx(() {
+              if (isContactor) Obx(() {
                 return Center(
                   child: Stack(
                     children: [
@@ -154,7 +154,7 @@ class ContractorSignUpScreen extends StatelessWidget {
                     ),
 
                     // date of birth
-                    CustomFormCard(
+                    if (isContactor) CustomFormCard(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your date of birth';

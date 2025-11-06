@@ -414,10 +414,17 @@ class AuthController extends GetxController {
         debugPrint(
           'Registration successful - Status Code: ${response.statusCode}',
         );
-        final decodedBody = jsonDecode(response.body);
+
+        late var decodedBody;
+
+        if (isContactor) {
+          decodedBody = jsonDecode(response.body);
+        } else {
+          decodedBody = response.body;
+        }
 
         showCustomSnackBar(
-          decodedBody['message'] ?? "Register successful",
+          "Registration completed successfully. Welcome!",
           isError: false,
         );
 
@@ -449,7 +456,7 @@ class AuthController extends GetxController {
         debugPrint('Error response body: ${response.body}');
         _handleLoginError(response);
         showCustomSnackBar(
-          jsonDecode(response.body)['message'] ?? "Register Failed",
+          isContactor ? jsonDecode(response.body)['message'] ?? "Register Failed" :  response.body['message'] ?? "Register Failed",
           isError: false,
         );
         ApiChecker.checkApi(response);
