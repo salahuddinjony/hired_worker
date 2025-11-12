@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
-import 'package:servana/view/screens/customer_part/order/request_history_service_details_page/view_image_gallery/design_files_gallery.dart';
+import 'package:servana/view/screens/customer_part/order/request_history_service_details_page/view_image_gallery/widgets/design_files_gallery.dart';
 
 class BookingStatusCard extends StatelessWidget {
   final BookingDateAndStatus booking;
