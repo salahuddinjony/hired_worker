@@ -9,6 +9,7 @@ import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/extension/extension.dart';
 import 'package:servana/view/screens/customer_part/home/customar_qa_screen/booking_controller/contractor_booking_controller.dart';
 import 'package:servana/view/screens/customer_part/order/model/customer_order_model.dart';
+import 'package:servana/view/screens/customer_part/order/request_history_service_details_page/weekly_data.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../review_page/review_page.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -424,6 +425,26 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
             ),
           ],
         ),
+
+        
+        
+
+
+        
+        // Show additional info for weekly bookings
+        if(booking.bookingType == 'weekly') Column(
+          children: booking.bookingDateAndStatus.map((e) {
+            return BookingStatusCard( booking: e); 
+            
+          }).toList(),
+        ),
+
+
+
+
+
+
+
         const SizedBox(height: 8),
         CustomText(
           text: "Schedule".tr,

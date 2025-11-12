@@ -71,11 +71,12 @@ class BookingResult {
   final num? price;
   final num? rateHourly;
   final num? totalAmount;
-  final List<dynamic> files;
+  final List<FileItem> files;
   final bool? isDeleted;
   final String? createdAt;
   final String? updatedAt;
   final String? location;
+  final List<BookingDateAndStatus> bookingDateAndStatus;
 
   BookingResult({
     this.id,
@@ -102,63 +103,138 @@ class BookingResult {
     this.createdAt,
     this.updatedAt,
     this.location,
+    required this.bookingDateAndStatus,
   });
 
   factory BookingResult.fromJson(Map<String, dynamic> json) {
-  // Handle 'day' as either String or List<String>
-  dynamic dayValue = json['day'];
-  if (dayValue is List) {
-    dayValue = dayValue.map((e) => e.toString()).toList();
-  } else if (dayValue is String) {
-    // keep as is
+    // Handle 'day' as either String or List<String>
+    dynamic dayValue = json['day'];
+    if (dayValue is List) {
+      dayValue = dayValue.map((e) => e.toString()).toList();
+    } else if (dayValue is String) {
+      // keep as is
+    }
+
+    // Handle files: can be a list of strings or a list of objects
+    List<FileItem> filesList = [];
+    if (json['files'] is List) {
+      filesList = (json['files'] as List).map((e) {
+        if (e is String) {
+          return FileItem(url: e);
+        } else if (e is Map<String, dynamic>) {
+          return FileItem.fromJson(e);
+        } else {
+          return FileItem();
+        }
+      }).toList();
+    }
+
+    // Handle bookingDateAndStatus
+    List<BookingDateAndStatus> bookingDateAndStatusList = [];
+    if (json['bookingDateAndStatus'] is List) {
+      bookingDateAndStatusList = (json['bookingDateAndStatus'] as List)
+          .map((e) => BookingDateAndStatus.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+
+    return BookingResult(
+      id: json['_id'] ?? '',
+      customerId: json['customerId'] != null && json['customerId'] is Map<String, dynamic>
+          ? Customer.fromJson(json['customerId'])
+          : null,
+      contractorId: json['contractorId'] != null && json['contractorId'] is Map<String, dynamic>
+          ? Contractor.fromJson(json['contractorId'])
+          : null,
+      subCategoryId: json['subCategoryId'] != null && json['subCategoryId'] is Map<String, dynamic>
+          ? SubCategory.fromJson(json['subCategoryId'])
+          : null,
+      bookingId: json['bookingId'] ?? 0,
+      bookingType: json['bookingType'] ?? '',
+      status: json['status'] ?? '',
+      paymentStatus: json['paymentStatus'] ?? '',
+      questions: (json['questions'] as List?)?.map((e) => Question.fromJson(e)).toList() ?? [],
+      material: (json['material'] as List?)?.map((e) => MaterialItem.fromJson(e)).toList() ?? [],
+      bookingDate: json['bookingDate'] ?? '',
+      day: dayValue,
+      startTime: json['startTime'] ?? '',
+      endTime: json['endTime'] ?? '',
+      duration: json['duration'] ?? 0,
+      timeSlots: (json['timeSlots'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      price: json['price'] ?? 0,
+      rateHourly: json['rateHourly'] ?? 0,
+      totalAmount: json['totalAmount'] ?? 0,
+      files: filesList,
+      isDeleted: json['isDeleted'] ?? false,
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+      location: json['location'] ?? '',
+      bookingDateAndStatus: bookingDateAndStatusList,
+    );
   }
-  return BookingResult(
-    id: json['_id'] ?? '',
-    customerId:
-      json['customerId'] != null &&
-          json['customerId'] is Map<String, dynamic>
-        ? Customer.fromJson(json['customerId'])
-        : null,
-    contractorId:
-      json['contractorId'] != null &&
-          json['contractorId'] is Map<String, dynamic>
-        ? Contractor.fromJson(json['contractorId'])
-        : null,
-    subCategoryId:
-      json['subCategoryId'] != null &&
-          json['subCategoryId'] is Map<String, dynamic>
-        ? SubCategory.fromJson(json['subCategoryId'])
-        : null,
-    bookingId: json['bookingId'] ?? 0,
-    bookingType: json['bookingType'] ?? '',
-    status: json['status'] ?? '',
-    paymentStatus: json['paymentStatus'] ?? '',
-    questions:
-      (json['questions'] as List?)
-        ?.map((e) => Question.fromJson(e))
-        .toList() ??
-      [],
-    material:
-      (json['material'] as List?)
-        ?.map((e) => MaterialItem.fromJson(e))
-        .toList() ??
-      [],
-    bookingDate: json['bookingDate'] ?? '',
-    day: dayValue,
-    startTime: json['startTime'] ?? '',
-    endTime: json['endTime'] ?? '',
-    duration: json['duration'] ?? 0,
-    timeSlots:
-      (json['timeSlots'] as List?)?.map((e) => e.toString()).toList() ?? [],
-    price: json['price'] ?? 0,
-    rateHourly: json['rateHourly'] ?? 0,
-    totalAmount: json['totalAmount'] ?? 0,
-    files: json['files'] ?? [],
-    isDeleted: json['isDeleted'] ?? false,
-    createdAt: json['createdAt'] ?? '',
-    updatedAt: json['updatedAt'] ?? '',
-    location: json['location'] ?? '',
-  );
+}
+
+class BookingDateAndStatus {
+  final String? status;
+  final List<FileItem> image;
+  final List<MaterialItem> materials;
+  final String? date;
+  final num? amount;
+  final String? id;
+
+  BookingDateAndStatus({
+    this.status,
+    this.image = const [],
+    this.materials = const [],
+    this.date,
+    this.amount,
+    this.id,
+  });
+
+  factory BookingDateAndStatus.fromJson(Map<String, dynamic> json) {
+    List<FileItem> imageList = [];
+    if (json['image'] is List) {
+      imageList = (json['image'] as List).map((e) {
+        if (e is String) {
+          return FileItem(url: e);
+        } else if (e is Map<String, dynamic>) {
+          return FileItem.fromJson(e);
+        } else {
+          return FileItem();
+        }
+      }).toList();
+    }
+    List<MaterialItem> materialsList = [];
+    if (json['materials'] is List) {
+      materialsList = (json['materials'] as List)
+          .map((e) => MaterialItem.fromJson(e))
+          .toList();
+    }
+    return BookingDateAndStatus(
+      status: json['status'] ?? '',
+      image: imageList,
+      materials: materialsList,
+      date: json['date'] ?? '',
+      amount: json['amount'] ?? 0,
+      id: json['_id'] ?? '',
+    );
+  }
+}
+
+class FileItem {
+  final String? name;
+  final String? url;
+  final String? mimetype;
+  final int? size;
+
+  FileItem({this.name, this.url, this.mimetype, this.size});
+
+  factory FileItem.fromJson(Map<String, dynamic> json) {
+    return FileItem(
+      name: json['name'],
+      url: json['url'] ?? json['fileUrl'] ?? '',
+      mimetype: json['mimetype'],
+      size: json['size'],
+    );
   }
 }
 
