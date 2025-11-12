@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
-import 'package:servana/view/screens/customer_part/order/request_history_service_details_page/view_image_gallery/image_preview_dialog.dart';
+import 'package:servana/view/screens/customer_part/order/request_history_service_details_page/view_image_gallery/widgets/image_preview_dialog.dart';
 
 class DesignFilesGallery extends StatelessWidget {
   final List<dynamic> designFiles;
