@@ -14,14 +14,15 @@ import '../../../../components/custom_button/custom_button.dart';
 import '../model/booking_model.dart';
 import 'controller/order_controller.dart';
 
-class OrderDetailsScreen1 extends StatefulWidget {
-  const OrderDetailsScreen1({super.key});
+class PendingOrderDetailsScreen extends StatefulWidget {
+  const PendingOrderDetailsScreen({super.key});
 
   @override
-  State<OrderDetailsScreen1> createState() => _OrderDetailsScreen1State();
+  State<PendingOrderDetailsScreen> createState() =>
+      _PendingOrderDetailsScreenState();
 }
 
-class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
+class _PendingOrderDetailsScreenState extends State<PendingOrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     // Create a unique loading state for this booking
@@ -82,9 +83,7 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                     ],
                   ),
                   const SizedBox(height: 8.0),
-                  Text(
-                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
-                  ),
+                  Text('Task/Service : ${data.subCategoryId?.name ?? " - "}'),
                   const SizedBox(height: 16.0),
                   Text(
                     'Materials',
@@ -149,7 +148,9 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
+                      Text(
+                        '${data.bookingType == "oneTime" ? "One Time" : "Weekly"}',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -162,27 +163,22 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
                     thickness: 1.6,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Date: '
-                      ),
+                      const Text('Date: '),
                       Text(
                         data.day == null || data.day!.isEmpty
                             ? " - "
-                            : data.day!.length == 2
-                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : data.day!.length >= 2
+                            ? data.day!.join('\n')
                             : "${data.day?[0] ?? " - "}",
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      const Text(
-                        'Time: '
-                      ),
-                      Text(
-                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
-                      ),
+                      const Text('Time: '),
+                      Text("${data.startTime ?? " "} - ${data.endTime ?? " "}"),
                     ],
                   ),
                 ],
@@ -226,93 +222,105 @@ class _OrderDetailsScreen1State extends State<OrderDetailsScreen1> {
 
             const SizedBox(height: 20.0),
             // Message chip
-           Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 80.0.h, vertical: 15.0.w),
-              child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.primary,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 80.0.h,
+                  vertical: 15.0.w,
                 ),
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                ),
-                icon: Obx(
-                () => isLoadingConversation.value
-                  ? SizedBox(
-                    width: 18.w,
-                    height: 18.w,
-                    child: const CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: AppColors.white,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.primary,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
                     ),
-                    )
-                  : Icon(
-                    Icons.message_rounded,
-                    size: 22.w,
-                    color: AppColors.white,
+                    icon: Obx(
+                      () =>
+                          isLoadingConversation.value
+                              ? SizedBox(
+                                width: 18.w,
+                                height: 18.w,
+                                child: const CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.white,
+                                ),
+                              )
+                              : Icon(
+                                Icons.message_rounded,
+                                size: 22.w,
+                                color: AppColors.white,
+                              ),
                     ),
-                ),
-                label: Text(
-                "Message",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white,
-                ),
-                ),
-                onPressed: isLoadingConversation.value
-                  ? null
-                  : () async {
-                    debugPrint('Navigate to message screen');
-                    isLoadingConversation.value = true;
-                    try {
-                    final loggedUserId = await SharePrefsHelper.getString(
-                      AppConstants.userId,
-                    );
-                    final loggedUserRole = await SharePrefsHelper.getString(
-                      AppConstants.role,
-                    );
-                    final CustomerOrderController controller =
-                      Get.find<CustomerOrderController>();
+                    label: Text(
+                      "Message",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.white,
+                      ),
+                    ),
+                    onPressed:
+                        isLoadingConversation.value
+                            ? null
+                            : () async {
+                              debugPrint('Navigate to message screen');
+                              isLoadingConversation.value = true;
+                              try {
+                                final loggedUserId =
+                                    await SharePrefsHelper.getString(
+                                      AppConstants.userId,
+                                    );
+                                final loggedUserRole =
+                                    await SharePrefsHelper.getString(
+                                      AppConstants.role,
+                                    );
+                                final CustomerOrderController controller =
+                                    Get.find<CustomerOrderController>();
 
-                    final conversationId = await controller
-                      .createOrRetrieveConversation(
-                        senderId: loggedUserId,
-                        receiverId: data.contractorId?.id ?? '',
-                      );
+                                final conversationId = await controller
+                                    .createOrRetrieveConversation(
+                                      senderId: loggedUserId,
+                                      receiverId: data.contractorId?.id ?? '',
+                                    );
 
-                    if (conversationId != null && conversationId.isNotEmpty) {
-                      Get.toNamed(
-                      AppRoutes.chatScreen,
-                      arguments: {
-                        'receiverName':
-                          data.contractorId?.fullName ?? 'Service Provider',
-                        'receiverImage': data.contractorId?.img ?? '',
-                        'conversationId': conversationId,
-                        'userId': loggedUserId,
-                        'receiverId': data.contractorId?.id,
-                        'userRole': loggedUserRole,
-                        'isCustomer': loggedUserRole == 'customer',
-                      },
-                      );
-                    } else {
-                      debugPrint('Error: Conversation ID is null or empty');
-                    }
-                    } finally {
-                    isLoadingConversation.value = false;
-                    }
-                  },
-              ),
+                                if (conversationId != null &&
+                                    conversationId.isNotEmpty) {
+                                  Get.toNamed(
+                                    AppRoutes.chatScreen,
+                                    arguments: {
+                                      'receiverName':
+                                          data.contractorId?.fullName ??
+                                          'Service Provider',
+                                      'receiverImage':
+                                          data.contractorId?.img ?? '',
+                                      'conversationId': conversationId,
+                                      'userId': loggedUserId,
+                                      'receiverId': data.contractorId?.id,
+                                      'userRole': loggedUserRole,
+                                      'isCustomer':
+                                          loggedUserRole == 'customer',
+                                    },
+                                  );
+                                } else {
+                                  debugPrint(
+                                    'Error: Conversation ID is null or empty',
+                                  );
+                                }
+                              } finally {
+                                isLoadingConversation.value = false;
+                              }
+                            },
+                  ),
+                ),
               ),
             ),
-           
-           ),
             const SizedBox(height: 30.0),
           ],
         ),

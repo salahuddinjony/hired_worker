@@ -42,9 +42,13 @@ class CustomRoyelDropdown extends StatelessWidget {
         width: width,
         padding: EdgeInsets.only(left: 10.w),
         decoration: BoxDecoration(
-          border: isBorder
-              ? Border.all(color: AppColors.primary, width: borderWidth ?? 1)
-              : null,
+          border:
+              isBorder
+                  ? Border.all(
+                    color: AppColors.primary,
+                    width: borderWidth ?? 1,
+                  )
+                  : null,
           borderRadius: BorderRadius.circular(borderRadius ?? 8),
           color: fillColor,
         ),
@@ -72,17 +76,18 @@ class CustomRoyelDropdown extends StatelessWidget {
             if (newValue != null) selectedValue.value = newValue;
           },
           style: GoogleFonts.poppins(color: Colors.white, fontSize: 12.w),
-          items: list.map((String item) {
-            return DropdownMenuItem<String>(
-              value: item,
-              child: CustomText(
-                text: item,
-                color: AppColors.black,
-                fontSize: 15.w,
-                fontWeight: FontWeight.w500,
-              ),
-            );
-          }).toList(),
+          items:
+              list.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: CustomText(
+                    text: item,
+                    color: AppColors.black,
+                    fontSize: 15.w,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+              }).toList(),
         ),
       );
     });

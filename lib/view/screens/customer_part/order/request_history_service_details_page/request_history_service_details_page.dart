@@ -204,41 +204,42 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
                   ),
-                  if (booking.questions.isNotEmpty) Builder(
-                    builder: (context) {
-                      final controller = ExpandableController.of(
-                        context,
-                        required: true,
-                      );
-                      return InkWell(
-                        borderRadius: BorderRadius.circular(20.r),
-                        onTap: () {
-                          controller?.toggle();
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              controller?.expanded == true
-                                  ? "Tap to collapse"
-                                  : "Tap to show all",
-                              style: TextStyle(
-                                fontSize: 13.w,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w500,
+                  if (booking.questions.isNotEmpty)
+                    Builder(
+                      builder: (context) {
+                        final controller = ExpandableController.of(
+                          context,
+                          required: true,
+                        );
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(20.r),
+                          onTap: () {
+                            controller?.toggle();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                controller?.expanded == true
+                                    ? "Tap to collapse"
+                                    : "Tap to show all",
+                                style: TextStyle(
+                                  fontSize: 13.w,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            Icon(
-                              controller?.expanded == true
-                                  ? Icons.expand_less
-                                  : Icons.expand_more,
-                              color: AppColors.primary,
-                              size: 28.w,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                              Icon(
+                                controller?.expanded == true
+                                    ? Icons.expand_less
+                                    : Icons.expand_more,
+                                color: AppColors.primary,
+                                size: 28.w,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
               Builder(
@@ -357,7 +358,6 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        
                                     ],
                                   ),
                                 );
@@ -365,7 +365,9 @@ class RequestHistoryServiceDetailsPage extends StatelessWidget {
                         )
                         : const SizedBox.shrink(),
               ),
-              booking.questions.isEmpty ? const SizedBox(height: 12) : const SizedBox.shrink(),
+              booking.questions.isEmpty
+                  ? const SizedBox(height: 12)
+                  : const SizedBox.shrink(),
             ],
           ),
         ),

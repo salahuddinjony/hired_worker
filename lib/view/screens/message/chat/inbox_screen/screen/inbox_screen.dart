@@ -21,19 +21,23 @@ class InboxScreen extends StatelessWidget {
   String _formatMessageTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays == 0) {
-     
       return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
     } else if (difference.inDays == 1) {
-      
       return "Yesterday";
     } else if (difference.inDays < 7) {
-    
-      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const days = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ];
       return days[dateTime.weekday - 1];
     } else {
-    
       return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
     }
   }
@@ -75,9 +79,11 @@ class InboxScreen extends StatelessWidget {
                   // Create a copy of the list to avoid modifying the reactive list during build
                   final conversations = List.from(controller.conversationList);
                   conversations.sort((a, b) {
-                    final aTime = controller.parseDate(a.updatedAt) ??
+                    final aTime =
+                        controller.parseDate(a.updatedAt) ??
                         DateTime.fromMillisecondsSinceEpoch(0);
-                    final bTime = controller.parseDate(b.updatedAt) ??
+                    final bTime =
+                        controller.parseDate(b.updatedAt) ??
                         DateTime.fromMillisecondsSinceEpoch(0);
                     return bTime.compareTo(aTime);
                   });
@@ -96,19 +102,25 @@ class InboxScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final convo = conversations[index];
                       final hasParticipants = convo.participants.isNotEmpty;
-                      final participant = hasParticipants ? (controller.thisRole.value ? convo.participants[0] : convo.participants[1]) : null;
+                      final participant =
+                          hasParticipants
+                              ? (controller.thisRole.value
+                                  ? convo.participants[0]
+                                  : convo.participants[1])
+                              : null;
 
                       final image =
-                          participant?.img ??
-                          AppConstants.profileImage;
-                      final receiverName =
-                          participant?.fullName ?? 'Unknown';
+                          participant?.img ?? AppConstants.profileImage;
+                      final receiverName = participant?.fullName ?? 'Unknown';
                       final recieverId = participant?.id ?? '';
                       final messageText = convo.lastMessage?.toString() ?? '';
-                      final parsedDateTime = controller.parseDate(convo.lastMessageTime);
-                      final lastdateTime = parsedDateTime != null 
-                          ? _formatMessageTime(parsedDateTime)
-                          : null;
+                      final parsedDateTime = controller.parseDate(
+                        convo.lastMessageTime,
+                      );
+                      final lastdateTime =
+                          parsedDateTime != null
+                              ? _formatMessageTime(parsedDateTime)
+                              : null;
 
                       return Padding(
                         padding: EdgeInsets.only(top: 10.h),

@@ -20,7 +20,6 @@ class _SkillsEditScreenState extends State<SkillsEditScreen> {
   final TextEditingController _skillController = TextEditingController();
   final FocusNode _skillFocusNode = FocusNode();
 
-
   @override
   void initState() {
     super.initState();
@@ -28,8 +27,7 @@ class _SkillsEditScreenState extends State<SkillsEditScreen> {
     selectedSkills.addAll(Get.find<SkillEditController>().skills);
   }
 
-  final SkillEditController controller =
-      Get.find<SkillEditController>();
+  final SkillEditController controller = Get.find<SkillEditController>();
 
   void addSkill() {
     final skill = _skillController.text.trim();
@@ -195,10 +193,14 @@ class _SkillsEditScreenState extends State<SkillsEditScreen> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 6.0),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: const Color(0xFF3C003D).withValues(alpha: .1),
+                                color: const Color(
+                                  0xFF3C003D,
+                                ).withValues(alpha: .1),
                                 border: Border.all(
                                   color: const Color(
                                     0xFF3C003D,

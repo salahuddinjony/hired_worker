@@ -32,14 +32,19 @@ class CustomerSuccessfullyPaidScreen extends StatelessWidget {
             ),
             const CustomImage(imageSrc: AppImages.cardImage),
             CustomText(
-              text: "You have successfully signed up for Business user.\nLet’s setup your Business now".tr,
+              text:
+                  "You have successfully signed up for Business user.\nLet’s setup your Business now"
+                      .tr,
               fontSize: 14.w,
               fontWeight: FontWeight.w400,
               color: AppColors.black,
             ),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.customerConfirmationsScreen);
-            }, title: "Continue".tr,)
+            CustomButton(
+              onTap: () {
+                Get.toNamed(AppRoutes.customerConfirmationsScreen);
+              },
+              title: "Continue".tr,
+            ),
           ],
         ),
       ),

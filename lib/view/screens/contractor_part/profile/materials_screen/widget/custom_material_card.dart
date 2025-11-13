@@ -4,7 +4,12 @@ import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 
 class CustomMaterialCard extends StatelessWidget {
-  const CustomMaterialCard({super.key, required this.title, required this.price, required this.unit});
+  const CustomMaterialCard({
+    super.key,
+    required this.title,
+    required this.price,
+    required this.unit,
+  });
   final String title;
   final String price;
   final String unit;
@@ -38,7 +43,10 @@ class CustomMaterialCard extends StatelessWidget {
                 bottom: 4.h,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xffCDB3CD),
                   borderRadius: BorderRadius.circular(5),

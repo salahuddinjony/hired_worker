@@ -11,7 +11,9 @@ import 'package:servana/view/screens/customer_part/home/customer_home_screen/wid
 class CustomerSearchResultScreen extends StatelessWidget {
   CustomerSearchResultScreen({super.key});
 
-  final SearchCategoryController controller = Get.put(SearchCategoryController());
+  final SearchCategoryController controller = Get.put(
+    SearchCategoryController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +57,14 @@ class CustomerSearchResultScreen extends StatelessWidget {
                       child: SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                     );
                   }
-                  
+
                   if (controller.searchText.isNotEmpty) {
                     return IconButton(
-                      icon: const Icon(
-                        Icons.clear,
-                        color: AppColors.black_08,
-                      ),
+                      icon: const Icon(Icons.clear, color: AppColors.black_08),
                       onPressed: () {
                         controller.searchController.clear();
                         controller.searchText.value = '';
@@ -75,7 +72,7 @@ class CustomerSearchResultScreen extends StatelessWidget {
                       },
                     );
                   }
-                  
+
                   return const SizedBox.shrink();
                 }),
               ),
@@ -83,18 +80,21 @@ class CustomerSearchResultScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Search Results Header
-              Obx(() => controller.searchText.isEmpty
-                  ? const SizedBox.shrink()
-                  : Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Search Results (${controller.searchResults.length})",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+              Obx(
+                () =>
+                    controller.searchText.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Search Results (${controller.searchResults.length})",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    )),
+              ),
 
               const SizedBox(height: 10),
 
@@ -107,11 +107,7 @@ class CustomerSearchResultScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.search,
-                            size: 80,
-                            color: Colors.grey[400],
-                          ),
+                          Icon(Icons.search, size: 80, color: Colors.grey[400]),
                           const SizedBox(height: 16),
                           Text(
                             "Start typing to search categories".tr,
@@ -127,9 +123,7 @@ class CustomerSearchResultScreen extends StatelessWidget {
 
                   // Show loading indicator
                   if (controller.isLoading.value) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   // Show empty results
@@ -167,12 +161,13 @@ class CustomerSearchResultScreen extends StatelessWidget {
                   // Show results
                   return GridView.builder(
                     padding: const EdgeInsets.only(right: 10),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 8,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 1,
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 8,
+                        ),
                     itemCount: controller.searchResults.length,
                     itemBuilder: (context, index) {
                       final category = controller.searchResults[index];

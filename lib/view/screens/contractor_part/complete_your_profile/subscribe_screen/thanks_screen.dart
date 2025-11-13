@@ -14,9 +14,7 @@ class ThanksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DoubleTapToExit(
-      snackBar: const SnackBar(
-        content: Text('Tap again to exit!'),
-      ),
+      snackBar: const SnackBar(content: Text('Tap again to exit!')),
       child: Scaffold(
         appBar: const CustomRoyelAppbar(leftIcon: false),
         body: Padding(
@@ -34,11 +32,11 @@ class ThanksScreen extends StatelessWidget {
                       color: AppColors.primary,
                     ),
                   ),
-      
+
                   Center(child: Image.asset('assets/icons/credit-card.png')),
-      
+
                   const SizedBox(height: 12),
-      
+
                   const Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -59,12 +57,15 @@ class ThanksScreen extends StatelessWidget {
                   ),
                 ],
               ),
-      
+
               SizedBox(
                 width: context.width * 0.7,
-                child: CustomButton(onTap: () {
-                  Get.toNamed(AppRoutes.loginScreen);
-                }, title: "Go to Login"),
+                child: CustomButton(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.loginScreen);
+                  },
+                  title: "Go to Login",
+                ),
               ),
             ],
           ),

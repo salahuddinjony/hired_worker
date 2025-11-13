@@ -42,7 +42,9 @@ class CustomFormCard extends StatelessWidget {
     this.maxLine,
     this.fontSize,
     this.titleColor,
-    this.prefixIcon, this.keyboardType, this.onChanged,
+    this.prefixIcon,
+    this.keyboardType,
+    this.onChanged,
     this.visibleAllTest = false,
   });
 
@@ -60,7 +62,10 @@ class CustomFormCard extends StatelessWidget {
           textAlign: TextAlign.start,
 
           maxLines: visibleAllTest ? null : 2, // Show all text, no ellipsis
-          overflow: visibleAllTest ? TextOverflow.visible : TextOverflow.ellipsis, // Ensure no ellipsis
+          overflow:
+              visibleAllTest
+                  ? TextOverflow.visible
+                  : TextOverflow.ellipsis, // Ensure no ellipsis
         ),
         CustomTextField(
           isDens: true,
@@ -71,16 +76,23 @@ class CustomFormCard extends StatelessWidget {
           hintText: hintText,
           cursorColor: AppColors.black,
           hintStyle: GoogleFonts.roboto(
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
-              color: AppColors.black_06),
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+            color: AppColors.black_06,
+          ),
           suffixIcon: suffixIcon,
           isPassword: isPassword,
           textEditingController: controller,
-          inputTextStyle: GoogleFonts.poppins(color: AppColors.black, fontSize: 18.sp),
-          fillColor: hasBackgroundColor ? Colors.transparent : Colors.transparent,
+          inputTextStyle: GoogleFonts.poppins(
+            color: AppColors.black,
+            fontSize: 18.sp,
+          ),
+          fillColor:
+              hasBackgroundColor ? Colors.transparent : Colors.transparent,
           fieldBorderColor: AppColors.primary.withValues(alpha: .5),
-          keyboardType: keyboardType ?? (isPassword ? TextInputType.visiblePassword : TextInputType.text),
+          keyboardType:
+              keyboardType ??
+              (isPassword ? TextInputType.visiblePassword : TextInputType.text),
           onTap: onTap,
           maxLines: isPassword ? 1 : maxLine,
           fieldBorderRadius: 10,

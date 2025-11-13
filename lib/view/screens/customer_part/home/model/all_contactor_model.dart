@@ -50,8 +50,6 @@ class Meta {
   }
 }
 
-
-
 class allContractor {
   final String id;
   final String dob;
@@ -124,10 +122,13 @@ class allContractor {
     if (subCatRaw == null) {
       subCategoryList = [];
     } else if (subCatRaw is List) {
-      subCategoryList = subCatRaw
-          .where((e) => e != null && e is Map<String, dynamic>)
-          .map<SubCategoryModel>((e) => SubCategoryModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      subCategoryList =
+          subCatRaw
+              .where((e) => e != null && e is Map<String, dynamic>)
+              .map<SubCategoryModel>(
+                (e) => SubCategoryModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList();
     } else if (subCatRaw is Map<String, dynamic>) {
       subCategoryList = [SubCategoryModel.fromJson(subCatRaw)];
     } else {
@@ -145,37 +146,41 @@ class allContractor {
     }
 
     // skills can be a list or a string
-    List<String> skillsList = (() {
-      final raw = json['skills'];
-      if (raw == null) return <String>[];
-      if (raw is List) return raw.map((e) => e.toString()).toList();
-      if (raw is String) {
-        var s = raw.trim();
-        if (s.startsWith('[') && s.endsWith(']')) {
-          s = s.substring(1, s.length - 1);
-        }
-        if (s.isEmpty) return <String>[];
-        return s
-            .split(',')
-            .map((e) => e.trim().replaceAll(RegExp(r'^"|"$'), ''))
-            .where((e) => e.isNotEmpty)
-            .toList();
-      }
-      return [raw.toString()];
-    })();
+    final List<String> skillsList =
+        (() {
+          final raw = json['skills'];
+          if (raw == null) return <String>[];
+          if (raw is List) return raw.map((e) => e.toString()).toList();
+          if (raw is String) {
+            var s = raw.trim();
+            if (s.startsWith('[') && s.endsWith(']')) {
+              s = s.substring(1, s.length - 1);
+            }
+            if (s.isEmpty) return <String>[];
+            return s
+                .split(',')
+                .map((e) => e.trim().replaceAll(RegExp(r'^"|"$'), ''))
+                .where((e) => e.isNotEmpty)
+                .toList();
+          }
+          return [raw.toString()];
+        })();
 
     // materials
-    List<MaterialsModel> materialsList = (() {
-      final raw = json['materials'];
-      if (raw == null) return <MaterialsModel>[];
-      if (raw is List) {
-        return raw
-            .where((e) => e != null && e is Map<String, dynamic>)
-            .map<MaterialsModel>((e) => MaterialsModel.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
-      return <MaterialsModel>[];
-    })();
+    final List<MaterialsModel> materialsList =
+        (() {
+          final raw = json['materials'];
+          if (raw == null) return <MaterialsModel>[];
+          if (raw is List) {
+            return raw
+                .where((e) => e != null && e is Map<String, dynamic>)
+                .map<MaterialsModel>(
+                  (e) => MaterialsModel.fromJson(e as Map<String, dynamic>),
+                )
+                .toList();
+          }
+          return <MaterialsModel>[];
+        })();
 
     // myScheduleId can be a list, single object, or missing
     List<MyScheduleModel> scheduleList = [];
@@ -183,10 +188,13 @@ class allContractor {
     if (rawSchedule == null) {
       scheduleList = [];
     } else if (rawSchedule is List) {
-      scheduleList = rawSchedule
-          .where((e) => e != null && e is Map<String, dynamic>)
-          .map<MyScheduleModel>((e) => MyScheduleModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      scheduleList =
+          rawSchedule
+              .where((e) => e != null && e is Map<String, dynamic>)
+              .map<MyScheduleModel>(
+                (e) => MyScheduleModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList();
     } else if (rawSchedule is Map<String, dynamic>) {
       scheduleList = [MyScheduleModel.fromJson(rawSchedule)];
     } else if (rawSchedule is String) {
@@ -198,14 +206,14 @@ class allContractor {
           createdAt: '',
           updatedAt: '',
           v: 0,
-        )
+        ),
       ];
     } else {
       scheduleList = [];
     }
 
     // userId
-    UserId userIdModel = UserId.fromJson(json['userId'] ?? {});
+    final UserId userIdModel = UserId.fromJson(json['userId'] ?? {});
 
     LocationModel? locationModel;
     final rawLocation = json['location'];
@@ -247,7 +255,10 @@ class allContractor {
       updatedAt: json['updatedAt'] ?? '',
       userId: userIdModel,
       isHomeSelect: json['isHomeSelect'],
-      adminAccept: json['userId'] != null && json['userId'] is Map<String, dynamic> ? json['userId']['adminAccept'] : null,
+      adminAccept:
+          json['userId'] != null && json['userId'] is Map<String, dynamic>
+              ? json['userId']['adminAccept']
+              : null,
       subscriptionEndDate: json['subscriptionEndDate'],
       subscriptionStartDate: json['subscriptionStartDate'],
     );

@@ -11,8 +11,7 @@ class OnGoingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OnGoingController controller =
-        Get.find<OnGoingController>();
+    final OnGoingController controller = Get.find<OnGoingController>();
 
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "On Going".tr),
@@ -39,7 +38,9 @@ class OnGoingScreen extends StatelessWidget {
         } else {
           return ListView.builder(
             controller: controller.scrollController,
-            itemCount: controller.onGoingBookingList.length + (controller.status.value.isLoadingMore ? 1 : 0),
+            itemCount:
+                controller.onGoingBookingList.length +
+                (controller.status.value.isLoadingMore ? 1 : 0),
             itemBuilder: (context, index) {
               if (index < controller.onGoingBookingList.length) {
                 return CustomOngoingCard(index: index);
@@ -47,9 +48,7 @@ class OnGoingScreen extends StatelessWidget {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary,
-                    ),
+                    child: CircularProgressIndicator(color: AppColors.primary),
                   ),
                 );
               }

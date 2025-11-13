@@ -71,7 +71,8 @@ class SavedAddress {
       'latitude': latitude,
       'longitude': longitude,
       'isSelect': isSelected,
-      'coordinates': latitude != null && longitude != null ? [longitude, latitude] : null,
+      'coordinates':
+          latitude != null && longitude != null ? [longitude, latitude] : null,
     };
   }
 

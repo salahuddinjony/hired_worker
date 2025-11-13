@@ -34,32 +34,39 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       centerTitle: true,
       scrolledUnderElevation: 0,
-      backgroundColor:backgroundClr ?? AppColors.backgroundClr,
-      automaticallyImplyLeading: false,  // ADD THIS LINE
+      backgroundColor: backgroundClr ?? AppColors.backgroundClr,
+      automaticallyImplyLeading: false, // ADD THIS LINE
       systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: AppColors.backgroundClr,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
       ),
-      actions: showRightIcon == true
-          ? [
-        IconButton(
-          onPressed: () {
-            rightOnTap?.call();
-          },
-          icon: rightIcon == null
-              ? const SizedBox()
-              : CustomImage(imageSrc: rightIcon!, height: 32, width: 32),
-        ),
-        SizedBox(width: 10.w),
-      ]
-          : null,
-      leading: leftIcon == true
-          ? IconButton(
-              icon: Icon(Icons.arrow_back, color: color ?? AppColors.black),
-              onPressed: onLeftIconTap ?? () => Navigator.of(context).pop(),
-            )
-          : null,
+      actions:
+          showRightIcon == true
+              ? [
+                IconButton(
+                  onPressed: () {
+                    rightOnTap?.call();
+                  },
+                  icon:
+                      rightIcon == null
+                          ? const SizedBox()
+                          : CustomImage(
+                            imageSrc: rightIcon!,
+                            height: 32,
+                            width: 32,
+                          ),
+                ),
+                SizedBox(width: 10.w),
+              ]
+              : null,
+      leading:
+          leftIcon == true
+              ? IconButton(
+                icon: Icon(Icons.arrow_back, color: color ?? AppColors.black),
+                onPressed: onLeftIconTap ?? () => Navigator.of(context).pop(),
+              )
+              : null,
       title: CustomText(
         text: titleName ?? "",
         fontSize: 22.w,

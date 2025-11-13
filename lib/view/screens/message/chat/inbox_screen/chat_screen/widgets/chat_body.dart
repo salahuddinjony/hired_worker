@@ -20,13 +20,15 @@ class ChatBody extends StatelessWidget {
   Widget buildCustomAvatar(types.User author) {
     final String? imageUrl = author.imageUrl;
     final String name = author.firstName ?? 'U';
-    
+
     return CustomAvatar(
       imageUrl: imageUrl,
       name: name,
       size: 32,
       fontSize: 14,
-      padding: const EdgeInsets.only(right: 5), // 5px gap to the right of avatar
+      padding: const EdgeInsets.only(
+        right: 5,
+      ), // 5px gap to the right of avatar
     );
   }
 
@@ -34,21 +36,22 @@ class ChatBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final messages = controller.messages.toList().reversed.toList();
-      final user = (controller.user is Rx)
-          ? (controller.user as Rx).value
-          : controller.user;
+      final user =
+          (controller.user is Rx)
+              ? (controller.user as Rx).value
+              : controller.user;
 
       return Stack(
         children: [
-          Chat( 
+          Chat(
             messages: messages,
             onSendPressed: controller.handleSendPressed,
-                // onAttachmentPressed: null, // Disabled to prevent asset loading errors
-                showUserAvatars: true,
-                showUserNames: false,
-                user: user,
-                usePreviewData: false,
-                avatarBuilder: (author) => buildCustomAvatar(author),
+            // onAttachmentPressed: null, // Disabled to prevent asset loading errors
+            showUserAvatars: true,
+            showUserNames: false,
+            user: user,
+            usePreviewData: false,
+            avatarBuilder: (author) => buildCustomAvatar(author),
             theme: const DefaultChatTheme(
               inputBackgroundColor: AppColors.primary,
               inputTextColor: Colors.white,

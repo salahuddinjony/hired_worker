@@ -18,9 +18,12 @@ class OnboardingScreen extends StatelessWidget {
         children: [
           Positioned(
             top: 150.h,
-              left: 0,
-              right: 0,
-              child: const Center(child: CustomImage(imageSrc: AppImages.girlOne))),
+            left: 0,
+            right: 0,
+            child: const Center(
+              child: CustomImage(imageSrc: AppImages.girlOne),
+            ),
+          ),
           Positioned(
             bottom: 0.h,
             right: 0,
@@ -47,7 +50,8 @@ class OnboardingScreen extends StatelessWidget {
                   CustomText(
                     top: 20,
                     text:
-                        "From home repairs to beauty care – get all services with ease".tr,
+                        "From home repairs to beauty care – get all services with ease"
+                            .tr,
                     fontSize: 18.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,

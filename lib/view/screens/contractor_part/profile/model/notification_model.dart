@@ -4,25 +4,27 @@ class NotificationModel {
   Meta? meta;
   List<CustomNotification>? data;
 
-  NotificationModel({
-    this.success,
-    this.message,
-    this.meta,
-    this.data,
-  });
+  NotificationModel({this.success, this.message, this.meta, this.data});
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
-    success: json["success"],
-    message: json["message"],
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    data: json["data"] == null ? [] : List<CustomNotification>.from(json["data"]!.map((x) => CustomNotification.fromJson(x))),
-  );
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      NotificationModel(
+        success: json["success"],
+        message: json["message"],
+        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+        data:
+            json["data"] == null
+                ? []
+                : List<CustomNotification>.from(
+                  json["data"]!.map((x) => CustomNotification.fromJson(x)),
+                ),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
     "meta": meta?.toJson(),
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
@@ -47,15 +49,22 @@ class CustomNotification {
     this.updatedAt,
   });
 
-  factory CustomNotification.fromJson(Map<String, dynamic> json) => CustomNotification(
+  factory CustomNotification.fromJson(
+    Map<String, dynamic> json,
+  ) => CustomNotification(
     id: json["_id"],
     userId: json["userId"],
     title: json["title"],
     message: json["message"],
-    isRead: json["isRead"] == null ? [] : List<String>.from(json["isRead"]!.map((x) => x)),
+    isRead:
+        json["isRead"] == null
+            ? []
+            : List<String>.from(json["isRead"]!.map((x) => x)),
     isDeleted: json["isDeleted"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt:
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt:
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -76,12 +85,7 @@ class Meta {
   int? total;
   int? totalPage;
 
-  Meta({
-    this.page,
-    this.limit,
-    this.total,
-    this.totalPage,
-  });
+  Meta({this.page, this.limit, this.total, this.totalPage});
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
     page: json["page"],

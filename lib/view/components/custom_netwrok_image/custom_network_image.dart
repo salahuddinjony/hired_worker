@@ -13,25 +13,25 @@ class CustomNetworkImage extends StatelessWidget {
   final Widget? child;
   final ColorFilter? colorFilter;
   final BoxFit fit;
-  const CustomNetworkImage(
-      {super.key,
-      this.child,
-      this.colorFilter,
-      required this.imageUrl,
-      this.backgroundColor,
-      required this.height,
-      required this.width,
-      this.border,
-      this.borderRadius,
-      this.boxShape = BoxShape.rectangle,
-      this.fit = BoxFit.cover,
-      });
+  const CustomNetworkImage({
+    super.key,
+    this.child,
+    this.colorFilter,
+    required this.imageUrl,
+    this.backgroundColor,
+    required this.height,
+    required this.width,
+    this.border,
+    this.borderRadius,
+    this.boxShape = BoxShape.rectangle,
+    this.fit = BoxFit.cover,
+  });
 
   @override
   Widget build(BuildContext context) {
     // Add debug print and validation
     debugPrint("CustomNetworkImage loading URL: '$imageUrl'");
-    
+
     // Check if URL is empty or invalid
     if (imageUrl.isEmpty || imageUrl == 'null') {
       return Container(
@@ -43,10 +43,12 @@ class CustomNetworkImage extends StatelessWidget {
           borderRadius: borderRadius,
           shape: boxShape,
         ),
-        child: Center(child: child ?? const Icon(Icons.person, color: Colors.white)),
+        child: Center(
+          child: child ?? const Icon(Icons.person, color: Colors.white),
+        ),
       );
     }
-    
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       imageBuilder: (context, imageProvider) {
@@ -82,20 +84,22 @@ class CustomNetworkImage extends StatelessWidget {
           ),
         );
       },
-      placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey.withValues(alpha: 0.6),
-          highlightColor: Colors.grey.withValues(alpha: 0.3),
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              border: border,
-              color: Colors.grey.withValues(alpha: 0.6),
-              borderRadius: borderRadius,
-              shape: boxShape,
+      placeholder:
+          (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey.withValues(alpha: 0.6),
+            highlightColor: Colors.grey.withValues(alpha: 0.3),
+            child: Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                border: border,
+                color: Colors.grey.withValues(alpha: 0.6),
+                borderRadius: borderRadius,
+                shape: boxShape,
+              ),
+              child: child,
             ),
-            child: child,
-          )),
+          ),
       errorWidget: (context, url, error) {
         debugPrint("Error loading image: $error");
         return Container(
@@ -142,47 +146,51 @@ class CustomNetworkImage2 extends StatelessWidget {
       // Ensures image is properly circular without unwanted cropping
       child: CachedNetworkImage(
         imageUrl: imageUrl,
-        imageBuilder: (context, imageProvider) => Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            border: border,
-            shape: boxShape,
-            color: backgroundColor,
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit
-                  .contain, // Ensures the face is fully visible inside the circle
-              //  alignment: Alignment.center, // Centers the image
-              colorFilter: colorFilter,
+        imageBuilder:
+            (context, imageProvider) => Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                border: border,
+                shape: boxShape,
+                color: backgroundColor,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit:
+                      BoxFit
+                          .contain, // Ensures the face is fully visible inside the circle
+                  //  alignment: Alignment.center, // Centers the image
+                  colorFilter: colorFilter,
+                ),
+              ),
+              child: child,
             ),
-          ),
-          child: child,
-        ),
-        placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey.withValues(alpha: 0.6),
-          highlightColor: Colors.grey.withValues(alpha: 0.3),
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              border: border,
-              color: Colors.grey.withValues(alpha: 0.6),
-              shape: boxShape,
+        placeholder:
+            (context, url) => Shimmer.fromColors(
+              baseColor: Colors.grey.withValues(alpha: 0.6),
+              highlightColor: Colors.grey.withValues(alpha: 0.3),
+              child: Container(
+                height: height,
+                width: width,
+                decoration: BoxDecoration(
+                  border: border,
+                  color: Colors.grey.withValues(alpha: 0.6),
+                  shape: boxShape,
+                ),
+                child: child,
+              ),
             ),
-            child: child,
-          ),
-        ),
-        errorWidget: (context, url, error) => Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            border: border,
-            color: Colors.grey.withValues(alpha: 0.6),
-            shape: boxShape,
-          ),
-          child: const Icon(Icons.error),
-        ),
+        errorWidget:
+            (context, url, error) => Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                border: border,
+                color: Colors.grey.withValues(alpha: 0.6),
+                shape: boxShape,
+              ),
+              child: const Icon(Icons.error),
+            ),
       ),
     );
   }

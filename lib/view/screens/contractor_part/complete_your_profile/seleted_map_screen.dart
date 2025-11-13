@@ -40,7 +40,6 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
       ),
       body: Stack(
         children: [
-
           Obx(() {
             return GoogleMap(
               initialCameraPosition: mapController.cameraPosition.value,
@@ -53,12 +52,11 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
                 mapController.onMapTap(position);
                 searchController.text =
                     mapController.selectedLocation.value?['address'] ??
-                        'San Francisco';
+                    'San Francisco';
                 mapController.setIsClean(true);
               },
             );
           }),
-
 
           Positioned(
             top: 30,
@@ -82,20 +80,21 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
                         mapController.suggestions.clear();
                       }
                     },
-                    suffixIcon: mapController.isClean.value
-                        ? IconButton(
-                      icon: const Icon(
-                        Icons.clear,
-                        color: AppColors.textCLr,
-                      ),
-                      onPressed: () {
-                        searchController.clear();
-                        mapController.clearSelectedLocation();
-                        mapController.suggestions.clear();
-                        mapController.setIsClean(false);
-                      },
-                    )
-                        : null,
+                    suffixIcon:
+                        mapController.isClean.value
+                            ? IconButton(
+                              icon: const Icon(
+                                Icons.clear,
+                                color: AppColors.textCLr,
+                              ),
+                              onPressed: () {
+                                searchController.clear();
+                                mapController.clearSelectedLocation();
+                                mapController.suggestions.clear();
+                                mapController.setIsClean(false);
+                              },
+                            )
+                            : null,
                     hintText: 'Enter your address'.tr,
                     hintStyle: const TextStyle(color: AppColors.textCLr),
                     fillColor: AppColors.white,
@@ -130,13 +129,11 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
                       itemCount: mapController.suggestions.length,
                       itemBuilder: (context, index) {
                         final suggestion =
-                        mapController.suggestions[index]['description'];
+                            mapController.suggestions[index]['description'];
                         return ListTile(
                           title: Text(
                             suggestion,
-                            style: const TextStyle(
-                              color: AppColors.textCLr,
-                            ),
+                            style: const TextStyle(color: AppColors.textCLr),
                           ),
                           onTap: () {
                             searchController.text = suggestion;
@@ -155,35 +152,35 @@ class _SelectedMapScreenState extends State<SelectedMapScreen> {
             ),
           ),
 
-
           Obx(() {
             return Positioned(
               bottom: 30,
               right: 30,
               left: 30,
-              child: mapController.status.value.isLoading
-                  ? const CustomLoader()
-                  : CustomButton(
-                onTap: () {
-                  if (mapController.selectedLocation.value != null) {
-                    if (Get.arguments != null &&
-                        Get.arguments['returnData'] == true) {
-                      Get.back(
-                        result: mapController.selectedLocation.value,
-                      );
-                    } 
-                    // else {
-                    //   mapController.updateContractorData();
-                    // }
-                  } else {
-                    Get.snackbar(
-                      'Error',
-                      'Please select a location first.',
-                    );
-                  }
-                },
-                title: "Continue".tr,
-              ),
+              child:
+                  mapController.status.value.isLoading
+                      ? const CustomLoader()
+                      : CustomButton(
+                        onTap: () {
+                          if (mapController.selectedLocation.value != null) {
+                            if (Get.arguments != null &&
+                                Get.arguments['returnData'] == true) {
+                              Get.back(
+                                result: mapController.selectedLocation.value,
+                              );
+                            }
+                            // else {
+                            //   mapController.updateContractorData();
+                            // }
+                          } else {
+                            Get.snackbar(
+                              'Error',
+                              'Please select a location first.',
+                            );
+                          }
+                        },
+                        title: "Continue".tr,
+                      ),
             );
           }),
         ],

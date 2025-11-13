@@ -33,7 +33,7 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
   @override
   Widget build(BuildContext context) {
     final SubCategorySelectionController controller =
-    Get.find<SubCategorySelectionController>();
+        Get.find<SubCategorySelectionController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0E5ED),
@@ -91,63 +91,69 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                     children:
-                    controller.subCategoryModel.value.data!.map((item) {
-                      final isSelected =
-                      selectedSubCategoryIds.contains(item.id.toString());
-                      return GestureDetector(
-                        onTap: () => toggleSelection(item.id.toString()),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? const Color(0xFF3C003D)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ClipOval(
-                                child: CachedNetworkImage(
-                                  height: 45,
-                                  width: 45,
-                                  imageUrl: item.img ?? "",
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.info_outline,
-                                    color: Colors.grey[500],
+                        controller.subCategoryModel.value.data!.map((item) {
+                          final isSelected = selectedSubCategoryIds.contains(
+                            item.id.toString(),
+                          );
+                          return GestureDetector(
+                            onTap: () => toggleSelection(item.id.toString()),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    isSelected
+                                        ? const Color(0xFF3C003D)
+                                        : Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.05),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
                                   ),
-                                  placeholder: (context, url) =>
-                                  const CircularProgressIndicator(
-                                    color: AppColors.primary,
+                                ],
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: CachedNetworkImage(
+                                      height: 45,
+                                      width: 45,
+                                      imageUrl: item.img ?? "",
+                                      fit: BoxFit.cover,
+                                      errorWidget:
+                                          (context, url, error) => Icon(
+                                            Icons.info_outline,
+                                            color: Colors.grey[500],
+                                          ),
+                                      placeholder:
+                                          (context, url) =>
+                                              const CircularProgressIndicator(
+                                                color: AppColors.primary,
+                                              ),
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    item.name ?? " - ",
+                                    style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 14.sp,
+                                      color:
+                                          isSelected
+                                              ? Colors.white
+                                              : Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 12),
-                              Text(
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                item.name ?? " - ",
-                                style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 14.sp,
-                                  color:
-                                  isSelected ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 );
               }
@@ -158,21 +164,20 @@ class _CategorySelectionScreenState extends State<SubCategorySelectedScreen> {
                 return controller.updateStatus.value.isLoading
                     ? const CustomLoader()
                     : CustomButton(
-                  onTap: () {
-                    if (selectedSubCategoryIds.isNotEmpty) {
-
-                      controller.updateContractorData(
-                        selectedSubCategoryIds,
-                      );
-                    } else {
-                      Get.snackbar(
-                        "Error",
-                        "Please select at least one task to continue.",
-                      );
-                    }
-                  },
-                  title: "Continue".tr,
-                );
+                      onTap: () {
+                        if (selectedSubCategoryIds.isNotEmpty) {
+                          controller.updateContractorData(
+                            selectedSubCategoryIds,
+                          );
+                        } else {
+                          Get.snackbar(
+                            "Error",
+                            "Please select at least one task to continue.",
+                          );
+                        }
+                      },
+                      title: "Continue".tr,
+                    );
               } else {
                 return const SizedBox.shrink();
               }

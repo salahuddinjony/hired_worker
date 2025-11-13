@@ -61,9 +61,8 @@ class CustomAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasValidImage = imageUrl != null &&
-        imageUrl!.isNotEmpty &&
-        imageUrl != 'null';
+    final bool hasValidImage =
+        imageUrl != null && imageUrl!.isNotEmpty && imageUrl != 'null';
     final String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : 'U';
 
     Widget avatar;
@@ -75,25 +74,27 @@ class CustomAvatar extends StatelessWidget {
           height: size,
           width: size,
           fit: BoxFit.cover,
-          placeholder: (context, url) => Container(
-            height: size,
-            width: size,
-            decoration: BoxDecoration(
-              color: getColorFromName(name),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: SizedBox(
-                width: size * 0.4,
-                height: size * 0.4,
-                child: const CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
+          placeholder:
+              (context, url) => Container(
+                height: size,
+                width: size,
+                decoration: BoxDecoration(
+                  color: getColorFromName(name),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: size * 0.4,
+                    height: size * 0.4,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          errorWidget: (context, url, error) => buildFallbackAvatar(firstLetter),
+          errorWidget:
+              (context, url, error) => buildFallbackAvatar(firstLetter),
         ),
       );
     } else {
@@ -101,10 +102,7 @@ class CustomAvatar extends StatelessWidget {
     }
 
     if (padding != null) {
-      return Padding(
-        padding: padding!,
-        child: avatar,
-      );
+      return Padding(padding: padding!, child: avatar);
     }
 
     return avatar;

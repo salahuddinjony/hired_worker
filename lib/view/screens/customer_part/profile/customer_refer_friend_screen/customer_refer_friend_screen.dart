@@ -44,8 +44,10 @@ class CustomerReferFriendScreen extends StatelessWidget {
               bottom: 50,
             ),
             CustomButton(
-              width: MediaQuery.sizeOf(context).width/2,
-              onTap: (){}, title: "Refer a Friend".tr,)
+              width: MediaQuery.sizeOf(context).width / 2,
+              onTap: () {},
+              title: "Refer a Friend".tr,
+            ),
           ],
         ),
       ),

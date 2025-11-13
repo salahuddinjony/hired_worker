@@ -14,7 +14,8 @@ class CustomTextfieldWithPopup extends StatefulWidget {
     this.fillColor,
     this.popupColor,
     this.hintText,
-    this.controller, this.validator,
+    this.controller,
+    this.validator,
   });
 
   final List<String> items;
@@ -25,7 +26,6 @@ class CustomTextfieldWithPopup extends StatefulWidget {
   final String? hintText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-
 
   @override
   CustomTextfieldWithPopupState createState() =>
@@ -52,7 +52,7 @@ class CustomTextfieldWithPopupState extends State<CustomTextfieldWithPopup> {
           validator: widget.validator,
           fillColor: widget.fillColor ?? AppColors.white_50,
           hintText: widget.hintText ?? AppStrings.selectSpecialization,
-          hintStyle: const TextStyle(color: AppColors.white,),
+          hintStyle: const TextStyle(color: AppColors.white),
           textEditingController: widget.controller,
           fieldBorderColor: AppColors.white_50.withValues(alpha: .2),
           readOnly: true,
@@ -66,22 +66,24 @@ class CustomTextfieldWithPopupState extends State<CustomTextfieldWithPopup> {
             ),
             onSelected: (String value) {
               setState(() {
-                widget.controller?.text = value;  
+                widget.controller?.text = value;
                 widget.onChanged?.call(value);
               });
             },
-            itemBuilder: (context) => widget.items.map((String item) {
-              return PopupMenuItem<String>(
-                value: item,
-                child: CustomText(
-                  textAlign: TextAlign.center,
-                  text: item,
-                  color: AppColors.white,
-                  fontSize: 16.w,
-                  fontWeight: FontWeight.w500,
-                ),
-              );
-            }).toList(),
+            itemBuilder:
+                (context) =>
+                    widget.items.map((String item) {
+                      return PopupMenuItem<String>(
+                        value: item,
+                        child: CustomText(
+                          textAlign: TextAlign.center,
+                          text: item,
+                          color: AppColors.white,
+                          fontSize: 16.w,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }).toList(),
           ),
         ),
       ),

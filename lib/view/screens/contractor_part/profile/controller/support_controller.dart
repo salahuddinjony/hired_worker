@@ -17,11 +17,14 @@ class SupportController extends GetxController {
 
     final Map<String, String> data = {
       "title": titleEditingController.text,
-      "details": messageEditingController.text
+      "details": messageEditingController.text,
     };
 
     try {
-      final response = await ApiClient.postData(ApiUrl.createSupport, jsonEncode(data));
+      final response = await ApiClient.postData(
+        ApiUrl.createSupport,
+        jsonEncode(data),
+      );
 
       if (response.statusCode == 200) {
         showCustomSnackBar('Message send successfully', isError: false);
@@ -31,7 +34,6 @@ class SupportController extends GetxController {
       } else {
         showCustomSnackBar('Something went wrong');
       }
-
     } catch (e) {
       showCustomSnackBar(e.toString());
     } finally {

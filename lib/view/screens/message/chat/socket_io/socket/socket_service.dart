@@ -10,18 +10,25 @@ class SocketService {
 
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
   final _typingController = StreamController<Map<String, dynamic>>.broadcast();
-  final _receiverOnlineController = StreamController<Map<String, dynamic>>.broadcast();
-  final _newMessageNotificationController= StreamController<Map<String, dynamic>>.broadcast(); 
-  final _userJoinedRoomController = StreamController<Map<String, dynamic>>.broadcast();
-  final _userLeftRoomController = StreamController<Map<String, dynamic>>.broadcast();
+  final _receiverOnlineController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _newMessageNotificationController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _userJoinedRoomController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final _userLeftRoomController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   Stream<Map<String, dynamic>> get onMessage => _messageController.stream;
   Stream<Map<String, dynamic>> get onTyping => _typingController.stream;
-  Stream<Map<String, dynamic>> get onReceiverOnline => _receiverOnlineController.stream;
-  Stream<Map<String, dynamic>> get onNewMessageNotification => _newMessageNotificationController.stream;
-  Stream<Map<String, dynamic>> get onUserJoinedRoom => _userJoinedRoomController.stream;
-  Stream<Map<String, dynamic>> get onUserLeftRoom => _userLeftRoomController.stream;
-
+  Stream<Map<String, dynamic>> get onReceiverOnline =>
+      _receiverOnlineController.stream;
+  Stream<Map<String, dynamic>> get onNewMessageNotification =>
+      _newMessageNotificationController.stream;
+  Stream<Map<String, dynamic>> get onUserJoinedRoom =>
+      _userJoinedRoomController.stream;
+  Stream<Map<String, dynamic>> get onUserLeftRoom =>
+      _userLeftRoomController.stream;
 
   void connect(String url) {
     if (_socket != null && _socket!.connected) return;
@@ -42,8 +49,7 @@ class SocketService {
       print('[SocketService] ❌ CONNECTION ERROR: $err');
     });
 
-
-// setup user 
+    // setup user
 
     _socket!.on('setup', (data) {
       print('[SocketService] setup: $data');
@@ -58,7 +64,9 @@ class SocketService {
       print('[SocketService] 📨 Data type: ${data.runtimeType}');
       if (data is Map) {
         final messageData = Map<String, dynamic>.from(data);
-        print('[SocketService] 📨 Processing message: ${messageData['message']}');
+        print(
+          '[SocketService] 📨 Processing message: ${messageData['message']}',
+        );
         _messageController.add(messageData);
       } else {
         print('[SocketService] ❌ Received data is not a Map: $data');
@@ -77,23 +85,25 @@ class SocketService {
 
     // Receiver online status
     _socket!.on('receiver-online', (data) {
-      if (data is Map) _receiverOnlineController.add(Map<String, dynamic>.from(data));
+      if (data is Map)
+        _receiverOnlineController.add(Map<String, dynamic>.from(data));
     });
 
     // New message notification
     _socket!.on('new-message-notification', (data) {
-      if (data is Map) _newMessageNotificationController.add(Map<String, dynamic>.from(data));
+      if (data is Map)
+        _newMessageNotificationController.add(Map<String, dynamic>.from(data));
     });
 
     // User joined/left room events
     _socket!.on('user-joined', (data) {
-      if (data is Map) _userJoinedRoomController.add(Map<String, dynamic>.from(data));
+      if (data is Map)
+        _userJoinedRoomController.add(Map<String, dynamic>.from(data));
     });
     _socket!.on('user-left', (data) {
-      if (data is Map) _userLeftRoomController.add(Map<String, dynamic>.from(data));
+      if (data is Map)
+        _userLeftRoomController.add(Map<String, dynamic>.from(data));
     });
-
-    
   }
 
   void disconnect() {
@@ -119,9 +129,11 @@ class SocketService {
       print('[SocketService] ❌ emitRaw error: $e');
     }
   }
+
   void setupUser(String userId) {
-    emitRaw('setup', userId); 
+    emitRaw('setup', userId);
   }
+
   void leaveChat({required String roomId, required String userId}) {
     emitRaw('leave-chat', {'roomId': roomId, 'userId': userId});
   }
@@ -135,7 +147,10 @@ class SocketService {
   }
 
   void stopTyping({required String conversationId, required String senderId}) {
-    emitRaw('stop-typing', {'conversationId': conversationId, 'senderId': senderId});
+    emitRaw('stop-typing', {
+      'conversationId': conversationId,
+      'senderId': senderId,
+    });
   }
 
   void sendMessage({

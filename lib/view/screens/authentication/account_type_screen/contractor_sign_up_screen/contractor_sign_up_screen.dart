@@ -11,11 +11,8 @@ import 'package:servana/view/components/custom_loader/custom_loader.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
-import 'package:servana/view/screens/contractor_part/complete_your_profile/controller/map_controller.dart';
 
-import '../../../../../helper/image_handelar/image_handelar.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
-import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 
 class ContractorSignUpScreen extends StatelessWidget {
@@ -63,62 +60,63 @@ class ContractorSignUpScreen extends StatelessWidget {
               ),
 
               // image
-              if (isContactor) Obx(() {
-                return Center(
-                  child: Stack(
-                    children: [
-                      authController.selectedImage.value == null
-                          ? CustomNetworkImage(
-                            imageUrl:
-                                'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Octicons-cloud-upload.svg/1200px-Octicons-cloud-upload.svg.png',
-                            height: 120.h,
-                            width: 120.w,
-                            fit: BoxFit.fill,
-                            boxShape: BoxShape.circle,
-                            backgroundColor: AppColors.black.withValues(
-                              alpha: 0.05,
-                            ),
-                          )
-                          : Container(
-                            height: 120.h,
-                            width: 120.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: FileImage(
-                                  authController.selectedImage.value!,
+              if (isContactor)
+                Obx(() {
+                  return Center(
+                    child: Stack(
+                      children: [
+                        authController.selectedImage.value == null
+                            ? CustomNetworkImage(
+                              imageUrl:
+                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Octicons-cloud-upload.svg/1200px-Octicons-cloud-upload.svg.png',
+                              height: 120.h,
+                              width: 120.w,
+                              fit: BoxFit.fill,
+                              boxShape: BoxShape.circle,
+                              backgroundColor: AppColors.black.withValues(
+                                alpha: 0.05,
+                              ),
+                            )
+                            : Container(
+                              height: 120.h,
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: FileImage(
+                                    authController.selectedImage.value!,
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                        Positioned(
+                          bottom: 5,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              authController.pickImageFromGallery();
+                            },
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                size: 18,
+                                color: AppColors.white,
                               ),
                             ),
                           ),
-
-                      Positioned(
-                        bottom: 5,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            authController.pickImageFromGallery();
-                          },
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.camera_alt,
-                              size: 18,
-                              color: AppColors.white,
-                            ),
-                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
+                      ],
+                    ),
+                  );
+                }),
 
               const SizedBox(height: 10),
 
@@ -154,33 +152,33 @@ class ContractorSignUpScreen extends StatelessWidget {
                     ),
 
                     // date of birth
-                    if (isContactor) CustomFormCard(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your date of birth';
-                        }
+                    if (isContactor)
+                      CustomFormCard(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your date of birth';
+                          }
 
-                        return null;
-                      },
-                      title: "Date of Birth".tr,
-                      hintText: 'dd/mm/yyyy',
-                      controller: authController.dobController.value,
-                      readOnly: true,
-                      onTap: () async {
-                        final DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime(2000, 1, 1),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
+                          return null;
+                        },
+                        title: "Date of Birth".tr,
+                        hintText: 'dd/mm/yyyy',
+                        controller: authController.dobController.value,
+                        readOnly: true,
+                        onTap: () async {
+                          final DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime(2000, 1, 1),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
 
-                        if (pickedDate != null) {
-                          authController.dobController.value.text = DateFormat(
-                            'dd/MM/yyyy',
-                          ).format(pickedDate);
-                        }
-                      },
-                    ),
+                          if (pickedDate != null) {
+                            authController.dobController.value.text =
+                                DateFormat('dd/MM/yyyy').format(pickedDate);
+                          }
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -272,7 +270,9 @@ class ContractorSignUpScreen extends StatelessWidget {
                         if (isContactor) {
                           if (isContactor &&
                               authController.selectedImage.value == null) {
-                            showCustomSnackBar('Please upload your image first');
+                            showCustomSnackBar(
+                              'Please upload your image first',
+                            );
 
                             return;
                           }

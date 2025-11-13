@@ -16,7 +16,8 @@ class FaqResponse {
       success: json['success'] ?? false,
       message: json['message'] ?? '',
       meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
-      data: (json['data'] as List<dynamic>?)
+      data:
+          (json['data'] as List<dynamic>?)
               ?.map((e) => FaqData.fromJson(e))
               .toList() ??
           [],
@@ -63,13 +64,15 @@ class FaqData {
   factory FaqData.fromJson(Map<String, dynamic> json) {
     return FaqData(
       id: json['_id'] ?? '',
-      question: (json['question'] as List<dynamic>?)
+      question:
+          (json['question'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],
-      subCategory: json['subCategoryId'] != null
-          ? SubCategory.fromJson(json['subCategoryId'])
-          : null,
+      subCategory:
+          json['subCategoryId'] != null
+              ? SubCategory.fromJson(json['subCategoryId'])
+              : null,
       isDeleted: json['isDeleted'] ?? false,
     );
   }
@@ -80,11 +83,7 @@ class SubCategory {
   final String name;
   final String img;
 
-  SubCategory({
-    required this.id,
-    required this.name,
-    required this.img,
-  });
+  SubCategory({required this.id, required this.name, required this.img});
 
   factory SubCategory.fromJson(Map<String, dynamic> json) {
     return SubCategory(

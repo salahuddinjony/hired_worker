@@ -41,24 +41,31 @@ class CustomReviewList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                           CustomText(
-                              text: customer?.fullName ?? 'Unknown',
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          CustomText(
+                            text: customer?.fullName ?? 'Unknown',
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           SizedBox(width: 8.w),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: .1),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.star, color: Colors.amber, size: 14.r),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 14.r,
+                                ),
                                 SizedBox(width: 4.w),
                                 CustomText(
                                   text: reviewData.stars.toString(),
@@ -76,7 +83,10 @@ class CustomReviewList extends StatelessWidget {
                         children: List.generate(5, (index) {
                           return Icon(
                             Icons.star,
-                            color: reviewData.stars > index ? Colors.amber : Colors.grey.shade300,
+                            color:
+                                reviewData.stars > index
+                                    ? Colors.amber
+                                    : Colors.grey.shade300,
                             size: 14.r,
                           );
                         }),
@@ -90,7 +100,10 @@ class CustomReviewList extends StatelessWidget {
             SizedBox(height: 10.h),
 
             CustomText(
-              text: reviewData.description.isNotEmpty ? reviewData.description : 'No comment provided.',
+              text:
+                  reviewData.description.isNotEmpty
+                      ? reviewData.description
+                      : 'No comment provided.',
               fontSize: 13.sp,
               fontWeight: FontWeight.w400,
               color: AppColors.black_04,
@@ -104,7 +117,10 @@ class CustomReviewList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: reviewData.createdAt.split('T').first, // show date only if ISO string
+                  text:
+                      reviewData.createdAt
+                          .split('T')
+                          .first, // show date only if ISO string
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColors.black_03,

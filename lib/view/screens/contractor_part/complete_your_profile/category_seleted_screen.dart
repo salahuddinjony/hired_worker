@@ -132,16 +132,16 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
-                                    textAlign:  TextAlign.center,
+                                    textAlign: TextAlign.center,
                                     maxLines: 2,
                                     item.name ?? " - ",
                                     style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
                                       fontSize: 14.sp,
                                       color:
-                                      isSelected
-                                          ? Colors.white
-                                          : Colors.black,
+                                          isSelected
+                                              ? Colors.white
+                                              : Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -164,7 +164,10 @@ class _CategorySelectionScreenState extends State<CategorySelectedScreen> {
                         if (selectedCategoryId != null) {
                           controller.updateContractorData(selectedCategoryId);
                         } else {
-                          Get.snackbar("Error", "Please select at least one service to continue.");
+                          Get.snackbar(
+                            "Error",
+                            "Please select at least one service to continue.",
+                          );
                         }
                       },
                       title: "Continue".tr,

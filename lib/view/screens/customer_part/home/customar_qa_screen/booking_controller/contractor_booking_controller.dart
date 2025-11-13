@@ -620,7 +620,7 @@ class ContractorBookingController extends GetxController {
   int get weeklyTotalAmount => totalDurationAmount * selectedDates.length;
 
   int calculateTotalPayableAmount() {
-    int total =  0;
+    int total = 0;
 
     if (bookingType.value == 'weekly' && selectedDates.length > 1) {
       total += weeklyTotalAmount;
@@ -746,7 +746,6 @@ class ContractorBookingController extends GetxController {
     required String subcategoryId,
     required String paymentedBookingId,
   }) async {
-
     isLoading.value = true;
 
     final customerId = await SharePrefsHelper.getString(AppConstants.userId);
@@ -1314,7 +1313,7 @@ class ContractorBookingController extends GetxController {
   //   }
   // }
   RxInt parcentage = 0.obs;
-  Future<void> getParcentage () async {
+  Future<void> getParcentage() async {
     isLoading.value = true;
     try {
       final response = await ApiClient.getData(ApiUrl.getParcentage);

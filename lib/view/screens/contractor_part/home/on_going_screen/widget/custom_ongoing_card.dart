@@ -14,7 +14,11 @@ class CustomOngoingCard extends StatelessWidget {
   final int index;
   final bool isShowButton;
 
-  const CustomOngoingCard({super.key, this.isShowButton = true, required this.index,});
+  const CustomOngoingCard({
+    super.key,
+    this.isShowButton = true,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +56,31 @@ class CustomOngoingCard extends StatelessWidget {
                           bottom: 10.h,
                         ),
 
-                        if (isShowButton) GestureDetector(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.ongoingDetailsScreen, arguments: {'index': index},);
-                          },
-                          child: Container(
-                            padding: const EdgeInsetsGeometry.symmetric(vertical: 2, horizontal: 6,),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primary),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: CustomText(
-                              text: "View",
-                              fontSize: 16.w,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primary,
-
+                        if (isShowButton)
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.ongoingDetailsScreen,
+                                arguments: {'index': index},
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsetsGeometry.symmetric(
+                                vertical: 2,
+                                horizontal: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.primary),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: CustomText(
+                                text: "View",
+                                fontSize: 16.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
-                        ),
-
                       ],
                     ),
                     // Row(
@@ -138,8 +147,8 @@ class CustomOngoingCard extends StatelessWidget {
                           text:
                               data.day == null || data.day!.isEmpty
                                   ? " - "
-                                  : data.day!.length == 2
-                                  ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                                  : data.day!.length >= 2
+                                  ? "${data.day?[0] ?? " - "} to ${data.day?[data.day!.length - 1] ?? " - "}"
                                   : "${data.day?[0] ?? " - "}",
                           fontSize: 14.w,
                           fontWeight: FontWeight.w400,
@@ -150,12 +159,18 @@ class CustomOngoingCard extends StatelessWidget {
                     SizedBox(height: 8.h),
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => GoogleMapScreen(location: data.location ?? ""));
+                        Get.to(
+                          () => GoogleMapScreen(location: data.location ?? ""),
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Icon(Icons.location_on_outlined, size: 20, color: AppColors.blue,),
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 20,
+                            color: AppColors.blue,
+                          ),
                           Expanded(
                             child: CustomText(
                               left: 8,
@@ -174,40 +189,41 @@ class CustomOngoingCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          if (isShowButton) Row(
-            children: [
-              Flexible(
-                child: CustomButton(
-                  height: 35,
-                  onTap: () {
-                    Get.find<OnGoingController>().cancelOrder(data.id!);
-                  },
-                  title: "Cancel".tr,
-                  isBorder: true,
-                  fillColor: Colors.transparent,
-                  borderWidth: 1,
-                  textColor: AppColors.red,
-                  fontSize: 16.5.sp,
+          if (isShowButton)
+            Row(
+              children: [
+                Flexible(
+                  child: CustomButton(
+                    height: 35,
+                    onTap: () {
+                      Get.find<OnGoingController>().cancelOrder(data.id!);
+                    },
+                    title: "Cancel".tr,
+                    isBorder: true,
+                    fillColor: Colors.transparent,
+                    borderWidth: 1,
+                    textColor: AppColors.red,
+                    fontSize: 16.5.sp,
+                  ),
                 ),
-              ),
-              SizedBox(width: 10.w),
-              Flexible(
-                child: CustomButton(
-                  height: 35,
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.uploadPhotoScreen,
-                      arguments: {'id': index},
-                    );
-                  },
-                  title: "Finish".tr,
-                  fillColor: AppColors.primary,
-                  fontSize: 16.5.sp,
+                SizedBox(width: 10.w),
+                Flexible(
+                  child: CustomButton(
+                    height: 35,
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.uploadPhotoScreen,
+                        arguments: {'id': index},
+                      );
+                    },
+                    title: "Finish".tr,
+                    fillColor: AppColors.primary,
+                    fontSize: 16.5.sp,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          if (isShowButton)  const SizedBox(height: 20),
+              ],
+            ),
+          if (isShowButton) const SizedBox(height: 20),
         ],
       ),
     );

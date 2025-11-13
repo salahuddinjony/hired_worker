@@ -17,7 +17,10 @@ class CertificateScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Certificate".tr, style: const TextStyle(color: Colors.black)),
+        title: Text(
+          "Certificate".tr,
+          style: const TextStyle(color: Colors.black),
+        ),
         leading: const BackButton(color: Colors.black),
         centerTitle: true,
       ),

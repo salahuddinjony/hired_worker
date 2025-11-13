@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:servana/helper/time_converter/time_converter.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
@@ -27,7 +26,11 @@ class CustomServiceCard extends StatelessWidget {
     required this.hourlyRate,
     required this.rating,
     required this.status,
-    required this.image, this.location, this.customerImage, this.customerName, this.subcategoryName,
+    required this.image,
+    this.location,
+    this.customerImage,
+    this.customerName,
+    this.subcategoryName,
   });
 
   @override
@@ -111,7 +114,7 @@ class CustomServiceCard extends StatelessWidget {
                         ),
                         CustomText(
                           left: 8,
-                          text:  customerName ?? " - ",
+                          text: customerName ?? " - ",
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           color: AppColors.black,
@@ -135,7 +138,6 @@ class CustomServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6.0),
 
-
                     CustomText(
                       text: "\$ $hourlyRate",
                       fontSize: 13.sp,
@@ -143,6 +145,7 @@ class CustomServiceCard extends StatelessWidget {
                       color: AppColors.black_04,
                       bottom: 3.h,
                     ),
+
                     // Row(
                     //   children: [
                     //     const CustomImage(imageSrc: AppIcons.filled),
@@ -154,8 +157,6 @@ class CustomServiceCard extends StatelessWidget {
                     //     ),
                     //   ],
                     // ),
-
-
                     SizedBox(height: 6.h),
 
                     GestureDetector(

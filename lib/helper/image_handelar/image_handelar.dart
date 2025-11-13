@@ -8,7 +8,7 @@ class ImageHandler {
     }
 
     if (url.startsWith('http') || url.startsWith('https')) {
-      return url; 
+      return url;
     } else {
       return ApiUrl.imageUrl + url;
     }

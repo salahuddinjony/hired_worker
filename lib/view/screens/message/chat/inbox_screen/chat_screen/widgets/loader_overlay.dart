@@ -11,7 +11,7 @@ class LoaderOverlay extends StatelessWidget {
         color: Colors.black.withValues(alpha: opacity),
         child: const Center(
           child: SizedBox(
-            width: 160, 
+            width: 160,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

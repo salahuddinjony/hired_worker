@@ -16,17 +16,22 @@ class MessagesResponse {
     return MessagesResponse(
       success: json['success'] as bool? ?? false,
       message: json['message']?.toString() ?? '',
-      data: (json['data'] is List)
-          ? List<ChatMessage>.from((json['data'] as List).map((e) => ChatMessage.fromJson(e as Map<String, dynamic>)))
-          : <ChatMessage>[],
+      data:
+          (json['data'] is List)
+              ? List<ChatMessage>.from(
+                (json['data'] as List).map(
+                  (e) => ChatMessage.fromJson(e as Map<String, dynamic>),
+                ),
+              )
+              : <ChatMessage>[],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'success': success,
-        'message': message,
-        'data': data.map((e) => e.toJson()).toList(),
-      };
+    'success': success,
+    'message': message,
+    'data': data.map((e) => e.toJson()).toList(),
+  };
 }
 
 @immutable
@@ -73,19 +78,22 @@ class ChatMessage {
       isRead: json['isRead'] as bool? ?? false,
       createdAt: parseDate(json['createdAt']),
       updatedAt: parseDate(json['updatedAt']),
-      v: (json['__v'] is int) ? json['__v'] as int : int.tryParse('${json['__v']}') ?? 0,
+      v:
+          (json['__v'] is int)
+              ? json['__v'] as int
+              : int.tryParse('${json['__v']}') ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        '_id': id,
-        'chatRoomId': chatRoomId,
-        'sender': sender,
-        'receiver': receiver,
-        'message': message,
-        'isRead': isRead,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-        '__v': v,
-      };
+    '_id': id,
+    'chatRoomId': chatRoomId,
+    'sender': sender,
+    'receiver': receiver,
+    'message': message,
+    'isRead': isRead,
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
+    '__v': v,
+  };
 }

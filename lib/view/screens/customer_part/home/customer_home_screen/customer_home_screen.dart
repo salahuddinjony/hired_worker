@@ -140,8 +140,12 @@ class CustomerHomeScreen extends StatelessWidget {
                                   }
 
                                   return GestureDetector(
-                                    onTap: () async{
-                                        customerProfileController.showAddressBottomSheet( isFromProfile: true, useByUserId: true);
+                                    onTap: () async {
+                                      customerProfileController
+                                          .showAddressBottomSheet(
+                                            isFromProfile: true,
+                                            useByUserId: true,
+                                          );
 
                                       // // open draggable bottom sheet for selection
                                       // Get.bottomSheet(
@@ -492,8 +496,7 @@ class CustomerHomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                   );
-                                }
-                                ),
+                                }),
                               ],
                             ),
                           ],
@@ -641,44 +644,52 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-      homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty)
-          ? const Center(child: CircularProgressIndicator())
-          : SizedBox(
-              height: 120.h,
-              child: ListView.separated(
-                controller: homeController.scrollCategoryController,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(right: 10.h),
-                itemCount: categorys.length + (homeController.categoryHasMoreData.value ? 1 : 0),
-                separatorBuilder: (context, index) => SizedBox(width: 8.w),
-                itemBuilder: (BuildContext context, int index) {
-                  if (index >= categorys.length) {
-                    // Show loading indicator at the end of the list
-                    return const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  return CustomPopularServicesCard(
-                    image: categorys[index].img ?? AppConstants.electrician,
-                    name: categorys[index].name,
-                    onTap: () {
-                      debugPrint('Navigate with Category ID: ${categorys[index].id}');
-                      Get.toNamed(
-                        AppRoutes.customerParSubCategoryItem,
-                        arguments: {
-                          'name': categorys[index].name,
-                          'id': categorys[index].id,
+                homeController.getCategoryStatus.value.isLoading &&
+                        (categorys.isEmpty)
+                    ? const Center(child: CircularProgressIndicator())
+                    : SizedBox(
+                      height: 120.h,
+                      child: ListView.separated(
+                        controller: homeController.scrollCategoryController,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(right: 10.h),
+                        itemCount:
+                            categorys.length +
+                            (homeController.categoryHasMoreData.value ? 1 : 0),
+                        separatorBuilder:
+                            (context, index) => SizedBox(width: 8.w),
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index >= categorys.length) {
+                            // Show loading indicator at the end of the list
+                            return const Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                          return CustomPopularServicesCard(
+                            image:
+                                categorys[index].img ??
+                                AppConstants.electrician,
+                            name: categorys[index].name,
+                            onTap: () {
+                              debugPrint(
+                                'Navigate with Category ID: ${categorys[index].id}',
+                              );
+                              Get.toNamed(
+                                AppRoutes.customerParSubCategoryItem,
+                                arguments: {
+                                  'name': categorys[index].name,
+                                  'id': categorys[index].id,
+                                },
+                              );
+                            },
+                          );
                         },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+                      ),
+                    ),
 
                 // Sub Category Section
                 Row(
@@ -717,7 +728,10 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        homeController.getAllContactor(isHomeSelect: false,useByUserId: true);
+                        homeController.getAllContactor(
+                          isHomeSelect: false,
+                          useByUserId: true,
+                        );
                         Get.toNamed(AppRoutes.customerServicesContractorScreen);
                       },
                       child: CustomText(
