@@ -18,11 +18,15 @@ class RecentAllServiceScreen extends StatelessWidget {
         Get.find<RecentAllServiceController>();
 
     final bool showTotalService =
-        (Get.arguments as Map<String, dynamic>?)?['showTotalService'] as bool? ?? false;
-
+        (Get.arguments as Map<String, dynamic>?)?['showTotalService']
+            as bool? ??
+        false;
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: !showTotalService ? "Recent Service".tr : "Total Service".tr),
+      appBar: CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: !showTotalService ? "Recent Service".tr : "Total Service".tr,
+      ),
       body: Obx(() {
         if (controller.status.value.isLoading) {
           return const Center(
@@ -40,7 +44,8 @@ class RecentAllServiceScreen extends StatelessWidget {
               itemCount: controller.recentServiceList.length + 1,
               itemBuilder: (context, index) {
                 if (index < controller.recentServiceList.length) {
-                  final BookingModelData data = controller.recentServiceList[index];
+                  final BookingModelData data =
+                      controller.recentServiceList[index];
 
                   return CustomServiceCard(
                     title: getSubCategoryName(data),

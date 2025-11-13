@@ -36,8 +36,8 @@ class BannerCarousel extends StatelessWidget {
                           controller.bannerList.isNotEmpty
                               ? ImageHandler.imagesHandle(
                                 AppConstants.electrician,
-                              ) 
-                              : '', 
+                              )
+                              : '',
                       imageBuilder:
                           (context, imageProvider) => Container(
                             height: 135,

@@ -22,21 +22,28 @@ class CustomarMaterialsScreen extends StatelessWidget {
     final String contractorName = args['contractorName'] ?? '';
     final String categoryName = args['categoryName'] ?? '';
     final String subCategoryName = args['subCategoryName'] ?? '';
-    
+
     // Extract booking schedule data
     final String bookingType = args['bookingType']?.toString() ?? 'oneTime';
     final String duration = args['duration']?.toString() ?? '1';
     final String startTime = args['startTime']?.toString() ?? '';
     final String endTime = args['endTime']?.toString() ?? '';
-    final List<String> selectedDates = (args['selectedDates'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
-    final int hourlyRate = (args['hourlyRate'] is int) ? args['hourlyRate'] : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
-    final String bookingId = args['bookingId']?.toString() ?? ''; 
+    final List<String> selectedDates =
+        (args['selectedDates'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
+    final int hourlyRate =
+        (args['hourlyRate'] is int)
+            ? args['hourlyRate']
+            : int.tryParse(args['hourlyRate']?.toString() ?? '0') ?? 0;
+    final String bookingId = args['bookingId']?.toString() ?? '';
     final bool isUpdate = args['isUpdate'] ?? false;
     final paymentedTotalAmount = args['paymentedTotalAmount'] ?? 0;
     final String updateBookingId = args['updateBookingId']?.toString() ?? '';
-    final String contractorIdForTimeSlot = args['contractorIdForTimeSlot']?.toString() ?? '';
+    final String contractorIdForTimeSlot =
+        args['contractorIdForTimeSlot']?.toString() ?? '';
     final String subCategoryImage = args['subCategoryImage']?.toString() ?? '';
-
 
     debugPrint("Paymented Total Amount received: $paymentedTotalAmount");
     debugPrint("Hourly rate : $hourlyRate");
@@ -90,20 +97,35 @@ class CustomarMaterialsScreen extends StatelessWidget {
                                 itemCount:
                                     controller.materialsAndQuantity.length,
                                 itemBuilder: (context, index) {
-                                  final material = controller.materialsAndQuantity[index];
-                                  final int currentCount = int.tryParse(material['count'] ?? '0') ?? 0;
+                                  final material =
+                                      controller.materialsAndQuantity[index];
+                                  final int currentCount =
+                                      int.tryParse(material['count'] ?? '0') ??
+                                      0;
                                   int minCount = 0;
-                                  if (isUpdate && index < controller.originalMaterialCounts.length) {
-                                    minCount = controller.originalMaterialCounts[index];
+                                  if (isUpdate &&
+                                      index <
+                                          controller
+                                              .originalMaterialCounts
+                                              .length) {
+                                    minCount =
+                                        controller
+                                            .originalMaterialCounts[index];
                                   }
                                   return SelectMaterialsRow(
                                     name: material['name'],
                                     unit: material['unit'] ?? 'pcs',
                                     price: material['price'] ?? '0',
                                     count: material['count'] ?? '0',
-                                    isSelected: controller.isMaterialSelected(index),
-                                    onIncrement: () => controller.incrementMaterial(index),
-                                    onDecrement: () => controller.decrementMaterial(index),
+                                    isSelected: controller.isMaterialSelected(
+                                      index,
+                                    ),
+                                    onIncrement:
+                                        () =>
+                                            controller.incrementMaterial(index),
+                                    onDecrement:
+                                        () =>
+                                            controller.decrementMaterial(index),
                                     disableDecrement: currentCount <= minCount,
                                   );
                                 },
@@ -120,7 +142,6 @@ class CustomarMaterialsScreen extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 100, right: 20, left: 20),
         child: CustomButton(
           onTap: () {
-           
             debugPrint(
               'Selected Materials: ${controller.materialsAndQuantity.where((m) => controller.isMaterialSelected(controller.materialsAndQuantity.indexOf(m))).toList()}',
             );
@@ -141,7 +162,7 @@ class CustomarMaterialsScreen extends StatelessWidget {
                 'selectedDates': selectedDates,
                 'hourlyRate': hourlyRate,
                 'isUpdate': isUpdate,
-                'updateBookingId':updateBookingId,
+                'updateBookingId': updateBookingId,
                 'paymentedTotalAmount': paymentedTotalAmount,
                 'bookingId': bookingId,
                 'subCategoryImage': subCategoryImage,

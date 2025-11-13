@@ -14,14 +14,16 @@ import '../../../../components/custom_button/custom_button.dart';
 import '../model/booking_model.dart';
 import 'controller/order_controller.dart';
 
-class OrderDetailsScreen2 extends StatefulWidget {
-  const OrderDetailsScreen2({super.key});
+class CompletedOrderDetailsScreen extends StatefulWidget {
+  const CompletedOrderDetailsScreen({super.key});
 
   @override
-  State<OrderDetailsScreen2> createState() => _OrderDetailsScreen2State();
+  State<CompletedOrderDetailsScreen> createState() =>
+      _CompletedOrderDetailsScreenState();
 }
 
-class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
+class _CompletedOrderDetailsScreenState
+    extends State<CompletedOrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     // Create a unique loading state for this booking
@@ -62,7 +64,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                 children:
                     data.files!.map((e) {
                       return Image.network(
-                        e['url'],
+                        data.bookingType == 'weekly' ? e : e['url'],
                         height: 120,
                         width: 120,
                         loadingBuilder: (context, child, loadingProgress) {
@@ -120,9 +122,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                     ],
                   ),
                   const SizedBox(height: 8.0),
-                  Text(
-                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
-                  ),
+                  Text('Task/Service : ${data.subCategoryId?.name ?? " - "}'),
                   const SizedBox(height: 16.0),
                   Text(
                     'Materials',
@@ -187,7 +187,9 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
+                      Text(
+                        '${data.bookingType == "oneTime" ? "One Time" : "Weekly"}',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -200,27 +202,22 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                     thickness: 1.6,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                          'Date: '
-                      ),
+                      const Text('Date: '),
                       Text(
                         data.day == null || data.day!.isEmpty
                             ? " - "
-                            : data.day!.length == 2
-                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : data.day!.length >= 2
+                            ? data.day!.join('\n')
                             : "${data.day?[0] ?? " - "}",
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      const Text(
-                          'Time: '
-                      ),
-                      Text(
-                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
-                      ),
+                      const Text('Time: '),
+                      Text("${data.startTime ?? " "} - ${data.endTime ?? " "}"),
                     ],
                   ),
                 ],

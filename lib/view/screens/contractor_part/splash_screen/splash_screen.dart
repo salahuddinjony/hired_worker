@@ -26,7 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
         final String token = await SharePrefsHelper.getString(
           AppConstants.bearerToken,
         );
-        final String userRole = await SharePrefsHelper.getString(AppConstants.role);
+        final String userRole = await SharePrefsHelper.getString(
+          AppConstants.role,
+        );
         final String userIdFromToken = await SharePrefsHelper.getString(
           AppConstants.userId,
         );
@@ -38,8 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (userRole == "customer") {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
           } else if (userRole == "contractor") {
-            if (await SharePrefsHelper.getBool(AppStrings.isLoggedIn) ==
-                null) {
+            if (await SharePrefsHelper.getBool(AppStrings.isLoggedIn) == null) {
               Get.offAllNamed(AppRoutes.loginScreen);
             } else {
               Get.offAllNamed(AppRoutes.homeScreen);
@@ -85,16 +86,15 @@ class _SplashScreenState extends State<SplashScreen> {
             curve: Curves.easeOutBack,
             builder: (context, value, child) {
               return Transform.scale(
-          scale: value,
-          child: CustomImage(
-            imageSrc: AppIcons.logo,
-            height: 300.h * value,
-            width: 300.w * value,
-          ),
+                scale: value,
+                child: CustomImage(
+                  imageSrc: AppIcons.logo,
+                  height: 300.h * value,
+                  width: 300.w * value,
+                ),
               );
             },
           ),
-        
         ],
       ),
     );

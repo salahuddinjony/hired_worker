@@ -16,10 +16,14 @@ class TermsConditionsScreen extends StatelessWidget {
 
     String cleanHtml(String html) {
       // Remove empty tags and excessive <br> tags
-      String cleaned = html.replaceAll(RegExp(r'<(p|div|br)[^>]*>(\s|&nbsp;)*<\/\1>'), '');
+      String cleaned = html.replaceAll(
+        RegExp(r'<(p|div|br)[^>]*>(\s|&nbsp;)*<\/\1>'),
+        '',
+      );
       cleaned = cleaned.replaceAll(RegExp(r'(<br\s*\/?>\s*){2,}'), '<br>');
       return cleaned;
     }
+
     return Scaffold(
       appBar: CustomRoyelAppbar(
         leftIcon: true,
@@ -27,9 +31,7 @@ class TermsConditionsScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (generalController.terms.value.isEmpty) {
-          return const Center(
-              child: CustomLoader(),
-            );
+          return const Center(child: CustomLoader());
         }
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -47,7 +49,10 @@ class TermsConditionsScreen extends StatelessWidget {
                     padding: HtmlPaddings.zero,
                   ),
                   "p": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                  "div": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                  "div": Style(
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
                   "br": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
                 },
               ),

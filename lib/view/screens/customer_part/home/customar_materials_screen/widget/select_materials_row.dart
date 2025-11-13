@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+
 class SelectMaterialsRow extends StatelessWidget {
   final String? name;
   final String? unit;
@@ -35,7 +36,7 @@ class SelectMaterialsRow extends StatelessWidget {
           Row(
             children: [
               Checkbox(
-                value: isSelected, 
+                value: isSelected,
                 onChanged: (value) {
                   if (value == true && onIncrement != null) {
                     onIncrement!();
@@ -48,24 +49,23 @@ class SelectMaterialsRow extends StatelessWidget {
                       current--;
                     }
                   }
-                }
+                },
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: name ?? "Material", 
+                    text: name ?? "Material",
                     fontSize: 14.w,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
                   ),
                   CustomText(
-                      text: "Unit price: AUD ${price}", 
-                      fontSize: 12.w,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black_08,
-                    ), 
-                    
+                    text: "Unit price: AUD ${price}",
+                    fontSize: 12.w,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.black_08,
+                  ),
                 ],
               ),
             ],
@@ -90,14 +90,10 @@ class SelectMaterialsRow extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onIncrement,
-                icon: const Icon(
-                  Icons.add,
-                  color: AppColors.black,
-                  size: 18,
-                ),
+                icon: const Icon(Icons.add, color: AppColors.black, size: 18),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

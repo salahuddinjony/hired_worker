@@ -17,7 +17,10 @@ class ForgotPasswordScreen extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(titleName: "Forgot Password".tr, leftIcon: true),
+      appBar: CustomRoyelAppbar(
+        titleName: "Forgot Password".tr,
+        leftIcon: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(

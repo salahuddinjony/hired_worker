@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-WithdrawModel withdrawModelFromJson(String str) => WithdrawModel.fromJson(json.decode(str));
+WithdrawModel withdrawModelFromJson(String str) =>
+    WithdrawModel.fromJson(json.decode(str));
 
 String withdrawModelToJson(WithdrawModel data) => json.encode(data.toJson());
 
@@ -13,11 +14,7 @@ class WithdrawModel {
   String? message;
   Data? data;
 
-  WithdrawModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  WithdrawModel({this.success, this.message, this.data});
 
   factory WithdrawModel.fromJson(Map<String, dynamic> json) => WithdrawModel(
     success: json["success"],

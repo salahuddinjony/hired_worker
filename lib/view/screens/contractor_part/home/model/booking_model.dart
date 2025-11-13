@@ -6,30 +6,26 @@ class BookingModel {
   Meta? meta;
   List<BookingModelData>? data;
 
-  BookingModel({
-    this.success,
-    this.message,
-    this.meta,
-    this.data,
-  });
+  BookingModel({this.success, this.message, this.meta, this.data});
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
     success: json["success"],
     message: json["message"],
     meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    data: json["data"] == null
-        ? []
-        : List<BookingModelData>.from(
-        json["data"].map((x) => BookingModelData.fromJson(x))),
+    data:
+        json["data"] == null
+            ? []
+            : List<BookingModelData>.from(
+              json["data"].map((x) => BookingModelData.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
     "meta": meta?.toJson(),
-    "data": data == null
-        ? []
-        : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
@@ -59,6 +55,8 @@ class BookingModelData {
   bool? isDeleted;
   DateTime? createdAt;
   DateTime? updatedAt;
+  num? price;
+  List<BookingDateAndStatus>? bookingDateAndStatus;
 
   BookingModelData({
     this.id,
@@ -84,6 +82,8 @@ class BookingModelData {
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
+    this.price,
+    this.bookingDateAndStatus,
   });
 
   factory BookingModelData.fromJson(Map<String, dynamic> json) {
@@ -98,48 +98,67 @@ class BookingModelData {
 
     return BookingModelData(
       id: json["_id"],
-      customerId: json["customerId"] == null
-          ? null
-          : Customer.fromJson(json["customerId"]),
-      contractorId: json["contractorId"] == null
-          ? null
-          : ContractorWrapper.fromJson(json["contractorId"]),
-      subCategoryId: json["subCategoryId"] == null
-          ? null
-          : SubCategory.fromJson(json["subCategoryId"]),
+      customerId:
+          json["customerId"] == null
+              ? null
+              : Customer.fromJson(json["customerId"]),
+      contractorId:
+          json["contractorId"] == null
+              ? null
+              : ContractorWrapper.fromJson(json["contractorId"]),
+      subCategoryId:
+          json["subCategoryId"] == null
+              ? null
+              : SubCategory.fromJson(json["subCategoryId"]),
       location: json['location'],
       bookingId: json["bookingId"],
       bookingType: json["bookingType"],
-      bookingDate: json["bookingDate"] == null
-          ? null
-          : DateTime.parse(json["bookingDate"]),
+      bookingDate:
+          json["bookingDate"] == null
+              ? null
+              : DateTime.parse(json["bookingDate"]),
       day: parsedDay,
       startTime: json["startTime"],
       endTime: json["endTime"],
       duration: json["duration"],
-      timeSlots: json["timeSlots"] == null
-          ? []
-          : List<String>.from(json["timeSlots"].map((x) => x)),
-      questions: json["questions"] == null
-          ? []
-          : List<QuestionElement>.from(
-          json["questions"].map((x) => QuestionElement.fromJson(x))),
-      material: json["material"] == null
-          ? []
-          : List<MaterialItem>.from(
-          json["material"].map((x) => MaterialItem.fromJson(x))),
+      timeSlots:
+          json["timeSlots"] == null
+              ? []
+              : List<String>.from(json["timeSlots"].map((x) => x)),
+      questions:
+          json["questions"] == null
+              ? []
+              : List<QuestionElement>.from(
+                json["questions"].map((x) => QuestionElement.fromJson(x)),
+              ),
+      material:
+          json["material"] == null
+              ? []
+              : List<MaterialItem>.from(
+                json["material"].map((x) => MaterialItem.fromJson(x)),
+              ),
       rateHourly: json["rateHourly"],
       totalAmount: json["totalAmount"],
       status: json["status"],
       paymentStatus: json["paymentStatus"],
-      files: json["files"] == null
-          ? []
-          : List<dynamic>.from(json["files"].map((x) => x)),
+      files:
+          json["files"] == null
+              ? []
+              : List<dynamic>.from(json["files"].map((x) => x)),
       isDeleted: json["isDeleted"],
       createdAt:
-      json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
       updatedAt:
-      json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      price: json["price"],
+      bookingDateAndStatus:
+          json["bookingDateAndStatus"] == null
+              ? []
+              : List<BookingDateAndStatus>.from(
+                json["bookingDateAndStatus"].map(
+                  (x) => BookingDateAndStatus.fromJson(x),
+                ),
+              ),
     );
   }
 
@@ -155,24 +174,73 @@ class BookingModelData {
     "startTime": startTime,
     "endTime": endTime,
     "duration": duration,
-    "timeSlots": timeSlots == null
-        ? []
-        : List<dynamic>.from(timeSlots!.map((x) => x)),
-    "questions": questions == null
-        ? []
-        : List<dynamic>.from(questions!.map((x) => x.toJson())),
-    "material": material == null
-        ? []
-        : List<dynamic>.from(material!.map((x) => x.toJson())),
+    "timeSlots":
+        timeSlots == null ? [] : List<dynamic>.from(timeSlots!.map((x) => x)),
+    "questions":
+        questions == null
+            ? []
+            : List<dynamic>.from(questions!.map((x) => x.toJson())),
+    "material":
+        material == null
+            ? []
+            : List<dynamic>.from(material!.map((x) => x.toJson())),
     "rateHourly": rateHourly,
     "totalAmount": totalAmount,
     "status": status,
     "paymentStatus": paymentStatus,
-    "files":
-    files == null ? [] : List<dynamic>.from(files!.map((x) => x)),
+    "files": files == null ? [] : List<dynamic>.from(files!.map((x) => x)),
     "isDeleted": isDeleted,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+  };
+}
+
+class BookingDateAndStatus {
+  String? status;
+  List<String>? image;
+  List<MaterialItem>? materials;
+  DateTime? date;
+  num? amount;
+  String? id;
+
+  BookingDateAndStatus({
+    this.status,
+    this.image,
+    this.materials,
+    this.date,
+    this.amount,
+    this.id,
+  });
+
+  factory BookingDateAndStatus.fromJson(Map<String, dynamic> json) {
+    return BookingDateAndStatus(
+      status: json["status"],
+      image:
+          json["image"] == null
+              ? []
+              : List<String>.from(json["image"].map((x) => x)),
+      materials:
+          json["materials"] == null
+              ? []
+              : List<MaterialItem>.from(
+                json["materials"].map((x) => MaterialItem.fromJson(x)),
+              ),
+      date: json["date"] == null ? null : DateTime.parse(json["date"]),
+      amount: json["amount"],
+      id: json["_id"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "image": image == null ? [] : List<dynamic>.from(image!.map((x) => x)),
+    "materials":
+        materials == null
+            ? []
+            : List<dynamic>.from(materials!.map((x) => x.toJson())),
+    "date": date?.toIso8601String(),
+    "amount": amount,
+    "_id": id,
   };
 }
 
@@ -214,10 +282,7 @@ class Contractor {
     ratings: (json["ratings"] as num?)?.toDouble(),
   );
 
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "ratings": ratings,
-  };
+  Map<String, dynamic> toJson() => {"_id": id, "ratings": ratings};
 }
 
 // ✅ ContractorWrapper (outer object with nested contractor)
@@ -227,21 +292,17 @@ class ContractorWrapper {
   String? img;
   Contractor? contractor;
 
-  ContractorWrapper({
-    this.id,
-    this.fullName,
-    this.img,
-    this.contractor,
-  });
+  ContractorWrapper({this.id, this.fullName, this.img, this.contractor});
 
   factory ContractorWrapper.fromJson(Map<String, dynamic> json) =>
       ContractorWrapper(
         id: json["_id"],
         fullName: json["fullName"],
         img: json["img"],
-        contractor: json["contractor"] == null
-            ? null
-            : Contractor.fromJson(json["contractor"]),
+        contractor:
+            json["contractor"] == null
+                ? null
+                : Contractor.fromJson(json["contractor"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -259,17 +320,10 @@ class SubCategory {
 
   SubCategory({this.id, this.name, this.img});
 
-  factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
-    id: json["_id"],
-    name: json["name"],
-    img: json["img"],
-  );
+  factory SubCategory.fromJson(Map<String, dynamic> json) =>
+      SubCategory(id: json["_id"], name: json["name"], img: json["img"]);
 
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "name": name,
-    "img": img,
-  };
+  Map<String, dynamic> toJson() => {"_id": id, "name": name, "img": img};
 }
 
 class MaterialItem {

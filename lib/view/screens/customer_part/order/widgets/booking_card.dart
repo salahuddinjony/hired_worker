@@ -304,7 +304,8 @@ class BookingCard extends StatelessWidget {
                                 'isUpdate': true, // Indicate this is an update
                                 'paymentedTotalAmount':
                                     booking.totalAmount ?? 0,
-                                'subCategoryImage': booking.subCategoryId?.img ?? ''
+                                'subCategoryImage':
+                                    booking.subCategoryId?.img ?? '',
                               },
                             );
                           },

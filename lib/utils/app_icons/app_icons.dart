@@ -43,26 +43,4 @@ class AppIcons {
   static const String shape = "$basePath/shape.svg";
   static const String sklils = "$basePath/sklils.png";
   static const String history = "$basePath/symbols_history-rounded.svg";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

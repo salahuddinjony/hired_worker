@@ -15,14 +15,21 @@ class SkillsList extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.centerLeft,
-          child: CustomText(text: "Skills", fontSize: 16.w, fontWeight: FontWeight.w600, color: Colors.black, bottom: 8.h),
+          child: CustomText(
+            text: "Skills",
+            fontSize: 16.w,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            bottom: 8.h,
+          ),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: (skills.isNotEmpty
-                ? skills.map((e) => CustomSkillsContainer(text: e)).toList()
-                : [const CustomSkillsContainer(text: "No skills listed")]),
+            children:
+                (skills.isNotEmpty
+                    ? skills.map((e) => CustomSkillsContainer(text: e)).toList()
+                    : [const CustomSkillsContainer(text: "No skills listed")]),
           ),
         ),
       ],

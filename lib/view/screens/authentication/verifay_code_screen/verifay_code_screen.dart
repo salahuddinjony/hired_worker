@@ -21,7 +21,10 @@ class VerifayCodeScreen extends StatelessWidget {
     final args = Get.arguments;
     final String register = args[0];
     return Scaffold(
-      appBar: CustomRoyelAppbar(titleName: "Verify Your Email".tr, leftIcon: true),
+      appBar: CustomRoyelAppbar(
+        titleName: "Verify Your Email".tr,
+        leftIcon: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(

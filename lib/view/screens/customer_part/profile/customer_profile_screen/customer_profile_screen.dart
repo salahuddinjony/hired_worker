@@ -23,10 +23,8 @@ class CustomerProfileScreen extends StatelessWidget {
     final CustomerProfileController customerProfileController =
         Get.find<CustomerProfileController>();
 
-
     final LanguageController languageController =
         Get.find<LanguageController>();
-
 
     return Scaffold(
       extendBody: true,
@@ -131,14 +129,11 @@ class CustomerProfileScreen extends StatelessWidget {
               //   },
               // ),
               CustomProfileMenuList(
-                onTap: () async{
-                
+                onTap: () async {
                   Get.toNamed(
                     AppRoutes.customerNotificationScreen,
-                    arguments: {
-                      'controller': customerProfileController,
-                    },
-                    );
+                    arguments: {'controller': customerProfileController},
+                  );
                   await customerProfileController.getNotifications();
                 },
                 image: AppIcons.notifaction,

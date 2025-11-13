@@ -23,7 +23,9 @@ class NotificationScreen extends StatelessWidget {
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         } else if (controller.notificationStatus.value.isEmpty) {
-          return const Center(child: Text('There are no notifications available for you.'),);
+          return const Center(
+            child: Text('There are no notifications available for you.'),
+          );
         } else if (controller.notificationStatus.value.isError) {
           return Center(
             child: Text(controller.notificationStatus.value.errorMessage!),

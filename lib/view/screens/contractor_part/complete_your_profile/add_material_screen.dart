@@ -369,7 +369,7 @@ class AddMaterialsScreenState extends State<AddMaterialsScreen> {
                           ),
                         ),
                       ).onTap(() {
-                        controller.updateContractorData(materials);
+                        controller.addListOfMaterials(materials);
                       });
                 }),
 

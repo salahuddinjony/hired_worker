@@ -12,7 +12,6 @@ class CustomTabBar extends StatelessWidget {
   final bool? isTextColorActive;
   final bool? isPadding;
 
-
   const CustomTabBar({
     super.key,
     required this.tabs,
@@ -29,16 +28,12 @@ class CustomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 0,
-            color: unselectedColor,
-          ),
-        ),
+        border: Border(bottom: BorderSide(width: 0, color: unselectedColor)),
       ),
-      padding: isPadding!
-          ? const EdgeInsets.symmetric(horizontal: 22)
-          : const EdgeInsets.symmetric(horizontal: 0),
+      padding:
+          isPadding!
+              ? const EdgeInsets.symmetric(horizontal: 22)
+              : const EdgeInsets.symmetric(horizontal: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(tabs.length, (index) {
@@ -50,9 +45,10 @@ class CustomTabBar extends StatelessWidget {
                 //color: AppColors.red,
                 border: Border(
                   bottom: BorderSide(
-                    color: selectedIndex == index
-                        ? selectedColor
-                        : Colors.transparent,
+                    color:
+                        selectedIndex == index
+                            ? selectedColor
+                            : Colors.transparent,
                     width: 3.0,
                   ),
                 ),
@@ -60,11 +56,12 @@ class CustomTabBar extends StatelessWidget {
               child: Text(
                 tabs[index],
                 style: GoogleFonts.poppins(
-                  color: selectedIndex == index
-                      ? selectedColor
-                      : isTextColorActive!
-                      ? textColor
-                      : unselectedColor,
+                  color:
+                      selectedIndex == index
+                          ? selectedColor
+                          : isTextColorActive!
+                          ? textColor
+                          : unselectedColor,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                 ),

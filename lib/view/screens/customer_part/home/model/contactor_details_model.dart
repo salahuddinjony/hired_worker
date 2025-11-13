@@ -36,9 +36,8 @@ class ReviewData {
       user: json['user'],
       averageRating: json['averageRating']?.toString() ?? '0.0',
       totalCompletedOrder: json['totalCompletedOrder'] ?? 0,
-      reviews: (json['reviews'] as List?)
-              ?.map((e) => Review.fromJson(e))
-              .toList() ??
+      reviews:
+          (json['reviews'] as List?)?.map((e) => Review.fromJson(e)).toList() ??
           [],
     );
   }
@@ -68,9 +67,10 @@ class Review {
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       id: json['_id'] ?? '',
-      customerId: json['customerId'] != null
-          ? Customer.fromJson(json['customerId'])
-          : null,
+      customerId:
+          json['customerId'] != null
+              ? Customer.fromJson(json['customerId'])
+              : null,
       contractorId: json['contractorId'] ?? '',
       stars: json['stars'] ?? 0,
       description: json['description'] ?? '',
@@ -86,11 +86,7 @@ class Customer {
   final String fullName;
   final String img;
 
-  Customer({
-    required this.id,
-    required this.fullName,
-    required this.img,
-  });
+  Customer({required this.id, required this.fullName, required this.img});
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(

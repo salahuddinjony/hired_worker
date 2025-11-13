@@ -1,12 +1,11 @@
 class ApiUrl {
-  static const String imageUrl = "https://backend.servana.com.au/api/v1";
-  static const String baseUrl = "https://backend.servana.com.au/api/v1";
-  static String socketUrl = "https://backend.servana.com.au";
+  // static const String imageUrl = "https://backend.servana.com.au/api/v1";
+  // static const String baseUrl = "https://backend.servana.com.au/api/v1";
+  // static String socketUrl = "https://backend.servana.com.au";
 
-  // static const String imageUrl = "http://10.10.20.11:5002/api/v1";
-  // static const String baseUrl = "http://10.10.20.11:5002/api/v1";
-  // static String socketUrl = "http://10.10.20.11:5002";
-
+  static const String imageUrl = "http://10.10.20.11:5002/api/v1";
+  static const String baseUrl = "http://10.10.20.11:5002/api/v1";
+  static String socketUrl = "http://10.10.20.11:5002";
 
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
@@ -122,6 +121,7 @@ class ApiUrl {
   static const String getPopularTherapist = "/user/retrive/therapists/popular";
 
   static const String bookings = "/bookings";
+  static const String weeklyBookings = "/bookings/weekly";
   static const String singleUserBookings = "/bookings/all-bookings-by-user";
   static const String notification = "/notifications";
 

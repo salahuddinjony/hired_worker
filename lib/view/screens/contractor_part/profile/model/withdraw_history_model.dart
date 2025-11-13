@@ -3,17 +3,14 @@ class WithdrawHistoryModel {
   String? message;
   Data? data;
 
-  WithdrawHistoryModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  WithdrawHistoryModel({this.success, this.message, this.data});
 
-  factory WithdrawHistoryModel.fromJson(Map<String, dynamic> json) => WithdrawHistoryModel(
-    success: json["success"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory WithdrawHistoryModel.fromJson(Map<String, dynamic> json) =>
+      WithdrawHistoryModel(
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -28,25 +25,28 @@ class Data {
   int? limit;
   List<WithdrawalData>? withdrawals;
 
-  Data({
-    this.total,
-    this.page,
-    this.limit,
-    this.withdrawals,
-  });
+  Data({this.total, this.page, this.limit, this.withdrawals});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     total: json["total"],
     page: json["page"],
     limit: json["limit"],
-    withdrawals: json["withdrawals"] == null ? [] : List<WithdrawalData>.from(json["withdrawals"]!.map((x) => WithdrawalData.fromJson(x))),
+    withdrawals:
+        json["withdrawals"] == null
+            ? []
+            : List<WithdrawalData>.from(
+              json["withdrawals"]!.map((x) => WithdrawalData.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
     "total": total,
     "page": page,
     "limit": limit,
-    "withdrawals": withdrawals == null ? [] : List<dynamic>.from(withdrawals!.map((x) => x.toJson())),
+    "withdrawals":
+        withdrawals == null
+            ? []
+            : List<dynamic>.from(withdrawals!.map((x) => x.toJson())),
   };
 }
 
@@ -80,8 +80,10 @@ class WithdrawalData {
     amount: json["amount"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt:
+        json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt:
+        json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 

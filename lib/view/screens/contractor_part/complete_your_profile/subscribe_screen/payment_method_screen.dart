@@ -15,7 +15,10 @@ class PaymentMethodScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Payment Method"),
+      appBar: const CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: "Payment Method",
+      ),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: 12.0.h),
         child: Column(
@@ -75,17 +78,18 @@ class PaymentMethodScreen extends StatelessWidget {
                   SvgPicture.asset("assets/icons/stripe.svg"),
                 ],
               ),
-            ).onTap(() {
-
-            }),
+            ).onTap(() {}),
 
             const Spacer(),
 
             SizedBox(
               width: context.width * 0.7,
-              child: CustomButton(onTap: () {
-                Get.toNamed(AppRoutes.thanksScreen);
-              }, title: "Continue".tr),
+              child: CustomButton(
+                onTap: () {
+                  Get.toNamed(AppRoutes.thanksScreen);
+                },
+                title: "Continue".tr,
+              ),
             ),
 
             const SizedBox(height: kBottomNavigationBarHeight),

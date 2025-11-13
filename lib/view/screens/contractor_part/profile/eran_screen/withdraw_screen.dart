@@ -17,37 +17,39 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (String url) async {
-            debugPrint('page finished: $url');
+    _controller =
+        WebViewController()
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onPageFinished: (String url) async {
+                debugPrint('page finished: $url');
 
-            try {
-              final htmlContent = await _controller.runJavaScriptReturningResult(
-                "document.body.innerText",
-              );
+                try {
+                  final htmlContent = await _controller
+                      .runJavaScriptReturningResult("document.body.innerText");
 
-              final text = htmlContent.toString().toLowerCase();
-              debugPrint('xxx Page text: $text');
+                  final text = htmlContent.toString().toLowerCase();
+                  debugPrint('xxx Page text: $text');
 
-              if (url.contains('servana.com.au/complete') ||
-                  text.contains('thanks for adding information to set up you account')) {
-                Get.back(result: true);
-              } else if (url.contains('fail') ||
-                  url.contains('incomplete') ||
-                  url.contains('cancel') ||
-                  url.contains('unfinished')) {
-                Get.back(result: false);
-              }
-            } catch (e) {
-              debugPrint('JS read error: $e');
-            }
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.url));
+                  if (url.contains('servana.com.au/complete') ||
+                      text.contains(
+                        'thanks for adding information to set up you account',
+                      )) {
+                    Get.back(result: true);
+                  } else if (url.contains('fail') ||
+                      url.contains('incomplete') ||
+                      url.contains('cancel') ||
+                      url.contains('unfinished')) {
+                    Get.back(result: false);
+                  }
+                } catch (e) {
+                  debugPrint('JS read error: $e');
+                }
+              },
+            ),
+          )
+          ..loadRequest(Uri.parse(widget.url));
   }
 
   @override

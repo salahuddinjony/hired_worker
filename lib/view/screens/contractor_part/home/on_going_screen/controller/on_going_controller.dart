@@ -132,10 +132,7 @@ class OnGoingController extends GetxController {
 
     statusForRating.value = RxStatus.loading();
 
-    final Map<String, dynamic> data = {
-      "customerId": id,
-      "stars": rating.value,
-    };
+    final Map<String, dynamic> data = {"customerId": id, "stars": rating.value};
 
     try {
       final response = await ApiClient.postData(

@@ -456,7 +456,9 @@ class AuthController extends GetxController {
         debugPrint('Error response body: ${response.body}');
         _handleLoginError(response);
         showCustomSnackBar(
-          isContactor ? jsonDecode(response.body)['message'] ?? "Register Failed" :  response.body['message'] ?? "Register Failed",
+          isContactor
+              ? jsonDecode(response.body)['message'] ?? "Register Failed"
+              : response.body['message'] ?? "Register Failed",
           isError: false,
         );
         ApiChecker.checkApi(response);

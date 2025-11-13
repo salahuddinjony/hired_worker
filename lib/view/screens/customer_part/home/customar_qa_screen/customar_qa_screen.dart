@@ -29,8 +29,7 @@ class CustomarQaScreen extends StatelessWidget {
     final String subCategoryName = args['subCategoryName'] ?? '';
     final String contractorIdForTimeSlot =
         args['contractorIdForTimeSlot'] ?? '';
-    final String subCategoryImage =
-        args['subCategoryImage']?.toString() ?? '';
+    final String subCategoryImage = args['subCategoryImage']?.toString() ?? '';
 
     // hourlyRate may come as String, int, or double - parse defensively
     final dynamic rawHourly = args['hourlyRate'];
@@ -56,13 +55,10 @@ class CustomarQaScreen extends StatelessWidget {
     } else if (rawQuestions is Map && rawQuestions['data'] is List) {
       // API response: data: [ { question: [ ... ] } ]
       final dataList = rawQuestions['data'];
-      for (var item in dataList) {
+      for (final item in dataList) {
         if (item is Map && item['question'] is List) {
           for (int i = 0; i < item['question'].length; i++) {
-            questions.add({
-              'id': '${i + 1}',
-              'question': item['question'][i],
-            });
+            questions.add({'id': '${i + 1}', 'question': item['question'][i]});
           }
         } else if (item is Map && item['question'] is String) {
           questions.add({
@@ -80,17 +76,14 @@ class CustomarQaScreen extends StatelessWidget {
             'question': q['question'],
           });
         } else if (q is String) {
-          questions.add({
-            'id': '${i + 1}',
-            'question': q,
-          });
+          questions.add({'id': '${i + 1}', 'question': q});
         }
       }
     } else if (rawQuestions is String) {
-      questions = [{ 'id': '1', 'question': rawQuestions }];
+      questions = [
+        {'id': '1', 'question': rawQuestions},
+      ];
     }
-
-
 
     // Initialize questions in controller
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -110,7 +103,7 @@ class CustomarQaScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
-                  if(controller.questions.isEmpty)
+                  if (controller.questions.isEmpty)
                     Padding(
                       padding: EdgeInsets.only(top: 50.h, bottom: 20.h),
                       child: Text(

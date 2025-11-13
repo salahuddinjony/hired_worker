@@ -4,7 +4,7 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 
 class EmptyConversations extends StatelessWidget {
-  final controller; 
+  final controller;
   const EmptyConversations({super.key, this.controller});
 
   @override
@@ -22,7 +22,7 @@ class EmptyConversations extends StatelessWidget {
         Center(
           child: CustomText(
             text: 'No conversations yet',
-  
+
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.primary,
@@ -43,13 +43,13 @@ class EmptyConversations extends StatelessWidget {
             onPressed: () async {
               await controller.loadConversations();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              child: Text('Refresh',
-                  style: TextStyle(fontSize: 16.sp, color: AppColors.white)),
+              child: Text(
+                'Refresh',
+                style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+              ),
             ),
           ),
         ),

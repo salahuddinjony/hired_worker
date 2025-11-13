@@ -41,7 +41,9 @@ class PaymentWebViewController extends GetxController {
                     bookingId = uri.queryParameters['bookingId'];
                   } else {
                     // Fallback: manually extract bookingId from URL
-                    final match = RegExp(r"[?&]bookingId=([^&]*)").firstMatch(url);
+                    final match = RegExp(
+                      r"[?&]bookingId=([^&]*)",
+                    ).firstMatch(url);
                     if (match != null && match.groupCount > 0) {
                       bookingId = match.group(1);
                     }
@@ -54,12 +56,12 @@ class PaymentWebViewController extends GetxController {
                   debugPrint('Error extracting bookingId: $e');
                 }
                 debugPrint('Extracted bookingId: $bookingId');
-                if (url.contains('success') || url.contains('payment-complete')) {
+                if (url.contains('success') ||
+                    url.contains('payment-complete')) {
                   // Payment successful
-                  Get.back(result: {
-                    'status': 'success',
-                    'bookingId': bookingId,
-                  });
+                  Get.back(
+                    result: {'status': 'success', 'bookingId': bookingId},
+                  );
                 } else if (url.contains('cancel') || url.contains('failed')) {
                   // Payment cancelled or failed
                   Get.back(result: 'cancelled');

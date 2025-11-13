@@ -49,10 +49,10 @@ class ApiClient extends GetxService {
       'Accept': 'application/json',
       'Authorization': bearerToken,
     };
-     // Build final URI with query params (merging any already present in uri)
-     if(!uri.startsWith("http" ) && !uri.startsWith("https")){
-       uri = ApiUrl.baseUrl+uri;
-     }
+    // Build final URI with query params (merging any already present in uri)
+    if (!uri.startsWith("http") && !uri.startsWith("https")) {
+      uri = ApiUrl.baseUrl + uri;
+    }
     Uri baseUri = Uri.parse(uri);
     if (query != null) {
       baseUri = baseUri.replace(queryParameters: query);
@@ -82,8 +82,9 @@ class ApiClient extends GetxService {
       debugPrint('  content-length: ${response.headers['content-length']}');
       debugPrint('📄 Response Body:');
       try {
-          final prettyJson = const JsonEncoder.withIndent('  ')
-            .convert(jsonDecode(response.body));
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',
+        ).convert(jsonDecode(response.body));
         debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
@@ -138,7 +139,7 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
-      
+
       debugPrint('📥 ====> POST RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -146,14 +147,15 @@ class ApiClient extends GetxService {
       printPrettyJson(response.headers);
       debugPrint('📄 Response Body:');
       try {
-        final prettyJson = const JsonEncoder.withIndent('  ')
-            .convert(jsonDecode(response.body));
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',
+        ).convert(jsonDecode(response.body));
         debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
       }
       debugPrint('🏁 ====> POST RESPONSE END ====>');
-      
+
       return handleResponse(response, uri);
     } catch (e, s) {
       debugPrint('❌ POST REQUEST ERROR for ${ApiUrl.baseUrl + uri}:');
@@ -204,7 +206,7 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
-      
+
       debugPrint('📥 ====> PATCH RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -212,17 +214,20 @@ class ApiClient extends GetxService {
       printPrettyJson(response.headers);
       debugPrint('📄 Response Body:');
       try {
-        final prettyJson = const JsonEncoder.withIndent('  ')
-            .convert(jsonDecode(response.body));
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',
+        ).convert(jsonDecode(response.body));
         debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
       }
       debugPrint('🏁 ====> PATCH RESPONSE END ====>');
-      
+
       return handleResponse(response, uri);
     } catch (e) {
-      debugPrint('❌ PATCH REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
+      debugPrint(
+        '❌ PATCH REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}',
+      );
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -240,7 +245,9 @@ class ApiClient extends GetxService {
       'Authorization': bearerToken,
     };
     try {
-      debugPrint('====> API Call (PUT): $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint(
+        '====> API Call (PUT): $uri\nHeader: ${headers ?? mainHeaders}',
+      );
       debugPrint('====> API Body: $body');
 
       final http.Response response = await http
@@ -250,7 +257,7 @@ class ApiClient extends GetxService {
             headers: headers ?? mainHeaders,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
-      
+
       debugPrint('📥 ====> PUT RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -258,27 +265,30 @@ class ApiClient extends GetxService {
       printPrettyJson(response.headers);
       debugPrint('📄 Response Body:');
       try {
-        final prettyJson = const JsonEncoder.withIndent('  ')
-            .convert(jsonDecode(response.body));
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',
+        ).convert(jsonDecode(response.body));
         debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
       }
       debugPrint('🏁 ====> PUT RESPONSE END ====>');
-      
+
       return handleResponse(response, uri);
     } catch (e) {
-      debugPrint('❌ PUT REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
+      debugPrint(
+        '❌ PUT REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}',
+      );
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
   }
 
   static Future<Response> postMultipartData(
-      String uri,
-      dynamic body, {
-        List<MultipartBody>? multipartBody,
-        Map<String, String>? headers,
-      }) async {
+    String uri,
+    dynamic body, {
+    List<MultipartBody>? multipartBody,
+    Map<String, String>? headers,
+  }) async {
     try {
       bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
 
@@ -302,9 +312,9 @@ class ApiClient extends GetxService {
 
       // Convert all body values to strings
       final bodyMap = Map<String, String>.fromEntries(
-          (body as Map).entries.map((entry) =>
-              MapEntry(entry.key, entry.value.toString())
-          )
+        (body as Map).entries.map(
+          (entry) => MapEntry(entry.key, entry.value.toString()),
+        ),
       );
 
       request.fields.addAll(bodyMap);
@@ -345,7 +355,9 @@ class ApiClient extends GetxService {
         body: content,
       );
     } catch (e) {
-      debugPrint('❌ POST MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
+      debugPrint(
+        '❌ POST MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}',
+      );
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -355,7 +367,7 @@ class ApiClient extends GetxService {
     String uri,
     dynamic body, {
     List<MultipartBody>? multipartBody,
-    Map<String, String>? headers,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
@@ -377,7 +389,21 @@ class ApiClient extends GetxService {
         'PATCH',
         Uri.parse(ApiUrl.baseUrl + uri),
       );
-      request.fields.addAll(body);
+
+      // request.fields.addAll(body);
+
+      // Convert only the materials field to JSON string, keep others as strings
+      final Map<String, String> stringBody = {};
+
+      body.forEach((key, value) {
+        if (key == 'materials' && value is List) {
+          stringBody[key] = jsonEncode(value);
+        } else {
+          stringBody[key] = value.toString();
+        }
+      });
+
+      request.fields.addAll(stringBody);
 
       if (multipartBody != null && multipartBody.isNotEmpty) {
         for (final element in multipartBody) {
@@ -397,7 +423,7 @@ class ApiClient extends GetxService {
       request.headers.addAll(mainHeaders);
       final http.StreamedResponse response = await request.send();
       final content = await response.stream.bytesToString();
-      
+
       debugPrint('📥 ====> PATCH MULTIPART RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -415,7 +441,9 @@ class ApiClient extends GetxService {
         body: content,
       );
     } catch (e) {
-      debugPrint('❌ PATCH MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
+      debugPrint(
+        '❌ PATCH MULTIPART REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}',
+      );
 
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
@@ -528,7 +556,7 @@ class ApiClient extends GetxService {
             body: body,
           )
           .timeout(const Duration(seconds: timeoutInSeconds));
-      
+
       debugPrint('📥 ====> DELETE RESPONSE START ====>');
       debugPrint('📍 URL: ${ApiUrl.baseUrl + uri}');
       debugPrint('📊 Status Code: ${response.statusCode}');
@@ -536,17 +564,20 @@ class ApiClient extends GetxService {
       printPrettyJson(response.headers);
       debugPrint('📄 Response Body:');
       try {
-        final prettyJson = const JsonEncoder.withIndent('  ')
-            .convert(jsonDecode(response.body));
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',
+        ).convert(jsonDecode(response.body));
         debugPrint(prettyJson);
       } catch (e) {
         debugPrint('Response body (not JSON): ${response.body}');
       }
       debugPrint('🏁 ====> DELETE RESPONSE END ====>');
-      
+
       return handleResponse(response, uri);
     } catch (e) {
-      debugPrint('❌ DELETE REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}');
+      debugPrint(
+        '❌ DELETE REQUEST ERROR for ${ApiUrl.baseUrl + uri}: ${e.toString()}',
+      );
       return const Response(statusCode: 1, statusText: somethingWentWrong);
     }
   }
@@ -574,7 +605,9 @@ class ApiClient extends GetxService {
     if (response0.statusCode != 200 &&
         response0.body != null &&
         response0.body is! String) {
-      final ErrorResponse errorResponse = ErrorResponse.fromJson(response0.body);
+      final ErrorResponse errorResponse = ErrorResponse.fromJson(
+        response0.body,
+      );
       response0 = Response(
         statusCode: response0.statusCode,
         body: response0.body,

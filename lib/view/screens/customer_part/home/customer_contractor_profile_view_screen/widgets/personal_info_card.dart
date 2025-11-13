@@ -26,8 +26,18 @@ class PersonalInfoCard extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText(text: title, fontSize: 12.w, fontWeight: FontWeight.w400, color: AppColors.black_08),
-            CustomText(text: value, fontSize: 14.w, fontWeight: FontWeight.w500, color: AppColors.black),
+            CustomText(
+              text: title,
+              fontSize: 12.w,
+              fontWeight: FontWeight.w400,
+              color: AppColors.black_08,
+            ),
+            CustomText(
+              text: value,
+              fontSize: 14.w,
+              fontWeight: FontWeight.w500,
+              color: AppColors.black,
+            ),
           ],
         ),
       ],
@@ -49,7 +59,11 @@ class PersonalInfoCard extends StatelessWidget {
             // Padding(padding: EdgeInsets.symmetric(vertical: 12.h), child: Divider(color: AppColors.black_08.withValues(alpha: .3), height: 1)),
             // _row(Icons.location_city, "City".tr, city.isNotEmpty ? city : "No city specified"),
             // Padding(padding: EdgeInsets.symmetric(vertical: 12.h), child: Divider(color: AppColors.black_08.withValues(alpha: .3), height: 1)),
-            _row(Icons.language, "Language".tr, language.isNotEmpty ? language : "No language specified"),
+            _row(
+              Icons.language,
+              "Language".tr,
+              language.isNotEmpty ? language : "No language specified",
+            ),
           ],
         ),
       ),

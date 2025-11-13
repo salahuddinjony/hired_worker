@@ -65,9 +65,7 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 8.0),
-                  Text(
-                    'Task/Service : ${data.subCategoryId?.name ?? " - "}',
-                  ),
+                  Text('Task/Service : ${data.subCategoryId?.name ?? " - "}'),
                   const SizedBox(height: 16.0),
                   Text(
                     'Materials',
@@ -132,7 +130,9 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                         groupValue: 'one_time',
                         onChanged: null,
                       ),
-                      Text('${data.bookingType == "oneTime" ? "One Time" : "Weekly"}'),
+                      Text(
+                        '${data.bookingType == "oneTime" ? "One Time" : "Weekly"}',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -145,27 +145,22 @@ class _OngoingOrderDetailsScreenState extends State<OngoingOrderDetailsScreen> {
                     thickness: 1.6,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                          'Date: '
-                      ),
+                      const Text('Date: '),
                       Text(
                         data.day == null || data.day!.isEmpty
                             ? " - "
-                            : data.day!.length == 2
-                            ? "${data.day?[0] ?? " - "} - ${data.day?[1] ?? " - "}"
+                            : data.day!.length >= 2
+                            ? data.day!.join('\n')
                             : "${data.day?[0] ?? " - "}",
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      const Text(
-                          'Time: '
-                      ),
-                      Text(
-                        "${data.startTime ?? " "} - ${data.endTime ?? " "}",
-                      ),
+                      const Text('Time: '),
+                      Text("${data.startTime ?? " "} - ${data.endTime ?? " "}"),
                     ],
                   ),
                 ],

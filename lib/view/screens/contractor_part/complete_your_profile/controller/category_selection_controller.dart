@@ -28,7 +28,9 @@ class CategorySelectionController extends GetxController {
     status.value = RxStatus.loading();
 
     try {
-      final response = await ApiClient.getData(ApiUrl.categories + '?page=1&limit=1000');
+      final response = await ApiClient.getData(
+        ApiUrl.categories + '?page=1&limit=1000',
+      );
 
       categoryModel.value = CategoryModel.fromJson(response.body);
 

@@ -16,44 +16,47 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
     String cleanHtml(String html) {
       // Remove empty tags and excessive <br> tags
-      String cleaned = html.replaceAll(RegExp(r'<(p|div|br)[^>]*>(\s|&nbsp;)*<\/\1>'), '');
+      String cleaned = html.replaceAll(
+        RegExp(r'<(p|div|br)[^>]*>(\s|&nbsp;)*<\/\1>'),
+        '',
+      );
       cleaned = cleaned.replaceAll(RegExp(r'(<br\s*\/?>\s*){2,}'), '<br>');
       return cleaned;
     }
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Privacy Policy".tr),
-      body: Obx(
-        () {
-          if (generalController.privacy.value.isEmpty) {
-            return const Center(
-              child: CustomLoader(),
-            );
-          }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: SingleChildScrollView(
-              child: SafeArea(
-                child: Html(
-                  data: cleanHtml(generalController.privacy.value),
-                  style: {
-                    "body": Style(
-                      fontSize: FontSize(18.w),
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w400,
-                      textAlign: TextAlign.justify,
-                      margin: Margins.zero,
-                      padding: HtmlPaddings.zero,
-                    ),
-                    "p": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                    "div": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                    "br": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                  },
-                ),
+      body: Obx(() {
+        if (generalController.privacy.value.isEmpty) {
+          return const Center(child: CustomLoader());
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Html(
+                data: cleanHtml(generalController.privacy.value),
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(18.w),
+                    color: AppColors.black,
+                    fontWeight: FontWeight.w400,
+                    textAlign: TextAlign.justify,
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
+                  "p": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                  "div": Style(
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
+                  "br": Style(margin: Margins.zero, padding: HtmlPaddings.zero),
+                },
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 }

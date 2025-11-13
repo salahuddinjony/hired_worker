@@ -11,7 +11,7 @@ class CustomProfileMenuList extends StatelessWidget {
   final bool switchValue;
   final ValueChanged<bool>? onSwitchChanged;
   final String? image;
-  final IconData ? iconData;
+  final IconData? iconData;
   final Function()? onTap;
   const CustomProfileMenuList({
     super.key,
@@ -39,16 +39,12 @@ class CustomProfileMenuList extends StatelessWidget {
               Row(
                 children: [
                   image != null
-                      ? CustomImage(
-                          imageSrc: image!,
-                          height: 24.h,
-                          width: 24.w,
-                        )
+                      ? CustomImage(imageSrc: image!, height: 24.h, width: 24.w)
                       : Icon(
-                          (iconData) ?? Icons.settings,
-                          size: 24.w,
-                          color: const Color.fromARGB(221, 80, 78, 78),
-                        ),
+                        (iconData) ?? Icons.settings,
+                        size: 24.w,
+                        color: const Color.fromARGB(221, 80, 78, 78),
+                      ),
                   CustomText(
                     text: name ?? "Payments Methods".tr,
                     fontSize: 18.w,

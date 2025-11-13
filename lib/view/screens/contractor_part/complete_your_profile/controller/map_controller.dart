@@ -14,7 +14,6 @@ import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
-import '../../../customer_part/profile/model/user_model.dart';
 
 class MapController extends GetxController {
   // Observable variables
@@ -479,7 +478,7 @@ class MapController extends GetxController {
       showCustomSnackBar("Error updating contractor data: $e", isError: true);
 
       status.value = RxStatus.error();
-    }finally {
+    } finally {
       EasyLoading.dismiss();
     }
   }

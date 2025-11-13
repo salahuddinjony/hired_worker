@@ -41,14 +41,17 @@ class CustomButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 0.h),
         margin: EdgeInsets.symmetric(
-            vertical: marginVertical, horizontal: marginHorizontal),
+          vertical: marginVertical,
+          horizontal: marginHorizontal,
+        ),
         alignment: Alignment.center,
         height: height,
         width: width,
         decoration: BoxDecoration(
-          border: isBorder
-              ? Border.all(color: textColor, width: borderWidth ?? .05)
-              : null,
+          border:
+              isBorder
+                  ? Border.all(color: textColor, width: borderWidth ?? .05)
+                  : null,
           borderRadius: BorderRadius.circular(borderRadius ?? 10),
           color: fillColor,
         ),
@@ -58,7 +61,6 @@ class CustomButton extends StatelessWidget {
           color: textColor,
           textAlign: TextAlign.center,
           text: title,
-
         ),
       ),
     );

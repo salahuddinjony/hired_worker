@@ -55,7 +55,6 @@ class CertificateUploadController extends GetxController {
     status.value = RxStatus.loading();
 
     try {
-      
       if (certificate.value != null) {
         certificateUrl = await _uploadFile(certificate.value!);
       }
@@ -70,11 +69,9 @@ class CertificateUploadController extends GetxController {
 
       showCustomSnackBar("All files uploaded successfully!", isError: false);
 
-      
       await updateContractorData();
 
       Get.toNamed(AppRoutes.skillsAddScreen);
-
     } catch (e, stackTrace) {
       debugPrint("Upload Error: $e");
       debugPrint("StackTrace: $stackTrace");
@@ -87,7 +84,9 @@ class CertificateUploadController extends GetxController {
 
   Future<void> updateContractorData() async {
     try {
-      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+      final String userId = await SharePrefsHelper.getString(
+        AppConstants.userId,
+      );
       final String uri = '${ApiUrl.updateUser}/$userId';
 
       final Map<String, dynamic> data = {
@@ -95,12 +94,10 @@ class CertificateUploadController extends GetxController {
           if (certificateUrl.isNotEmpty) certificateUrl,
           if (skillUrl.isNotEmpty) skillUrl,
           if (otherUrl.isNotEmpty) otherUrl,
-        ]
+        ],
       };
 
-      final Map<String, String> body = {
-        'data': jsonEncode(data),
-      };
+      final Map<String, String> body = {'data': jsonEncode(data)};
 
       final response = await ApiClient.patchMultipartData(
         uri,
@@ -111,17 +108,20 @@ class CertificateUploadController extends GetxController {
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200 && responseBody['success'] == true) {
-        showCustomSnackBar("Contractor data updated successfully!", isError: false);
-        
+        showCustomSnackBar(
+          "Contractor data updated successfully!",
+          isError: false,
+        );
       } else {
-        throw Exception(responseBody['message'] ?? 'Failed to update contractor data');
+        throw Exception(
+          responseBody['message'] ?? 'Failed to update contractor data',
+        );
       }
-
     } catch (e, stackTrace) {
       debugPrint("Update Contractor Error: $e");
       debugPrint("StackTrace: $stackTrace");
       showCustomSnackBar("Error updating contractor data: $e", isError: true);
-      rethrow; 
+      rethrow;
     }
   }
 

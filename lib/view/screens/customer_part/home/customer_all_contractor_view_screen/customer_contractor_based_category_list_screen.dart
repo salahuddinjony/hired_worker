@@ -9,8 +9,9 @@ import 'package:servana/view/screens/customer_part/home/controller/home_controll
 import 'package:servana/view/screens/customer_part/home/model/all_contactor_model.dart';
 
 import '../customer_home_screen/widget/custom_service_contractor_card.dart';
+
 class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
-   CustomerContractorBasedCategoryListScreen({super.key});
+  CustomerContractorBasedCategoryListScreen({super.key});
 
   final HomeController homeController = Get.find<HomeController>();
   @override
@@ -20,76 +21,83 @@ class CustomerContractorBasedCategoryListScreen extends StatelessWidget {
     // String id = args?['id'] ?? '';
     final List<allContractor> contractors = args?['contractors'] ?? [];
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "$name Contractors".tr,),
+      appBar: CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: "$name Contractors".tr,
+      ),
       body: SingleChildScrollView(
-        child: Obx(
-          () {
-            final contractorsWithCategory =contractors;
+        child: Obx(() {
+          final contractorsWithCategory = contractors;
 
-            if (homeController.getAllServicesContractorStatus.value.isLoading) {
-              return Container(
-                margin: EdgeInsets.only(top: 50.h),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              );
-            }
-            if (homeController.getAllServicesContractorStatus.value.isError) {
-              return Container(
-                margin: EdgeInsets.only(top: 50.h),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(homeController.getAllServicesContractorStatus.value
-                        .toString()),
-                  ),
-                ),
-              );
-            }
-            if (contractorsWithCategory.isEmpty) {
-                return Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 100.h), 
-                  child: NotFound(message: "No Contractors Found of $name", icon: Icons.manage_accounts),
-                ),
-                );
-            }
-            return  GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: .75,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 14,
+          if (homeController.getAllServicesContractorStatus.value.isLoading) {
+            return Container(
+              margin: EdgeInsets.only(top: 50.h),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(child: CircularProgressIndicator()),
               ),
-              padding:
-              EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: contractorsWithCategory.length,
-              itemBuilder: (BuildContext context, int index) {
-               // var data = popularDoctorController.popularList[index];
-                return CustomServiceContractorCard(
-                  hourlyPrice: contractorsWithCategory[index].rateHourly.toString(),
-                  image: ImageHandler.imagesHandle(contractorsWithCategory[index].userId.img),
-                  name: contractorsWithCategory[index].userId.fullName,
-                  title: contractorsWithCategory[index].skillsCategory,
-                  rating: contractorsWithCategory[index].ratings.toString(),
-                  onTap: (){
-                     Get.toNamed(
-                       AppRoutes.customerContractorProfileViewScreen,
-                       arguments: {
-                         'id': contractorsWithCategory[index].userId.id,
-                         'contractorDetails': contractorsWithCategory[index],
-                       }
-                     );
-                  },
-                );
-              },
             );
           }
-        )
-       
+          if (homeController.getAllServicesContractorStatus.value.isError) {
+            return Container(
+              margin: EdgeInsets.only(top: 50.h),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    homeController.getAllServicesContractorStatus.value
+                        .toString(),
+                  ),
+                ),
+              ),
+            );
+          }
+          if (contractorsWithCategory.isEmpty) {
+            return Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 100.h),
+                child: NotFound(
+                  message: "No Contractors Found of $name",
+                  icon: Icons.manage_accounts,
+                ),
+              ),
+            );
+          }
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: .75,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 14,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: contractorsWithCategory.length,
+            itemBuilder: (BuildContext context, int index) {
+              // var data = popularDoctorController.popularList[index];
+              return CustomServiceContractorCard(
+                hourlyPrice:
+                    contractorsWithCategory[index].rateHourly.toString(),
+                image: ImageHandler.imagesHandle(
+                  contractorsWithCategory[index].userId.img,
+                ),
+                name: contractorsWithCategory[index].userId.fullName,
+                title: contractorsWithCategory[index].skillsCategory,
+                rating: contractorsWithCategory[index].ratings.toString(),
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.customerContractorProfileViewScreen,
+                    arguments: {
+                      'id': contractorsWithCategory[index].userId.id,
+                      'contractorDetails': contractorsWithCategory[index],
+                    },
+                  );
+                },
+              );
+            },
+          );
+        }),
       ),
     );
   }

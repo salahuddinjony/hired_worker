@@ -43,7 +43,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
             ? args['totalAmount']
             : int.tryParse(args['totalAmount']?.toString() ?? '0') ?? 0;
     final int paymentedTotalAmount =
-        args['paymentedTotalAmount'] is int 
+        args['paymentedTotalAmount'] is int
             ? args['paymentedTotalAmount']
             : int.tryParse(args['paymentedTotalAmount']?.toString() ?? '0') ??
                 0;
@@ -85,9 +85,6 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
         // controller. = paymentedTotalAmount;
         //also set total amount and already haved  previous materials if any
 
-
-      
-
         debugPrint('Initialized controller with existing booking data:');
         debugPrint('BookingType: $bookingType');
         debugPrint('Duration: $duration');
@@ -95,8 +92,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
         debugPrint('EndTime: $endTime');
         debugPrint('SelectedDates: $selectedDates');
         debugPrint('HourlyRate: $hourlyRate');
-   debugPrint("Paymented Total Amount received: $paymentedTotalAmount");
-    debugPrint("Hourly rate : $hourlyRate");
+        debugPrint("Paymented Total Amount received: $paymentedTotalAmount");
+        debugPrint("Hourly rate : $hourlyRate");
       }
     });
 
@@ -109,7 +106,6 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          
           child: Column(
             children: [
               // Stack(
@@ -155,128 +151,124 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
               //     ),
               //   ],
               // ),
-               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                  vertical: 10.h,
-                ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                 child: Card(
                   elevation: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Obx(() {
-                            final isOneTime =
-                                controller.bookingType.value == 'oneTime';
-                            return Opacity(
-                              opacity: isUpdate ? 0.6 : 1.0,
-                              child: MouseRegion(
-                                cursor:
-                                    isUpdate
-                                        ? SystemMouseCursors.forbidden
-                                        : SystemMouseCursors.click,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    AbsorbPointer(
-                                      absorbing: isUpdate,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          debugPrint(
-                                            'CustomarServiceDetailsScreen: One Time selected',
-                                          );
-                                          controller.selectedDates.length > 1
-                                              ? controller.dayController.value
-                                                  .clear()
-                                              : null;
-                                          controller.bookingType.value = 'oneTime';
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color:
-                                                isOneTime
-                                                    ? AppColors.primary
-                                                    : AppColors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.timer,
-                                                color:
-                                                    isOneTime
-                                                        ? AppColors.white
-                                                        : AppColors.black,
-                                              ),
-                                              CustomText(
-                                                left: 8.w,
-                                                text: "One Time".tr,
-                                                fontSize: 16.w,
-                                                fontWeight: FontWeight.w500,
-                                                color:
-                                                    isOneTime
-                                                        ? AppColors.white
-                                                        : AppColors.black,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                      final isOneTime =
+                          controller.bookingType.value == 'oneTime';
+                      return Opacity(
+                        opacity: isUpdate ? 0.6 : 1.0,
+                        child: MouseRegion(
+                          cursor:
+                              isUpdate
+                                  ? SystemMouseCursors.forbidden
+                                  : SystemMouseCursors.click,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              AbsorbPointer(
+                                absorbing: isUpdate,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    debugPrint(
+                                      'CustomarServiceDetailsScreen: One Time selected',
+                                    );
+                                    controller.selectedDates.length > 1
+                                        ? controller.dayController.value.clear()
+                                        : null;
+                                    controller.bookingType.value = 'oneTime';
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
                                     ),
-                                    AbsorbPointer(
-                                      absorbing: isUpdate,
-                                      child: GestureDetector(
-                                        onTap:
-                                            () =>
-                                                controller.bookingType.value =
-                                                    'weekly',
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color:
-                                                !isOneTime
-                                                    ? AppColors.primary
-                                                    : AppColors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.calendar_month,
-                                                color:
-                                                    !isOneTime
-                                                        ? AppColors.white
-                                                        : AppColors.black,
-                                              ),
-                                              CustomText(
-                                                left: 8.w,
-                                                text: "Weekly".tr,
-                                                fontSize: 16.w,
-                                                fontWeight: FontWeight.w500,
-                                                color:
-                                                    !isOneTime
-                                                        ? AppColors.white
-                                                        : AppColors.black,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          isOneTime
+                                              ? AppColors.primary
+                                              : AppColors.white,
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ],
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.timer,
+                                          color:
+                                              isOneTime
+                                                  ? AppColors.white
+                                                  : AppColors.black,
+                                        ),
+                                        CustomText(
+                                          left: 8.w,
+                                          text: "One Time".tr,
+                                          fontSize: 16.w,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              isOneTime
+                                                  ? AppColors.white
+                                                  : AppColors.black,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            );
-                          }),
+                              AbsorbPointer(
+                                absorbing: isUpdate,
+                                child: GestureDetector(
+                                  onTap:
+                                      () =>
+                                          controller.bookingType.value =
+                                              'weekly',
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          !isOneTime
+                                              ? AppColors.primary
+                                              : AppColors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month,
+                                          color:
+                                              !isOneTime
+                                                  ? AppColors.white
+                                                  : AppColors.black,
+                                        ),
+                                        CustomText(
+                                          left: 8.w,
+                                          text: "Weekly".tr,
+                                          fontSize: 16.w,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              !isOneTime
+                                                  ? AppColors.white
+                                                  : AppColors.black,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-               ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
               SizedBox(height: 50.h),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -417,7 +409,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                         .map<Widget>(
                                           (slot) => Chip(
                                             label: Text(slot),
-                                            backgroundColor: Colors.green.shade50,
+                                            backgroundColor:
+                                                Colors.green.shade50,
                                             labelStyle: const TextStyle(
                                               color: Colors.green,
                                             ),
@@ -455,7 +448,10 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                           .text
                                           .isEmpty
                                       ? "hh:mm"
-                                      : controller.startTimeController.value.text,
+                                      : controller
+                                          .startTimeController
+                                          .value
+                                          .text,
                               prefixIcon: const Icon(
                                 Icons.access_time,
                                 color: AppColors.black_08,
@@ -480,7 +476,11 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                 );
                               },
                               hintText:
-                                  controller.endTimeController.value.text.isEmpty
+                                  controller
+                                          .endTimeController
+                                          .value
+                                          .text
+                                          .isEmpty
                                       ? "hh:mm"
                                       : controller.endTimeController.value.text,
                               prefixIcon: const Icon(
@@ -495,17 +495,21 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20.h),
                     CustomText(
-                      text:isUpdate? 'Charge /Hour \$${hourlyRate}':'Charge /Hour \$${controller.hourlyRate}',
+                      text:
+                          isUpdate
+                              ? 'Charge /Hour \$${hourlyRate}'
+                              : 'Charge /Hour \$${controller.hourlyRate}',
                       fontSize: 18.w,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
                       bottom: 8,
                     ),
                     Obx(() {
-                      final duration = int.tryParse(controller.durations.value) ?? 1;
+                      final duration =
+                          int.tryParse(controller.durations.value) ?? 1;
                       final hourlyRate = controller.hourlyRate;
                       final subtotal = duration * hourlyRate;
-                        final hours = controller.durations.value;
+                      final hours = controller.durations.value;
                       return CustomText(
                         text: "Selected Duration: $hours hr(s)",
                         fontSize: 18.w,
@@ -514,11 +518,15 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                         bottom: 8,
                       );
                     }),
-                      Obx(() {
-                        final materials = controller.materialsTotalAmount;
-                        final String  weeklyDays= controller.bookingType.value=='weekly' ? ' for ${controller.selectedDates.length} day(s)' : '';
+                    Obx(() {
+                      final materials = controller.materialsTotalAmount;
+                      final String weeklyDays =
+                          controller.bookingType.value == 'weekly'
+                              ? ' for ${controller.selectedDates.length} day(s)'
+                              : '';
                       return CustomText(
-                        text: "Selected Materials: \$${materials.toStringAsFixed(2)} $weeklyDays",
+                        text:
+                            "Selected Materials: \$${materials.toStringAsFixed(2)} $weeklyDays",
                         fontSize: 18.w,
                         fontWeight: FontWeight.w500,
                         color: AppColors.black,
@@ -528,7 +536,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     Obx(() {
                       final total = controller.calculateTotalPayableAmount();
-                    
+
                       return CustomText(
                         text: "Total: \$${total.toStringAsFixed(2)}",
                         fontSize: 25.w,
@@ -570,18 +578,18 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                             contractorIdForTimeSlot: contractorIdForTimeSlot,
                           );
                         }
-          
+
                         if ((!isUpdate && !controller.isSlotAvailable()) ||
                             (isUpdate &&
                                 shouldCheckSlots &&
                                 !controller.isSlotAvailable())) {
                           final unavailableDays =
                               controller.apiResponse['unavailableDays'] ?? [];
-          
+
                           final message =
                               controller.apiResponse['message'] ??
                               'Some requested slots are unavailable.';
-          
+
                           return showDialog(
                             context: context,
                             builder:
@@ -607,7 +615,8 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                   ),
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -645,12 +654,11 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                                           (d) => Chip(
                                                             label: Text(
                                                               d,
-                                                              style:
-                                                                  const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
+                                                              style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
                                                             ),
                                                             backgroundColor:
                                                                 Colors
@@ -718,7 +726,9 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                         "At " +
                                             controller.selectedDates
                                                 .map((d) {
-                                                  final dt = DateTime.tryParse(d);
+                                                  final dt = DateTime.tryParse(
+                                                    d,
+                                                  );
                                                   return dt != null
                                                       ? dt.formatDate()
                                                       : d;
@@ -742,7 +752,9 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                         foregroundColor: Colors.white,
                                         backgroundColor: AppColors.primary,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
                                       ),
                                       onPressed: () => Navigator.of(ctx).pop(),
@@ -752,7 +764,7 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
                                 ),
                           );
                         }
-          
+
                         // If available, proceed
                         Get.toNamed(
                           AppRoutes.customarServiceContractorDetailsScreen,
@@ -783,8 +795,6 @@ class CustomarServiceDetailsScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';

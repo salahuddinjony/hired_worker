@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';

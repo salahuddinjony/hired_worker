@@ -15,7 +15,6 @@ import 'package:servana/view/screens/contractor_part/profile/model/notification_
 import 'package:servana/view/screens/customer_part/profile/widgets/add_address_dialog.dart';
 import 'package:servana/view/screens/customer_part/profile/widgets/address_selection_bottom_sheet.dart';
 
-import '../../../../../utils/app_strings/app_strings.dart';
 import '../../complete_your_profile/controller/map_controller.dart';
 
 class ProfileController extends GetxController {
@@ -26,6 +25,7 @@ class ProfileController extends GetxController {
   Rx<TextEditingController> bioController = TextEditingController().obs;
   Rx<TextEditingController> experienceController = TextEditingController().obs;
   Rx<TextEditingController> phoneController = TextEditingController().obs;
+
   // Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> dobController = TextEditingController().obs;
 
@@ -71,7 +71,6 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
-
   //========= Customer Profile ===========//
   Rx<ContractorModel> contractorModel = ContractorModel().obs;
   Rx<Location> location = Location().obs;
@@ -83,8 +82,6 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         contractorModel.value = ContractorModel.fromJson(response.body);
         location.value = contractorModel.value.data!.contractor!.location!;
-
-        debugPrint('xxx - inside get me ${contractorModel.value.data!.fullName}');
 
         initUserProfileInfoTextField(contractorModel.value.data!);
 
@@ -188,21 +185,31 @@ class ProfileController extends GetxController {
 
       notificationModel.value = NotificationModel.fromJson(response.body);
 
-      if (notificationModel.value.data == null || notificationModel.value.data!.isEmpty) {
+      if (notificationModel.value.data == null ||
+          notificationModel.value.data!.isEmpty) {
         notificationStatus.value = RxStatus.empty();
       } else {
         notificationStatus.value = RxStatus.success();
       }
-
     } catch (e) {
       notificationStatus.value = RxStatus.error(e.toString());
     }
   }
+
   final TextEditingController addressNameController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController unitController = TextEditingController();
   final TextEditingController directionsController = TextEditingController();
-  void editAddress({String? addId, String? address, String? street, String? unit, String? direction, double? latitude, double? longitude}) {
+
+  void editAddress({
+    String? addId,
+    String? address,
+    String? street,
+    String? unit,
+    String? direction,
+    double? latitude,
+    double? longitude,
+  }) {
     // Fill controllers with address data
     addressNameController.text = address ?? '';
     streetController.text = street ?? '';
@@ -220,21 +227,24 @@ class ProfileController extends GetxController {
         street: location.value.street ?? '',
         directions: location.value.direction ?? '',
         isUpdate: true,
-        name:"",
+        name: "",
         isContractor: true,
         isFromProfileContractor: true,
-
-
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,
     );
   }
-    // Show bottom sheet for address selection
+
+  // Show bottom sheet for address selection
   void showAddressBottomSheet({bool isFromProfile = false, bool? useByUserId}) {
     Get.bottomSheet(
-      AddressSelectionBottomSheet(isFromProfile: isFromProfile, useByUserId: useByUserId, isContractor: true,),
+      AddressSelectionBottomSheet(
+        isFromProfile: isFromProfile,
+        useByUserId: useByUserId,
+        isContractor: true,
+      ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       isDismissible: true,

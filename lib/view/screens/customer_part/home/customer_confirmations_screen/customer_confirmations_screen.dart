@@ -21,19 +21,26 @@ class CustomerConfirmationsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: ListView(children: [
-              CustomText(
-                bottom: 10.h,
-                text: "Service Request History".tr,
-                fontSize: 14.w,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
+            Expanded(
+              child: ListView(
+                children: [
+                  CustomText(
+                    bottom: 10.h,
+                    text: "Service Request History".tr,
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                  ),
+                  const CustomStatusCard(),
+                ],
               ),
-              const CustomStatusCard(),
-            ],)),
-            CustomButton(onTap: (){
-              Get.toNamed(AppRoutes.customerHomeScreen);
-            }, title: "Back to Home".tr,)
+            ),
+            CustomButton(
+              onTap: () {
+                Get.toNamed(AppRoutes.customerHomeScreen);
+              },
+              title: "Back to Home".tr,
+            ),
           ],
         ),
       ),

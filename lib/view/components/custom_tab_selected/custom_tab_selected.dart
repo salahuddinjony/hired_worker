@@ -12,7 +12,6 @@ class CustomTabSelector extends StatelessWidget {
   final bool? isTextColorActive;
   final bool? isPadding;
 
-
   const CustomTabSelector({
     super.key,
     required this.tabs,
@@ -22,23 +21,20 @@ class CustomTabSelector extends StatelessWidget {
     required this.unselectedColor,
     this.textColor,
     this.isTextColorActive = false,
-    this.isPadding = true, required this.numberList,
+    this.isPadding = true,
+    required this.numberList,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 0,
-            color: unselectedColor,
-          ),
-        ),
+        border: Border(bottom: BorderSide(width: 0, color: unselectedColor)),
       ),
-      padding: isPadding!
-          ? const EdgeInsets.symmetric(horizontal: 2)
-          : const EdgeInsets.symmetric(horizontal: 0),
+      padding:
+          isPadding!
+              ? const EdgeInsets.symmetric(horizontal: 2)
+              : const EdgeInsets.symmetric(horizontal: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(tabs.length, (index) {
@@ -50,9 +46,10 @@ class CustomTabSelector extends StatelessWidget {
                 //color: AppColors.red,
                 border: Border(
                   bottom: BorderSide(
-                    color: selectedIndex == index
-                        ? selectedColor
-                        : Colors.transparent,
+                    color:
+                        selectedIndex == index
+                            ? selectedColor
+                            : Colors.transparent,
                     width: 3.0,
                   ),
                 ),
@@ -62,11 +59,12 @@ class CustomTabSelector extends StatelessWidget {
                   Text(
                     numberList[index],
                     style: GoogleFonts.poppins(
-                      color: selectedIndex == index
-                          ? selectedColor
-                          : isTextColorActive!
-                          ? textColor
-                          : unselectedColor,
+                      color:
+                          selectedIndex == index
+                              ? selectedColor
+                              : isTextColorActive!
+                              ? textColor
+                              : unselectedColor,
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
                     ),
@@ -74,9 +72,10 @@ class CustomTabSelector extends StatelessWidget {
                   Text(
                     tabs[index],
                     style: GoogleFonts.poppins(
-                      color: selectedIndex == index
-                          ? selectedColor
-                          : isTextColorActive!
+                      color:
+                          selectedIndex == index
+                              ? selectedColor
+                              : isTextColorActive!
                               ? textColor
                               : unselectedColor,
                       fontSize: 16,
