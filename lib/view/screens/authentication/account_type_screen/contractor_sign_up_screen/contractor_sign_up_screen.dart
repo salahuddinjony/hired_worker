@@ -267,6 +267,11 @@ class ContractorSignUpScreen extends StatelessWidget {
                     ? const CustomLoader()
                     : CustomButton(
                       onTap: () {
+                        if (authController.passController.value.text != authController.confirmController.value.text) {
+                          showCustomSnackBar("Password and Confirm Password do not match");
+                          return;
+                        }
+
                         if (isContactor) {
                           if (isContactor &&
                               authController.selectedImage.value == null) {
