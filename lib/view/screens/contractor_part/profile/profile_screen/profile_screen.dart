@@ -147,14 +147,11 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                          homeController.bookingModel.value.data?.length
+                          profileController.contractorModel.value.data?.contractor?.ratings
                               .toString() ??
                           " - ",
-                      title: "Recent Services".tr,
+                      title: "Overall Rating".tr,
                       imageSrc: AppIcons.iconFour,
-                      onTap: () {
-                        Get.toNamed(AppRoutes.recentAllServiceScreen);
-                      },
                     ),
                     CustomHomeCard(
                       text:
