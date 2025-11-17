@@ -161,4 +161,5 @@ final Map<String, String> chinese = {
   "Add at least one skill to continue": "请至少添加一个技能以继续",
   "Photo Upload": "照片上传",
   "Requested Services": "请求的服务",
+  "Overall Rating": "总体评分"
 };
