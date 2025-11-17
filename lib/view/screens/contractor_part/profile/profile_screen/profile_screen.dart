@@ -113,13 +113,14 @@ class ProfileScreen extends StatelessWidget {
                     CustomHomeCard(
                       text:
                           (profileController
-                              .contractorModel
-                              .value
-                              .data
-                              ?.contractor
-                              ?.balance
-                              .toString() ??
-                          " - ") + '\$',
+                                  .contractorModel
+                                  .value
+                                  .data
+                                  ?.contractor
+                                  ?.balance
+                                  .toString() ??
+                              " - ") +
+                          '\$',
                       title: "Total Earning this month".tr,
                     ),
                     CustomHomeCard(
@@ -160,6 +161,13 @@ class ProfileScreen extends StatelessWidget {
                           "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
                       title: "Current billing price".tr,
                       imageSrc: AppIcons.iconThree,
+                      onTap:
+                          () => Get.toNamed(
+                            AppRoutes.chargeScreen,
+                            arguments: {
+                              'rate': profileController.contractorModel.value.data?.contractor?.rateHourly
+                            },
+                          ),
                     ),
                   ],
                 );

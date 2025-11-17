@@ -13,7 +13,12 @@ class ChargeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChargeController controller = Get.find<ChargeController>();
 
-    final TextEditingController textEditingController = TextEditingController();
+    final TextEditingController textEditingController = TextEditingController(
+      text:
+          controller.hourlyRate != null
+              ? controller.hourlyRate.toString()
+              : null,
+    );
 
     return Scaffold(
       appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Charge"),
