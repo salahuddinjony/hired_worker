@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:servana/core/app_routes/app_routes.dart';
 import 'package:servana/utils/ToastMsg/toast_message.dart';
 import 'package:servana/utils/app_colors/app_colors.dart';
-import 'package:servana/utils/app_icons/app_icons.dart';
 import 'package:servana/utils/app_images/app_images.dart';
 import 'package:servana/view/components/custom_button/custom_button.dart';
 import 'package:servana/view/components/custom_image/custom_image.dart';
@@ -249,7 +248,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   imageSrc: AppImages.clickImage,
                                 ),
                                 CustomText(
-                                  text: '0',
+                                  text:
+                                      contractorData != null
+                                          ? contractorData.completedJobs
+                                              .toString()
+                                              .padLeft(2, '0')
+                                          : homeController.reviewsData.length
+                                              .toString(),
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black,

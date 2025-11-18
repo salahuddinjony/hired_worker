@@ -42,7 +42,8 @@ Map<String, String> english = {
       "Set up your username and password.\nYou can always change it later.",
   "Continue": "Continue",
   "You can always change it later.": "You can always change it later.",
-  "You can adjust specific times later.": "You can adjust specific times later.",
+  "You can adjust specific times later.":
+      "You can adjust specific times later.",
   "Set up your personal information.": "Set up your personal information.",
   "Selected Skills": "Selected Skills",
   "Select Location": "Select Location",
@@ -169,5 +170,6 @@ Map<String, String> english = {
   "Add at least one skill to continue": "Add at least one skill to continue",
   "Photo Upload": "Photo Upload",
   "Skill": "Skills",
+  "Overall Rating": "Overall Rating",
   "Requested Services": "Requested Services",
 };

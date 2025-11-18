@@ -32,11 +32,11 @@
 // //     debugPrint('🌐 Connecting socket with userId: $userId');
 
 // //     _socket = io.io(
-// //       ApiUrl.socketUrl,  
+// //       ApiUrl.socketUrl,
 // //       io.OptionBuilder()
 // //           .setTransports(['websocket'])
 // //           .enableAutoConnect()
-// //           .setQuery({'userId': userId})  
+// //           .setQuery({'userId': userId})
 // //           .setReconnectionAttempts(10)
 // //           .setReconnectionDelay(3000)
 // //           .build(),
@@ -106,7 +106,6 @@
 // //   }
 // // }
 
-
 // import 'package:flutter/foundation.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -122,7 +121,7 @@
 
 //   static io.Socket? _socket;
 
-//   ///<------------------------- Initialize Socket ------------------------->  
+//   ///<------------------------- Initialize Socket ------------------------->
 //   static Future<void> init() async {
 //     final userId = await SharePrefsHelper.getString(AppConstants.userId);
 
@@ -191,14 +190,14 @@
 //     _socket?.connect();
 //   }
 
-//   ///<------------------------- Socket Connection Status ------------------------->  
+//   ///<------------------------- Socket Connection Status ------------------------->
 //   static bool isConnected() {
 //     final connected = _socket?.connected ?? false;
 //     debugPrint('🔍 isConnected: $connected');
 //     return connected;
 //   }
 
-//   ///<------------------------- Emit Event ------------------------->  
+//   ///<------------------------- Emit Event ------------------------->
 //   static void sendEvent(String eventName, dynamic data) {
 //     if (isConnected()) {
 //       debugPrint('📤 Emitting: $eventName -> $data');
@@ -208,7 +207,7 @@
 //     }
 //   }
 
-//   ///<------------------------- Listen to Event ------------------------->  
+//   ///<------------------------- Listen to Event ------------------------->
 //   static void listen(String eventName, Function(dynamic) callback) {
 //     if (!isConnected()) {
 //       debugPrint('⚠️ Cannot listen to $eventName. Socket not connected.');
@@ -222,7 +221,7 @@
 //     });
 //   }
 
-//   ///<------------------------- Disconnect & Cleanup ------------------------->  
+//   ///<------------------------- Disconnect & Cleanup ------------------------->
 //   static void dispose() {
 //     debugPrint('🛑 Disconnecting socket...');
 //     if (_socket != null && _socket!.connected) {

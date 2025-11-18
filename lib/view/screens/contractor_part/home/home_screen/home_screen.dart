@@ -160,14 +160,14 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             CustomHomeCard(
                               text:
-                                  profileController
+                                  (profileController
                                       .contractorModel
                                       .value
                                       .data
                                       ?.contractor
                                       ?.balance
                                       .toString() ??
-                                  " - ",
+                                  " - ")  + '\$',
                               title: "Total Earning this month".tr,
                             ),
                             CustomHomeCard(

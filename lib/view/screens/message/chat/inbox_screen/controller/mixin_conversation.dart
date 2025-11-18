@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:servana/helper/shared_prefe/shared_prefe.dart';
@@ -15,7 +14,8 @@ mixin MixinChatConversation {
         userId ?? await SharePrefsHelper.getString(AppConstants.userId);
     try {
       final response = await ApiClient.getData(
-          ApiUrl.getConversationList(userId: loggedUserId));
+        ApiUrl.getConversationList(userId: loggedUserId),
+      );
 
       if (response.statusCode == 200) {
         final dynamic rawBody = response.body;

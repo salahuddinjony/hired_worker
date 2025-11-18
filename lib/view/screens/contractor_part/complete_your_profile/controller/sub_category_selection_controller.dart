@@ -20,7 +20,6 @@ class SubCategorySelectionController extends GetxController {
   // for update button
   Rx<RxStatus> updateStatus = Rx<RxStatus>(RxStatus.success());
 
-
   @override
   void onInit() {
     super.onInit();
@@ -33,7 +32,9 @@ class SubCategorySelectionController extends GetxController {
     status.value = RxStatus.loading();
 
     try {
-      final response = await ApiClient.getData(ApiUrl.singleSubCategories + id + '?page=1&limit=1000');
+      final response = await ApiClient.getData(
+        ApiUrl.singleSubCategories + id + '?page=1&limit=1000',
+      );
 
       subCategoryModel.value = SubCategoryModel.fromJson(response.body);
 
@@ -58,7 +59,9 @@ class SubCategorySelectionController extends GetxController {
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
     final String uri = '${ApiUrl.updateUser}/$userId';
 
-    final Map<String, String> body = {'data': jsonEncode({"subCategory": subCategoryId.toList()})};
+    final Map<String, String> body = {
+      'data': jsonEncode({"subCategory": subCategoryId.toList()}),
+    };
 
     try {
       final response = await ApiClient.patchMultipartData(

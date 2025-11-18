@@ -4,11 +4,17 @@ import 'package:servana/utils/app_colors/app_colors.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
 import '../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
+
 class CustomCertificatePdfButton extends StatelessWidget {
   final String? label;
   final String? title;
   final Function()? onTap;
-   const CustomCertificatePdfButton({super.key, this.label, this.onTap, this.title});
+  const CustomCertificatePdfButton({
+    super.key,
+    this.label,
+    this.onTap,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,12 @@ class CustomCertificatePdfButton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text: label?? "", fontSize: 14.w,fontWeight: FontWeight.w600,color: AppColors.black,),
+          CustomText(
+            text: label ?? "",
+            fontSize: 14.w,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
+          ),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: onTap,
@@ -39,8 +50,7 @@ class CustomCertificatePdfButton extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: AppColors.black_08,
             textAlign: TextAlign.center,
-            text: title??"",
-
+            text: title ?? "",
           ),
         ],
       ),

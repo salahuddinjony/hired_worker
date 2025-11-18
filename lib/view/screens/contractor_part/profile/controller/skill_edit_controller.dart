@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -20,7 +19,6 @@ class SkillEditController extends GetxController {
   void onInit() {
     super.onInit();
     skills = Get.arguments['skill'];
-
   }
 
   Future<void> updateContractorData(Set<String> skills) async {
@@ -33,7 +31,9 @@ class SkillEditController extends GetxController {
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
     final String uri = '${ApiUrl.updateUser}/$userId';
 
-    final Map<String, String> body = {'data': jsonEncode({'skills': skills.toList()})};
+    final Map<String, String> body = {
+      'data': jsonEncode({'skills': skills.toList()}),
+    };
 
     try {
       final response = await ApiClient.patchMultipartData(

@@ -32,15 +32,9 @@ class ChatController extends GetxController {
     ChatRepository? repository,
   }) : repo = repository ?? ChatRepository() {
     // Use role as the author.id so side/layout decisions can be made by role.
-    user = types.User(
-      id: userRole,
-      firstName: 'Me',
-      imageUrl: null, 
-    );
+    user = types.User(id: userRole, firstName: 'Me', imageUrl: null);
   }
-  
 
-  
   final messages = RxList<types.Message>(<types.Message>[]);
   final isTyping = false.obs;
   final isLoading = true.obs;
@@ -62,8 +56,7 @@ class ChatController extends GetxController {
   // Returns true when message should appear on the "right" (same role as current user).
   bool isMessageRight(types.Message message) {
     try {
-      final meta =
-          (message as dynamic).metadata as Map<String, dynamic>? ?? {};
+      final meta = (message as dynamic).metadata as Map<String, dynamic>? ?? {};
       final role = meta['role']?.toString();
       if (role != null && role.isNotEmpty) return role == userRole;
     } catch (_) {}
@@ -74,7 +67,7 @@ class ChatController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    final userId= await SharePrefsHelper.getString(AppConstants.userId);
+    final userId = await SharePrefsHelper.getString(AppConstants.userId);
 
     // connect to socket and join room
     repo.connect('${ApiUrl.socketUrl}?userId=$userId');
@@ -83,63 +76,70 @@ class ChatController extends GetxController {
 
     // setup user on socket
     repo.setupUser(userId);
-    
+
     isLoading.value = true;
-    repo.fetchMessages(conversationId).then((history) {
+    repo
+        .fetchMessages(conversationId)
+        .then((history) {
+          // map history messages to flutter_chat_types messages
+          // ensure createdAt is milliseconds since epoch
 
-      // map history messages to flutter_chat_types messages
-      // ensure createdAt is milliseconds since epoch
-      
-      for (final h in history) {
-        // determine role for this history message
-        final senderRole = roleForSender(h.sender, fallbackRole: 'other');
+          for (final h in history) {
+            // determine role for this history message
+            final senderRole = roleForSender(h.sender, fallbackRole: 'other');
 
-        // Determine if this message is from the receiver
-        final isReceiverMessage = senderRole != userRole;
-        
-        // Since the new structure doesn't include attachments, create only text messages
-        final msg = types.TextMessage(
-          author: types.User(
-            id: senderRole,
-            firstName: isReceiverMessage ? (receiverName ?? 'User') : 'Me',
-            imageUrl: isReceiverMessage ? receiverImage : null,
-          ),
-          createdAt: h.createdAt.millisecondsSinceEpoch,
-          id: h.id.isNotEmpty ? h.id : const Uuid().v4(),
-          text: h.message,
-          metadata: {'role': senderRole},
-        );
+            // Determine if this message is from the receiver
+            final isReceiverMessage = senderRole != userRole;
 
-        // Add at the end to maintain chronological order for history
-        messages.add(msg);
-        try {
-          debugPrint('[ChatController] inserted history TextMessage id=${msg.id} text=${msg.text}');
-        } catch (_) {}
-      }
-    }).catchError((e) {
-      debugPrint('history load error: $e');
-    }).whenComplete(() {
-      // now join socket to receive live messages
-      repo.joinChat(roomId: conversationId, userId: userId);
-      // initial load finished (either success or error)
-      isLoading.value = false;
-    });
+            // Since the new structure doesn't include attachments, create only text messages
+            final msg = types.TextMessage(
+              author: types.User(
+                id: senderRole,
+                firstName: isReceiverMessage ? (receiverName ?? 'User') : 'Me',
+                imageUrl: isReceiverMessage ? receiverImage : null,
+              ),
+              createdAt: h.createdAt.millisecondsSinceEpoch,
+              id: h.id.isNotEmpty ? h.id : const Uuid().v4(),
+              text: h.message,
+              metadata: {'role': senderRole},
+            );
+
+            // Add at the end to maintain chronological order for history
+            messages.add(msg);
+            try {
+              debugPrint(
+                '[ChatController] inserted history TextMessage id=${msg.id} text=${msg.text}',
+              );
+            } catch (_) {}
+          }
+        })
+        .catchError((e) {
+          debugPrint('history load error: $e');
+        })
+        .whenComplete(() {
+          // now join socket to receive live messages
+          repo.joinChat(roomId: conversationId, userId: userId);
+          // initial load finished (either success or error)
+          isLoading.value = false;
+        });
 
     msgSub = repo.onMessage.listen((chatMsg) {
-        print('[ChatController] 📨 RECEIVED MESSAGE: ${chatMsg.message}');
-        print('[ChatController] 📨 From: ${chatMsg.sender}, To: ${chatMsg.receiver}');
-        print('[ChatController] 📨 Room: ${chatMsg.chatRoomId}');
-        
-        // Ignore server echoes of messages we just sent: if the incoming chatMsg
-        // reports a sender id that matches our userId, it's likely the same
-        // message we optimistically added locally. Filtering avoids duplicate
-        // display and flicker.
-        final incomingSenderId = extractSenderId(chatMsg);
-        if (incomingSenderId != null && incomingSenderId == userId) {
-          // We sent this message — server echo. Ignore.
-          print('[ChatController] 🔄 Ignoring echo of our own message');
-          return;
-        }
+      print('[ChatController] 📨 RECEIVED MESSAGE: ${chatMsg.message}');
+      print(
+        '[ChatController] 📨 From: ${chatMsg.sender}, To: ${chatMsg.receiver}',
+      );
+      print('[ChatController] 📨 Room: ${chatMsg.chatRoomId}');
+
+      // Ignore server echoes of messages we just sent: if the incoming chatMsg
+      // reports a sender id that matches our userId, it's likely the same
+      // message we optimistically added locally. Filtering avoids duplicate
+      // display and flicker.
+      final incomingSenderId = extractSenderId(chatMsg);
+      if (incomingSenderId != null && incomingSenderId == userId) {
+        // We sent this message — server echo. Ignore.
+        print('[ChatController] 🔄 Ignoring echo of our own message');
+        return;
+      }
       // chatMsg is ChatMessage from repository
       // determine incoming sender role
       final incomingRole = roleForSender(chatMsg.sender, fallbackRole: 'other');
@@ -169,10 +169,15 @@ class ChatController extends GetxController {
 
       // Add new incoming messages at the end
       messages.add(msg);
-      print('[ChatController] ✅ ADDED INCOMING MESSAGE: ${msg.text} (Total: ${messages.length})');
+      print(
+        '[ChatController] ✅ ADDED INCOMING MESSAGE: ${msg.text} (Total: ${messages.length})',
+      );
 
       // update inbox preview for this conversation
-      updateConversationLastMessage(chatMsg.message,(chatMsg.createdAt).millisecondsSinceEpoch);
+      updateConversationLastMessage(
+        chatMsg.message,
+        (chatMsg.createdAt).millisecondsSinceEpoch,
+      );
     });
 
     typingSub = repo.onTyping.listen((data) {
@@ -204,8 +209,10 @@ class ChatController extends GetxController {
 
   void handleSendPressed(types.PartialText partial) {
     print('[ChatController] 📤 SENDING MESSAGE: "${partial.text}"');
-    print('[ChatController] 📤 From: $userId, To: $receiverId, Room: $conversationId');
-    
+    print(
+      '[ChatController] 📤 From: $userId, To: $receiverId, Room: $conversationId',
+    );
+
     final textMessage = types.TextMessage(
       author: user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
@@ -214,7 +221,9 @@ class ChatController extends GetxController {
       metadata: {'role': userRole},
     );
     messages.add(textMessage);
-    print('[ChatController] ✅ ADDED SENT MESSAGE to UI (Total: ${messages.length})');
+    print(
+      '[ChatController] ✅ ADDED SENT MESSAGE to UI (Total: ${messages.length})',
+    );
 
     // update inbox preview optimistically
     updateConversationLastMessage(partial.text, textMessage.createdAt);
@@ -246,15 +255,19 @@ class ChatController extends GetxController {
     try {
       if (!Get.isRegistered<ConversationController>()) return;
       final convCtrl = Get.find<ConversationController>();
-      final idx =
-          convCtrl.conversationList.indexWhere((c) => c.id == conversationId);
+      final idx = convCtrl.conversationList.indexWhere(
+        (c) => c.id == conversationId,
+      );
       if (idx == -1) return;
       final convo = convCtrl.conversationList[idx];
 
       // Try to assign fields (works if model fields are mutable)
       try {
         (convo as dynamic).lastMessage = text;
-        (convo as dynamic).lastMessageTime = DateTime.fromMillisecondsSinceEpoch(createdAt ?? DateTime.now().millisecondsSinceEpoch).toIso8601String();
+        (convo as dynamic).lastMessageTime =
+            DateTime.fromMillisecondsSinceEpoch(
+              createdAt ?? DateTime.now().millisecondsSinceEpoch,
+            ).toIso8601String();
         // reassign to trigger RxList change
         convCtrl.conversationList[idx] = convo;
         return;

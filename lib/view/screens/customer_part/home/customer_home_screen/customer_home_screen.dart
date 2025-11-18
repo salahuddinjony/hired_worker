@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -140,8 +139,12 @@ class CustomerHomeScreen extends StatelessWidget {
                                   }
 
                                   return GestureDetector(
-                                    onTap: () async{
-                                        customerProfileController.showAddressBottomSheet( isFromProfile: true, useByUserId: true);
+                                    onTap: () async {
+                                      customerProfileController
+                                          .showAddressBottomSheet(
+                                            isFromProfile: true,
+                                            useByUserId: true,
+                                          );
 
                                       // // open draggable bottom sheet for selection
                                       // Get.bottomSheet(
@@ -492,8 +495,7 @@ class CustomerHomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                   );
-                                }
-                                ),
+                                }),
                               ],
                             ),
                           ],
@@ -641,44 +643,52 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-      homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty)
-          ? const Center(child: CircularProgressIndicator())
-          : SizedBox(
-              height: 120.h,
-              child: ListView.separated(
-                controller: homeController.scrollCategoryController,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(right: 10.h),
-                itemCount: categorys.length + (homeController.categoryHasMoreData.value ? 1 : 0),
-                separatorBuilder: (context, index) => SizedBox(width: 8.w),
-                itemBuilder: (BuildContext context, int index) {
-                  if (index >= categorys.length) {
-                    // Show loading indicator at the end of the list
-                    return const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  return CustomPopularServicesCard(
-                    image: categorys[index].img ?? AppConstants.electrician,
-                    name: categorys[index].name,
-                    onTap: () {
-                      debugPrint('Navigate with Category ID: ${categorys[index].id}');
-                      Get.toNamed(
-                        AppRoutes.customerParSubCategoryItem,
-                        arguments: {
-                          'name': categorys[index].name,
-                          'id': categorys[index].id,
+                homeController.getCategoryStatus.value.isLoading &&
+                        (categorys.isEmpty)
+                    ? const Center(child: CircularProgressIndicator())
+                    : SizedBox(
+                      height: 120.h,
+                      child: ListView.separated(
+                        controller: homeController.scrollCategoryController,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(right: 10.h),
+                        itemCount:
+                            categorys.length +
+                            (homeController.categoryHasMoreData.value ? 1 : 0),
+                        separatorBuilder:
+                            (context, index) => SizedBox(width: 8.w),
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index >= categorys.length) {
+                            // Show loading indicator at the end of the list
+                            return const Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                          return CustomPopularServicesCard(
+                            image:
+                                categorys[index].img ??
+                                AppConstants.electrician,
+                            name: categorys[index].name,
+                            onTap: () {
+                              debugPrint(
+                                'Navigate with Category ID: ${categorys[index].id}',
+                              );
+                              Get.toNamed(
+                                AppRoutes.customerParSubCategoryItem,
+                                arguments: {
+                                  'name': categorys[index].name,
+                                  'id': categorys[index].id,
+                                },
+                              );
+                            },
+                          );
                         },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+                      ),
+                    ),
 
                 // Sub Category Section
                 Row(
@@ -717,7 +727,10 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        homeController.getAllContactor(isHomeSelect: false,useByUserId: true);
+                        homeController.getAllContactor(
+                          isHomeSelect: false,
+                          useByUserId: true,
+                        );
                         Get.toNamed(AppRoutes.customerServicesContractorScreen);
                       },
                       child: CustomText(
@@ -729,36 +742,36 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                GridView.builder(
+                    SizedBox(
+                  height: 260.h,
+                  child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.only(right: 10.h),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: .75,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 8,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: min(4, homeController.getAllContactorList.length),
+                  itemCount: homeController.getAllContactorList.length,
+                  separatorBuilder: (context, index) => SizedBox(width: 12.w),
                   itemBuilder: (BuildContext context, int index) {
                     final data = homeController.getAllContactorList[index];
-                    return CustomServiceContractorCard(
+                    return SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.48,
+                    child: CustomServiceContractorCard(
                       onTap: () {
-                        Get.toNamed(
-                          AppRoutes.customerContractorProfileViewScreen,
-                          arguments: {
-                            'id': data.userId.id,
-                            'contractorDetails': data,
-                          },
-                        );
+                      Get.toNamed(
+                        AppRoutes.customerContractorProfileViewScreen,
+                        arguments: {
+                        'id': data.userId.id,
+                        'contractorDetails': data,
+                        },
+                      );
                       },
                       image: ImageHandler.imagesHandle(data.userId.img),
-                      name: data.userId.fullName,
+                      name: data.userId.fullName ?? '',
                       title: data.skillsCategory,
                       hourlyPrice: data.rateHourly.toString(),
                       rating: data.ratings.toString(),
-                    ); // You can pass `serviceList[index]` if needed
+                    ),
+                    );
                   },
+                  ),
                 ),
 
                 SizedBox(height: 16.h),

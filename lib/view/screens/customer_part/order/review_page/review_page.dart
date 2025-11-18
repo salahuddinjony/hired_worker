@@ -27,12 +27,17 @@ class ReviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CustomerOrderController>();
     final Map<String, dynamic> args = Get.arguments;
-    final String contractorId= args['contractorId'] ?? '';
+    final String contractorId = args['contractorId'] ?? '';
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple.shade100,
-        title: CustomText(text: 'Ratting'.tr, fontSize: 18.w, fontWeight: FontWeight.w600, color: AppColors.black,),
+        title: CustomText(
+          text: 'Ratting'.tr,
+          fontSize: 18.w,
+          fontWeight: FontWeight.w600,
+          color: AppColors.black,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
@@ -44,7 +49,11 @@ class ReviewPage extends StatelessWidget {
           children: [
             SizedBox(height: 12.h),
             SizedBox(height: 24.h),
-            CustomText(text: 'How do you want to rate the service'.tr, fontSize: 14.w, color: Colors.black38),
+            CustomText(
+              text: 'How do you want to rate the service'.tr,
+              fontSize: 14.w,
+              color: Colors.black38,
+            ),
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -60,14 +69,15 @@ class ReviewPage extends StatelessWidget {
               child: TextField(
                 controller: controller.reviewTextController,
                 maxLines: 6,
-                decoration: InputDecoration.collapsed(hintText: 'Write a review'.tr),
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Write a review'.tr,
+                ),
               ),
             ),
             SizedBox(height: 24.h),
             CustomButton(
               title: 'Review'.tr,
               onTap: () async {
-            
                 final success = await controller.submitReview(
                   contractorId: contractorId,
                   rating: controller.rating.value,
@@ -93,7 +103,13 @@ class ReviewPage extends StatelessWidget {
                   color: Colors.purple.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(child: CustomText(text: 'Not Now'.tr, color: AppColors.primary, fontSize: 16.w)),
+                child: Center(
+                  child: CustomText(
+                    text: 'Not Now'.tr,
+                    color: AppColors.primary,
+                    fontSize: 16.w,
+                  ),
+                ),
               ),
             ),
           ],

@@ -7,7 +7,6 @@ class ApiUrl {
   // static const String baseUrl = "http://10.10.20.11:5002/api/v1";
   // static String socketUrl = "http://10.10.20.11:5002";
 
-
   ///========================= Authentication =========================
   static const String customerRegister = "/users/create-customer";
   static const String contractorRegister = "/users/create-contractor";
@@ -122,6 +121,7 @@ class ApiUrl {
   static const String getPopularTherapist = "/user/retrive/therapists/popular";
 
   static const String bookings = "/bookings";
+  static const String weeklyBookings = "/bookings/weekly";
   static const String singleUserBookings = "/bookings/all-bookings-by-user";
   static const String notification = "/notifications";
 

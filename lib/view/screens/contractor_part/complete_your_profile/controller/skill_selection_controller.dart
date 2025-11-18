@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -25,7 +24,9 @@ class SkillSelectionController extends GetxController {
     final String userId = await SharePrefsHelper.getString(AppConstants.userId);
     final String uri = '${ApiUrl.updateUser}/$userId';
 
-    final Map<String, String> body = {'data': jsonEncode({'skills': skills.toList()})};
+    final Map<String, String> body = {
+      'data': jsonEncode({'skills': skills.toList()}),
+    };
 
     try {
       final response = await ApiClient.patchMultipartData(

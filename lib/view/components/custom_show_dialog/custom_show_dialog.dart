@@ -17,17 +17,19 @@ class CustomShowDialog extends StatefulWidget {
   final bool? showColumnButton;
   final bool? showCloseButton;
   final Color? textColor;
-  const CustomShowDialog(
-      {super.key,
-      required this.title,
-      required this.discription,
-      this.leftOnTap,
-      this.rightOnTap,
-      this.leftTextButton,
-      this.rightTextButton,
-      this.showRowButton = false,
-      this.showColumnButton = false,
-      this.textColor = Colors.black, this.showCloseButton = false});
+  const CustomShowDialog({
+    super.key,
+    required this.title,
+    required this.discription,
+    this.leftOnTap,
+    this.rightOnTap,
+    this.leftTextButton,
+    this.rightTextButton,
+    this.showRowButton = false,
+    this.showColumnButton = false,
+    this.textColor = Colors.black,
+    this.showCloseButton = false,
+  });
 
   @override
   State<CustomShowDialog> createState() => _CustomShowDialogState();
@@ -44,13 +46,21 @@ class _CustomShowDialogState extends State<CustomShowDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          widget.showCloseButton== true ? Padding(
-            padding: EdgeInsets.only(right: 10.0, top: 0.h),
-            child: Align(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(), child: Icon(Icons.close, color: widget.textColor?? AppColors.black,))),
-          ): const SizedBox(),
+          widget.showCloseButton == true
+              ? Padding(
+                padding: EdgeInsets.only(right: 10.0, top: 0.h),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Icon(
+                      Icons.close,
+                      color: widget.textColor ?? AppColors.black,
+                    ),
+                  ),
+                ),
+              )
+              : const SizedBox(),
           CustomText(
             text: "${widget.title}",
             fontSize: 22,
@@ -67,65 +77,64 @@ class _CustomShowDialogState extends State<CustomShowDialog> {
           ),
           widget.showRowButton == true
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: CustomButton(
-                          onTap: widget.leftOnTap ??
-                              () => Navigator.of(context).pop(),
-                          title: widget.leftTextButton ?? "Yes",
-                          height: 50.h,
-                         textColor: widget.textColor ?? AppColors.black_80,
-                         // fillColor:  widget.textColor ?? AppColors.black_80,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12.w,
-                      ),
-                      Flexible(
-                        child: CustomButton(
-                          onTap: widget.rightOnTap ??
-                              () => Navigator.of(context).pop(),
-                          title: widget.rightTextButton ?? "No",
-                          height: 50.h,
-                          fillColor: AppColors.white,
-                          textColor: AppColors.primary,
-                          isBorder: true,
-                          borderWidth: 1,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              : const SizedBox(),
-          widget.showColumnButton == true
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      CustomButton(
-                        onTap: widget.leftOnTap ??
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: CustomButton(
+                        onTap:
+                            widget.leftOnTap ??
                             () => Navigator.of(context).pop(),
                         title: widget.leftTextButton ?? "Yes",
-                        height: 45.h,
+                        height: 50.h,
+                        textColor: widget.textColor ?? AppColors.black_80,
+                        // fillColor:  widget.textColor ?? AppColors.black_80,
                       ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      CustomButton(
-                        onTap: widget.rightOnTap ??
+                    ),
+                    SizedBox(width: 12.w),
+                    Flexible(
+                      child: CustomButton(
+                        onTap:
+                            widget.rightOnTap ??
                             () => Navigator.of(context).pop(),
                         title: widget.rightTextButton ?? "No",
-                        height: 45.h,
+                        height: 50.h,
                         fillColor: AppColors.white,
                         textColor: AppColors.primary,
                         isBorder: true,
                         borderWidth: 1,
-                      )
-                    ],
-                  ),
-                )
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : const SizedBox(),
+          widget.showColumnButton == true
+              ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  children: [
+                    CustomButton(
+                      onTap:
+                          widget.leftOnTap ?? () => Navigator.of(context).pop(),
+                      title: widget.leftTextButton ?? "Yes",
+                      height: 45.h,
+                    ),
+                    SizedBox(height: 12.h),
+                    CustomButton(
+                      onTap:
+                          widget.rightOnTap ??
+                          () => Navigator.of(context).pop(),
+                      title: widget.rightTextButton ?? "No",
+                      height: 45.h,
+                      fillColor: AppColors.white,
+                      textColor: AppColors.primary,
+                      isBorder: true,
+                      borderWidth: 1,
+                    ),
+                  ],
+                ),
+              )
               : const SizedBox(),
         ],
       ),

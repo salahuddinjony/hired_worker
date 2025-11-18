@@ -92,12 +92,12 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
     final String contractorIdForTimeSlot =
         args['contractorIdForTimeSlot']?.toString() ?? '';
 
-    final int paymentedTotalAmount = int.tryParse(paymentedTotalAmountString) ?? 0;
+    final int paymentedTotalAmount =
+        int.tryParse(paymentedTotalAmountString) ?? 0;
     final int totalAmount = controller.totalAmount;
     final bool isUpdateMode = isUpdate == true;
     final int paymentAmount =
         isUpdateMode ? (totalAmount - paymentedTotalAmount) : totalAmount;
-
 
     //get parcentegae, its used to calculate payment amount
     controller.getParcentage();
@@ -268,8 +268,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   CustomText(
-                                    text:
-                                        '\$ ${totalPrice.toStringAsFixed(2)}',
+                                    text: '\$ ${totalPrice.toStringAsFixed(2)}',
                                     fontSize: 14.w,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.black,
@@ -287,7 +286,8 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                       Row(
                         children: [
                           CustomText(
-                            text: "Materials Total ${controller.bookingType.value == 'weekly' ? 'for ${controller.selectedDates.length} day(s)' : ''}: ",
+                            text:
+                                "Materials Total ${controller.bookingType.value == 'weekly' ? 'for ${controller.selectedDates.length} day(s)' : ''}: ",
                             fontSize: 16.w,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
@@ -469,7 +469,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                 color: AppColors.black_08,
                               ),
                               const SizedBox(width: 8),
-                            
+
                               CustomText(
                                 text:
                                     '\$ ${paymentedTotalAmount.toStringAsFixed(2)}',
@@ -481,33 +481,37 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                         ],
-                          // parcentage amount for per transaction fee
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                             Obx(() {
-                                return CustomText(
-                                  text: 'Booking Fee (${controller.parcentage.value.toStringAsFixed(0)}% of \$${paymentAmount.toStringAsFixed(0)}):',
-                                  fontSize: 15.w,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black_08,
-                                );
-                              }),
-                              const SizedBox(width: 8),
-                            
-                             Obx(() {
-                                final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
-                                return CustomText(
-                                  text:
-                                      '\$ ${parcentageAmount.toStringAsFixed(2)}',
-                                  fontSize: 18.w,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.red,
-                                );
-                              })
-                            ],
-                          ),
-                       if(isUpdateMode) ...[
+                        // parcentage amount for per transaction fee
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Obx(() {
+                              return CustomText(
+                                text:
+                                    'Booking Fee (${controller.parcentage.value.toStringAsFixed(0)}% of \$${paymentAmount.toStringAsFixed(0)}):',
+                                fontSize: 15.w,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.black_08,
+                              );
+                            }),
+                            const SizedBox(width: 8),
+
+                            Obx(() {
+                              final parcentageAmount =
+                                  controller.parcentage.value *
+                                  paymentAmount /
+                                  100;
+                              return CustomText(
+                                text:
+                                    '\$ ${parcentageAmount.toStringAsFixed(2)}',
+                                fontSize: 18.w,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.red,
+                              );
+                            }),
+                          ],
+                        ),
+                        if (isUpdateMode) ...[
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -542,11 +546,16 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                         ),
                                       ),
                                       WidgetSpan(
-                                        alignment: PlaceholderAlignment.baseline,
+                                        alignment:
+                                            PlaceholderAlignment.baseline,
                                         baseline: TextBaseline.alphabetic,
                                         child: Obx(() {
-                                          final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
-                                          final payableAmount = paymentAmount + parcentageAmount;
+                                          final parcentageAmount =
+                                              controller.parcentage.value *
+                                              paymentAmount /
+                                              100;
+                                          final payableAmount =
+                                              paymentAmount + parcentageAmount;
                                           return Text(
                                             '${payableAmount.toStringAsFixed(2)}',
                                             style: TextStyle(
@@ -588,8 +597,12 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                                     alignment: PlaceholderAlignment.baseline,
                                     baseline: TextBaseline.alphabetic,
                                     child: Obx(() {
-                                      final parcentageAmount = controller.parcentage.value * paymentAmount / 100;
-                                      final payableAmount = paymentAmount + parcentageAmount;
+                                      final parcentageAmount =
+                                          controller.parcentage.value *
+                                          paymentAmount /
+                                          100;
+                                      final payableAmount =
+                                          paymentAmount + parcentageAmount;
                                       return Text(
                                         '${payableAmount.toStringAsFixed(2)}',
                                         style: TextStyle(
@@ -655,7 +668,9 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                   controller.collectAllAnswers();
                   // Step 1: Call payment API to get payment URL for remaining amount
                   final double finalPaymentAmount =
-                      paymentAmount + (controller.parcentage.value * paymentAmount / 100).toDouble();
+                      paymentAmount +
+                      (controller.parcentage.value * paymentAmount / 100)
+                          .toDouble();
                   EasyLoading.show(status: 'Processing payment...');
                   final Map<String, dynamic> requestBody = {
                     "contractorId": contractorId,
@@ -713,7 +728,7 @@ class CustomarServiceContractorDetailsScreen extends StatelessWidget {
                 },
                 title:
                     isUpdateMode
-                        ?  "Pay & Update Booking".tr
+                        ? "Pay & Update Booking".tr
                         : "Pay & Book Now".tr,
               );
             },

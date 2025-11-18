@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+
 class CustomGetCard extends StatelessWidget {
   final Color? bkColor;
   const CustomGetCard({super.key, this.bkColor});
@@ -14,7 +15,7 @@ class CustomGetCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         width: MediaQuery.sizeOf(context).width / 1.8,
         decoration: BoxDecoration(
-          color:bkColor?? const Color(0xffFFBC99),
+          color: bkColor ?? const Color(0xffFFBC99),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -44,10 +45,7 @@ class CustomGetCard extends StatelessWidget {
             ),
             Container(
               width: 108,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(17),
@@ -61,7 +59,11 @@ class CustomGetCard extends StatelessWidget {
                     color: const Color(0xff6A9B7E),
                     right: 4,
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined,size: 14,color: Color(0xff6A9B7E),)
+                  const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    size: 14,
+                    color: Color(0xff6A9B7E),
+                  ),
                 ],
               ),
             ),

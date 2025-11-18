@@ -96,7 +96,10 @@ class CustomNavIcon extends StatelessWidget {
       width: isSelected ? 32.h : 26.h,
       child: SvgPicture.asset(
         assetName,
-        colorFilter: isSelected ? ColorFilter.mode(Colors.white, BlendMode.srcIn) : ColorFilter.mode(Colors.white70, BlendMode.srcIn),
+        colorFilter:
+            isSelected
+                ? ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                : ColorFilter.mode(Colors.white70, BlendMode.srcIn),
       ),
     );
   }

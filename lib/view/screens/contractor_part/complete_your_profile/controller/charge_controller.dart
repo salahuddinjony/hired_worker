@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
@@ -10,6 +11,14 @@ import '../../../../../utils/app_const/app_const.dart';
 
 class ChargeController extends GetxController {
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.success());
+  num? hourlyRate;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    hourlyRate = Get.arguments['rate'];
+  }
 
   Future<void> updateContractorData(String rateHourly) async {
     if (rateHourly.isEmpty) {
@@ -34,7 +43,13 @@ class ChargeController extends GetxController {
       if (response.statusCode == 200) {
         status.value = RxStatus.success();
 
-        Get.toNamed(AppRoutes.subscribeScreen);
+        if (hourlyRate != null) {
+          showCustomSnackBar("Successfully updated", isError: false);
+          Get.find<ProfileController>().getMe();
+          Get.back();
+        } else {
+          Get.toNamed(AppRoutes.subscribeScreen);
+        }
       } else {
         showCustomSnackBar(
           response.body['message'] ?? "response.statusText",

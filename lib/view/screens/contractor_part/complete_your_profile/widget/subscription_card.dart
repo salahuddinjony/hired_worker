@@ -74,7 +74,10 @@ class SubscriptionCard extends StatelessWidget {
                 SizedBox(height: 30.h),
                 Padding(
                   padding: EdgeInsets.all(20.sp),
-                  child: CustomButton(onTap: onSubscribe, title: isFree ? "Free" : "Subscribe".tr),
+                  child: CustomButton(
+                    onTap: onSubscribe,
+                    title: isFree ? "Free" : "Subscribe".tr,
+                  ),
                 ),
               ],
             ),

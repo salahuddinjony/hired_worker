@@ -26,7 +26,9 @@ class CustomerCategoryScreen extends StatelessWidget {
       body: SafeArea(
         child: Obx(() {
           final categorys = homeController.categoryModel.value.data ?? [];
-          final isInitialLoading = homeController.getCategoryStatus.value.isLoading && (categorys.isEmpty);
+          final isInitialLoading =
+              homeController.getCategoryStatus.value.isLoading &&
+              (categorys.isEmpty);
           if (isInitialLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -54,7 +56,9 @@ class CustomerCategoryScreen extends StatelessWidget {
               mainAxisSpacing: 8,
             ),
             physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: categorys.length + (homeController.categoryHasMoreData.value ? extraCells : 0),
+            itemCount:
+                categorys.length +
+                (homeController.categoryHasMoreData.value ? extraCells : 0),
             itemBuilder: (BuildContext context, int index) {
               if (index < categorys.length) {
                 return CustomPopularServicesCard(
@@ -72,7 +76,8 @@ class CustomerCategoryScreen extends StatelessWidget {
                 );
               }
               // Add empty cells before the loading indicator to center it
-              final int loadingIndicatorIndex = categorys.length + (extraCells ~/ 2);
+              final int loadingIndicatorIndex =
+                  categorys.length + (extraCells ~/ 2);
               if (index == loadingIndicatorIndex) {
                 return const Center(
                   child: SizedBox(

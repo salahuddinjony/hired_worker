@@ -506,6 +506,56 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
     bool? readOnly,
     bool? isContractor,
   }) {
+    Future<void> openMapScreen() async {
+      if (isUpdate) {
+        debugPrint('Address field or icon tapped - to open map screen ');
+        if (!Get.isRegistered<MapController>()) {
+          Get.put(MapController());
+        }
+
+        final result = await Get.toNamed(
+          '/SeletedMapScreen',
+          arguments: {
+            'returnData': true,
+            if (isContractor != null && isContractor)
+              'long':
+                  Get.find<ProfileController>()
+                      .contractorModel
+                      .value
+                      .data!
+                      .contractor!
+                      .location!
+                      .coordinates![0],
+
+            if (isContractor != null && isContractor)
+              'lat':
+                  Get.find<ProfileController>()
+                      .contractorModel
+                      .value
+                      .data!
+                      .contractor!
+                      .location!
+                      .coordinates![1],
+          },
+        );
+
+        // If location is selected, update address, latitude, longitude
+        if (result != null && result is Map<String, dynamic>) {
+          final address = result['address'] ?? '';
+          final lat = result['latitude'];
+          final lng = result['longitude'];
+          setState(() {
+            addressController.text = address;
+            latitude = lat is double ? lat : double.tryParse(lat.toString());
+            longitude = lng is double ? lng : double.tryParse(lng.toString());
+          });
+        }
+      } else {
+        debugPrint('Address field or icon tapped - no action defined yet.');
+        return;
+      }
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       decoration: BoxDecoration(
@@ -517,79 +567,35 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
         children: [
           if (icon != null) ...[
             GestureDetector(
-              onTap: () async {
-                if (isUpdate) {
-                  debugPrint('Edit icon tapped - to open map screen ');
-                  if (!Get.isRegistered<MapController>()) {
-                    Get.put(MapController());
-                  }
-
-                  final result = await Get.toNamed(
-                    '/SeletedMapScreen',
-                    arguments: {
-                      'returnData': true,
-                      if (isContractor != null && isContractor)
-                        'long':
-                            Get.find<ProfileController>()
-                                .contractorModel
-                                .value
-                                .data!
-                                .contractor!
-                                .location!
-                                .coordinates![0],
-
-                      if (isContractor != null && isContractor)
-                        'lat':
-                            Get.find<ProfileController>()
-                                .contractorModel
-                                .value
-                                .data!
-                                .contractor!
-                                .location!
-                                .coordinates![1],
-                    },
-                  );
-
-                  // If location is selected, update address, latitude, longitude
-                  if (result != null && result is Map<String, dynamic>) {
-                    final address = result['address'] ?? '';
-                    final lat = result['latitude'];
-                    final lng = result['longitude'];
-                    setState(() {
-                      addressController.text = address;
-                      latitude =
-                          lat is double ? lat : double.tryParse(lat.toString());
-                      longitude =
-                          lng is double ? lng : double.tryParse(lng.toString());
-                    });
-                  }
-                } else {
-                  debugPrint('Icon tapped - no action defined yet.');
-                  return null;
-                }
-              },
+              onTap: openMapScreen,
               child: Icon(icon, color: AppColors.primary, size: 20.sp),
             ),
             SizedBox(width: 12.w),
           ],
           Expanded(
-            child: TextField(
-              readOnly: readOnly == null ? false : true,
-              controller: controller,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: TextStyle(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: openMapScreen,
+              child: TextField(
+                readOnly: true,
+                controller: controller,
+                style: TextStyle(
                   fontSize: 14.sp,
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.w400,
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w500,
                 ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.grey[400],
+                    fontWeight: FontWeight.w400,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                ),
+                enableInteractiveSelection: false,
+                onTap: openMapScreen,
               ),
             ),
           ),

@@ -18,8 +18,12 @@ class ConversationResponse {
     return ConversationResponse(
       success: json['success'] as bool? ?? false,
       message: json['message'] as String?,
-      meta: json['meta'] != null ? Meta.fromJson(json['meta'] as Map<String, dynamic>) : null,
-      data: (json['data'] as List<dynamic>?)
+      meta:
+          json['meta'] != null
+              ? Meta.fromJson(json['meta'] as Map<String, dynamic>)
+              : null,
+      data:
+          (json['data'] as List<dynamic>?)
               ?.map((e) => Conversation.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -27,11 +31,11 @@ class ConversationResponse {
   }
 
   Map<String, dynamic> toJson() => {
-        'success': success,
-        'message': message,
-        'meta': meta?.toJson(),
-        'data': data.map((e) => e.toJson()).toList(),
-      };
+    'success': success,
+    'message': message,
+    'meta': meta?.toJson(),
+    'data': data.map((e) => e.toJson()).toList(),
+  };
 
   @override
   String toString() => jsonEncode(toJson());
@@ -60,11 +64,11 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() => {
-        'page': page,
-        'limit': limit,
-        'total': total,
-        'totalPage': totalPage,
-      };
+    'page': page,
+    'limit': limit,
+    'total': total,
+    'totalPage': totalPage,
+  };
 }
 
 class Participant {
@@ -72,11 +76,7 @@ class Participant {
   final String fullName;
   final String? img;
 
-  Participant({
-    required this.id,
-    required this.fullName,
-    this.img,
-  });
+  Participant({required this.id, required this.fullName, this.img});
 
   factory Participant.fromJson(Map<String, dynamic> json) {
     return Participant(
@@ -87,10 +87,10 @@ class Participant {
   }
 
   Map<String, dynamic> toJson() => {
-        '_id': id,
-        'fullName': fullName,
-        'img': img,
-      };
+    '_id': id,
+    'fullName': fullName,
+    'img': img,
+  };
 }
 
 class Conversation {
@@ -116,14 +116,15 @@ class Conversation {
     this.otherUserId,
     this.lastMessage,
     this.lastMessageTime,
-  })  : id = id ?? '',
-        participants = participants ?? [],
-        isDeleted = isDeleted ?? false;
+  }) : id = id ?? '',
+       participants = participants ?? [],
+       isDeleted = isDeleted ?? false;
 
   factory Conversation.fromJson(Map<String, dynamic> json) {
     return Conversation(
       id: (json['_id'] as String?) ?? '',
-      participants: (json['participants'] as List<dynamic>?)
+      participants:
+          (json['participants'] as List<dynamic>?)
               ?.map((e) => Participant.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -139,16 +140,17 @@ class Conversation {
   }
 
   Map<String, dynamic> toJson() => {
-        '_id': id,
-        'participants': participants.map((p) => p.toJson()).toList(),
-        'isDeleted': isDeleted,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
-        'otherUserName': otherUserName,
-        'otherUserImage': otherUserImage,
-        'otherUserId': otherUserId,
-        'lastMessage': lastMessage,
-        'lastMessageTime': lastMessageTime,
-      };
+    '_id': id,
+    'participants': participants.map((p) => p.toJson()).toList(),
+    'isDeleted': isDeleted,
+    'createdAt': createdAt,
+    'updatedAt': updatedAt,
+    'otherUserName': otherUserName,
+    'otherUserImage': otherUserImage,
+    'otherUserId': otherUserId,
+    'lastMessage': lastMessage,
+    'lastMessageTime': lastMessageTime,
+  };
 }
+
 // ...existing code...

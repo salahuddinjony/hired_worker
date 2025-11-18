@@ -182,7 +182,9 @@ class CustomDeliveredServiceCard extends StatelessWidget {
 
                         GestureDetector(
                           onTap: () {
-                            Get.to(() => GoogleMapScreen(location: location ?? ""));
+                            Get.to(
+                              () => GoogleMapScreen(location: location ?? ""),
+                            );
                           },
                           child: Row(
                             children: [
@@ -210,8 +212,7 @@ class CustomDeliveredServiceCard extends StatelessWidget {
               ],
             ),
 
-            if (isButtonShow)
-              SizedBox(height: 12.h,),
+            if (isButtonShow) SizedBox(height: 12.h),
 
             if (isButtonShow)
               Row(

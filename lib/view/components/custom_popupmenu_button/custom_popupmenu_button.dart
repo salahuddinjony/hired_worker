@@ -19,22 +19,20 @@ class CustomPopupmenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       color: AppColors.white,
-      icon: Icon(
-        icons ?? Icons.arrow_drop_down,
-        color: AppColors.red,
-      ),
-      itemBuilder: (context) => List.generate(items.length, (index) {
-        return PopupMenuItem(
-          onTap: () => onChanged(items[index]),
-          child: CustomText(
-            textAlign: TextAlign.center,
-            text: items[index],
-            color: AppColors.black,
-            fontSize: 14.w,
-            fontWeight: FontWeight.w300,
-          ),
-        );
-      }),
+      icon: Icon(icons ?? Icons.arrow_drop_down, color: AppColors.red),
+      itemBuilder:
+          (context) => List.generate(items.length, (index) {
+            return PopupMenuItem(
+              onTap: () => onChanged(items[index]),
+              child: CustomText(
+                textAlign: TextAlign.center,
+                text: items[index],
+                color: AppColors.black,
+                fontSize: 14.w,
+                fontWeight: FontWeight.w300,
+              ),
+            );
+          }),
     );
   }
 }

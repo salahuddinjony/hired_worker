@@ -32,10 +32,8 @@ class HomeController extends GetxController {
       );
     });
   }
-RxString selectedCategoryId = ''.obs;
 
-
-
+  RxString selectedCategoryId = ''.obs;
 
   // PageController for banners and current index observable (used by UI)
   PageController bannerPageController = PageController();
@@ -287,8 +285,9 @@ RxString selectedCategoryId = ''.obs;
         ApiUrl.singleSubCategory,
         query: {
           'categoryId': categoryId,
-          'page': page.toString(), 
-          'limit': '500'},
+          'page': page.toString(),
+          'limit': '500',
+        },
       );
 
       final newFetchedData =
@@ -354,12 +353,17 @@ RxString selectedCategoryId = ''.obs;
   );
   RxList<allContractor> getAllContactorList = <allContractor>[].obs;
 
-
-  Future<void> getAllContactor({String? subCategoryId, bool useByUserId = false, bool isHomeSelect = false}) async {
+  Future<void> getAllContactor({
+    String? subCategoryId,
+    bool useByUserId = false,
+    bool isHomeSelect = false,
+  }) async {
     getAllServicesContractorStatus.value = RxStatus.loading();
 
     try {
-      final String userId = await SharePrefsHelper.getString(AppConstants.userId);
+      final String userId = await SharePrefsHelper.getString(
+        AppConstants.userId,
+      );
       final response = await ApiClient.getData(
         ApiUrl.getAllContractors,
         query: {
@@ -403,7 +407,7 @@ RxString selectedCategoryId = ''.obs;
       showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
     } finally {
       refresh();
-    } 
+    }
   }
 
   // get contractor question based on subCategory
@@ -417,10 +421,7 @@ RxString selectedCategoryId = ''.obs;
     try {
       final response = await ApiClient.getData(
         ApiUrl.getContractorQuestions,
-        query: {
-          'limit': '500',
-          'subCategoryId': subCategoryId
-        }
+        query: {'limit': '500', 'subCategoryId': subCategoryId},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

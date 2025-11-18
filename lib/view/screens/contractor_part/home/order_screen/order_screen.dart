@@ -104,15 +104,22 @@ class _OrderScreenState extends State<OrderScreen> {
                   Expanded(
                     child: ListView.builder(
                       controller: controller.completedScrollController,
-                      itemCount: controller.completedBookingList.length +
-                          (controller.statusForComplete.value.isLoadingMore ? 1 : 0),
+                      itemCount:
+                          controller.completedBookingList.length +
+                          (controller.statusForComplete.value.isLoadingMore
+                              ? 1
+                              : 0),
                       itemBuilder: (context, index) {
                         if (index < controller.completedBookingList.length) {
-                          final BookingModelData data = controller.completedBookingList[index];
+                          final BookingModelData data =
+                              controller.completedBookingList[index];
 
                           return CustomDeliveredServiceCard(
                             title: getSubCategoryName(data),
-                            rating: data.contractorId?.contractor?.ratings?.toString() ?? ' - ',
+                            rating:
+                                data.contractorId?.contractor?.ratings
+                                    ?.toString() ??
+                                ' - ',
                             dateTime: data.updatedAt!,
                             price: data.totalAmount.toString(),
                             image: data.subCategoryId?.img,

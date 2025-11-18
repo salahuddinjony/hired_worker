@@ -11,12 +11,10 @@ import 'package:servana/view/components/custom_nav_bar/navbar.dart';
 import 'package:servana/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:servana/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:servana/view/components/custom_text/custom_text.dart';
-import 'package:servana/view/screens/authentication/controller/auth_controller.dart';
 import 'package:servana/view/screens/choose_language/controller/language_controller.dart';
 import 'package:servana/view/screens/contractor_part/home/controller/contractor_home_controller.dart';
 import 'package:servana/view/screens/contractor_part/profile/controller/profile_controller.dart';
 import '../../home/home_screen/widget/custom_home_card.dart';
-import '../../map/google_map_screen.dart';
 import 'widget/custom_profile_menu_list.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -114,14 +112,15 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                          profileController
-                              .contractorModel
-                              .value
-                              .data
-                              ?.contractor
-                              ?.balance
-                              .toString() ??
-                          " - ",
+                          (profileController
+                                  .contractorModel
+                                  .value
+                                  .data
+                                  ?.contractor
+                                  ?.balance
+                                  .toString() ??
+                              " - ") +
+                          '\$',
                       title: "Total Earning this month".tr,
                     ),
                     CustomHomeCard(
@@ -148,20 +147,24 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomHomeCard(
                       text:
-                          homeController.bookingModel.value.data?.length
+                          profileController.contractorModel.value.data?.contractor?.ratings
                               .toString() ??
                           " - ",
-                      title: "Recent Services".tr,
+                      title: "Overall Rating".tr,
                       imageSrc: AppIcons.iconFour,
-                      onTap: () {
-                        Get.toNamed(AppRoutes.recentAllServiceScreen);
-                      },
                     ),
                     CustomHomeCard(
                       text:
                           "\$${profileController.contractorModel.value.data?.contractor?.rateHourly ?? ' - '}/hr",
                       title: "Current billing price".tr,
                       imageSrc: AppIcons.iconThree,
+                      onTap:
+                          () => Get.toNamed(
+                            AppRoutes.chargeScreen,
+                            arguments: {
+                              'rate': profileController.contractorModel.value.data?.contractor?.rateHourly
+                            },
+                          ),
                     ),
                   ],
                 );

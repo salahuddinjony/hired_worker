@@ -5,12 +5,13 @@ import 'package:servana/view/screens/contractor_part/complete_your_profile/subsc
 import 'package:servana/view/screens/contractor_part/complete_your_profile/sub_category_selected_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/home_screen/recent_all_service_screen.dart';
 import 'package:servana/view/screens/contractor_part/home/on_going_screen/ongoing_order_details_screen.dart';
-import 'package:servana/view/screens/contractor_part/home/order_screen/order_details_screen_1.dart';
+import 'package:servana/view/screens/contractor_part/home/order_screen/pending_order_details_screen.dart';
 import 'package:servana/view/screens/contractor_part/profile/skill/skills_edit_screen.dart';
 import 'package:servana/view/screens/contractor_part/profile/subcategory/sub_category_edit_screen.dart';
 import 'package:servana/view/screens/customer_part/home/customer_all_contractor_view_screen/customer_contractor_based_category_list_screen.dart';
 import 'package:servana/view/screens/customer_part/profile/customer_change_password/customer_change_password_screen.dart';
-import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart' show ChatScreen;
+import 'package:servana/view/screens/message/chat/inbox_screen/chat_screen/screen/chat_screen.dart'
+    show ChatScreen;
 import '../../view/screens/authentication/account_type_screen/account_type_screen.dart';
 import '../../view/screens/authentication/account_type_screen/contractor_sign_up_screen/contractor_sign_up_screen.dart';
 import '../../view/screens/authentication/forgot_password_screen/forgot_password_screen.dart';
@@ -29,7 +30,7 @@ import '../../view/screens/contractor_part/home/home_screen/home_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_finish_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/on_going_screen.dart';
 import '../../view/screens/contractor_part/home/on_going_screen/upload_photo_screen.dart';
-import '../../view/screens/contractor_part/home/order_screen/order_details_screen_2.dart';
+import '../../view/screens/contractor_part/home/order_screen/completed_order_details_screen.dart';
 import '../../view/screens/contractor_part/home/order_screen/order_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen.dart';
 import '../../view/screens/contractor_part/onboarding_screen/onboarding_screen_two.dart';
@@ -64,6 +65,7 @@ import '../../view/screens/customer_part/profile/customer_refer_friend_screen/cu
 import '../../view/screens/customer_part/profile/edit_customer_profile_screen/edit_customer_profile_screen.dart';
 import '../../view/screens/customer_part/profile/privacy_policy_screen/privacy_policy_screen.dart';
 import '../../view/screens/customer_part/profile/terms_conditions_screen/terms_conditions_screen.dart';
+
 class AppRoutes {
   ///===========================Authentication==========================
   static const String splashScreen = "/SplashScreen";
@@ -100,45 +102,57 @@ class AppRoutes {
   static const String addMaterialsScreen = "/AddMaterialsScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String scheduleScreen = "/ScheduleScreen";
-  static const String customerChangePasswordScreen = "/CustomerChangePasswordScreen";
+  static const String customerChangePasswordScreen =
+      "/CustomerChangePasswordScreen";
   static const String eranScreen = "/EranScreen";
   static const String onGoingScreen = "/OnGoingScreen";
   static const String onGoingFinishScreen = "/OnGoingFinishScreen";
   static const String chargeScreen = "/ChargeScreen";
 
-
   ///===========================Customer==========================
   static const String customerHomeScreen = "/CustomerHomeScreen";
   static const String customerSubCategoryScreen = "/CustomerSubCategoryScreen";
-  static const String customerServicesContractorScreen = "/CustomerServicesContractorScreen";
-  static const String customerAllContractorBasedSubCategoryViewScreen = "/CustomerAllContractorBasedSubCategoryViewScreen";
-  static const String customerContractorBasedCategoryListScreen = "/CustomerContractorBasedCategoryListScreen";
-  static const String customerContractorProfileViewScreen = "/CustomerContractorProfileViewScreen";
-  static const String customerSuccessfullyPaidScreen = "/CustomerSuccessfullyPaidScreen";
-  static const String customerConfirmationsScreen = "/CustomerConfirmationsScreen";
+  static const String customerServicesContractorScreen =
+      "/CustomerServicesContractorScreen";
+  static const String customerAllContractorBasedSubCategoryViewScreen =
+      "/CustomerAllContractorBasedSubCategoryViewScreen";
+  static const String customerContractorBasedCategoryListScreen =
+      "/CustomerContractorBasedCategoryListScreen";
+  static const String customerContractorProfileViewScreen =
+      "/CustomerContractorProfileViewScreen";
+  static const String customerSuccessfullyPaidScreen =
+      "/CustomerSuccessfullyPaidScreen";
+  static const String customerConfirmationsScreen =
+      "/CustomerConfirmationsScreen";
   static const String editCustomerProfileScreen = "/EditCustomerProfileScreen";
-  static const String customerNotificationScreen = "/CustomerNotificationScreen";
+  static const String customerNotificationScreen =
+      "/CustomerNotificationScreen";
   static const String customerHelpSupportScreen = "/CustomerHelpSupportScreen";
   static const String customerReferFriendScreen = "/CustomerReferFriendScreen";
-  static const String customerMessaageListScreen = "/CustomerMessaageListScreen";
-  static const String customerSearchResultScreen = "/CustomerSearchResultScreen";
-  static const String customarServiceDetailsScreen = "/CustomarServiceDetailsScreen";
+  static const String customerMessaageListScreen =
+      "/CustomerMessaageListScreen";
+  static const String customerSearchResultScreen =
+      "/CustomerSearchResultScreen";
+  static const String customarServiceDetailsScreen =
+      "/CustomarServiceDetailsScreen";
   static const String customarQaScreen = "/CustomarQaScreen";
   static const String customarMaterialsScreen = "/CustomarMaterialsScreen";
   static const String customerCategoryScreen = "/CustomerCategoryScreen";
-  static const String customerRequestHistoryScreen = "/CustomerRequestHistoryScreen";
-  static const String customerParSubCategoryItem = "/CustomerParSubCategoryItem";
-  static const String customarServiceContractorDetailsScreen = "/CustomarServiceContractorDetailsScreen";
-  static const String requestHistoryServiceDetailsPage = "/RequestHistoryServiceDetailsPage";
+  static const String customerRequestHistoryScreen =
+      "/CustomerRequestHistoryScreen";
+  static const String customerParSubCategoryItem =
+      "/CustomerParSubCategoryItem";
+  static const String customarServiceContractorDetailsScreen =
+      "/CustomarServiceContractorDetailsScreen";
+  static const String requestHistoryServiceDetailsPage =
+      "/RequestHistoryServiceDetailsPage";
   static const String aboutUsScreen = "/AboutUsScreen";
   static const String privacyPolicyScreen = "/PrivacyPolicyScreen";
   static const String termsConditionsScreen = "/TermsConditionsScreen";
   static const String recentAllServiceScreen = "/RecentAllServiceScreen";
   static const String uploadPhotoScreen = "/UploadPhotoScreen";
 
-
-
-// Page routes
+  // Page routes
   static List<GetPage> routes = [
     ///===========================Authentication==========================
     GetPage(name: splashScreen, page: () => SplashScreen()),
@@ -156,16 +170,25 @@ class AppRoutes {
     GetPage(name: seletedMapScreen, page: () => SelectedMapScreen()),
     GetPage(name: scheduleSeletedScreen, page: () => ScheduleSelectedScreen()),
     GetPage(name: categorySeletedScreen, page: () => CategorySelectedScreen()),
-    GetPage(name: subCategorySelectedScreen, page: () => SubCategorySelectedScreen()),
+    GetPage(
+      name: subCategorySelectedScreen,
+      page: () => SubCategorySelectedScreen(),
+    ),
     GetPage(name: subCategoryEditScreen, page: () => SubCategoryEditScreen()),
     GetPage(name: certificateScreen, page: () => CertificateScreen()),
     GetPage(name: skillsAddScreen, page: () => SkillsAddScreen()),
     GetPage(name: skillsEditScreen, page: () => SkillsEditScreen()),
     GetPage(name: homeScreen, page: () => HomeScreen()),
     GetPage(name: orderScreen, page: () => OrderScreen()),
-    GetPage(name: orderDetailsScreen1, page: () => OrderDetailsScreen1()),
-    GetPage(name: orderDetailsScreen2, page: () => OrderDetailsScreen2()),
-    GetPage(name: ongoingDetailsScreen, page: () => OngoingOrderDetailsScreen()),
+    GetPage(name: orderDetailsScreen1, page: () => PendingOrderDetailsScreen()),
+    GetPage(
+      name: orderDetailsScreen2,
+      page: () => CompletedOrderDetailsScreen(),
+    ),
+    GetPage(
+      name: ongoingDetailsScreen,
+      page: () => OngoingOrderDetailsScreen(),
+    ),
     // GetPage(name: messageListScreen, page: () => MessageListScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
@@ -182,32 +205,88 @@ class AppRoutes {
 
     ///===========================Customer==========================
     GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
-    GetPage(name: customerSubCategoryScreen, page: () => CustomerSubCategoryScreen()),
-    GetPage(name: customerServicesContractorScreen, page: () => CustomerServicesContractorScreen()),
-    GetPage(name: customerAllContractorBasedSubCategoryViewScreen, page: () => CustomerAllContractorBasedSubCategoryViewScreen()),
-    GetPage(name: customerContractorBasedCategoryListScreen, page: () => CustomerContractorBasedCategoryListScreen()),
-    GetPage(name: customerContractorProfileViewScreen, page: () => CustomerContractorProfileViewScreen()),
-    GetPage(name: customerSuccessfullyPaidScreen, page: () => CustomerSuccessfullyPaidScreen()),
-    GetPage(name: customerConfirmationsScreen, page: () => CustomerConfirmationsScreen()),
-    GetPage(name: editCustomerProfileScreen, page: () => EditCustomerProfileScreen()),
-    GetPage(name: customerNotificationScreen, page: () => CustomerNotificationScreen()),
-    GetPage(name: customerHelpSupportScreen, page: () => CustomerHelpSupportScreen()),
-    GetPage(name: customerReferFriendScreen, page: () => CustomerReferFriendScreen()),
-    GetPage(name: customerSearchResultScreen, page: () => CustomerSearchResultScreen()),
-    GetPage(name: customarServiceDetailsScreen, page: () => CustomarServiceDetailsScreen()),
+    GetPage(
+      name: customerSubCategoryScreen,
+      page: () => CustomerSubCategoryScreen(),
+    ),
+    GetPage(
+      name: customerServicesContractorScreen,
+      page: () => CustomerServicesContractorScreen(),
+    ),
+    GetPage(
+      name: customerAllContractorBasedSubCategoryViewScreen,
+      page: () => CustomerAllContractorBasedSubCategoryViewScreen(),
+    ),
+    GetPage(
+      name: customerContractorBasedCategoryListScreen,
+      page: () => CustomerContractorBasedCategoryListScreen(),
+    ),
+    GetPage(
+      name: customerContractorProfileViewScreen,
+      page: () => CustomerContractorProfileViewScreen(),
+    ),
+    GetPage(
+      name: customerSuccessfullyPaidScreen,
+      page: () => CustomerSuccessfullyPaidScreen(),
+    ),
+    GetPage(
+      name: customerConfirmationsScreen,
+      page: () => CustomerConfirmationsScreen(),
+    ),
+    GetPage(
+      name: editCustomerProfileScreen,
+      page: () => EditCustomerProfileScreen(),
+    ),
+    GetPage(
+      name: customerNotificationScreen,
+      page: () => CustomerNotificationScreen(),
+    ),
+    GetPage(
+      name: customerHelpSupportScreen,
+      page: () => CustomerHelpSupportScreen(),
+    ),
+    GetPage(
+      name: customerReferFriendScreen,
+      page: () => CustomerReferFriendScreen(),
+    ),
+    GetPage(
+      name: customerSearchResultScreen,
+      page: () => CustomerSearchResultScreen(),
+    ),
+    GetPage(
+      name: customarServiceDetailsScreen,
+      page: () => CustomarServiceDetailsScreen(),
+    ),
     GetPage(name: customarQaScreen, page: () => CustomarQaScreen()),
-    GetPage(name: customarMaterialsScreen, page: () => CustomarMaterialsScreen()),
+    GetPage(
+      name: customarMaterialsScreen,
+      page: () => CustomarMaterialsScreen(),
+    ),
     GetPage(name: customerCategoryScreen, page: () => CustomerCategoryScreen()),
-    GetPage(name: customerRequestHistoryScreen, page: () => CustomerRequestHistoryScreen()),
-    GetPage(name: customerParSubCategoryItem, page: () => CustomerParSubCategoryItem()),
-    GetPage(name: customarServiceContractorDetailsScreen, page: () => CustomarServiceContractorDetailsScreen()),
-    GetPage(name: requestHistoryServiceDetailsPage, page: () => RequestHistoryServiceDetailsPage()),
+    GetPage(
+      name: customerRequestHistoryScreen,
+      page: () => CustomerRequestHistoryScreen(),
+    ),
+    GetPage(
+      name: customerParSubCategoryItem,
+      page: () => CustomerParSubCategoryItem(),
+    ),
+    GetPage(
+      name: customarServiceContractorDetailsScreen,
+      page: () => CustomarServiceContractorDetailsScreen(),
+    ),
+    GetPage(
+      name: requestHistoryServiceDetailsPage,
+      page: () => RequestHistoryServiceDetailsPage(),
+    ),
     GetPage(name: aboutUsScreen, page: () => AboutUsScreen()),
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
-    GetPage(name: customerChangePasswordScreen, page: () => CustomerChangePasswordScreen()),
+    GetPage(
+      name: customerChangePasswordScreen,
+      page: () => CustomerChangePasswordScreen(),
+    ),
     GetPage(name: termsConditionsScreen, page: () => TermsConditionsScreen()),
     GetPage(name: recentAllServiceScreen, page: () => RecentAllServiceScreen()),
     GetPage(name: uploadPhotoScreen, page: () => UploadPhotoScreen()),
-
   ];
 }

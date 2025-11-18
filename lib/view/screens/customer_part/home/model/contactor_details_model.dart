@@ -36,9 +36,8 @@ class ReviewData {
       user: json['user'],
       averageRating: json['averageRating']?.toString() ?? '0.0',
       totalCompletedOrder: json['totalCompletedOrder'] ?? 0,
-      reviews: (json['reviews'] as List?)
-              ?.map((e) => Review.fromJson(e))
-              .toList() ??
+      reviews:
+          (json['reviews'] as List?)?.map((e) => Review.fromJson(e)).toList() ??
           [],
     );
   }
@@ -47,7 +46,7 @@ class ReviewData {
 class Review {
   final String id;
   final Customer? customerId;
-  final String contractorId;
+  final ContractorShort? contractorId;
   final int stars;
   final String description;
   final bool isDeleted;
@@ -68,10 +67,13 @@ class Review {
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       id: json['_id'] ?? '',
-      customerId: json['customerId'] != null
-          ? Customer.fromJson(json['customerId'])
+      customerId:
+          json['customerId'] != null
+              ? Customer.fromJson(json['customerId'])
+              : null,
+      contractorId: json['contractorId'] is Map<String, dynamic>
+          ? ContractorShort.fromJson(json['contractorId'])
           : null,
-      contractorId: json['contractorId'] ?? '',
       stars: json['stars'] ?? 0,
       description: json['description'] ?? '',
       isDeleted: json['isDeleted'] ?? false,
@@ -81,16 +83,38 @@ class Review {
   }
 }
 
+class ContractorShort {
+  final String id;
+  final String fullName;
+  final String email;
+  final String contactNo;
+  final String img;
+
+  ContractorShort({
+    required this.id,
+    required this.fullName,
+    required this.email,
+    required this.contactNo,
+    required this.img,
+  });
+
+  factory ContractorShort.fromJson(Map<String, dynamic> json) {
+    return ContractorShort(
+      id: json['_id'] ?? '',
+      fullName: json['fullName'] ?? '',
+      email: json['email'] ?? '',
+      contactNo: json['contactNo'] ?? '',
+      img: json['img'] ?? '',
+    );
+  }
+}
+
 class Customer {
   final String id;
   final String fullName;
   final String img;
 
-  Customer({
-    required this.id,
-    required this.fullName,
-    required this.img,
-  });
+  Customer({required this.id, required this.fullName, required this.img});
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(

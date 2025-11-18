@@ -32,25 +32,27 @@ class CustomerHelpSupportScreen extends StatelessWidget {
                 color: AppColors.textCLr,
               ),
               CustomFormCard(
-                  title: "Title",
-                  hintText: "Enter the title of your issue",
-                  controller: controller.titleController
+                title: "Title",
+                hintText: "Enter the title of your issue",
+                controller: controller.titleController,
               ),
               CustomFormCard(
-                  title: "Write in below box",
-                  hintText: "write here.....",
-                  maxLine: 5,
-                  controller: controller.detailsController
+                title: "Write in below box",
+                hintText: "write here.....",
+                maxLine: 5,
+                controller: controller.detailsController,
               ),
-              SizedBox(height: 30.h,),
-              Obx(() => CustomButton(
-                onTap: controller.isLoading.value 
-                    ? () {} 
-                    : controller.createSupportTicket,
-                title: controller.isLoading.value 
-                    ? "Sending...".tr 
-                    : "Send".tr,
-              ))
+              SizedBox(height: 30.h),
+              Obx(
+                () => CustomButton(
+                  onTap:
+                      controller.isLoading.value
+                          ? () {}
+                          : controller.createSupportTicket,
+                  title:
+                      controller.isLoading.value ? "Sending...".tr : "Send".tr,
+                ),
+              ),
             ],
           ),
         ),

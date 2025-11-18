@@ -7,12 +7,13 @@ import '../../../../../../utils/app_icons/app_icons.dart';
 import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+
 class CustomStatusCard extends StatelessWidget {
   const CustomStatusCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Column(
         children: [
@@ -50,7 +51,7 @@ class CustomStatusCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          const Divider(thickness: .6,color: AppColors.white,),
+          const Divider(thickness: .6, color: AppColors.white),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -164,7 +165,7 @@ class CustomStatusCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          const Divider(thickness: .6,color: AppColors.white,),
+          const Divider(thickness: .6, color: AppColors.white),
         ],
       ),
     );

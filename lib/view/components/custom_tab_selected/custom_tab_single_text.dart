@@ -11,7 +11,6 @@ class CustomTabSingleText extends StatelessWidget {
   final bool? isTextColorActive;
   final bool? isPadding;
 
-
   const CustomTabSingleText({
     super.key,
     required this.tabs,
@@ -28,16 +27,12 @@ class CustomTabSingleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 0,
-            color: unselectedColor,
-          ),
-        ),
+        border: Border(bottom: BorderSide(width: 0, color: unselectedColor)),
       ),
-      padding: isPadding!
-          ? const EdgeInsets.symmetric(horizontal: 22)
-          : const EdgeInsets.symmetric(horizontal: 10),
+      padding:
+          isPadding!
+              ? const EdgeInsets.symmetric(horizontal: 22)
+              : const EdgeInsets.symmetric(horizontal: 10),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -53,9 +48,10 @@ class CustomTabSingleText extends StatelessWidget {
                       //color: AppColors.red,
                       border: Border(
                         bottom: BorderSide(
-                          color: selectedIndex == index
-                              ? selectedColor
-                              : Colors.transparent,
+                          color:
+                              selectedIndex == index
+                                  ? selectedColor
+                                  : Colors.transparent,
                           width: 3.0,
                         ),
                       ),
@@ -63,18 +59,19 @@ class CustomTabSingleText extends StatelessWidget {
                     child: Text(
                       tabs[index],
                       style: GoogleFonts.poppins(
-                        color: selectedIndex == index
-                            ? selectedColor
-                            : isTextColorActive!
-                            ? textColor
-                            : unselectedColor,
+                        color:
+                            selectedIndex == index
+                                ? selectedColor
+                                : isTextColorActive!
+                                ? textColor
+                                : unselectedColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 20,),
+                const SizedBox(width: 20),
               ],
             );
           }),

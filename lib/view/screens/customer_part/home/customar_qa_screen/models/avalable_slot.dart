@@ -13,7 +13,10 @@ class AvailableSlotResponse {
     return AvailableSlotResponse(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: json['data'] != null ? AvailableSlotData.fromJson(json['data']) : null,
+      data:
+          json['data'] != null
+              ? AvailableSlotData.fromJson(json['data'])
+              : null,
     );
   }
 }
@@ -33,9 +36,10 @@ class AvailableSlotData {
     return AvailableSlotData(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      availableSlots: (json['availableSlots'] as List<dynamic>? ?? [])
-          .map((e) => e.toString())
-          .toList(),
+      availableSlots:
+          (json['availableSlots'] as List<dynamic>? ?? [])
+              .map((e) => e.toString())
+              .toList(),
     );
   }
 }

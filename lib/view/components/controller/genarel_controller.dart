@@ -27,7 +27,6 @@ class GeneralController extends GetxController {
         imageFile.value = File(getImages.path);
         image.value = getImages.path;
         debugPrint("Selected Image Path: ${getImages.path}");
-
       }
     } catch (e) {
       debugPrint("Error selecting image: $e");
@@ -41,8 +40,4 @@ class GeneralController extends GetxController {
     image.value = ""; // Clears the image path
     imageFile.value = File(""); // Clears the image file
   }
-
-
-
-
 }

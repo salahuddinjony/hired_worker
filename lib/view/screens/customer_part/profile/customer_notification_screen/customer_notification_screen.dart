@@ -14,7 +14,7 @@ class CustomerNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = Get.arguments ?? {};
     final CustomerProfileController controller = args['controller'];
-   
+
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Notification".tr),
       body: Padding(

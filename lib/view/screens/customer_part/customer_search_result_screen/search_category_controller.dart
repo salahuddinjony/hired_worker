@@ -7,22 +7,22 @@ import 'package:servana/service/api_url.dart';
 import 'package:servana/view/screens/customer_part/home/model/customer_category_model.dart';
 
 class SearchCategoryController extends GetxController {
-  
   Rx<RxStatus> status = Rx<RxStatus>(RxStatus.empty());
-  
+
   TextEditingController searchController = TextEditingController();
-  
+
   // Observable list to hold search results
   RxList<Datum> searchResults = <Datum>[].obs;
-  
+
   // Loading state
   RxBool isLoading = false.obs;
-  
+
   // Observable search text for reactive UI
   RxString searchText = ''.obs;
-  
+
   // Debounce timer for search optimization
-  Timer? _debounce;  @override
+  Timer? _debounce;
+  @override
   void onInit() {
     super.onInit();
     // Listen to search text changes
@@ -32,10 +32,10 @@ class SearchCategoryController extends GetxController {
   // Handle search text changes with debounce
   void _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    
+
     // Update observable search text
     searchText.value = searchController.text.trim();
-    
+
     _debounce = Timer(const Duration(milliseconds: 500), () {
       final searchTerm = searchController.text.trim();
       if (searchTerm.isNotEmpty) {
@@ -53,11 +53,11 @@ class SearchCategoryController extends GetxController {
     try {
       isLoading.value = true;
       status.value = RxStatus.loading();
-      final Map <String, String> queryParameters = {
+      final Map<String, String> queryParameters = {
         'searchTerm': searchTerm,
         'limit': '200',
       };
-      
+
       // Make API call with searchTerm as query parameter
       final Response response = await ApiClient.getData(
         ApiUrl.categories,
@@ -66,15 +66,16 @@ class SearchCategoryController extends GetxController {
 
       if (response.statusCode == 200) {
         // Parse the response body as JSON first
-        final responseData = response.body is String 
-            ? jsonDecode(response.body) 
-            : response.body;
-        
-        final customerCategoryModel = CustomerCategoryModel.fromJson(responseData);
-        
+        final responseData =
+            response.body is String ? jsonDecode(response.body) : response.body;
+
+        final customerCategoryModel = CustomerCategoryModel.fromJson(
+          responseData,
+        );
+
         if (customerCategoryModel.success == true) {
           searchResults.value = customerCategoryModel.data ?? [];
-          
+
           if (searchResults.isEmpty) {
             status.value = RxStatus.empty();
           } else {
@@ -82,7 +83,9 @@ class SearchCategoryController extends GetxController {
           }
         } else {
           searchResults.clear();
-          status.value = RxStatus.error(customerCategoryModel.message ?? 'Error fetching data');
+          status.value = RxStatus.error(
+            customerCategoryModel.message ?? 'Error fetching data',
+          );
         }
       } else {
         searchResults.clear();

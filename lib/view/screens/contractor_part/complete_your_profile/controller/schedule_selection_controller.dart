@@ -27,16 +27,15 @@ class ScheduleSelectionController extends GetxController {
       'Sat': 'Saturday',
     };
 
-    final List<Map<String, dynamic>> schedules = days.map((day) {
-      return {
-        "days": dayMap[day] ?? day,
-        "timeSlots": ["09:00-23:00"],
-      };
-    }).toList();
+    final List<Map<String, dynamic>> schedules =
+        days.map((day) {
+          return {
+            "days": dayMap[day] ?? day,
+            "timeSlots": ["09:00-23:00"],
+          };
+        }).toList();
 
-    final Map<String, dynamic> body = {
-      "schedules": schedules,
-    };
+    final Map<String, dynamic> body = {"schedules": schedules};
 
     status.value = RxStatus.loading();
     try {
@@ -61,5 +60,4 @@ class ScheduleSelectionController extends GetxController {
       status.value = RxStatus.error();
     }
   }
-
 }

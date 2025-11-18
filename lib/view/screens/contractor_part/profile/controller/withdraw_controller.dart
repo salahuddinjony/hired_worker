@@ -138,11 +138,11 @@ class WithdrawController extends GetxController {
         '${ApiUrl.withdraw}?status=rejected',
       );
 
-      final WithdrawHistoryModel withdrawHistoryModel = WithdrawHistoryModel.fromJson(
-        rejectedResponse.body,
-      );
+      final WithdrawHistoryModel withdrawHistoryModel =
+          WithdrawHistoryModel.fromJson(rejectedResponse.body);
 
-      if (withdrawHistoryModel.data == null || withdrawHistoryModel.data!.withdrawals!.isEmpty) {
+      if (withdrawHistoryModel.data == null ||
+          withdrawHistoryModel.data!.withdrawals!.isEmpty) {
         statusForRejected.value = RxStatus.empty();
       } else {
         rejectedList.addAll(withdrawHistoryModel.data!.withdrawals!);
@@ -169,11 +169,11 @@ class WithdrawController extends GetxController {
         '${ApiUrl.withdraw}?status=rejected&page=$rejectedPageNumber&limit=10',
       );
 
-      final WithdrawHistoryModel withdrawHistoryModel = WithdrawHistoryModel.fromJson(
-        rejectedResponse.body,
-      );
+      final WithdrawHistoryModel withdrawHistoryModel =
+          WithdrawHistoryModel.fromJson(rejectedResponse.body);
 
-      if (withdrawHistoryModel.data == null || withdrawHistoryModel.data!.withdrawals!.isEmpty) {
+      if (withdrawHistoryModel.data == null ||
+          withdrawHistoryModel.data!.withdrawals!.isEmpty) {
         showCustomSnackBar('No more data load');
         isRejectedLock = true;
       } else {

@@ -20,9 +20,12 @@ class OnboardingScreenTwo extends StatelessWidget {
         children: [
           Positioned(
             top: 150.h,
-              left: 0,
-              right: 0,
-              child: const Center(child: CustomImage(imageSrc: AppImages.girlTwo))),
+            left: 0,
+            right: 0,
+            child: const Center(
+              child: CustomImage(imageSrc: AppImages.girlTwo),
+            ),
+          ),
           Positioned(
             bottom: 0.h,
             right: 0,
@@ -49,7 +52,8 @@ class OnboardingScreenTwo extends StatelessWidget {
                   CustomText(
                     top: 20,
                     text:
-                        "From home repairs to beauty care – get all services with ease".tr,
+                        "From home repairs to beauty care – get all services with ease"
+                            .tr,
                     fontSize: 18.w,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
@@ -60,7 +64,10 @@ class OnboardingScreenTwo extends StatelessWidget {
                     onTap: () async {
                       Get.toNamed(AppRoutes.loginScreen);
 
-                      await SharePrefsHelper.setBool(AppConstants.isFirstTime, false);
+                      await SharePrefsHelper.setBool(
+                        AppConstants.isFirstTime,
+                        false,
+                      );
                     },
                     title: "Next".tr,
                     width: MediaQuery.sizeOf(context).width / 1.2,

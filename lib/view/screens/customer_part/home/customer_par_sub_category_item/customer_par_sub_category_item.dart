@@ -23,7 +23,11 @@ class CustomerParSubCategoryItem extends StatelessWidget {
     // Listen for scroll events to trigger pagination
     homeController.singleSubCategoryScrollController.addListener(() {
       if (homeController.singleSubCategoryScrollController.position.pixels >=
-          homeController.singleSubCategoryScrollController.position.maxScrollExtent - 100 &&
+              homeController
+                      .singleSubCategoryScrollController
+                      .position
+                      .maxScrollExtent -
+                  100 &&
           !homeController.singleSubCategoryIsPaginating.value &&
           homeController.singleSubCategoryHasMoreData.value) {
         homeController.getMoreSingleSubCategory(categoryId: id);
@@ -40,12 +44,16 @@ class CustomerParSubCategoryItem extends StatelessWidget {
         }
         if (homeController.getSingleSubCategoryStatus.value.isError) {
           return Center(
-            child: Text(homeController.getSingleSubCategoryStatus.value
-                .toString()),
+            child: Text(
+              homeController.getSingleSubCategoryStatus.value.toString(),
+            ),
           );
         }
         if (data.isEmpty) {
-          return const NotFound(message: "No Sub Categories Found", icon: Icons.category);
+          return const NotFound(
+            message: "No Sub Categories Found",
+            icon: Icons.category,
+          );
         }
         return Column(
           children: [
@@ -62,7 +70,9 @@ class CustomerParSubCategoryItem extends StatelessWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: data.length + (homeController.singleSubCategoryHasMoreData.value ? 1 : 0),
+                itemCount:
+                    data.length +
+                    (homeController.singleSubCategoryHasMoreData.value ? 1 : 0),
                 itemBuilder: (BuildContext context, int index) {
                   if (index >= data.length) {
                     // Show loading indicator at the end of the list
@@ -72,12 +82,17 @@ class CustomerParSubCategoryItem extends StatelessWidget {
                     image: data[index].img ?? '',
                     name: data[index].name ?? '',
                     onTap: () {
-                        homeController.getAllContactor(subCategoryId: data[index].id.toString(), useByUserId: true);
-                      Get.toNamed(AppRoutes.customerAllContractorBasedSubCategoryViewScreen,
-                          arguments: {
-                            'id': data[index].id.toString(), // subcategory id
-                            'name': data[index].name.toString()
-                          }
+                      homeController.getAllContactor(
+                        subCategoryId: data[index].id.toString(),
+                        useByUserId: true,
+                      );
+                      Get.toNamed(
+                        AppRoutes
+                            .customerAllContractorBasedSubCategoryViewScreen,
+                        arguments: {
+                          'id': data[index].id.toString(), // subcategory id
+                          'name': data[index].name.toString(),
+                        },
                       );
                     },
                   );
@@ -89,4 +104,4 @@ class CustomerParSubCategoryItem extends StatelessWidget {
       }),
     );
   }
-  }
+}

@@ -4,6 +4,7 @@ import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../../components/custom_text/custom_text.dart';
+
 class CustomServiceContractorCard extends StatelessWidget {
   final Function()? onTap;
   final String? image;
@@ -11,7 +12,15 @@ class CustomServiceContractorCard extends StatelessWidget {
   final String? title;
   final String? rating;
   final String? hourlyPrice;
-  const CustomServiceContractorCard({super.key, this.onTap, this.image, this.name, this.title, this.rating, required this.hourlyPrice});
+  const CustomServiceContractorCard({
+    super.key,
+    this.onTap,
+    this.image,
+    this.name,
+    this.title,
+    this.rating,
+    required this.hourlyPrice,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,24 +73,30 @@ class CustomServiceContractorCard extends StatelessWidget {
                       // Hourly rate badge
                       if ((hourlyPrice ?? '').isNotEmpty)
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: .08),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColors.primary.withValues(alpha: .2)),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: .2),
+                            ),
                           ),
                           child: Row(
                             children: [
                               SizedBox(width: 5.w),
                               CustomText(
-                              text: (() {
-                                final dp = (hourlyPrice ?? '').trim();
-                                if (dp.isEmpty) return '';
-                                return '\$$dp';
-                              })(),
-                              fontSize: 12.w,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primary,
+                                text:
+                                    (() {
+                                      final dp = (hourlyPrice ?? '').trim();
+                                      if (dp.isEmpty) return '';
+                                      return '\$$dp';
+                                    })(),
+                                fontSize: 12.w,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
                               ),
                             ],
                           ),
@@ -93,7 +108,10 @@ class CustomServiceContractorCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.blue,
                           borderRadius: BorderRadius.circular(8),
@@ -104,9 +122,9 @@ class CustomServiceContractorCard extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: AppColors.white,
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ],
