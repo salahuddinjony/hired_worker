@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -743,36 +742,36 @@ class CustomerHomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                GridView.builder(
+                    SizedBox(
+                  height: 260.h,
+                  child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.only(right: 10.h),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: .75,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 8,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: min(4, homeController.getAllContactorList.length),
+                  itemCount: homeController.getAllContactorList.length,
+                  separatorBuilder: (context, index) => SizedBox(width: 12.w),
                   itemBuilder: (BuildContext context, int index) {
                     final data = homeController.getAllContactorList[index];
-                    return CustomServiceContractorCard(
+                    return SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.48,
+                    child: CustomServiceContractorCard(
                       onTap: () {
-                        Get.toNamed(
-                          AppRoutes.customerContractorProfileViewScreen,
-                          arguments: {
-                            'id': data.userId.id,
-                            'contractorDetails': data,
-                          },
-                        );
+                      Get.toNamed(
+                        AppRoutes.customerContractorProfileViewScreen,
+                        arguments: {
+                        'id': data.userId.id,
+                        'contractorDetails': data,
+                        },
+                      );
                       },
                       image: ImageHandler.imagesHandle(data.userId.img),
-                      name: data.userId.fullName,
+                      name: data.userId.fullName ?? '',
                       title: data.skillsCategory,
                       hourlyPrice: data.rateHourly.toString(),
                       rating: data.ratings.toString(),
-                    ); // You can pass `serviceList[index]` if needed
+                    ),
+                    );
                   },
+                  ),
                 ),
 
                 SizedBox(height: 16.h),

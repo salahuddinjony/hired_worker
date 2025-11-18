@@ -81,6 +81,7 @@ class allContractor {
   final String? adminAccept;
   final String? subscriptionEndDate;
   final String? subscriptionStartDate;
+  final num? completedJobs;
 
   allContractor({
     required this.id,
@@ -113,6 +114,7 @@ class allContractor {
     this.adminAccept,
     this.subscriptionEndDate,
     this.subscriptionStartDate,
+    this.completedJobs,
   });
 
   factory allContractor.fromJson(Map<String, dynamic> json) {
@@ -261,6 +263,7 @@ class allContractor {
               : null,
       subscriptionEndDate: json['subscriptionEndDate'],
       subscriptionStartDate: json['subscriptionStartDate'],
+      completedJobs: json['completedJobs'] ?? 0,
     );
   }
 }

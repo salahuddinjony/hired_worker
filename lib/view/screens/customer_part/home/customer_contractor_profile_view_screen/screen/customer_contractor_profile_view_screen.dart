@@ -248,7 +248,13 @@ class CustomerContractorProfileViewScreen extends StatelessWidget {
                                   imageSrc: AppImages.clickImage,
                                 ),
                                 CustomText(
-                                  text: '0',
+                                  text:
+                                      contractorData != null
+                                          ? contractorData.completedJobs
+                                              .toString()
+                                              .padLeft(2, '0')
+                                          : homeController.reviewsData.length
+                                              .toString(),
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.black,
